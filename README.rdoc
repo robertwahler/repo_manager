@@ -1,4 +1,4 @@
-= basic_app
+= TODO: app name here
 
 Description goes here.
 
@@ -14,4 +14,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2010 Robert Wahler. See LICENSE for details.
+Copyright (c) TODO: copyright year and date. See LICENSE for details.

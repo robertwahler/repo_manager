@@ -1,21 +1,30 @@
-## MAC OS
+## mac os
 .DS_Store
 
-## TEXTMATE
+## textmate
 *.tmproj
 tmtags
 
-## EMACS
+## emacs
 *~
 \#*
 .\#*
 
-## VIM
+## vim
 *.swp
 
-## PROJECT::GENERAL
+## project::general
 coverage
 rdoc
 pkg
+*.gemspec
 
-## PROJECT::SPECIFIC
+## cucumber
+rerun.txt
+
+## ctags
+tags
+
+## project::specific
+tmp/fixtures
+tmp/aruba

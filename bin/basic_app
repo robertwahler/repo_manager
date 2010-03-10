@@ -1,0 +1,89 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.dirname(__FILE__) + '/../lib')
+
+require 'basic_app'
+require 'optparse'
+require 'term/ansicolor'
+
+available_actions = %w(mount unmount copy)
+
+banner = <<BANNER
+TODO: application tag line
+
+  Usage: basic_app [options]
+
+BANNER
+
+help = <<HELP
+#{banner}
+
+Options:
+ 
+HELP
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = help
+
+  # set defaults
+  options[:verbose] = false
+  options[:coloring] = true
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on("-c", "--[no-]coloring", "Ansi color in output") do |c|
+    options[:coloring] = c
+  end
+
+  opts.on("--version", "Display current version") do
+    puts "basic_app, version " + BasicApp.version
+    exit 0
+  end
+
+  opts.on("-d", "--dry-run", "Run action but omit the final execute step.  Useful combined with --verbose") do |d|
+    options[:dry_run] = d
+  end
+
+  opts.on("--config FILE", "Load configuration options from FILE") do |file|
+    options[:config] = file 
+  end
+
+  # no argument, shows at tail.  This will print an options summary.
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit 0
+  end
+  
+
+  begin
+    opts.parse!
+  rescue OptionParser::InvalidOption => e
+    puts "basic_app #{e}"
+    puts "basic_app --help for more information"
+    exit 1
+  end
+
+end
+
+action = ARGV.shift
+unless available_actions.include?(action)
+  if action.nil?
+    puts banner
+  else
+    puts "basic_app invalid action: #{action}"
+  end
+  puts "basic_app --help for more information"
+  exit 1
+end
+
+if STDOUT.isatty
+  Term::ANSIColor::coloring = options[:coloring]
+else
+  Term::ANSIColor::coloring = false
+end
+
+app = BasicApp::App.new(FileUtils.pwd, options)
+app.run(action)
