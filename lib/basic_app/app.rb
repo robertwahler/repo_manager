@@ -6,6 +6,9 @@ class String
 end
 
 module BasicApp
+
+  AVAILABLE_ACTIONS = %w[]
+
   class App
 
     def initialize(base_dir, options={})
@@ -18,11 +21,32 @@ module BasicApp
       configure(options)
     end
 
-    def run(action)
+    def run
       begin
-        puts "basic_app run action: #{action}".cyan if @options[:verbose]
-        result = send(action)
+
+        if action_argument_required?
+          action = ARGV.shift
+          unless AVAILABLE_ACTIONS.include?(action)
+            if action.nil?
+              puts "basic_app action required"
+            else
+              puts "basic_app invalid action: #{action}"
+            end
+            puts "basic_app --help for more information"
+            exit 1
+          end
+          puts "basic_app run action: #{action}".cyan if @options[:verbose]
+          raise "action #{action} not implemented" unless respond_to?(action)
+          result = send(action)
+        else
+          #
+          # default action if action_argument_required? is false
+          #
+
+        end
+
         exit(result ? 0 : 1)
+
       rescue SystemExit => e
         # This is the normal exit point, exit code from the send result
         # or exit from another point in the system
@@ -36,11 +60,21 @@ module BasicApp
       end
     end
 
-    #
-    # Application commands
-    #
-    
   private
+
+    #
+    # app commands start
+    #
+
+    
+    #
+    # app commands end
+    #
+
+    # true if application requires an action to be specified on the command line
+    def action_argument_required?
+      !AVAILABLE_ACTIONS.empty?
+    end
 
     # read options for YAML config with ERB processing and initialize configatron
     def configure(options)
@@ -58,7 +92,7 @@ module BasicApp
       end
       
       # 
-      # set defaults, these will NOT override setting read from yaml
+      # set defaults, these will NOT override setting read from YAML
       #
 
     end

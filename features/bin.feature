@@ -17,26 +17,11 @@ Feature: Options via a command line interface (CLI)
     And I should see matching: 
       """
       .*
-      
         Usage: .* \[options\]
-      
       .*
-
       Options:
       .*
           -v, --\[no-\]verbose               Run verbosely
-      """
-
-  Scenario: No command line options
-    When I run "basic_app"
-    Then the exit status should be 1
-    And I should see matching: 
-      """
-      .*
-      
-        Usage: .*$
-      .*
-      ^.* --help for more information
       """
 
   Scenario: Invalid option

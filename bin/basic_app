@@ -6,17 +6,17 @@ require 'basic_app'
 require 'optparse'
 require 'term/ansicolor'
 
-available_actions = %w(mount unmount copy)
+available_actions = BasicApp::AVAILABLE_ACTIONS
 
 banner = <<BANNER
 TODO: application tag line
 
   Usage: basic_app [options]
-
 BANNER
+banner << "\nActions: #{available_actions.join(' ')}\n" unless available_actions.empty?
 
-help = <<HELP
-#{banner}
+help = banner
+help += <<HELP
 
 Options:
  
@@ -57,7 +57,6 @@ OptionParser.new do |opts|
     exit 0
   end
   
-
   begin
     opts.parse!
   rescue OptionParser::InvalidOption => e
@@ -68,17 +67,6 @@ OptionParser.new do |opts|
 
 end
 
-action = ARGV.shift
-unless available_actions.include?(action)
-  if action.nil?
-    puts banner
-  else
-    puts "basic_app invalid action: #{action}"
-  end
-  puts "basic_app --help for more information"
-  exit 1
-end
-
 if STDOUT.isatty
   Term::ANSIColor::coloring = options[:coloring]
 else
@@ -86,4 +74,4 @@ else
 end
 
 app = BasicApp::App.new(FileUtils.pwd, options)
-app.run(action)
+app.run
