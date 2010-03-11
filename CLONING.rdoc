@@ -1,14 +1,95 @@
-= Cloning BasicApp
+= Cloning from BasicApp
 
 BasicApp provides no stand-alone functionality.  It purpose is to 
 provide a repository for jump-starting a new RubyGem based CLI 
-application and provide a point to cloned applications for pulling in 
-future enchancements and fixes.
+application and provide a point to cloned applications to facilitate
+pulling in future enhancements and fixes.
 
-== Jump-starting a new project
+== Features/Dependencies 
 
-TODO: add instructions
+* Jeweler for RubyGem management http://github.com/technicalpickles/jeweler
+* Rspec for unit testing http://github.com/dchelimsky/rspec
+* Cucumber for functional testing http://github.com/tpope/vim-cucumber
+* Aruba for CLI testing http://github.com/aslakhellesoy/aruba
 
+== Jump-starting a new project with BasicApp
+
+The following steps illustrate creating a new application called "oct." Oct
+is a simple command line utility that prints file listing permissions in octal
+notation.
+
+    cd ~/workspace
+    git clone git://github.com/robertwahler/basic_app.git oct
+    cd oct
+
+=== Setup repository for cloned project
+
+We are going to change the origin URL to our own server and setup a remote
+for pulling in future BasicApp changes. If our own repo is setup at
+git@red:oct.git, change the URL with sed:
+
+    sed -i 's/url =.*\.git$/url = git@red:oct.git/' .git/config
+
+Push it up
+
+    git push origin master:refs/heads/master
+
+Add BasicApp as remote
+
+    git remote add basic_app git://github.com/robertwahler/basic_app.git
+
+=== Rename your application
+
+We need to change the name of the application from basic_app to oct
+
+    git mv bin/basic_app bin/oct
+    git mv lib/basic_app.rb lib/oct.rb
+    git mv lib/basic_app lib/oct
+
+    find ./bin -type f -exec sed -i 's/BasicApp/Oct/' '{}' +
+    find . -name *.rb -exec sed -i 's/BasicApp/Oct/' '{}' +
+    find . -name Rakefile -exec sed -i 's/BasicApp/Oct/' '{}' +
+
+    find ./bin -type f -exec sed -i 's/basic_app/oct/' '{}' +
+    find . -name *.rb -exec sed -i 's/basic_app/oct/' '{}' +
+    find . -name *.feature -exec sed -i 's/basic_app/oct/' '{}' +
+    find . -name Rakefile -exec sed -i 's/basic_app/oct/' '{}' +
+
+Replace TODO's and update documentation
+
+* Replace README.rdoc
+* Replace LICENSE
+* (OPTIONAL) git rm CLONING.rdoc
+* Replace the TODO's in Rakefile and bin
+
+Application should now be functional, lets test it
+
+    cucumber
+
+Looks OK, commit it
+
+    git commit -a -m "renamed basic_app to oct"
+
+== Merging of future BasicApp changes
+
+Cherry picking method
+
+    git fetch basic_app
+    git cherry-pick a0f9745
+
+Merge 2-step method
+
+    git fetch basic_app
+    git merge basic_app/master
+
+Trusting pull of HEAD
+
+    git pull basic_app HEAD
+
+Conflicted?
+
+    git mergetool
+    git commit
 
 == Note on Patches/Pull Requests
  
