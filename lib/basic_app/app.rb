@@ -29,7 +29,7 @@ module BasicApp
         puts "basic_app run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
-        STDERR.puts("Basic_app command failed, error(s) follow:")
+        STDERR.puts("basic_app command failed, error(s) follow:")
         STDERR.puts("#{e.message}".red)
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
