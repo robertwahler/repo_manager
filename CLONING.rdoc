@@ -46,11 +46,13 @@ We need to change the name of the application from basic_app to oct
     git mv lib/basic_app.rb lib/oct.rb
     git mv lib/basic_app lib/oct
 
+    # BasicApp => Oct
     find ./bin -type f -exec sed -i 's/BasicApp/Oct/' '{}' +
     find . -name *.rb -exec sed -i 's/BasicApp/Oct/' '{}' +
     find . -name Rakefile -exec sed -i 's/BasicApp/Oct/' '{}' +
-
+    # basic_app => oct
     find ./bin -type f -exec sed -i 's/basic_app/oct/' '{}' +
+    find ./spec -type f -exec sed -i 's/basic_app/oct/' '{}' +
     find . -name *.rb -exec sed -i 's/basic_app/oct/' '{}' +
     find . -name *.feature -exec sed -i 's/basic_app/oct/' '{}' +
     find . -name Rakefile -exec sed -i 's/basic_app/oct/' '{}' +
