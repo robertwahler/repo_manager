@@ -17,7 +17,7 @@ Feature: Options via a command line interface (CLI)
     And I should see matching: 
       """
       .*
-        Usage: .* \[options\]
+        Usage: .*
       .*
       Options:
       .*

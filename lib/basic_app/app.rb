@@ -42,7 +42,7 @@ module BasicApp
           #
           # default action if action_argument_required? is false
           #
-
+          result = 0
         end
 
         exit(result ? 0 : 1)
