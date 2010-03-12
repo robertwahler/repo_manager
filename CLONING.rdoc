@@ -1,9 +1,9 @@
 = Cloning from BasicApp
 
-BasicApp provides no stand-alone functionality.  It purpose is to 
+BasicApp provides no stand-alone functionality.  Its purpose is to 
 provide a repository for jump-starting a new RubyGem based CLI 
-application and provide a point to cloned applications to facilitate
-pulling in future enhancements and fixes.
+application and provide a repository for cloned applications to
+pull future enhancements and fixes.
 
 == Features/Dependencies 
 
@@ -16,7 +16,7 @@ pulling in future enhancements and fixes.
 
 The following steps illustrate creating a new application called "oct." Oct
 is a simple command line utility that prints file listing permissions in octal
-notation.
+notation. See http://github.com/robertwahler/oct for full source.
 
     cd ~/workspace
     git clone git://github.com/robertwahler/basic_app.git oct
@@ -72,7 +72,15 @@ Looks OK, commit it
 
     git commit -a -m "renamed basic_app to oct"
 
-== Merging of future BasicApp changes
+=== Add customized code
+
+Add in code and tests. Simple applications like oct can hook into Oct::App.run
+directly.  Just replace the "result = 0" with your code. 
+
+For an application that has more than one command line action, see 
+Revenc at http://github.com/robertwahler/revenc 
+
+== Merging future BasicApp changes
 
 Cherry picking method
 
