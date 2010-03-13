@@ -9,7 +9,7 @@ pull future enhancements and fixes.
 
 * Jeweler for RubyGem management http://github.com/technicalpickles/jeweler
 * Rspec for unit testing http://github.com/dchelimsky/rspec
-* Cucumber for functional testing http://github.com/tpope/vim-cucumber
+* Cucumber for functional testing http://github.com/aslakhellesoy/cucumber
 * Aruba for CLI testing http://github.com/aslakhellesoy/aruba
 
 == Jump-starting a new project with BasicApp
