@@ -9,13 +9,13 @@ module Aruba
    alias_method :old_run, :run
 
     # override aruba 
-    def run(cmd)
+    def run(cmd, fail_on_error=true)
       
       # run development version in verbose mode
       cmd = cmd.gsub(/^basic_app/, "#{APP_BIN_PATH} --verbose")
 
       # run original aruba 'run' 
-      old_run(cmd)
+      old_run(cmd, fail_on_error)
     end
   end
 end

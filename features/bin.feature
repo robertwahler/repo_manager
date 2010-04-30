@@ -9,7 +9,7 @@ Feature: Options via a command line interface (CLI)
   Scenario: Version info
     When I run "basic_app --version"
     Then the exit status should be 0
-    And I should see matching "basic_app, version ([\d]+\.[\d]+\.[\d]+$)"
+    And I should see matching /basic_app, version ([\d]+\.[\d]+\.[\d]+$)/
 
   Scenario: Help
     When I run "basic_app --help"
