@@ -1,5 +1,5 @@
 @announce
-Feature: BasicGem
+Feature: BasicApp
 
   This is a placeholder
 

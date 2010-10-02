@@ -1,11 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe BasicGem do
+describe BasicApp do
   
   describe 'VERSION' do
 
     it "should return a string formatted '#.#.#'" do
-      BasicGem::VERSION.should match(/(^[\d]+\.[\d]+\.[\d]+$)/)
+      BasicApp::VERSION.should match(/(^[\d]+\.[\d]+\.[\d]+$)/)
     end
 
   end
