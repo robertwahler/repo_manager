@@ -19,15 +19,16 @@ The following gems are required by default in applications cloned from BasicApp.
 Development dependencies
 ------------------------
 
-* Bundler for dependency management [http://github.com/carlhuda/bundler](http://github.com/carlhuda/bundler)
-* Rspec for unit testing [http://github.com/dchelimsky/rspec](http://github.com/dchelimsky/rspec)
-* Cucumber for functional testing [http://github.com/aslakhellesoy/cucumber](http://github.com/aslakhellesoy/cucumber)
-* Aruba for CLI testing [http://github.com/aslakhellesoy/aruba](http://github.com/aslakhellesoy/aruba)
-* YARD for documentation generation [http://github.com/lsegal/yard/wiki](http://github.com/lsegal/yard/wiki)
+* Bundler for dependency management <http://github.com/carlhuda/bundler>
+* Rspec for unit testing <http://github.com/dchelimsky/rspec>
+* Cucumber for functional testing <http://github.com/aslakhellesoy/cucumber>
+* Aruba for CLI testing <http://github.com/aslakhellesoy/aruba>
+* YARD for documentation generation <http://github.com/lsegal/yard/wiki>
 
 
 Jump-starting a new gem with BasicApp
 -----------------------------------------
+
 
 The following steps illustrate creating a new application called "oct." Oct
 is a simple command line utility that prints file listing permissions in octal
@@ -63,7 +64,10 @@ Add BasicApp as remote
 Rename your application
 -----------------------
 
-We need to change the name of the gem from basic_app to oct
+
+Change the name of the gem from basic_app to oct.  Note that
+renames will be tracked in future merges since git is tracking content and
+the content is non-trivial.
 
     git mv lib/basic_app.rb lib/oct.rb
     git mv bin/basic_app bin/oct
@@ -90,8 +94,11 @@ Replace TODO's and update documentation
 ---------------------------------------
 
 * Replace README.markdown
+* Replace HISTORY.markdown
+* Replace TODO.markdown
 * Replace LICENSE
-* Add author information and replace the TODO's in gemspec
+* Replace VERSION
+* Modify .gemspec, add author information and replace the TODO's
 
 
 Gem should now be functional
@@ -103,7 +110,7 @@ Gem should now be functional
 
 Setup git copy-merge
 --------------------
-When we merge future basic_app changes to our new gem, we want to always ignore 
+When we merge future BasicApp changes to our new gem, we want to always ignore 
 some upstream documentation file changes.  
 
 Set the merge type for the files we want to ignore in .git/info/attributes. You
@@ -114,11 +121,12 @@ new gem is forked, your forked repos will miss out on document merges.
     echo "HISTORY.markdown merge=keep_local_copy" >> .git/info/attributes
     echo "TODO.markdown merge=keep_local_copy" >> .git/info/attributes
     echo "LICENSE merge=keep_local_copy" >> .git/info/attributes
+    echo "VERSION merge=keep_local_copy" >> .git/info/attributes
 
 
 Setup the copy-merge driver. The "trick" is that the driver, keep_local_copy, is using 
 the shell command "true" to return exit code 0.  Basically, the files marked with
-the keep_local_copy merge type will always ignore upstream changes.
+the keep_local_copy merge type will always ignore upstream changes if a merge conflict occurs.
 
     git config merge.keep_local_copy.name "always keep the local copy during merge"
     git config merge.keep_local_copy.driver "true"
@@ -148,7 +156,10 @@ Trusting pull of HEAD
 
     git pull basic_app HEAD
 
-Conflicted?
+Conflict resolution
+
+*NOTE: Most conflicts can be resolved with 'git mergetool' but 'CONFLICT (delete/modify)' will 
+need to be resolved by hand.*
 
     git mergetool
     git commit
@@ -167,6 +178,32 @@ rake -T
     rake release       # Create tag v0.0.1 and build and push oct-0.0.1.gem to Rubygems
     rake spec          # Run specs
     rake test          # Run specs and features
+
+
+Autotesting with Watchr
+-------------------------
+
+[Watchr](http://github.com/mynyml/watchr) provides a flexible alternative to Autotest.  A
+jump start script is provided in spec/watchr.rb.
+
+### Install watchr ###
+
+    gem install watchr
+
+### Run watchr ###
+
+    watchr spec/watchr.rb
+
+outputs a menu
+
+    Ctrl-\ for menu, Ctrl-C to quit
+
+Watchr will now watch the files defined in 'spec/watchr.rb' and run Rspec or Cucumber, as appropriate.
+The watchr script provides a simple menu.
+
+Ctrl-\
+
+    MENU: a = all , f = features  s = specs, l = last feature (none), q = quit
 
 
 Copyright
