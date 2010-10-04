@@ -1,5 +1,7 @@
+require 'rubygems'
 require 'basic_app/version'
 require 'basic_app/app'
+
 module BasicApp
 
   # convenience method @returns [String]
