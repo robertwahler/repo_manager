@@ -12,8 +12,8 @@ Run-time dependencies
 ---------------------
 The following gems are required by default in applications cloned from BasicApp.
 
-* Term-ansicolor for optional color output [http://github.com/flori/term-ansicolor](http://github.com/flori/term-ansicolor)
-* Configatron for configuration support [http://github.com/markbates/configatron](http://github.com/markbates/configatron)
+* Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
+* Configatron for configuration support <http://github.com/markbates/configatron>
 
 
 Development dependencies
@@ -23,7 +23,7 @@ Development dependencies
 * Rspec for unit testing <http://github.com/dchelimsky/rspec>
 * Cucumber for functional testing <http://github.com/aslakhellesoy/cucumber>
 * Aruba for CLI testing <http://github.com/aslakhellesoy/aruba>
-* YARD for documentation generation <http://github.com/lsegal/yard/wiki>
+* YARD for documentation generation <http://github.com/lsegal/yard>
 
 
 Jump-starting a new gem with BasicApp
