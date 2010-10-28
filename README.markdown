@@ -29,10 +29,11 @@ Development dependencies
 Jump-starting a new gem with BasicApp
 -----------------------------------------
 
-
 The following steps illustrate creating a new application called "oct." Oct
 is a simple command line utility that prints file listing permissions in octal
 notation. See <http://github.com/robertwahler/oct> for full source.
+
+**NOTE:** _We are cloning from [BasicApp](http://github.com/robertwahler/basic_app) directly.  Normally, you will want to clone from your own fork of BasicApp so that you can control and fine-tune which future BasicApp modifications you will support._
 
     cd ~/workspace
     git clone git://github.com/robertwahler/basic_app.git oct
@@ -63,7 +64,6 @@ Add BasicApp as remote
 
 Rename your application
 -----------------------
-
 
 Change the name of the gem from basic_app to oct.  Note that
 renames will be tracked in future merges since git is tracking content and

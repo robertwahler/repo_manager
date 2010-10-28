@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
   s.add_dependency 'configatron', '>= 2.5.1'
 
-  s.add_development_dependency "bundler", ">= 1.0.0"
+  s.add_development_dependency "bundler", ">= 1.0.3"
   s.add_development_dependency "rspec", ">= 1.2.9"
-  s.add_development_dependency "cucumber", ">= 0.6"
-  s.add_development_dependency "aruba", ">= 0.2.0"
+  s.add_development_dependency "cucumber", ">= 0.9.2"
+  s.add_development_dependency "aruba", ">= 0.2.3"
   s.add_development_dependency "rake", ">= 0.8.7"
   s.add_development_dependency "yard", ">= 0.6.1"
   s.add_development_dependency "rdiscount", ">= 1.6.5"
