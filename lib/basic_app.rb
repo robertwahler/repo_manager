@@ -1,5 +1,4 @@
 # require all files here
-require 'rubygems'
 require 'rbconfig'
 require 'basic_app/app'
 
