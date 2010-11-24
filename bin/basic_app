@@ -2,6 +2,7 @@
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
+require 'rubygems'
 require 'basic_app'
 require 'optparse'
 require 'term/ansicolor'
@@ -69,6 +70,16 @@ end
 
 if STDOUT.isatty
   Term::ANSIColor::coloring = options[:coloring]
+
+  if true && options[:coloring] #BasicApp::WINDOWS
+    begin
+      require 'Win32/Console/ANSI'
+    rescue LoadError
+      Term::ANSIColor::coloring = false
+      STDERR.puts 'WARNING: You must "gem install win32console" (1.2.0 or higher) to get color output on MRI/Windows'
+    end
+  end
+
 else
   Term::ANSIColor::coloring = false
 end
