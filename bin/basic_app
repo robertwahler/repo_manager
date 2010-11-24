@@ -71,7 +71,7 @@ end
 if STDOUT.isatty
   Term::ANSIColor::coloring = options[:coloring]
 
-  if true && options[:coloring] #BasicApp::WINDOWS
+  if options[:coloring] && BasicApp::WINDOWS
     begin
       require 'Win32/Console/ANSI'
     rescue LoadError
