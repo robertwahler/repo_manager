@@ -1,5 +1,6 @@
 # require all files here
 require 'rubygems'
+require 'rbconfig'
 require 'basic_app/app'
 
 # Master namespace
@@ -16,6 +17,12 @@ module BasicApp
       f.read.strip
     end
   end
- 
+
+  # Platform constants
+  unless defined?(BasicGem::WINDOWS)
+    WINDOWS = Config::CONFIG['host_os'] =~ /mswin|mingw/i
+    CYGWIN = Config::CONFIG['host_os'] =~ /cygwin/i
+  end
+
 end
 
