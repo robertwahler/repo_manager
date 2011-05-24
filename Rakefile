@@ -10,7 +10,7 @@ Bundler::GemHelper.install_tasks
 
 def gemspec
   @gemspec ||= begin
-    file = File.expand_path('../basic_app.gemspec', __FILE__)
+    file = File.expand_path('../repoman.gemspec', __FILE__)
     eval(File.read(file), binding, file)
   end
 end

@@ -20,20 +20,20 @@ Gem::Specification.new do |s|
       files = File.open(filename, "r") {|f| f.read}
     end
     raise "unable to process gemfiles" unless files
-    files.gsub(/\r\n/, "\n") 
+    files.gsub(/\r\n/, "\n")
   end
 
-  s.name        = "basic_app"
-  s.version     = File.open(File.join(File.dirname(__FILE__), 'VERSION'), "r") { |f| f.read } 
+  s.name        = "repoman"
+  s.version     = File.open(File.join(File.dirname(__FILE__), 'VERSION'), "r") { |f| f.read }
   s.platform    = Gem::Platform::RUBY
-  s.authors     = []
-  s.email       = []
-  s.homepage    = "http://rubygems.org/gems/basic_app"
-  s.summary     = "TODO: Write a gem summary"
-  s.description = "TODO: Write a gem description"
+  s.authors     = ["Robert Wahler"]
+  s.email       = ["robert@gearheadforhire.com"]
+  s.homepage    = "http://rubygems.org/gems/repoman"
+  s.summary     = "CLI for batch management of multiple Git repositories"
+  s.description = "CLI for batch management of multiple Git repositories.  Repositories don't need to be related."
 
   s.required_rubygems_version = ">= 1.3.6"
-  s.rubyforge_project         = "basic_app"
+  s.rubyforge_project         = "repoman"
 
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
   s.add_dependency 'configatron', '>= 2.5.1'
@@ -57,10 +57,10 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.has_rdoc = 'yard'
-  s.rdoc_options     = [ 
-                         '--title', 'BasicApp Documentation', 
-                         '--main', 'README.markdown', 
+  s.rdoc_options     = [
+                         '--title', 'Repoman Documentation',
+                         '--main', 'README.markdown',
                          '--line-numbers',
-                         '--inline-source' 
+                         '--inline-source'
                        ]
 end

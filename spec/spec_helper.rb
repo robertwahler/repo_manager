@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__) unless
   $LOAD_PATH.include? File.expand_path('../../lib', __FILE__)
 
 require 'rubygems'
-require 'basic_app'
+require 'repoman'
 require 'spec'
 require 'spec/autorun'
 require 'aruba/api'

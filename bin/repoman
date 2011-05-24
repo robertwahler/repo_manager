@@ -3,16 +3,16 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'rubygems'
-require 'basic_app'
+require 'repoman'
 require 'optparse'
 require 'term/ansicolor'
 
-available_actions = BasicApp::AVAILABLE_ACTIONS
+available_actions = Repoman::AVAILABLE_ACTIONS
 
 banner = <<BANNER
 TODO: application tag line
 
-  Usage: basic_app [options]
+  Usage: repoman [options]
 BANNER
 banner << "\nActions: #{available_actions.join(' ')}\n" unless available_actions.empty?
 
@@ -40,7 +40,7 @@ OptionParser.new do |opts|
   end
 
   opts.on("--version", "Display current version") do
-    puts "basic_app, version " + BasicApp.version
+    puts "repoman, version " + Repoman.version
     exit 0
   end
 
@@ -61,8 +61,8 @@ OptionParser.new do |opts|
   begin
     opts.parse!
   rescue OptionParser::InvalidOption => e
-    puts "basic_app #{e}"
-    puts "basic_app --help for more information"
+    puts "repoman #{e}"
+    puts "repoman --help for more information"
     exit 1
   end
 
@@ -71,7 +71,7 @@ end
 if STDOUT.isatty
   Term::ANSIColor::coloring = options[:coloring]
 
-  if options[:coloring] && BasicApp::WINDOWS
+  if options[:coloring] && Repoman::WINDOWS
     begin
       require 'Win32/Console/ANSI'
     rescue LoadError
@@ -84,5 +84,5 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = BasicApp::App.new(FileUtils.pwd, options)
+app = Repoman::App.new(FileUtils.pwd, options)
 app.run

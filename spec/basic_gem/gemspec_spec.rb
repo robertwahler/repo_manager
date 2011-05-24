@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe BasicApp do
+describe Repoman do
 
   def load_gemspec
-    filename = File.expand_path('../../../basic_app.gemspec', __FILE__)
+    filename = File.expand_path('../../../repoman.gemspec', __FILE__)
     eval(File.read(filename), nil, filename)
   end
   
@@ -11,8 +11,8 @@ describe BasicApp do
 
     it "should return the gem VERSION" do
       @gemspec = load_gemspec
-      BasicApp::version.should_not be_nil
-      @gemspec.version.to_s.should == BasicApp::version
+      Repoman::version.should_not be_nil
+      @gemspec.version.to_s.should == Repoman::version
     end
 
     describe 'files' do

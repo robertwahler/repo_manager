@@ -1,9 +1,9 @@
 # require all files here
 require 'rbconfig'
-require 'basic_app/app'
+require 'repoman/app'
 
 # Master namespace
-module BasicApp
+module Repoman
 
   # Contents of the VERSION file
   #

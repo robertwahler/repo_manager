@@ -5,7 +5,7 @@ class String
   include Term::ANSIColor
 end
 
-module BasicApp
+module Repoman
 
   AVAILABLE_ACTIONS = %w[]
 
@@ -28,14 +28,14 @@ module BasicApp
           action = ARGV.shift
           unless AVAILABLE_ACTIONS.include?(action)
             if action.nil?
-              puts "basic_app action required"
+              puts "repoman action required"
             else
-              puts "basic_app invalid action: #{action}"
+              puts "repoman invalid action: #{action}"
             end
-            puts "basic_app --help for more information"
+            puts "repoman --help for more information"
             exit 1
           end
-          puts "basic_app run action: #{action}".cyan if @options[:verbose]
+          puts "repoman run action: #{action}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
           result = send(action)
         else
@@ -50,10 +50,10 @@ module BasicApp
       rescue SystemExit => e
         # This is the normal exit point, exit code from the send result
         # or exit from another point in the system
-        puts "basic_app run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
+        puts "repoman run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
-        STDERR.puts("basic_app command failed, error(s) follow:")
+        STDERR.puts("repoman command failed, error(s) follow:")
         STDERR.puts("#{e.message}".red)
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
@@ -79,7 +79,7 @@ module BasicApp
     # read options for YAML config with ERB processing and initialize configatron
     def configure(options)
       config = @options[:config]
-      config = File.join(@base_dir, 'basic_app.conf') unless config
+      config = File.join(@base_dir, 'repoman.conf') unless config
       if File.exists?(config)
         # load configatron options from the config file
         puts "loading config file: #{config}".cyan if @options[:verbose]
