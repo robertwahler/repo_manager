@@ -10,7 +10,7 @@ README.markdown
 Rakefile
 TODO.markdown
 VERSION
-bin/repoman
+bin/repo
 config/cucumber.yml
 features/bin.feature
 features/step_definitions/.gitignore

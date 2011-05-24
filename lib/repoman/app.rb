@@ -28,14 +28,14 @@ module Repoman
           action = ARGV.shift
           unless AVAILABLE_ACTIONS.include?(action)
             if action.nil?
-              puts "repoman action required"
+              puts "repo action required"
             else
-              puts "repoman invalid action: #{action}"
+              puts "repo invalid action: #{action}"
             end
-            puts "repoman --help for more information"
+            puts "repo --help for more information"
             exit 1
           end
-          puts "repoman run action: #{action}".cyan if @options[:verbose]
+          puts "repo run action: #{action}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
           result = send(action)
         else
@@ -50,10 +50,10 @@ module Repoman
       rescue SystemExit => e
         # This is the normal exit point, exit code from the send result
         # or exit from another point in the system
-        puts "repoman run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
+        puts "repo run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
-        STDERR.puts("repoman command failed, error(s) follow:")
+        STDERR.puts("repo command failed, error(s) follow:")
         STDERR.puts("#{e.message}".red)
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
@@ -64,7 +64,7 @@ module Repoman
     # app commands start
     #
 
-    
+
     #
     # app commands end
     #
@@ -79,7 +79,8 @@ module Repoman
     # read options for YAML config with ERB processing and initialize configatron
     def configure(options)
       config = @options[:config]
-      config = File.join(@base_dir, 'repoman.conf') unless config
+      # TODO: ["repo.conf", "config/repo.conf", "~/.repo.conf"].detect
+      config = File.join(@base_dir, 'repo.conf') unless config
       if File.exists?(config)
         # load configatron options from the config file
         puts "loading config file: #{config}".cyan if @options[:verbose]
@@ -90,8 +91,8 @@ module Repoman
         # no error if user did not specify config file
         puts "#{config} not found".yellow if @options[:verbose]
       end
-      
-      # 
+
+      #
       # set defaults, these will NOT override setting read from YAML
       #
 

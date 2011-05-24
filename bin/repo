@@ -10,7 +10,7 @@ require 'term/ansicolor'
 available_actions = Repoman::AVAILABLE_ACTIONS
 
 banner = <<BANNER
-TODO: application tag line
+repo: CLI for batch management of multiple Git repositories
 
   Usage: repo [options]
 BANNER
