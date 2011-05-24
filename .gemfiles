@@ -1,7 +1,9 @@
+.gemfiles
 .gitattributes
 .gitignore
 .yardopts
 Gemfile
+Gemfile.lock
 HISTORY.markdown
 LICENSE
 README.markdown
