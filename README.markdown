@@ -12,6 +12,7 @@ The following gems are required
 
 * Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
 * Configatron for configuration support <http://github.com/markbates/configatron>
+* Grit for git repository support <http://github.com/mojombo/grit>
 
 
 Development dependencies
@@ -23,7 +24,6 @@ Development dependencies
 * Aruba for CLI testing <http://github.com/aslakhellesoy/aruba>
 * YARD for documentation generation <http://github.com/lsegal/yard>
 * Kramdown for documentation markup processing <https://github.com/gettalong/kramdown>
-
 
 
 Rake tasks

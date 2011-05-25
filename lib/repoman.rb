@@ -1,6 +1,7 @@
 # require all files here
 require 'rbconfig'
 require 'repoman/app'
+require 'repoman/repo'
 
 # Master namespace
 module Repoman

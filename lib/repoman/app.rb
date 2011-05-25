@@ -7,7 +7,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[]
+  AVAILABLE_ACTIONS = %w[cd list]
 
   class App
 
@@ -64,6 +64,18 @@ module Repoman
     # app commands start
     #
 
+    # change directory into the specified repo
+    def cd
+      # TODO
+    end
+
+    # list repo info
+    def list
+      repos.each do |repo|
+        puts "#{repo.name}: #{repo.path}"
+        puts repo.inspect @options[:verbose]
+      end
+    end
 
     #
     # app commands end
@@ -96,6 +108,15 @@ module Repoman
       # set defaults, these will NOT override setting read from YAML
       #
 
+    end
+
+    # @return [Array] of Repo
+    def repos
+      repo_config = configatron.repos.to_hash
+      configatron.repos.configatron_keys.sort.map do |name|
+        path = repo_config[name.to_sym][:path]
+        Repo.new(@base_dir, path, name, @options.dup)
+      end
     end
 
   end
