@@ -7,7 +7,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[list path]
+  AVAILABLE_ACTIONS = %w[list path status]
 
   class App
 
@@ -83,6 +83,19 @@ module Repoman
       repos(filters).each do |repo|
         puts "#{repo.name}: #{repo.path}"
         puts repo.inspect if @options[:verbose]
+      end
+    end
+
+    # Status
+    #
+    # @example: chdir to the path the repo named "my_repo_name"
+    #
+    #   cd $(repo path my_repo_name)
+    #
+    # @return [String] path to repo
+    def status(filters)
+      repos(filters).each do |repo|
+        print "."
       end
     end
 

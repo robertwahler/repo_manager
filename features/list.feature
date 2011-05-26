@@ -6,10 +6,7 @@ Feature: Listing repo information
   to stdout
 
 
-
   Scenario: Default action, no filter, valid config, valid repos
-#     Given I have a test repo named "test1"
-#     And I have a test repo named "test2"
     And a file named "repo.conf" with:
       """
       ---
