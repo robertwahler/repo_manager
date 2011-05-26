@@ -7,7 +7,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[cd list]
+  AVAILABLE_ACTIONS = %w[list path]
 
   class App
 
@@ -35,9 +35,10 @@ module Repoman
             puts "repo --help for more information"
             exit 1
           end
-          puts "repo run action: #{action}".cyan if @options[:verbose]
+          filters = ARGV
+          puts "repo run action: #{action} #{filters.join(' ')}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
-          result = send(action)
+          result = send(action, filters)
         else
           #
           # default action if action_argument_required? is false
@@ -64,16 +65,24 @@ module Repoman
     # app commands start
     #
 
-    # change directory into the specified repo
-    def cd
-      # TODO
+    # Path only
+    #
+    # @example: chdir to the path the repo named "my_repo_name"
+    #
+    #   cd $(repo path my_repo_name)
+    #
+    # @return [String] path to repo
+    def path(filters)
+      repos(filters).each do |repo|
+        puts repo.path
+      end
     end
 
     # list repo info
-    def list
-      repos.each do |repo|
+    def list(filters)
+      repos(filters).each do |repo|
         puts "#{repo.name}: #{repo.path}"
-        puts repo.inspect @options[:verbose]
+        puts repo.inspect if @options[:verbose]
       end
     end
 
@@ -111,13 +120,20 @@ module Repoman
     end
 
     # @return [Array] of Repo
-    def repos
+    def repos(filters=['.*'])
+      # TODO: raise ArgumentError unless filter.is_a(Array)
+      filters = ['.*'] if filters.empty?
       repo_config = configatron.repos.to_hash
-      configatron.repos.configatron_keys.sort.map do |name|
+      result = []
+      configatron.repos.configatron_keys.sort.each do |name|
         path = repo_config[name.to_sym][:path]
-        Repo.new(@base_dir, path, name, @options.dup)
+        if filters.find {|filter| name.match(/#{filter}/)}
+          result << Repo.new(@base_dir, path, name, @options.dup)
+        end
       end
+      result
     end
 
   end
+
 end
