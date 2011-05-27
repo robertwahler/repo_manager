@@ -15,9 +15,11 @@ config/cucumber.yml
 features/bin.feature
 features/list.feature
 features/path.feature
+features/status.feature
 features/step_definitions/.gitignore
 features/support/aruba.rb
 features/support/env.rb
+features/support/repo_steps.rb
 lib/repoman.rb
 lib/repoman/app.rb
 lib/repoman/repo.rb

@@ -1,9 +1,8 @@
 @announce
 Feature: Listing repo path information
 
-  As an interactive user or automated script
-  The application should show the repository path
-  to stdout so that it can be used for scripting
+  As an interactive user or automated script. The application should show the
+  repository status to stdout
 
   Background: A valid config file
     Given a repo named "test1"
