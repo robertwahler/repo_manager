@@ -17,6 +17,7 @@ features/list.feature
 features/path.feature
 features/status.feature
 features/step_definitions/.gitignore
+features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
 features/support/repo_steps.rb

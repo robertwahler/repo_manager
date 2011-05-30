@@ -39,7 +39,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aruba (>= 0.2.2)
+  aruba (= 0.2.2)
   bundler (>= 1.0.7)
   cucumber (>= 0.9.4)
   kramdown (>= 0.12.0)

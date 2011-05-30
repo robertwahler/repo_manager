@@ -11,12 +11,11 @@ Given /^a repo named "([^"]*)"$/ do |repo_name|
   # need some content
   create_file(File.join(repo_name, '.gitignore'), "")
 
-  # relative paths for adding files
+  # grit commands must be done in the repo working folder 
   in_path(repo_path) do
     repo.add '.gitignore'
+    # commit
+    repo.commit_all("initial commit").should be_true
   end
-
-  # commit
-  repo.commit_all("initial commit").should be_true
 
 end
