@@ -95,7 +95,9 @@ module Repoman
     # @return [String] path to repo
     def status(filters)
       repos(filters).each do |repo|
-        print "."
+        #print "."
+        #puts repo.status.inspect
+        repo.status
       end
     end
 

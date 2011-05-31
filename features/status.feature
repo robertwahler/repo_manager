@@ -5,8 +5,8 @@ Feature: Listing repo path information
   repository status to stdout
 
   Background: A valid config file
-    Given a repo named "test1"
-    Given a file named "repo.conf" with:
+    Given a repo named "test1" in folder "test_path_1"
+    And a file named "repo.conf" with:
       """
       ---
       repos:
@@ -17,7 +17,7 @@ Feature: Listing repo path information
       """
 
   Scenario: No uncommited changes, no filter, valid config, valid repos
-    When I run "repo status --no-verbose"
+    When I run "repo status"
     Then the exit status should be 0
     And the output should contain exactly:
       """

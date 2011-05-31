@@ -20,7 +20,6 @@ features/step_definitions/.gitignore
 features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
-features/support/repo_steps.rb
 lib/repoman.rb
 lib/repoman/app.rb
 lib/repoman/repo.rb
