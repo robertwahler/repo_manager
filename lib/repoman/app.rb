@@ -123,6 +123,9 @@ module Repoman
           end
 
           # added (green)
+          repo.added.sort.each do |k, f|
+            puts "  added: #{f.path}".green
+          end
 
           # deleted (yellow)
         end

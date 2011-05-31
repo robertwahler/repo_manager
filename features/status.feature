@@ -40,6 +40,21 @@ Feature: Listing repo path information
       .
       """
 
+  Scenario: One added file
+    Given I write to "test_path_1/new_file1.txt" with:
+      """
+      hello new file1
+      """
+    And I add all to repo in folder "test_path_1"
+    When I run "repo status"
+    Then the exit status should be 2
+    And the output should contain:
+      """
+      test1: test_path_1
+        added: new_file1.txt
+      .
+      """
+
   Scenario: Two untracked files
     Given I write to "test_path_1/new_file1.txt" with:
       """

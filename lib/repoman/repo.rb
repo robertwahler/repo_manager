@@ -38,12 +38,18 @@ module Repoman
 
     def status
       (changed? ? CHANGED : 0) |
-      (untracked? ? UNTRACKED : 0)
+      (untracked? ? UNTRACKED : 0) |
+      (added? ? ADDED : 0)
     end
 
     # @return [Boolean] false unless a file has been modified/changed
     def changed?
       !repo.status.changed.empty?
+    end
+
+    # @return [Boolean] false unless a file has added
+    def added?
+      !repo.status.added.empty?
     end
 
     # @return [Boolean] false unless there is a new/untracked file
@@ -54,6 +60,11 @@ module Repoman
     # @return [Array] of changed/modified files
     def changed
       repo.status.changed
+    end
+
+    # @return [Array] of added files
+    def added
+      repo.status.added
     end
 
     # @return [Array] of new/untracked files
