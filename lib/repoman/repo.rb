@@ -5,8 +5,10 @@ module Repoman
   # wrapper class for a source code repository
   class Repo
 
-    # bitfields for status
+    # repo status unchanged/clean
     CLEAN = 0
+
+    # bitfields for status
     CHANGED = 1
     ADDED =  2
     DELETED =  4
@@ -36,10 +38,12 @@ module Repoman
       "name: #{name}\npath #"
     end
 
+    # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED
     def status
       (changed? ? CHANGED : 0) |
       (untracked? ? UNTRACKED : 0) |
-      (added? ? ADDED : 0)
+      (added? ? ADDED : 0) |
+      (deleted? ? DELETED : 0)
     end
 
     # @return [Boolean] false unless a file has been modified/changed
@@ -50,6 +54,11 @@ module Repoman
     # @return [Boolean] false unless a file has added
     def added?
       !repo.status.added.empty?
+    end
+
+    # @return [Boolean] false unless a file has been deleted
+    def deleted?
+      !repo.status.deleted.empty?
     end
 
     # @return [Boolean] false unless there is a new/untracked file
@@ -65,6 +74,11 @@ module Repoman
     # @return [Array] of added files
     def added
       repo.status.added
+    end
+
+    # @return [Array] of deleted files
+    def deleted
+      repo.status.deleted
     end
 
     # @return [Array] of new/untracked files

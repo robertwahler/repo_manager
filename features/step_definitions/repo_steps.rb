@@ -1,4 +1,6 @@
 require 'grit'
+require 'fileutils'
+
 def in_path(path, &block)
   Dir.chdir(path, &block)
 end
@@ -41,3 +43,9 @@ Given /^I commit all to repo in folder "([^"]*)"$/ do |folder|
   end
 
 end
+
+Given /^I delete the file "([^"]*)" in folder "([^"]*)"$/ do |filename, folder|
+  path = File.join(current_dir, folder)
+  FileUtils.rm(File.join(path, filename))
+end
+

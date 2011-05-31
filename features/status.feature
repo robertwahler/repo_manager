@@ -55,6 +55,17 @@ Feature: Listing repo path information
       .
       """
 
+  Scenario: One deleted file
+    Given I delete the file ".gitignore" in folder "test_path_1"
+    When I run "repo status"
+    Then the exit status should be 4
+    And the output should contain:
+      """
+      test1: test_path_1
+        deleted: .gitignore
+      .
+      """
+
   Scenario: Two untracked files
     Given I write to "test_path_1/new_file1.txt" with:
       """

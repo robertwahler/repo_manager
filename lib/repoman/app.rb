@@ -111,6 +111,7 @@ module Repoman
         else
           result |= st
           puts "#{repo.name}: #{repo.path}"
+          need_lf = false
 
           # modified (red)
           repo.changed.sort.each do |k, f|
@@ -128,6 +129,9 @@ module Repoman
           end
 
           # deleted (yellow)
+          repo.deleted.sort.each do |k, f|
+            puts "  deleted: #{f.path}".yellow
+          end
         end
       end
 
