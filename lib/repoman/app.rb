@@ -46,7 +46,12 @@ module Repoman
           result = 0
         end
 
-        exit(result ? 0 : 1)
+        if result.is_a?(Numeric)
+          exit(result)
+        else
+          # handle all other return types
+          exit(result ? 0 : 1)
+        end
 
       rescue SystemExit => e
         # This is the normal exit point, exit code from the send result
