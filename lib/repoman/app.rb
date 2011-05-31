@@ -11,11 +11,11 @@ module Repoman
 
   class App
 
-    def initialize(base_dir, options={})
-      @base_dir = base_dir
+    def initialize(working_dir, options={})
+      @working_dir = working_dir
       @options = options
       if @options[:verbose]
-        puts "base_dir: #{@base_dir}".cyan
+        puts "work ing_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
       end
       configure(options)
@@ -116,8 +116,10 @@ module Repoman
     def configure(options)
       config = @options[:config]
       # TODO: ["repo.conf", "config/repo.conf", "~/.repo.conf"].detect
-      config = File.join(@base_dir, 'repo.conf') unless config
+      config = File.join(@working_dir, 'repo.conf') unless config
       if File.exists?(config)
+        @base_dir = File.dirname(config)
+        puts "setting base_dir: #{@base_dir}".cyan if @options[:verbose]
         # load configatron options from the config file
         puts "loading config file: #{config}".cyan if @options[:verbose]
         configatron.configure_from_yaml(config)
