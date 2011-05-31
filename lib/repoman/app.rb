@@ -91,19 +91,35 @@ module Repoman
       end
     end
 
-    # Status
+    # Output status of all repos to STDOUT
     #
-    # @example: chdir to the path the repo named "my_repo_name"
+    # @example:
     #
-    #   cd $(repo path my_repo_name)
+    #   repo status
     #
-    # @return [String] path to repo
+    # @return [Number] bitfield with combined repo status
     def status(filters)
+      st = 0
+      result = 0
+      need_lf = false
+
       repos(filters).each do |repo|
-        #print "."
-        #puts repo.status.inspect
-        repo.status
+        st = repo.status
+        if st == 0
+          print ".".green
+          need_lf = true
+        else
+          result |= st
+          puts "#{repo.name}: #{repo.path}"
+          repo.changed.sort.each do |k, f|
+            puts "  modified: #{f.path}".red
+          end
+        end
       end
+
+      puts "" if need_lf
+      puts "status returning result: #{result}".cyan if @options[:verbose]
+      result
     end
 
     #

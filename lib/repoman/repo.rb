@@ -5,6 +5,13 @@ module Repoman
   # wrapper class for a source code repository
   class Repo
 
+    # bitfields for status
+    CLEAN = 0
+    CHANGED = 1
+    ADDED =  2
+    DELETED =  4
+    UNTRACKED =  8
+
     attr_accessor :name
     attr_accessor :path
 
@@ -13,6 +20,13 @@ module Repoman
       @path = path
       @name = name
       @options = options
+      if @options[:verbose]
+        puts "Repo initialize".cyan
+        puts "@base_dir: #{@base_dir}".cyan
+        puts "@path: #{@path}".cyan
+        puts "@name: #{@name}".cyan
+        puts "@options: #{@options.inspect}".cyan
+      end
     end
 
     # Debugging information
@@ -23,19 +37,24 @@ module Repoman
     end
 
     def status
-      in_repo_dir do
-        puts repo.status
-      end
-      exit(0)
+      changed? ? CHANGED : 0
+    end
+
+    # @return [Boolean] false unless a file has been modified/changed
+    def changed?
+      !repo.status.changed.empty?
+    end
+
+    # @return [Array] of changed/modified files
+    def changed
+      repo.status.changed
     end
 
   private
 
     def repo
       return @repo if @repo
-      in_repo_dir do
-        @repo = Grit::Repo.new(fullpath)
-      end
+      @repo = Grit::Repo.new(fullpath)
     end
 
     def in_repo_dir(&block)
@@ -43,8 +62,37 @@ module Repoman
     end
 
     def fullpath
-      #TODO: check path, if absolute, don't join with base_dir
-      File.join(@base_dir, path)
+      if absolute_path?(path)
+        path
+      else
+        File.expand_path(path, @base_dir)
+      end
+    end
+
+    # Test if root dir (T/F)
+    #
+    # @param [String] dir directory to test
+    #
+    # @return [Boolean] true if dir is root directory
+    def root_dir?(dir)
+      if WINDOWS
+        dir == "/" || dir == "\\" || dir =~ %r{\A[a-zA-Z]+:(\\|/)\Z}
+      else
+        dir == "/"
+      end
+    end
+
+    # Test if absolute path (T/F)
+    #
+    # @param [String] dir path to test
+    #
+    # @return [Boolean] true if dir is an absolute path
+    def absolute_path?(dir)
+      if WINDOWS
+        dir =~ %r{\A([a-zA-Z]+:)?(/|\\)}
+      else
+        dir =~ %r{\A/}
+      end
     end
 
   end
