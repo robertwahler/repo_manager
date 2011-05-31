@@ -15,7 +15,7 @@ module Repoman
       @working_dir = working_dir
       @options = options
       if @options[:verbose]
-        puts "work ing_dir: #{@working_dir}".cyan
+        puts "working_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
       end
       configure(options)
