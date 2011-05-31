@@ -111,9 +111,20 @@ module Repoman
         else
           result |= st
           puts "#{repo.name}: #{repo.path}"
+
+          # modified (red)
           repo.changed.sort.each do |k, f|
             puts "  modified: #{f.path}".red
           end
+
+          # untracked (blue)
+          repo.untracked.sort.each do |k, f|
+            puts "  untracked: #{f.path}".blue
+          end
+
+          # added (green)
+
+          # deleted (yellow)
         end
       end
 

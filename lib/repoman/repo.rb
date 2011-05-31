@@ -37,7 +37,8 @@ module Repoman
     end
 
     def status
-      changed? ? CHANGED : 0
+      (changed? ? CHANGED : 0) |
+      (untracked? ? UNTRACKED : 0)
     end
 
     # @return [Boolean] false unless a file has been modified/changed
@@ -45,9 +46,19 @@ module Repoman
       !repo.status.changed.empty?
     end
 
+    # @return [Boolean] false unless there is a new/untracked file
+    def untracked?
+      !repo.status.untracked.empty?
+    end
+
     # @return [Array] of changed/modified files
     def changed
       repo.status.changed
+    end
+
+    # @return [Array] of new/untracked files
+    def untracked
+      repo.status.untracked
     end
 
   private

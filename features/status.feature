@@ -39,3 +39,42 @@ Feature: Listing repo path information
         modified: .gitignore
       .
       """
+
+  Scenario: Two untracked files
+    Given I write to "test_path_1/new_file1.txt" with:
+      """
+      hello new file1
+      """
+    And I write to "test_path_1/new_file2.txt" with:
+      """
+      hello new file2
+      """
+    When I run "repo status"
+    Then the exit status should be 8
+    And the output should contain:
+      """
+      test1: test_path_1
+        untracked: new_file1.txt
+        untracked: new_file2.txt
+      .
+      """
+
+  Scenario: One uncommited change and one untracked file
+    Given I append to "test_path_1/.gitignore" with:
+      """
+      tmp/*
+      log/
+      """
+    And I write to "test_path_1/new_file2.txt" with:
+      """
+      hello new file2
+      """
+    When I run "repo status"
+    Then the exit status should be 9
+    And the output should contain:
+      """
+      test1: test_path_1
+        modified: .gitignore
+        untracked: new_file2.txt
+      .
+      """
