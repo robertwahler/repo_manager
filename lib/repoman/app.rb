@@ -136,7 +136,6 @@ module Repoman
       end
 
       puts "" if need_lf
-      puts "status returning result: #{result}".cyan if @options[:verbose]
       result
     end
 

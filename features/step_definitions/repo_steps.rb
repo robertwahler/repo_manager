@@ -32,6 +32,16 @@ Given /^I add all to repo in folder "([^"]*)"$/ do |folder|
   end
 end
 
+Given /^I add the file "([^"]*)" to repo in folder "([^"]*)"$/ do |filename, folder|
+  repo_path = File.join(current_dir, folder)
+  repo = Grit::Repo.init(repo_path)
+
+  # grit commands must be done in the repo working folder
+  in_path(repo_path) do
+    repo.add(filename).should be_true
+  end
+end
+
 Given /^I commit all to repo in folder "([^"]*)"$/ do |folder|
   repo_path = File.join(current_dir, folder)
   repo = Grit::Repo.init(repo_path)

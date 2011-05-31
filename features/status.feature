@@ -85,22 +85,41 @@ Feature: Listing repo path information
       .
       """
 
-  Scenario: One uncommited change and one untracked file
-    Given I append to "test_path_1/.gitignore" with:
+  Scenario: One uncommited change, two untracked files, one added, and one deleted file
+    Given I write to "test_path_1/deleted_file.txt" with:
+      """
+      hello deleted file
+      """
+    And I add all to repo in folder "test_path_1"
+    And I commit all to repo in folder "test_path_1"
+    And I delete the file "deleted_file.txt" in folder "test_path_1"
+    And I write to "test_path_1/added_file.txt" with:
+      """
+      hello added file
+      """
+    And I add the file "added_file.txt" to repo in folder "test_path_1"
+    And I append to "test_path_1/.gitignore" with:
       """
       tmp/*
       log/
+      """
+    And I write to "test_path_1/new_file1.txt" with:
+      """
+      hello new file1
       """
     And I write to "test_path_1/new_file2.txt" with:
       """
       hello new file2
       """
     When I run "repo status"
-    Then the exit status should be 9
+    Then the exit status should be 15
     And the output should contain:
       """
       test1: test_path_1
         modified: .gitignore
+        untracked: new_file1.txt
         untracked: new_file2.txt
+        added: added_file.txt
+        deleted: deleted_file.txt
       .
       """
