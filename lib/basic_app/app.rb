@@ -81,6 +81,8 @@ module BasicApp
       config = @options[:config]
       config = File.join(@working_dir, 'basic_app.conf') unless config
       if File.exists?(config)
+        @base_dir = File.dirname(config)
+        puts "setting base_dir: #{@base_dir}".cyan if @options[:verbose]
         # load configatron options from the config file
         puts "loading config file: #{config}".cyan if @options[:verbose]
         configatron.configure_from_yaml(config)
