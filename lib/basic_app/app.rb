@@ -11,11 +11,11 @@ module BasicApp
 
   class App
 
-    def initialize(base_dir, options={})
-      @base_dir = base_dir
+    def initialize(working_dir, options={})
+      @working_dir = working_dir
       @options = options
       if @options[:verbose]
-        puts "base_dir: #{@base_dir}".cyan
+        puts "working_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
       end
       configure(options)
@@ -64,7 +64,7 @@ module BasicApp
     # app commands start
     #
 
-    
+
     #
     # app commands end
     #
@@ -79,7 +79,7 @@ module BasicApp
     # read options for YAML config with ERB processing and initialize configatron
     def configure(options)
       config = @options[:config]
-      config = File.join(@base_dir, 'basic_app.conf') unless config
+      config = File.join(@working_dir, 'basic_app.conf') unless config
       if File.exists?(config)
         # load configatron options from the config file
         puts "loading config file: #{config}".cyan if @options[:verbose]
@@ -90,8 +90,8 @@ module BasicApp
         # no error if user did not specify config file
         puts "#{config} not found".yellow if @options[:verbose]
       end
-      
-      # 
+
+      #
       # set defaults, these will NOT override setting read from YAML
       #
 
