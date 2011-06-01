@@ -59,3 +59,7 @@ Given /^I delete the file "([^"]*)" in folder "([^"]*)"$/ do |filename, folder|
   FileUtils.rm(File.join(path, filename))
 end
 
+Given /^I delete the file "([^"]*)"$/ do |filename|
+  FileUtils.rm(File.join(current_dir, filename))
+end
+

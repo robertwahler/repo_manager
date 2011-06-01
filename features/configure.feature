@@ -35,7 +35,13 @@ Feature: Configuration via yaml file
       """
 
   Scenario: Reading options from config file with overrides on command line
-    Given a file named "repo_no_coloring.conf" with:
+    Given a file named "repo.conf" with:
+      """
+      ---
+      options:
+        coloring: true
+      """
+    And a file named "repo_no_coloring.conf" with:
       """
       ---
       options:
@@ -68,6 +74,42 @@ Feature: Configuration via yaml file
       :coloring=>false
       """
 
-
-  Scenario: Reading default valid config files ordered by priority
-
+  Scenario: Reading default valid config files ordered by priority.
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        repo1:
+          path: repo1
+      """
+    And a file named ".repo.conf" with:
+      """
+      ---
+      repos:
+        repo2:
+          path: repo2
+      """
+    And a file named "config/repo.conf" with:
+      """
+      ---
+      repos:
+        repo3:
+          path: repo3
+      """
+    When I run "repo list"
+    Then the output should contain:
+      """
+      repo1: repo1
+      """
+    When I delete the file "repo.conf"
+    And I run "repo list"
+    Then the output should contain:
+      """
+      repo2: repo2
+      """
+    When I delete the file ".repo.conf"
+    And I run "repo list"
+    Then the output should contain:
+      """
+      repo3: repo3
+      """

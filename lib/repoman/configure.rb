@@ -22,12 +22,19 @@ module Repoman
       configatron.options.set_default(:verbose, false)
       configatron.options.set_default(:coloring, true)
 
-      config = @options[:config]
 
       # set default config if not given on command line
-      # TODO: more default options, ["repo.conf", "config/repo.conf", "~/.repo.conf"].detect
-      config = File.join(@working_dir, 'repo.conf') unless config
-      if File.exists?(config)
+      config = @options[:config]
+      unless config
+        config = [
+                   File.join(@working_dir, "repo.conf"),
+                   File.join(@working_dir, ".repo.conf"),
+                   File.join(@working_dir, "config", "repo.conf"),
+                   File.expand_path(File.join("~", ".repo.conf"))
+                 ].detect { |filename| File.exists?(filename) }
+      end
+
+      if config && File.exists?(config)
         # rewrite options full path for config for later use
         @options[:config] = config
         # load configatron options from the config file
@@ -38,7 +45,7 @@ module Repoman
       end
 
       # set options from config file unless already set via command line
-      @options[:verbose] ||= configatron.options.verbose
+      @options[:verbose] = configatron.options.verbose unless @options.include?(:verbose)
       @options[:coloring] = configatron.options.coloring unless @options.include?(:coloring)
 
     end
