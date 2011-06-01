@@ -17,8 +17,9 @@ module Repoman
       if @options[:verbose]
         puts "working_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
+        puts "base_dir: #{@options[:base_dir]}".cyan if @options[:base_dir]
+        puts "config file: #{@options[:config]}".cyan if @options[:config]
       end
-      configure(options)
     end
 
     def run
@@ -150,30 +151,6 @@ module Repoman
       !AVAILABLE_ACTIONS.empty?
     end
 
-    # read options for YAML config with ERB processing and initialize configatron
-    def configure(options)
-      config = @options[:config]
-      # TODO: ["repo.conf", "config/repo.conf", "~/.repo.conf"].detect
-      config = File.join(@working_dir, 'repo.conf') unless config
-      if File.exists?(config)
-        @base_dir = File.dirname(config)
-        puts "setting base_dir: #{@base_dir}".cyan if @options[:verbose]
-        # load configatron options from the config file
-        puts "loading config file: #{config}".cyan if @options[:verbose]
-        configatron.configure_from_yaml(config)
-      else
-        # user specified a config file?
-        raise "config file not found" if @options[:config]
-        # no error if user did not specify config file
-        puts "#{config} not found".yellow if @options[:verbose]
-      end
-
-      #
-      # set defaults, these will NOT override setting read from YAML
-      #
-
-    end
-
     # @return [Array] of Repo
     def repos(filters=['.*'])
       # TODO: raise ArgumentError unless filter.is_a(Array)
@@ -183,7 +160,7 @@ module Repoman
       configatron.repos.configatron_keys.sort.each do |name|
         path = repo_config[name.to_sym][:path]
         if filters.find {|filter| name.match(/#{filter}/)}
-          result << Repo.new(@base_dir, path, name, @options.dup)
+          result << Repo.new(name, path, @options.dup)
         end
       end
       result

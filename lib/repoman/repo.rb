@@ -17,11 +17,11 @@ module Repoman
     attr_accessor :name
     attr_accessor :path
 
-    def initialize(base_dir, path, name, options={})
-      @base_dir = base_dir
+    def initialize(name, path, options={})
       @path = path
       @name = name
       @options = options
+      @base_dir = File.dirname(options[:config]) if @options[:config]
       if @options[:verbose]
         puts "Repo initialize".cyan
         puts "@base_dir: #{@base_dir}".cyan

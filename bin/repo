@@ -23,13 +23,16 @@ Options:
 
 HELP
 
+# get options from the command line, these options override both config files
+# and defaults
 options = {}
 OptionParser.new do |opts|
   opts.banner = help
 
-  # set defaults
-  options[:verbose] = false
-  options[:coloring] = true
+  # get override config file
+  opts.on("--config FILE", "Load configuration options from FILE") do |file|
+    options[:config] = file
+  end
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
@@ -44,13 +47,9 @@ OptionParser.new do |opts|
     exit 0
   end
 
-  opts.on("-d", "--dry-run", "Run action but omit the final execute step.  Useful combined with --verbose") do |d|
-    options[:dry_run] = d
-  end
-
-  opts.on("--config FILE", "Load configuration options from FILE") do |file|
-    options[:config] = file
-  end
+#   opts.on("-d", "--dry-run", "Run action but omit the final execute step.  Useful combined with --verbose") do |d|
+#     options[:dry_run] = d
+#   end
 
   # no argument, shows at tail.  This will print an options summary.
   opts.on_tail("-h", "--help", "Show this message") do
@@ -67,6 +66,9 @@ OptionParser.new do |opts|
   end
 
 end
+
+# options from config file, if it exists, will not overwrite command line
+options = Repoman::Configure.new(FileUtils.pwd, options).options
 
 if STDOUT.isatty
   Term::ANSIColor::coloring = options[:coloring]

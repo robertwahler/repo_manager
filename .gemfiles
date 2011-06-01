@@ -13,6 +13,7 @@ VERSION
 bin/repo
 config/cucumber.yml
 features/bin.feature
+features/config.feature
 features/list.feature
 features/path.feature
 features/status.feature
