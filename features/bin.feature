@@ -33,3 +33,13 @@ Feature: Options via a command line interface (CLI)
       ^.* --help for more information
 
       """
+
+  Scenario: Invalid action
+    When I run "repo non-existing-action"
+    Then the exit status should be 1
+    And the output should match:
+      """
+      ^.* invalid action: non-existing-action
+      ^.* --help for more information
+
+      """

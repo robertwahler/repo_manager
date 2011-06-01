@@ -25,7 +25,7 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario:Single Filter
+  Scenario:Single Filter, allows for regex
     When I run "repo path test"
     Then the exit status should be 0
     And the output should contain:
@@ -50,8 +50,9 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario:Multiple filters
-    When I run "repo path test1 test2 test3"
+  Scenario:Multiple filters, each filter specified after command, space
+    delimited. Regex allowed on each filter separately
+    When I run "repo path test1 t...2 t...3"
     Then the exit status should be 0
     And the output should contain:
       """
