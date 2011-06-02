@@ -60,7 +60,7 @@ module Repoman
         puts "repo run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
-        STDERR.puts("repo command failed, error(s) follow:")
+        STDERR.puts("repo command failed, error(s) follow. Use '--verbose' for backtrace.")
         STDERR.puts("#{e.message}".red)
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
@@ -166,9 +166,10 @@ module Repoman
 
     # @return [Array] of Repo
     def repos(filters=['.*'])
+      raise "config file not found" unless @options[:config]
       filters = ['.*'] if filters.empty?
       repo_config = configatron.repos.to_hash
-      base_dir = File.dirname(@options[:config]) if @options[:config]
+      base_dir = File.dirname(@options[:config])
       result = []
       configatron.repos.configatron_keys.sort.each do |name|
         attributes = {:name => name, :base_dir => base_dir}

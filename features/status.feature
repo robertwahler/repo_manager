@@ -47,7 +47,6 @@ Feature: Listing repo path information
       no such folder
       """
 
-
   Scenario: One uncommited change
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
