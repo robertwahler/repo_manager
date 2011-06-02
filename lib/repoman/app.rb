@@ -166,16 +166,16 @@ module Repoman
 
     # @return [Array] of Repo
     def repos(filters=['.*'])
-      # TODO: raise ArgumentError unless filter.is_a(Array)
       filters = ['.*'] if filters.empty?
       repo_config = configatron.repos.to_hash
       base_dir = File.dirname(@options[:config]) if @options[:config]
       result = []
       configatron.repos.configatron_keys.sort.each do |name|
-        attributes = {:base_dir => base_dir}
+        attributes = {:name => name, :base_dir => base_dir}
         attributes = attributes.merge(repo_config[name.to_sym]) if repo_config[name.to_sym]
+        path = attributes[:path]
         if filters.find {|filter| name.match(/#{filter}/)}
-          result << Repo.new(name, attributes.dup)
+          result << Repo.new(path, attributes.dup)
         end
       end
       result

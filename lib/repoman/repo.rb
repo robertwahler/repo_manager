@@ -1,4 +1,5 @@
 require 'grit'
+require 'pathname'
 
 module Repoman
 
@@ -7,22 +8,23 @@ module Repoman
 
     # repo status unchanged/clean
     CLEAN = 0
-    NOPATH = 1
-    INVALID = 2
 
     # bitfields for status
-    CHANGED = 4 #1
-    ADDED =  8 #2
-    DELETED =  16 #4
-    UNTRACKED =  32 #8
+    NOPATH = 1
+    INVALID = 2
+    CHANGED = 4
+    ADDED =  8
+    DELETED =  16
+    UNTRACKED =  32
 
     attr_accessor :name
     attr_accessor :path
     attr_reader :base_dir
 
-    def initialize(name, attributes={})
-      @name = name
-      @path = attributes[:path] || name
+    def initialize(path, attributes={})
+      @path = path || attributes[:path] || attributes[:name]
+      raise ArgumentError("path must be specified or included in attributes hash") unless @path
+      @name = attributes[:name] || Pathname.new(@path).basename
       @base_dir = attributes[:base_dir]
     end
 
