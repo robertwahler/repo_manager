@@ -5,8 +5,8 @@ Feature: Listing repo path information
   repository status to stdout
 
   Background: A valid config file
-    Given a repo named "test1" in folder "test_path_1"
-    And a repo named "test2" in folder "test_path_2"
+    Given a repo in folder "test_path_1"
+    And a repo in folder "test_path_2"
     And a file named "repo.conf" with:
       """
       ---
@@ -67,14 +67,10 @@ Feature: Listing repo path information
       """
 
   Scenario: Two untracked files
-    Given I write to "test_path_1/new_file1.txt" with:
-      """
-      hello new file1
-      """
-    And I write to "test_path_1/new_file2.txt" with:
-      """
-      hello new file2
-      """
+    Given a repo in folder "test_path_1" with the following:
+      | filename      | status | content          |
+      | new_file1.txt | U      | hello new file1  |
+      | new_file2.txt | U      | hello new file2  |
     When I run "repo status"
     Then the exit status should be 8
     And the output should contain:

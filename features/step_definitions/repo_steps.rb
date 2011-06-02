@@ -5,7 +5,11 @@ def in_path(path, &block)
   Dir.chdir(path, &block)
 end
 
-Given /^a repo named "([^"]*)" in folder "([^"]*)"$/ do |repo_name, folder|
+def repo_exists?(folder)
+  File.exists?(File.join(current_dir, folder, '.git'))
+end
+
+def repo_init(folder)
   create_dir(folder)
   repo_path = File.join(current_dir, folder)
   repo = Grit::Repo.init(repo_path)
@@ -19,7 +23,28 @@ Given /^a repo named "([^"]*)" in folder "([^"]*)"$/ do |repo_name, folder|
     # commit
     repo.commit_all("initial commit").should be_true
   end
+end
 
+Given /^a repo in folder "([^"]*)"$/ do |folder|
+  repo_init(folder)
+end
+
+Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|
+  repo_init(folder) unless repo_exists?(folder)
+
+  table.hashes.each do |hash|
+    filename = hash[:filename]
+    status = hash[:status]
+    content = hash[:content]
+
+    status.split("").each do |st|
+      case st
+        when "U"
+          create_file(File.join(folder, filename), content)
+      end
+    end
+
+  end
 end
 
 Given /^I add all to repo in folder "([^"]*)"$/ do |folder|
