@@ -5,8 +5,12 @@ Feature: Listing repo path information
   repository status to stdout
 
   Background: A valid config file
-    Given a repo in folder "test_path_1"
-    And a repo in folder "test_path_2"
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | .gitignore       | C      |          |
+    And a repo in folder "test_path_2" with the following:
+      | filename         | status | content  |
+      | .gitignore       | C      |          |
     And a file named "repo.conf" with:
       """
       ---

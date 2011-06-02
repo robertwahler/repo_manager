@@ -13,16 +13,6 @@ def repo_init(folder)
   create_dir(folder)
   repo_path = File.join(current_dir, folder)
   repo = Grit::Repo.init(repo_path)
-
-  # need some content
-  create_file(File.join(folder, '.gitignore'), "")
-
-  # grit commands must be done in the repo working folder
-  in_path(repo_path) do
-    repo.add '.gitignore'
-    # commit
-    repo.commit_all("initial commit").should be_true
-  end
 end
 
 def repo_add_all(folder)
@@ -82,6 +72,12 @@ Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|
         when "M"
           raise "create file '#{filename}' before modifying it" unless repo_file_exists?(folder, filename)
           append_to_file(File.join(folder, filename), content)
+        when "C"
+          unless repo_file_exists?(folder, filename)
+            create_file(File.join(folder, filename), content)
+          end
+          repo_add_file(filename, folder)
+          repo_commit_all(folder)
         when "D"
           unless repo_file_exists?(folder, filename)
             create_file(File.join(folder, filename), content)
