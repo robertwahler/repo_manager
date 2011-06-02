@@ -16,19 +16,12 @@ module Repoman
 
     attr_accessor :name
     attr_accessor :path
+    attr_reader :base_dir
 
-    def initialize(name, path, options={})
-      @path = path
+    def initialize(name, attributes={})
       @name = name
-      @options = options
-      @base_dir = File.dirname(options[:config]) if @options[:config]
-      if @options[:verbose]
-        puts "Repo initialize".cyan
-        puts "@base_dir: #{@base_dir}".cyan
-        puts "@path: #{@path}".cyan
-        puts "@name: #{@name}".cyan
-        puts "@options: #{@options.inspect}".cyan
-      end
+      @path = attributes[:path] || name
+      @base_dir = attributes[:base_dir]
     end
 
     # Debugging information

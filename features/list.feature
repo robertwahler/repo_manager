@@ -1,9 +1,13 @@
 @announce
-Feature: Listing repo information
+Feature: Listing repo information contained in the configuration file
 
-  As an interactive user or automated script
-  The application should list repository information
-  to stdout
+  The application should list repository information contained in the
+  configuration file to stdout.  The actual repositories are not validated.
+  The list command operates only on the config file.
+
+  Example:
+
+    repo list
 
 
   Scenario: Default action, no filter, valid config, valid repos
@@ -16,7 +20,7 @@ Feature: Listing repo information
         test2:
           path: test2
       """
-    When I run "repo list --no-verbose"
+    When I run "repo list"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -24,4 +28,28 @@ Feature: Listing repo information
       test2: test2
       """
 
+  Scenario: Missing path defaults to repo name
+    And a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+        test2:
+          path: test2
+      """
+    When I run "repo list"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test1: test1
+      test2: test2
+      """
 
+  Scenario: Missing repos is still valid
+    And a file named "repo.conf" with:
+      """
+      ---
+      repos:
+      """
+    When I run "repo list"
+    Then the exit status should be 0

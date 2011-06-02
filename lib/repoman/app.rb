@@ -88,7 +88,6 @@ module Repoman
     def list(filters)
       repos(filters).each do |repo|
         puts "#{repo.name}: #{repo.path}"
-        puts repo.inspect if @options[:verbose]
       end
     end
 
@@ -156,11 +155,13 @@ module Repoman
       # TODO: raise ArgumentError unless filter.is_a(Array)
       filters = ['.*'] if filters.empty?
       repo_config = configatron.repos.to_hash
+      base_dir = File.dirname(@options[:config]) if @options[:config]
       result = []
       configatron.repos.configatron_keys.sort.each do |name|
-        path = repo_config[name.to_sym][:path]
+        attributes = {:base_dir => base_dir}
+        attributes = attributes.merge(repo_config[name.to_sym]) if repo_config[name.to_sym]
         if filters.find {|filter| name.match(/#{filter}/)}
-          result << Repo.new(name, path, @options.dup)
+          result << Repo.new(name, attributes.dup)
         end
       end
       result
