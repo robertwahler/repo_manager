@@ -25,6 +25,41 @@ def repo_init(folder)
   end
 end
 
+def repo_add_all(folder)
+  repo_path = File.join(current_dir, folder)
+  repo = Grit::Repo.init(repo_path)
+
+  # grit commands must be done in the repo working folder
+  in_path(repo_path) do
+    repo.add('.').should be_true
+  end
+end
+
+def repo_add_file(filename, folder)
+  repo_path = File.join(current_dir, folder)
+  repo = Grit::Repo.init(repo_path)
+
+  # grit commands must be done in the repo working folder
+  in_path(repo_path) do
+    repo.add(filename).should be_true
+  end
+end
+
+def repo_commit_all(folder)
+  repo_path = File.join(current_dir, folder)
+  repo = Grit::Repo.init(repo_path)
+
+  # grit commands must be done in the repo working folder
+  in_path(repo_path) do
+    # commit
+    repo.commit_all("cucumber commit").should be_true
+  end
+end
+
+def repo_file_exists?(folder, filename)
+  File.exists?(File.join(current_dir, folder, filename))
+end
+
 Given /^a repo in folder "([^"]*)"$/ do |folder|
   repo_init(folder)
 end
@@ -41,47 +76,40 @@ Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|
       case st
         when "U"
           create_file(File.join(folder, filename), content)
+        when "A"
+          create_file(File.join(folder, filename), content)
+          repo_add_file(filename, folder)
+        when "M"
+          raise "create file '#{filename}' before modifying it" unless repo_file_exists?(folder, filename)
+          append_to_file(File.join(folder, filename), content)
+        when "D"
+          unless repo_file_exists?(folder, filename)
+            create_file(File.join(folder, filename), content)
+            repo_add_file(filename, folder)
+            repo_commit_all(folder)
+          end
+          FileUtils.rm(File.join(File.join(current_dir, folder), filename))
       end
     end
 
   end
 end
 
-Given /^I add all to repo in folder "([^"]*)"$/ do |folder|
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
 
-  # grit commands must be done in the repo working folder
-  in_path(repo_path) do
-    repo.add('.').should be_true
-  end
+Given /^I add all to repo in folder "([^"]*)"$/ do |folder|
+  repo_add_all(folder)
 end
 
 Given /^I add the file "([^"]*)" to repo in folder "([^"]*)"$/ do |filename, folder|
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
-
-  # grit commands must be done in the repo working folder
-  in_path(repo_path) do
-    repo.add(filename).should be_true
-  end
+  repo_add_file(filename, folder)
 end
 
 Given /^I commit all to repo in folder "([^"]*)"$/ do |folder|
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
-
-  # grit commands must be done in the repo working folder
-  in_path(repo_path) do
-    # commit
-    repo.commit_all("cucumber commit").should be_true
-  end
-
+  repo_commit_all(folder)
 end
 
 Given /^I delete the file "([^"]*)" in folder "([^"]*)"$/ do |filename, folder|
-  path = File.join(current_dir, folder)
-  FileUtils.rm(File.join(path, filename))
+  FileUtils.rm(File.join(File.join(current_dir, folder), filename))
 end
 
 Given /^I delete the file "([^"]*)"$/ do |filename|

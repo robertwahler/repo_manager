@@ -26,11 +26,9 @@ Feature: Listing repo path information
       """
 
   Scenario: One uncommited change
-    Given I append to "test_path_1/.gitignore" with:
-      """
-      tmp/*
-      log/
-      """
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | .gitignore       | M      | tmp/*    |
     When I run "repo status"
     Then the exit status should be 1
     And the output should contain:
@@ -41,11 +39,9 @@ Feature: Listing repo path information
       """
 
   Scenario: One added file
-    Given I write to "test_path_2/new_file2.txt" with:
-      """
-      hello new file1
-      """
-    And I add all to repo in folder "test_path_2"
+    Given a repo in folder "test_path_2" with the following:
+      | filename      | status | content          |
+      | new_file2.txt | A      | hello new file2  |
     When I run "repo status"
     Then the exit status should be 2
     And the output should contain:
@@ -56,7 +52,9 @@ Feature: Listing repo path information
       """
 
   Scenario: One deleted file
-    Given I delete the file ".gitignore" in folder "test_path_1"
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status |
+      | .gitignore       | D      |
     When I run "repo status"
     Then the exit status should be 4
     And the output should contain:
@@ -82,31 +80,15 @@ Feature: Listing repo path information
       """
 
   Scenario: One uncommited change, two untracked files, one added, and one deleted file
-    Given I write to "test_path_1/deleted_file.txt" with:
-      """
-      hello deleted file
-      """
-    And I add all to repo in folder "test_path_1"
-    And I commit all to repo in folder "test_path_1"
-    And I delete the file "deleted_file.txt" in folder "test_path_1"
-    And I write to "test_path_1/added_file.txt" with:
-      """
-      hello added file
-      """
-    And I add the file "added_file.txt" to repo in folder "test_path_1"
-    And I append to "test_path_1/.gitignore" with:
-      """
-      tmp/*
-      log/
-      """
-    And I write to "test_path_1/new_file1.txt" with:
-      """
-      hello new file1
-      """
-    And I write to "test_path_1/new_file2.txt" with:
-      """
-      hello new file2
-      """
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content            |
+      | deleted_file.txt | D      | hello deleted file |
+    And a repo in folder "test_path_1" with the following:
+      | filename         | status | content            |
+      | added_file.txt   | A      | hello added file   |
+      | .gitignore       | M      | tmp/*              |
+      | new_file1.txt    | U      | hello new file1    |
+      | new_file2.txt    | U      | hello new file2    |
     When I run "repo status"
     Then the exit status should be 15
     And the output should contain:
