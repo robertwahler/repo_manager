@@ -104,36 +104,48 @@ module Repoman
       need_lf = false
 
       repos(filters).each do |repo|
+
+        # M U A D I X
         st = repo.status
-        if st == 0
-          print ".".green
-          need_lf = true
-        else
-          result |= st
+        result |= st unless (st == 0)
 
-          puts "" if need_lf
-          puts "#{repo.name}: #{repo.path}"
-          need_lf = false
+        case st
 
-          # modified (red)
-          repo.changed.sort.each do |k, f|
-            puts "  modified: #{f.path}".red
-          end
+          when Repo::CLEAN
+            print ".".green
+            need_lf = true
+          when Repo::NOPATH
+            STDERR.print "#{repo.name}: #{repo.path}"
+            STDERR.puts " [no such folder]".red
+            need_lf = false
+          when Repo::INVALID
+            STDERR.print "#{repo.name}: #{repo.path}"
+            STDERR.puts " [not a valid repo]".red
+            need_lf = false
+          else
+            puts "" if need_lf
+            puts "#{repo.name}: #{repo.path}"
+            need_lf = false
 
-          # untracked (blue)
-          repo.untracked.sort.each do |k, f|
-            puts "  untracked: #{f.path}".blue
-          end
+            # modified (M.red)
+            repo.changed.sort.each do |k, f|
+              puts "  modified: #{f.path}".red
+            end
 
-          # added (green)
-          repo.added.sort.each do |k, f|
-            puts "  added: #{f.path}".green
-          end
+            # untracked (U.blue)
+            repo.untracked.sort.each do |k, f|
+              puts "  untracked: #{f.path}".blue
+            end
 
-          # deleted (yellow)
-          repo.deleted.sort.each do |k, f|
-            puts "  deleted: #{f.path}".yellow
-          end
+            # added (A.green)
+            repo.added.sort.each do |k, f|
+              puts "  added: #{f.path}".green
+            end
+
+            # deleted (D.yellow)
+            repo.deleted.sort.each do |k, f|
+              puts "  deleted: #{f.path}".yellow
+            end
         end
       end
 

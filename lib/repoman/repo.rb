@@ -7,12 +7,14 @@ module Repoman
 
     # repo status unchanged/clean
     CLEAN = 0
+    NOPATH = 1
+    INVALID = 2
 
     # bitfields for status
-    CHANGED = 1
-    ADDED =  2
-    DELETED =  4
-    UNTRACKED =  8
+    CHANGED = 4 #1
+    ADDED =  8 #2
+    DELETED =  16 #4
+    UNTRACKED =  32 #8
 
     attr_accessor :name
     attr_accessor :path
@@ -24,19 +26,21 @@ module Repoman
       @base_dir = attributes[:base_dir]
     end
 
-    # Debugging information
-    #
-    # @return [String]
-    def inspect
-      "name: #{name}\npath #"
-    end
-
     # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED
     def status
-      (changed? ? CHANGED : 0) |
-      (untracked? ? UNTRACKED : 0) |
-      (added? ? ADDED : 0) |
-      (deleted? ? DELETED : 0)
+      begin
+        # M U A D I X
+        (changed? ? CHANGED : 0) |
+        (untracked? ? UNTRACKED : 0) |
+        (added? ? ADDED : 0) |
+        (deleted? ? DELETED : 0)
+      rescue Grit::InvalidGitRepositoryError => e
+        # I
+        INVALID
+      rescue Grit::NoSuchPathError => e
+        # X
+        NOPATH
+      end
     end
 
     # @return [Boolean] false unless a file has been modified/changed
