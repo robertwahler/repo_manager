@@ -110,6 +110,8 @@ module Repoman
           need_lf = true
         else
           result |= st
+
+          puts "" if need_lf
           puts "#{repo.name}: #{repo.path}"
           need_lf = false
 
