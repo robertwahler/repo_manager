@@ -101,6 +101,7 @@ module Repoman
     def status(filters)
       st = 0
       result = 0
+      count_unmodified = 0
       need_lf = false
 
       repos(filters).each do |repo|
@@ -112,16 +113,29 @@ module Repoman
         case st
 
           when Repo::CLEAN
-            print ".".green
-            need_lf = true
+            count_unmodified += 1
+            case @options[:unmodified]
+              when "HIDE"
+                # do nothing
+              when "SHOW"
+                puts "     #{repo.name}: #{repo.path}"
+              when "DOTS"
+                print ".".green
+                need_lf = true
+              else
+                raise "invalid mode '#{@options[:unmodified]}' for '--unmodified' option"
+            end
+
           when Repo::NOPATH
             STDERR.print "     #{repo.name}: #{repo.path}"
             STDERR.puts " [no such folder]".red
             need_lf = false
+
           when Repo::INVALID
             STDERR.print "     #{repo.name}: #{repo.path}"
             STDERR.puts " [not a valid repo]".red
             need_lf = false
+
           else
             puts "" if need_lf
 
@@ -159,6 +173,11 @@ module Repoman
       end
 
       puts "" if need_lf
+
+      # summary
+      puts "no modified repositories, all working folders are clean" if (count_unmodified == repos.size)
+
+      # numeric return
       result
     end
 

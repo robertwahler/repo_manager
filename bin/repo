@@ -38,8 +38,13 @@ OptionParser.new do |opts|
     options[:verbose] = v
   end
 
-  opts.on("--short", "Run listing commands in brief mode") do |v|
-    options[:short] = v
+  opts.on("--short", "Run listing commands in brief mode") do |s|
+    options[:short] = s
+  end
+
+  opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
+    options[:unmodified] = u || "SHOW"
+    options[:unmodified].upcase!
   end
 
   opts.on("-c", "--[no-]coloring", "Ansi color in output") do |c|
