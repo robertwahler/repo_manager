@@ -39,6 +39,23 @@ Feature: Listing repo path information
       no modified repositories, all working folders are clean
       """
 
+  Scenario: Uncommitable changes don't show
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | test_file3.txt   | C      | hi file3 |
+    When I run "repo status"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      no modified repositories, all working folders are clean
+      """
+    When I run "touch test_path_1/test_file3.txt"
+    And I run "repo status"
+    Then the output should contain:
+      """
+      no modified repositories, all working folders are clean
+      """
+
   Scenario: Invalid repo
     Given I delete the folder "test_path_1/.git"
     When I run "repo status test1"
