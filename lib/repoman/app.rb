@@ -115,36 +115,45 @@ module Repoman
             print ".".green
             need_lf = true
           when Repo::NOPATH
-            STDERR.print "#{repo.name}: #{repo.path}"
+            STDERR.print "     #{repo.name}: #{repo.path}"
             STDERR.puts " [no such folder]".red
             need_lf = false
           when Repo::INVALID
-            STDERR.print "#{repo.name}: #{repo.path}"
+            STDERR.print "     #{repo.name}: #{repo.path}"
             STDERR.puts " [not a valid repo]".red
             need_lf = false
           else
             puts "" if need_lf
-            puts "#{repo.name}: #{repo.path}"
+
+            # print MUAD status letters
+            print (st & Repo::CHANGED == Repo::CHANGED) ? "M".red : " "
+            print (st & Repo::UNTRACKED == Repo::UNTRACKED) ? "U".blue : " "
+            print (st & Repo::ADDED == Repo::ADDED) ? "A".green : " "
+            print (st & Repo::DELETED == Repo::DELETED) ? "D".yellow : " "
+
+            puts " #{repo.name}: #{repo.path}"
             need_lf = false
 
-            # modified (M.red)
-            repo.changed.sort.each do |k, f|
-              puts "  modified: #{f.path}".red
-            end
+            unless @options[:short]
+              # modified (M.red)
+              repo.changed.sort.each do |k, f|
+                puts "       modified: #{f.path}".red
+              end
 
-            # untracked (U.blue)
-            repo.untracked.sort.each do |k, f|
-              puts "  untracked: #{f.path}".blue
-            end
+              # untracked (U.blue)
+              repo.untracked.sort.each do |k, f|
+                puts "       untracked: #{f.path}".blue
+              end
 
-            # added (A.green)
-            repo.added.sort.each do |k, f|
-              puts "  added: #{f.path}".green
-            end
+              # added (A.green)
+              repo.added.sort.each do |k, f|
+                puts "       added: #{f.path}".green
+              end
 
-            # deleted (D.yellow)
-            repo.deleted.sort.each do |k, f|
-              puts "  deleted: #{f.path}".yellow
+              # deleted (D.yellow)
+              repo.deleted.sort.each do |k, f|
+                puts "       deleted: #{f.path}".yellow
+              end
             end
         end
       end

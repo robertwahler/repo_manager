@@ -21,6 +21,7 @@ module Repoman
       # set configatron defaults
       configatron.options.set_default(:verbose, false)
       configatron.options.set_default(:coloring, true)
+      configatron.options.set_default(:short, false)
 
 
       # set default config if not given on command line
@@ -47,6 +48,7 @@ module Repoman
       # set options from config file unless already set via command line
       @options[:verbose] = configatron.options.verbose unless @options.include?(:verbose)
       @options[:coloring] = configatron.options.coloring unless @options.include?(:coloring)
+      @options[:short] = configatron.options.short unless @options.include?(:short)
 
     end
 

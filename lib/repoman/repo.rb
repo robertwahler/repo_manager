@@ -31,7 +31,7 @@ module Repoman
     # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED
     def status
       begin
-        # M U A D I X
+        # M U A D
         (changed? ? CHANGED : 0) |
         (untracked? ? UNTRACKED : 0) |
         (added? ? ADDED : 0) |

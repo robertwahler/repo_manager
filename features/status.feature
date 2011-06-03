@@ -55,8 +55,14 @@ Feature: Listing repo path information
     Then the exit status should be 4
     And the output should contain:
       """
-      test1: test_path_1
-        modified: .gitignore
+      M    test1: test_path_1
+             modified: .gitignore
+      .
+      """
+    When I run "repo status --short"
+    And the output should contain:
+      """
+      M    test1: test_path_1
       .
       """
 
@@ -69,8 +75,8 @@ Feature: Listing repo path information
     And the output should contain:
       """
       .
-      test2: test_path_2
-        added: new_file2.txt
+        A  test2: test_path_2
+             added: new_file2.txt
       """
 
   Scenario: One deleted file
@@ -81,8 +87,8 @@ Feature: Listing repo path information
     Then the exit status should be 16
     And the output should contain:
       """
-      test1: test_path_1
-        deleted: .gitignore
+         D test1: test_path_1
+             deleted: .gitignore
       .
       """
 
@@ -95,9 +101,9 @@ Feature: Listing repo path information
     Then the exit status should be 32
     And the output should contain:
       """
-      test1: test_path_1
-        untracked: new_file1.txt
-        untracked: new_file2.txt
+       U   test1: test_path_1
+             untracked: new_file1.txt
+             untracked: new_file2.txt
       .
       """
 
@@ -115,11 +121,11 @@ Feature: Listing repo path information
     Then the exit status should be 60
     And the output should contain:
       """
-      test1: test_path_1
-        modified: .gitignore
-        untracked: new_file1.txt
-        untracked: new_file2.txt
-        added: added_file.txt
-        deleted: deleted_file.txt
+      MUAD test1: test_path_1
+             modified: .gitignore
+             untracked: new_file1.txt
+             untracked: new_file2.txt
+             added: added_file.txt
+             deleted: deleted_file.txt
       .
       """
