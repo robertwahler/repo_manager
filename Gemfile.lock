@@ -3,7 +3,7 @@ PATH
   specs:
     repoman (0.0.2)
       configatron (>= 2.5.1)
-      grit (= 2.4.1)
+      git (= 1.2.5)
       term-ansicolor (>= 1.0.4)
 
 GEM
@@ -23,6 +23,7 @@ GEM
     gherkin (2.2.9)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
+    git (1.2.5)
     grit (2.4.1)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
@@ -42,6 +43,7 @@ DEPENDENCIES
   aruba (= 0.2.2)
   bundler (>= 1.0.7)
   cucumber (>= 0.9.4)
+  grit (= 2.4.1)
   kramdown (>= 0.12.0)
   rake (>= 0.8.7)
   repoman!

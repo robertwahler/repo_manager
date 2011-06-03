@@ -1,4 +1,4 @@
-require 'grit'
+require 'git'
 require 'pathname'
 
 module Repoman
@@ -36,10 +36,10 @@ module Repoman
         (untracked? ? UNTRACKED : 0) |
         (added? ? ADDED : 0) |
         (deleted? ? DELETED : 0)
-      rescue Grit::InvalidGitRepositoryError => e
+      rescue InvalidRepositoryError => e
         # I
         INVALID
-      rescue Grit::NoSuchPathError => e
+      rescue NoSuchPathError => e
         # X
         NOPATH
       end
@@ -60,6 +60,8 @@ module Repoman
       !repo_status.deleted.empty?
     end
 
+    # NOTE: grit doesn't handle ignored files but ruby git does, see below
+    #
     # @return [Boolean] false unless there is a new/untracked file
     def untracked?
       !repo_status.untracked.empty?
@@ -80,6 +82,10 @@ module Repoman
       repo_status.deleted
     end
 
+    # untracked ignores all git ignored files.
+    #
+    #    git ls-files --others -i --exclude-standard
+    #
     # @return [Array] of new/untracked files
     def untracked
       repo_status.untracked
@@ -89,14 +95,21 @@ module Repoman
 
     def repo
       return @repo if @repo
-      @repo = Grit::Repo.new(fullpath)
+      raise NoSuchPathError unless File.exists?(fullpath)
+
+      git_folder_path = File.join(fullpath, '.git')
+      raise InvalidRepositoryError unless File.exists?(git_folder_path)
+
+      # Use 'git' not 'grit' since 'git' handles ignored files
+      # Grit could be used with a native call to 'ls-files --others -i --exclude-standard'
+      # @repo = Grit::Repo.new(fullpath)
+      @repo = Git.open(fullpath)
     end
 
     def repo_status
       return @repo_status if @repo_status
       @repo_status = repo.status
     end
-
 
     def in_repo_dir(&block)
       Dir.chdir(fullpath, &block)

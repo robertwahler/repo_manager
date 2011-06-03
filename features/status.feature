@@ -143,3 +143,18 @@ Feature: Listing repo path information
              deleted: deleted_file.txt
       .
       """
+
+  Scenario: Two untracked files, one is gitignored
+    Given a repo in folder "test_path_1" with the following:
+      | filename      | status | content          |
+      | .gitignore    | DC     | new_file2.txt    |
+      | new_file1.txt | U      | hello new file1  |
+      | new_file2.txt | U      | hello new file2  |
+    When I run "repo status --unmodified=DOTS"
+    Then the exit status should be 32
+    And the output should contain:
+      """
+       U   test1: test_path_1
+             untracked: new_file1.txt
+      .
+      """
