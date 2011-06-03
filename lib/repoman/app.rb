@@ -127,12 +127,12 @@ module Repoman
             end
 
           when Repo::NOPATH
-            STDERR.print "     #{repo.name}: #{repo.path}"
+            STDERR.print "X    #{repo.name}: #{repo.path}"
             STDERR.puts " [no such folder]".red
             need_lf = false
 
           when Repo::INVALID
-            STDERR.print "     #{repo.name}: #{repo.path}"
+            STDERR.print "I    #{repo.name}: #{repo.path}"
             STDERR.puts " [not a valid repo]".red
             need_lf = false
 
