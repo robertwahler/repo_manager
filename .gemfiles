@@ -24,6 +24,7 @@ features/support/env.rb
 lib/repoman.rb
 lib/repoman/app.rb
 lib/repoman/configure.rb
+lib/repoman/errors.rb
 lib/repoman/repo.rb
 repoman.gemspec
 spec/basic_gem/aruba_helper_spec.rb

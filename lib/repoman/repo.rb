@@ -1,4 +1,4 @@
-require 'git'
+require 'grit'
 require 'pathname'
 
 module Repoman
@@ -100,12 +100,19 @@ module Repoman
       git_folder_path = File.join(fullpath, '.git')
       raise InvalidRepositoryError unless File.exists?(git_folder_path)
 
-      # Use 'git' not 'grit' since 'git' handles ignored files
-      # Grit could be used with a native call to 'ls-files --others -i --exclude-standard'
-      # @repo = Grit::Repo.new(fullpath)
-      @repo = Git.open(fullpath)
+      @repo = Grit::Repo.new(fullpath)
     end
 
+    # repo.git.status({}, '--porcelain', '-z').split("\000")
+    #
+    # XY filename
+    # Y = working tree
+    # files = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
+    #
+    # case files.status_code
+    #   when "R."
+    #     files.shift
+    #
     def repo_status
       return @repo_status if @repo_status
       @repo_status = repo.status
