@@ -47,42 +47,42 @@ module Repoman
 
     # @return [Boolean] false unless a file has been modified/changed
     def changed?
-      !repo.status.changed.empty?
+      !repo_status.changed.empty?
     end
 
     # @return [Boolean] false unless a file has added
     def added?
-      !repo.status.added.empty?
+      !repo_status.added.empty?
     end
 
     # @return [Boolean] false unless a file has been deleted
     def deleted?
-      !repo.status.deleted.empty?
+      !repo_status.deleted.empty?
     end
 
     # @return [Boolean] false unless there is a new/untracked file
     def untracked?
-      !repo.status.untracked.empty?
+      !repo_status.untracked.empty?
     end
 
     # @return [Array] of changed/modified files
     def changed
-      repo.status.changed
+      repo_status.changed
     end
 
     # @return [Array] of added files
     def added
-      repo.status.added
+      repo_status.added
     end
 
     # @return [Array] of deleted files
     def deleted
-      repo.status.deleted
+      repo_status.deleted
     end
 
     # @return [Array] of new/untracked files
     def untracked
-      repo.status.untracked
+      repo_status.untracked
     end
 
   private
@@ -91,6 +91,12 @@ module Repoman
       return @repo if @repo
       @repo = Grit::Repo.new(fullpath)
     end
+
+    def repo_status
+      return @repo_status if @repo_status
+      @repo_status = repo.status
+    end
+
 
     def in_repo_dir(&block)
       Dir.chdir(fullpath, &block)
