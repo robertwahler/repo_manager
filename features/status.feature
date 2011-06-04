@@ -126,13 +126,13 @@ Feature: Listing repo path information
   Scenario: Two untracked files
     Given a repo in folder "test_path_1" with the following:
       | filename      | status | content          |
-      | new_file1.txt | U      | hello new file1  |
-      | new_file2.txt | U      | hello new file2  |
+      | new_file1.txt | ?      | hello new file1  |
+      | new_file2.txt | ?      | hello new file2  |
     When I run "repo status --unmodified=DOTS"
     Then the exit status should be 32
     And the output should contain:
       """
-       U   test1: test_path_1
+       ?   test1: test_path_1
              untracked: new_file1.txt
              untracked: new_file2.txt
       .
@@ -146,13 +146,13 @@ Feature: Listing repo path information
       | filename         | status | content            |
       | added_file.txt   | A      | hello added file   |
       | .gitignore       | M      | tmp/*              |
-      | new_file1.txt    | U      | hello new file1    |
-      | new_file2.txt    | U      | hello new file2    |
+      | new_file1.txt    | ?      | hello new file1    |
+      | new_file2.txt    | ?      | hello new file2    |
     When I run "repo status --unmodified=DOTS"
     Then the exit status should be 60
     And the output should contain:
       """
-      MUAD test1: test_path_1
+      M?AD test1: test_path_1
              modified: .gitignore
              untracked: new_file1.txt
              untracked: new_file2.txt
@@ -165,13 +165,13 @@ Feature: Listing repo path information
     Given a repo in folder "test_path_1" with the following:
       | filename      | status | content          |
       | .gitignore    | DC     | new_file2.txt    |
-      | new_file1.txt | U      | hello new file1  |
-      | new_file2.txt | U      | hello new file2  |
+      | new_file1.txt | ?      | hello new file1  |
+      | new_file2.txt | ?      | hello new file2  |
     When I run "repo status --unmodified=DOTS"
     Then the exit status should be 32
     And the output should contain:
       """
-       U   test1: test_path_1
+       ?   test1: test_path_1
              untracked: new_file1.txt
       .
       """

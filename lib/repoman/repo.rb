@@ -6,17 +6,6 @@ module Repoman
   # wrapper class for a source code repository
   class Repo
 
-    # repo status unchanged/clean
-    CLEAN = 0
-
-    # bitfields for status
-    NOPATH = 1
-    INVALID = 2
-    CHANGED = 4
-    ADDED =  8
-    DELETED =  16
-    UNTRACKED =  32
-
     attr_accessor :name
     attr_accessor :path
     attr_reader :base_dir
@@ -28,95 +17,11 @@ module Repoman
       @base_dir = attributes[:base_dir]
     end
 
-    # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED
     def status
-      begin
-        # M U A D
-        (changed? ? CHANGED : 0) |
-        (untracked? ? UNTRACKED : 0) |
-        (added? ? ADDED : 0) |
-        (deleted? ? DELETED : 0)
-      rescue InvalidRepositoryError => e
-        # I
-        INVALID
-      rescue NoSuchPathError => e
-        # X
-        NOPATH
-      end
-    end
-
-    # @return [Boolean] false unless a file has been modified/changed
-    def changed?
-      !repo_status.changed.empty?
-    end
-
-    # @return [Boolean] false unless a file has added
-    def added?
-      !repo_status.added.empty?
-    end
-
-    # @return [Boolean] false unless a file has been deleted
-    def deleted?
-      !repo_status.deleted.empty?
-    end
-
-    # NOTE: grit doesn't handle ignored files but ruby git does, see below
-    #
-    # @return [Boolean] false unless there is a new/untracked file
-    def untracked?
-      !repo_status.untracked.empty?
-    end
-
-    # @return [Array] of changed/modified files
-    def changed
-      repo_status.changed
-    end
-
-    # @return [Array] of added files
-    def added
-      repo_status.added
-    end
-
-    # @return [Array] of deleted files
-    def deleted
-      repo_status.deleted
-    end
-
-    # untracked ignores all git ignored files.
-    #
-    #    git ls-files --others -i --exclude-standard
-    #
-    # @return [Array] of new/untracked files
-    def untracked
-      repo_status.untracked
+      @status ||= Repoman::Status.new(repo)
     end
 
   private
-
-    def repo
-      return @repo if @repo
-      raise NoSuchPathError unless File.exists?(fullpath)
-
-      git_folder_path = File.join(fullpath, '.git')
-      raise InvalidRepositoryError unless File.exists?(git_folder_path)
-
-      @repo = Grit::Repo.new(fullpath)
-    end
-
-    # repo.git.status({}, '--porcelain', '-z').split("\000")
-    #
-    # XY filename
-    # Y = working tree
-    # files = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
-    #
-    # case files.status_code
-    #   when "R."
-    #     files.shift
-    #
-    def repo_status
-      return @repo_status if @repo_status
-      @repo_status = repo.status
-    end
 
     def in_repo_dir(&block)
       Dir.chdir(fullpath, &block)
@@ -128,6 +33,16 @@ module Repoman
       else
         File.expand_path(path, @base_dir)
       end
+    end
+
+    def repo
+      return @repo if @repo
+      raise NoSuchPathError unless File.exists?(fullpath)
+
+      git_folder_path = File.join(fullpath, '.git')
+      raise InvalidRepositoryError unless File.exists?(git_folder_path)
+
+      @repo = Grit::Repo.new(fullpath)
     end
 
     # Test if root dir (T/F)

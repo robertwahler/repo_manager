@@ -60,7 +60,8 @@ module Repoman
         puts "repo run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
-        STDERR.puts("repo command failed, error(s) follow. Use '--verbose' for backtrace.")
+        STDERR.puts("repo command failed, error(s) follow")
+        STDERR.puts("Use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts("#{e.message}".red)
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
@@ -106,13 +107,20 @@ module Repoman
 
       repos(filters).each do |repo|
 
-        # M U A D I X
-        st = repo.status
+        # M ? A D I X
+        begin
+          st = repo.status.bitfield
+        rescue InvalidRepositoryError => e
+          st = Status::INVALID # I
+        rescue NoSuchPathError => e
+          st = Status::NOPATH # X
+        end
+
         result |= st unless (st == 0)
 
         case st
 
-          when Repo::CLEAN
+          when Status::CLEAN
             count_unmodified += 1
             case @options[:unmodified]
               when "HIDE"
@@ -126,12 +134,12 @@ module Repoman
                 raise "invalid mode '#{@options[:unmodified]}' for '--unmodified' option"
             end
 
-          when Repo::NOPATH
+          when Status::NOPATH
             STDERR.print "X    #{repo.name}: #{repo.path}"
             STDERR.puts " [no such folder]".red
             need_lf = false
 
-          when Repo::INVALID
+          when Status::INVALID
             STDERR.print "I    #{repo.name}: #{repo.path}"
             STDERR.puts " [not a valid repo]".red
             need_lf = false
@@ -140,32 +148,32 @@ module Repoman
             puts "" if need_lf
 
             # print MUAD status letters
-            print (st & Repo::CHANGED == Repo::CHANGED) ? "M".red : " "
-            print (st & Repo::UNTRACKED == Repo::UNTRACKED) ? "U".blue : " "
-            print (st & Repo::ADDED == Repo::ADDED) ? "A".green : " "
-            print (st & Repo::DELETED == Repo::DELETED) ? "D".yellow : " "
+            print (st & Status::CHANGED == Status::CHANGED) ? "M".red : " "
+            print (st & Status::UNTRACKED == Status::UNTRACKED) ? "?".blue : " "
+            print (st & Status::ADDED == Status::ADDED) ? "A".green : " "
+            print (st & Status::DELETED == Status::DELETED) ? "D".yellow : " "
 
             puts " #{repo.name}: #{repo.path}"
             need_lf = false
 
             unless @options[:short]
               # modified (M.red)
-              repo.changed.sort.each do |k, f|
+              repo.status.changed.sort.each do |k, f|
                 puts "       modified: #{f.path}".red
               end
 
-              # untracked (U.blue)
-              repo.untracked.sort.each do |k, f|
+              # untracked (?.blue)
+              repo.status.untracked.sort.each do |k, f|
                 puts "       untracked: #{f.path}".blue
               end
 
               # added (A.green)
-              repo.added.sort.each do |k, f|
+              repo.status.added.sort.each do |k, f|
                 puts "       added: #{f.path}".green
               end
 
               # deleted (D.yellow)
-              repo.deleted.sort.each do |k, f|
+              repo.status.deleted.sort.each do |k, f|
                 puts "       deleted: #{f.path}".yellow
               end
             end

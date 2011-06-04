@@ -3,6 +3,7 @@ require 'rbconfig'
 require 'repoman/app'
 require 'repoman/configure'
 require 'repoman/errors'
+require 'repoman/status'
 require 'repoman/repo'
 
 # Master namespace

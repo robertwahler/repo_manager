@@ -64,7 +64,7 @@ Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|
 
     status.split("").each do |st|
       case st
-        when "U"
+        when "?"
           create_file(File.join(folder, filename), content)
         when "A"
           create_file(File.join(folder, filename), content)
