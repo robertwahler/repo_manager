@@ -91,7 +91,6 @@ Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|
   end
 end
 
-
 Given /^I add all to repo in folder "([^"]*)"$/ do |folder|
   repo_add_all(folder)
 end

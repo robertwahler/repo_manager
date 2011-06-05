@@ -26,6 +26,7 @@ lib/repoman/app.rb
 lib/repoman/configure.rb
 lib/repoman/errors.rb
 lib/repoman/repo.rb
+lib/repoman/status.rb
 repoman.gemspec
 spec/basic_gem/aruba_helper_spec.rb
 spec/basic_gem/basic_gem_spec.rb

@@ -3,6 +3,7 @@ require 'grit'
 module Repoman
 
   # Simplified version of Grit's Status class that uses Git porcelain commands.
+  #
   # Porcelain commands are useful since they handle ignored files and ignore
   # non-commitable changes.  Speed is not a big concern.  There is only one
   # call needed to the Git binary. No plumbing commands are used.
@@ -130,6 +131,7 @@ module Repoman
         #   combine X and Y and boil down status returns to just four types,
         #   M ? A D
         #
+        # example output:
         # output = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
         output = @repo.git.status({}, '--porcelain', '-z').split("\000")
         while line = output.shift
@@ -141,15 +143,15 @@ module Repoman
               file_hash = {:type => '?', :path => filename}
             when /R/
               file_hash = {:type => 'A', :path => filename}
-              # renamed files to -> from, from will be on the next line, shift
-              # it off as we don't care 
+              # renamed files 'to -> from', 'from' will be on the next line,
+              # shift it off as we don't track this
               output.shift
             when /A/
               file_hash = {:type => 'A', :path => filename}
-            when /D/
-              file_hash = {:type => 'D', :path => filename}
             when /M/
               file_hash = {:type => 'M', :path => filename}
+            when /D/
+              file_hash = {:type => 'D', :path => filename}
             else
               raise "fatal error: unknown status condition: '#{st}'"
           end
