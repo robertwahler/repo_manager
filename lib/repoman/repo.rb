@@ -28,6 +28,13 @@ module Repoman
       @status ||= Repoman::Status.new(repo)
     end
 
+    def repo
+      return @repo if @repo
+      raise NoSuchPathError unless File.exists?(fullpath)
+      raise InvalidRepositoryError unless File.exists?(File.join(fullpath, '.git'))
+      @repo = Grit::Repo.new(fullpath)
+    end
+
   private
 
     def in_repo_dir(&block)
@@ -42,15 +49,6 @@ module Repoman
       end
     end
 
-    def repo
-      return @repo if @repo
-      raise NoSuchPathError unless File.exists?(fullpath)
-
-      git_folder_path = File.join(fullpath, '.git')
-      raise InvalidRepositoryError unless File.exists?(git_folder_path)
-
-      @repo = Grit::Repo.new(fullpath)
-    end
 
     # Test if root dir (T/F)
     #

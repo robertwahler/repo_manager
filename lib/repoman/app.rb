@@ -7,7 +7,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[list path status]
+  AVAILABLE_ACTIONS = %w[list path status config]
 
   class App
 
@@ -37,10 +37,10 @@ module Repoman
             puts "repo --help for more information"
             exit 1
           end
-          filters = ARGV
-          puts "repo run action: #{action} #{filters.join(' ')}".cyan if @options[:verbose]
+          args = ARGV
+          puts "repo run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
-          result = send(action, filters)
+          result = send(action, args)
         else
           #
           # default action if action_argument_required? is false
@@ -69,9 +69,58 @@ module Repoman
       end
     end
 
+    # 'git config' pass through
     #
-    # app commands start
+    # arg[0] contains the commandline to pass to 'git config', remaining
+    # ARGV, if any, assumed to be filters.
     #
+    # examples:
+    #
+    #   repo config "core.autocrlf false" test*
+    #   repo config "branch.master.remote origin"
+    #   repo config "branch.master.merge refs/heads/master" t* --dry-run
+    #
+    # @return [Numeric] pass through of 'git config' result code
+    def config(args)
+      #Grit.debug = true
+      st = 0
+      result = 0
+      config_args = ARGV.shift
+      filters = ARGV
+
+      # validate command line options
+      raise "config option not allowed" if config_args.match(/--global|--system/)
+
+      repos(filters).each do |repo|
+
+        begin
+          st = repo.status.bitfield
+        rescue InvalidRepositoryError, NoSuchPathError => e
+          st = Status::INVALID | Status::NOPATH
+        end
+
+        result |= st unless (st == 0)
+
+        case st
+          when (Status::INVALID | Status::NOPATH)
+            print repo.name.red
+            print ": #{repo.path}"
+            puts " [unable to read repo]"
+          else
+            print repo.name.green
+            puts ": #{repo.path}"
+            options = {:raise => true}
+            begin
+              output = repo.repo.git.config(options, config_args.split(' '))
+            rescue Grit::Git::CommandFailed => e
+              result |= e.exitstatus
+              output = e.err
+            end
+            puts output
+        end
+      end
+      result
+    end
 
     # Path only
     #
