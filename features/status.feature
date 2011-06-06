@@ -57,21 +57,23 @@ Feature: Listing repo path information
       """
 
   Scenario: Invalid repo
-    Given I delete the folder "test_path_1/.git"
-    When I run "repo status test1"
+    Given I delete the folder "test_path_2/.git"
+    When I run "repo status test --unmodified DOTS"
     Then the exit status should be 2
     And the output should contain:
       """
-      not a valid repo
+      .
+      I    test2: test_path_2 [not a valid repo]
       """
 
   Scenario: Missing repo folder
-    Given I delete the folder "test_path_1"
-    When I run "repo status test1"
+    Given I delete the folder "test_path_2"
+    When I run "repo status test --unmodified DOTS --no-verbose"
     Then the exit status should be 1
     And the output should contain:
       """
-      no such folder
+      .
+      X    test2: test_path_2 [no such folder]
       """
 
   Scenario: One uncommited change

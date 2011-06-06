@@ -20,6 +20,7 @@ module Repoman
         puts "base_dir: #{@options[:base_dir]}".cyan if @options[:base_dir]
         puts "config file: #{@options[:config]}".cyan if @options[:config]
       end
+      $stdout.sync = true
     end
 
     def run
@@ -135,13 +136,15 @@ module Repoman
             end
 
           when Status::NOPATH
-            STDERR.print "X    #{repo.name}: #{repo.path}"
-            STDERR.puts " [no such folder]".red
+            puts "" if need_lf
+            print "X    #{repo.name}: #{repo.path}"
+            puts " [no such folder]".red
             need_lf = false
 
           when Status::INVALID
-            STDERR.print "I    #{repo.name}: #{repo.path}"
-            STDERR.puts " [not a valid repo]".red
+            puts "" if need_lf
+            print "I    #{repo.name}: #{repo.path}"
+            puts " [not a valid repo]".red
             need_lf = false
 
           else
