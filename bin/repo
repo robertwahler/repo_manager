@@ -77,7 +77,7 @@ OptionParser.new do |opts|
 end
 
 # options from config file, if it exists, will not overwrite command line
-options = Repoman::Configure.new(FileUtils.pwd, options).options
+options = Repoman::Settings.new(FileUtils.pwd, options).options
 
 if STDOUT.isatty
   Term::ANSIColor::coloring = options[:coloring]

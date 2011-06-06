@@ -2,7 +2,7 @@ require 'configatron'
 
 module Repoman
 
-  class Configure
+  class Settings
 
     def initialize(working_dir, options={})
       @working_dir = working_dir
