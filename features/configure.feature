@@ -96,19 +96,19 @@ Feature: Configuration via yaml file
         repo3:
           path: repo3
       """
-    When I run "repo list"
+    When I run "repo list --short"
     Then the output should contain:
       """
       repo1: repo1
       """
     When I delete the file "repo.conf"
-    And I run "repo list"
+    And I run "repo list --short"
     Then the output should contain:
       """
       repo2: repo2
       """
     When I delete the file ".repo.conf"
-    And I run "repo list"
+    And I run "repo list --short"
     Then the output should contain:
       """
       repo3: repo3

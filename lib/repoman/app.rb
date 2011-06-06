@@ -89,7 +89,18 @@ module Repoman
     # list repo info
     def list(filters)
       repos(filters).each do |repo|
-        puts "#{repo.name}: #{repo.path}"
+        if @options[:short]
+          print repo.name.green
+          puts ": #{repo.path}"
+        else
+          attributes = repo.attributes.dup
+          base_dir = attributes.delete(:base_dir)
+          name = attributes.delete(:name)
+          print name.green
+          puts ":"
+          puts attributes.to_yaml
+          puts ""
+        end
       end
     end
 
@@ -133,6 +144,9 @@ module Repoman
                 need_lf = true
               else
                 raise "invalid mode '#{@options[:unmodified]}' for '--unmodified' option"
+              #
+              # good point to run commands that need a clean repo. i.e. pull
+              #
             end
 
           when Status::NOPATH
@@ -191,10 +205,6 @@ module Repoman
       # numeric return
       result
     end
-
-    #
-    # app commands end
-    #
 
   private
 
