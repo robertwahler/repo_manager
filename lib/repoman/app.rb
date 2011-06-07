@@ -85,7 +85,7 @@ module Repoman
       #Grit.debug = true
       st = 0
       result = 0
-      config_args = ARGV.shift
+      config_args = ARGV.shift || '--list'
       filters = ARGV
 
       # validate command line options

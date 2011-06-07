@@ -13,11 +13,13 @@ VERSION
 bin/repo
 config/cucumber.yml
 features/bin.feature
+features/config.feature
 features/list.feature
 features/path.feature
 features/settings.feature
 features/status.feature
 features/step_definitions/.gitignore
+features/step_definitions/aruba_steps.rb
 features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
@@ -28,6 +30,7 @@ lib/repoman/repo.rb
 lib/repoman/settings.rb
 lib/repoman/status.rb
 repoman.gemspec
+spec/aruba_helper.rb
 spec/basic_gem/aruba_helper_spec.rb
 spec/basic_gem/basic_gem_spec.rb
 spec/basic_gem/gemspec_spec.rb

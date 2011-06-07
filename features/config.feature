@@ -23,11 +23,25 @@ Feature: Setting repo configuration options
 
 
   Scenario: Normal (success)
-    When I run "repo config 'user.name my_name'"
+    When I run "repo config 'user.name find_me_here'"
     Then the exit status should be 0
     And the file "test_path_1/.git/config" should contain:
       """
-      name = my_name
+      name = find_me_here
+      """
+
+  Scenario: No config options given, default to '--list'
+    When I run "repo config 'user.name find_me_here'"
+    Then the exit status should be 0
+    And the file "test_path_1/.git/config" should contain:
+      """
+      name = find_me_here
+      """
+    When I run "repo config"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      user.name=find_me_here
       """
 
   Scenario: Bad config key command, missing section (failure [2])
@@ -50,7 +64,7 @@ Feature: Setting repo configuration options
       config option not allowed
       """
 
-  Scenario: Using the git '--system' option (fails)
+  Scenario: Using the git '--system' option (failure)
     When I run "repo config 'user.name my_name --system'"
     Then the exit status should not be 0
     And the output should contain:

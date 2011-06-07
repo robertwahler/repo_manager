@@ -12,12 +12,24 @@ available_actions = Repoman::AVAILABLE_ACTIONS
 banner = <<BANNER
 repo: CLI for batch management of multiple Git repositories
 
-  Usage: repo action [filters] [options]
+  Usage: repo [options] action ['action arguments'] [filters]
 BANNER
 banner << "\nActions: #{available_actions.join(' ')}\n" unless available_actions.empty?
 
 help = banner
 help += <<HELP
+
+Examples:
+
+  repo list my_repo1 my_repo2
+  repo list my*
+
+  Subcommands require quotes around pass-through options:
+
+    repo --verbose --no-color config '--list' my_repo1 my_repo2
+    repo --verbose --no-color config '--list'
+    repo --verbose --no-color config
+    repo --verbose --no-color config 'core.autocrlf true' my*
 
 Options:
 
