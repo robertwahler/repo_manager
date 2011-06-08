@@ -35,12 +35,6 @@ module Repoman
       @repo = Grit::Repo.new(fullpath)
     end
 
-  private
-
-    def in_repo_dir(&block)
-      Dir.chdir(fullpath, &block)
-    end
-
     def fullpath
       if absolute_path?(path)
         path
@@ -48,6 +42,13 @@ module Repoman
         File.expand_path(path, @base_dir)
       end
     end
+
+  private
+
+    def in_repo_dir(&block)
+      Dir.chdir(fullpath, &block)
+    end
+
 
 
     # Test if root dir (T/F)

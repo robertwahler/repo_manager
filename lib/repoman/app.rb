@@ -8,7 +8,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[help list path init status config]
+  AVAILABLE_ACTIONS = %w[help list path init status config run]
 
   class App
 
@@ -91,10 +91,75 @@ module Repoman
           config(['--help'])
         when 'init'
           init(['--help'])
+        when 'run'
+          puts 'Run git with any git subcommands and options'
+          puts 'Usage: repo [options] run args'
         else
           puts 'no help available for action'
-          exit(0)
       end
+      exit(0)
+    end
+
+    # 'git' arbitrary command pass-through
+    #
+    # examples:
+    #
+    #   repo run ls-files
+    #   repo run git ls-files
+    #
+    #   repo run add .
+    #   repo run add . --filter=test
+    #   repo run git add . --filter=test
+    #
+    #
+    # @return [Numeric] pass through of 'git init' result code
+    def run(args)
+      #Grit.debug = true
+      raise "no git command given" if args.empty?
+
+      # the first arg is optionally 'git'
+      args.shift if args[0] == 'git'
+      raise "no git command given" if args.empty?
+
+      command = args.shift
+      st = 0
+      result = 0
+      filters = @options[:filter] || []
+
+      repos(filters).each do |repo|
+        begin
+          st = repo.status.bitfield
+        rescue InvalidRepositoryError => e
+          st = 0 #Status::INVALID
+        rescue NoSuchPathError => e
+          st = Status::NOPATH
+        end
+
+        result |= st unless (st == 0)
+
+        case st
+          when (Status::NOPATH)
+            print repo.name.red
+            print ": #{repo.path}"
+            puts " [no such path]"
+          else
+            print repo.name.green
+            puts ": #{repo.path}"
+            options = {:raise => true}
+            output = ''
+            begin
+              Dir.chdir(repo.fullpath) do
+                git = Grit::Git.new(File.join(repo.fullpath, '.git'))
+                output = git.native(command, options, args)
+              end
+            rescue Grit::Git::CommandFailed => e
+              result |= e.exitstatus
+              output = e.err
+            end
+            puts output
+        end
+      end
+      result
     end
 
     # 'git init' pass through
@@ -150,6 +215,7 @@ module Repoman
             print repo.name.green
             puts ": #{repo.path}"
             options = {:raise => true}
+            output = ''
             begin
               git = Grit::Git.new(File.join(repo.path, '.git'))
               output = git.init(options, args)
@@ -231,7 +297,7 @@ module Repoman
       result
     end
 
-    # Show repo path from the config file
+    # Show repo working folder path from the config file
     #
     # @example: chdir to the path of the repo named "my_repo_name"
     #   cd $(repo path my_repo_name)

@@ -12,7 +12,7 @@ available_actions = Repoman::AVAILABLE_ACTIONS
 banner = <<BANNER
 repo: CLI for batch management of multiple Git repositories
 
-  Usage: repo [options] action ['action arguments'] [options]
+  Usage: repo [options] action [action pass-through arguments] [options]
 BANNER
 banner << "\nActions: #{available_actions.join(' ')}\n" unless available_actions.empty?
 
