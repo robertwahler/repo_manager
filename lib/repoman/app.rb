@@ -93,7 +93,7 @@ module Repoman
         opts.banner = "Usage: repo config name value\n" +
                       "       repo config --list\n" +
                       "Options:"
-        opts.on("-l", "--list", "List option pass-through")
+        opts.on("-l", "--list", "List all variables set in config file")
         begin
           opts.parse(args)
         rescue OptionParser::InvalidOption => e
@@ -104,7 +104,7 @@ module Repoman
       end
 
       args = ['--list'] if args.empty?
-      filters = ['.*']
+      filters = @options[:filter] || []
 
       repos(filters).each do |repo|
 
@@ -137,21 +137,28 @@ module Repoman
       result
     end
 
-    # Path only
+    # Show repo path from the config file
     #
-    # @example: chdir to the path the repo named "my_repo_name"
-    #
+    # @example: chdir to the path of the repo named "my_repo_name"
     #   cd $(repo path my_repo_name)
+    # @example: chdir to the path of the repo named "my_repo_name"
+    #   cd $(repo path --filter=my_repo_name)
     #
     # @return [String] path to repo
-    def path(filters)
+    def path(args)
+      filters = args.dup
+      filters += @options[:filter] if @options[:filter]
+
       repos(filters).each do |repo|
         puts repo.path
       end
     end
 
-    # list repo info
-    def list(filters)
+    # List repo info from the config file
+    def list(args)
+      filters = args.dup
+      filters += @options[:filter] if @options[:filter]
+
       repos(filters).each do |repo|
         if @options[:short]
           print repo.name.green
@@ -175,7 +182,10 @@ module Repoman
     #   repo status
     #
     # @return [Number] bitfield with combined repo status
-    def status(filters)
+    def status(args)
+      filters = args.dup
+      filters += @options[:filter] if @options[:filter]
+
       st = 0
       result = 0
       count_unmodified = 0

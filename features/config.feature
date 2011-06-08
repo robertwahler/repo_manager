@@ -4,6 +4,18 @@ Feature: Setting repo configuration options
   As an interactive user or automated script. The application should set
   indiviual repository options from the command line
 
+  Example usage:
+
+    repo config
+    repo config --list --filter=t.*
+
+    repo config core.autocrlf false
+    repo config core.filemode false --filter=test1
+
+    repo config branch.master.remote origin
+    repo config branch.master.merge refs/heads/master
+
+
   Background: A valid config file
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
@@ -21,13 +33,58 @@ Feature: Setting repo configuration options
           path: test_path_2
       """
 
-
-  Scenario: Normal (success)
-    When I run "repo config user.name find_me_here"
+  Scenario: Normal no filtering
+    When I run "repo config core.testname find_me_here"
     Then the exit status should be 0
     And the file "test_path_1/.git/config" should contain:
       """
-      name = find_me_here
+      testname = find_me_here
+      """
+    And the file "test_path_2/.git/config" should contain:
+      """
+      testname = find_me_here
+      """
+
+  Scenario: Normal with filtering
+    When I run "repo config core.testname find_me_here --filter=test1"
+    Then the exit status should be 0
+    And the file "test_path_1/.git/config" should contain:
+      """
+      testname = find_me_here
+      """
+    And the file "test_path_2/.git/config" should not contain:
+      """
+      testname = find_me_here
+      """
+
+  Scenario: Setting the default origin for push/pull with filtering. The
+    following section will be added to the config file:
+      [branch "master"]
+        remote = origin
+        merge = refs/heads/master
+    Given the file "test_path_1/.git/config" should not contain:
+      """
+      [branch "master"]
+      """
+    When I run "repo config branch.master.remote origin --filter=test1"
+    Then the exit status should be 0
+    And I run "repo config branch.master.merge refs/heads/master --filter=test1"
+    Then the exit status should be 0
+    And the file "test_path_2/.git/config" should not contain:
+      """
+      [branch "master"]
+      """
+    And the file "test_path_1/.git/config" should contain:
+      """
+      [branch "master"]
+      """
+    And the file "test_path_1/.git/config" should contain:
+      """
+      remote = origin
+      """
+    And the file "test_path_1/.git/config" should contain:
+      """
+      merge = refs/heads/master
       """
 
   Scenario: No config options given, default to '--list'

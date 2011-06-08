@@ -4,6 +4,18 @@ Feature: Listing repo path information
   As an interactive user or automated script. The application should show the
   repository status to stdout
 
+  Example usage:
+
+    repo status
+    repo status --short
+    repo status test2 --unmodified DOTS"
+    repo status test2 --unmodified DOTS"
+
+  Equivalent filtering:
+
+    repo status --filter=test2 --unmodified DOTS
+    repo status test2 --unmodified DOTS"
+
   Background: A valid config file
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
@@ -58,7 +70,7 @@ Feature: Listing repo path information
 
   Scenario: Invalid repo
     Given I delete the folder "test_path_2/.git"
-    When I run "repo status test --unmodified DOTS"
+    When I run "repo status test1 test2 --unmodified DOTS"
     Then the exit status should be 2
     And the output should contain:
       """
@@ -68,12 +80,12 @@ Feature: Listing repo path information
 
   Scenario: Missing repo folder
     Given I delete the folder "test_path_2"
-    When I run "repo status test --unmodified DOTS --no-verbose"
+    When I run "repo status --filter=test2 --unmodified DOTS --no-verbose"
     Then the exit status should be 1
-    And the output should contain:
+    And the output should contain exactly:
       """
-      .
       X    test2: test_path_2 [no such folder]
+
       """
 
   Scenario: One uncommited change

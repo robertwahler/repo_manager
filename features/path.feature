@@ -25,21 +25,21 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario:Single Filter, allows for regex
-    When I run "repo path test"
+  Scenario: Single Filter, allows for regex
+    When I run "repo path --filter=test"
     Then the exit status should be 0
     And the output should contain:
       """
       test_path_1
       test_path_2
       """
-    When I run "repo path test$"
+    When I run "repo path --filter=test$"
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
-    When I run "repo path t.st1"
+    When I run "repo path --filter=t.st1"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -50,8 +50,14 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario:Multiple filters, each filter specified after command, space
-    delimited. Regex allowed on each filter separately
+  Scenario: Multiple filters delimited. Regex allowed on each filter separately
+    When I run "repo path --filter=test1,t...2,t...3"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
+      """
     When I run "repo path test1 t...2 t...3"
     Then the exit status should be 0
     And the output should contain:

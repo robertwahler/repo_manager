@@ -12,7 +12,7 @@ available_actions = Repoman::AVAILABLE_ACTIONS
 banner = <<BANNER
 repo: CLI for batch management of multiple Git repositories
 
-  Usage: repo [options] action ['action arguments'] [filters]
+  Usage: repo [options] action ['action arguments'] [options]
 BANNER
 banner << "\nActions: #{available_actions.join(' ')}\n" unless available_actions.empty?
 
@@ -22,14 +22,15 @@ help += <<HELP
 Examples:
 
   repo list my_repo1 my_repo2
-  repo list my*
+  repo list --filter=my_repo1,my_repo2
 
-  Subcommands require quotes around pass-through options:
+  repo list --filter=my.*
+  repo list my.*
 
-    repo --verbose --no-color config '--list' my_repo1 my_repo2
-    repo --verbose --no-color config '--list'
-    repo --verbose --no-color config
-    repo --verbose --no-color config 'core.autocrlf true' my*
+  repo --verbose --no-color config --list --filter=my_repo1,my_repo2
+  repo --verbose --no-color config core.autocrlf true filter=my.*
+  repo --verbose --no-color config --list
+  repo config
 
 Options:
 
@@ -41,7 +42,10 @@ options = {}
 optparser = OptionParser.new do |opts|
   opts.banner = help
 
-  # get override config file
+  opts.on("--filter f1,f2,f3", Array, "List of Regex repository names filters") do |list|
+    options[:filter] = list
+  end
+
   opts.on("--config FILE", "Load configuration options from FILE") do |file|
     options[:config] = file
   end

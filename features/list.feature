@@ -5,10 +5,15 @@ Feature: Listing repo information contained in the configuration file
   configuration file to stdout.  The actual repositories are not validated.
   The list command operates only on the config file.
 
-  Example:
+  Example usage:
 
     repo list
+    repo list --short
 
+  Equivalent filtering:
+
+    repo list --filter=test1
+    repo list test1
 
   Scenario: Default action, no filter, valid config, valid repos
     And a file named "repo.conf" with:
@@ -66,11 +71,18 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test2
       """
-    When I run "repo list test1 --short"
+    When I run "repo list --filter=test1 --short --no-verbose"
     Then the exit status should be 0
-    And the output should contain:
+    And the output should contain exactly:
       """
       test1: test1
+
+      """
+    When I run "repo list test1 --short --no-verbose"
+    Then the output should contain exactly:
+      """
+      test1: test1
+
       """
     When I run "repo list"
     And the output should match:
