@@ -91,5 +91,4 @@ Feature: Listing repo information contained in the configuration file
       .*
       :remotes:.
         :origin: ./remotes/test1.git
-      :path: test1
       """
