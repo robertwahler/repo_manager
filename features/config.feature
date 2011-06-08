@@ -23,7 +23,7 @@ Feature: Setting repo configuration options
 
 
   Scenario: Normal (success)
-    When I run "repo config 'user.name find_me_here'"
+    When I run "repo config user.name find_me_here"
     Then the exit status should be 0
     And the file "test_path_1/.git/config" should contain:
       """
@@ -31,7 +31,7 @@ Feature: Setting repo configuration options
       """
 
   Scenario: No config options given, default to '--list'
-    When I run "repo config 'user.name find_me_here'"
+    When I run "repo config user.name find_me_here"
     Then the exit status should be 0
     And the file "test_path_1/.git/config" should contain:
       """
@@ -45,7 +45,7 @@ Feature: Setting repo configuration options
       """
 
   Scenario: Bad config key command, missing section (failure [2])
-    When I run "repo config 'missing_section some_value'"
+    When I run "repo config missing_section some_value"
     Then the exit status should be 2
     And the output should contain:
       """
@@ -56,25 +56,33 @@ Feature: Setting repo configuration options
       missing_section
       """
 
-  Scenario: Using the git '--global' option (failure)
-    When I run "repo config 'user.name my_name --global'"
+  Scenario: Using the git '--unknown-switch' option (failure)
+    When I run "repo config --unknown-switch"
     Then the exit status should not be 0
     And the output should contain:
       """
-      config option not allowed
+      invalid option: --unknown-switch
+      """
+
+  Scenario: Using the git '--global' option (failure)
+    When I run "repo config user.name my_name --global"
+    Then the exit status should not be 0
+    And the output should contain:
+      """
+      invalid option: --global
       """
 
   Scenario: Using the git '--system' option (failure)
-    When I run "repo config 'user.name my_name --system'"
+    When I run "repo config user.name my_name --system"
     Then the exit status should not be 0
     And the output should contain:
       """
-      config option not allowed
+      invalid option: --system
       """
 
   Scenario: Invalid repo
     Given I delete the folder "test_path_2/.git"
-    When I run "repo config 'user.name my_name'"
+    When I run "repo config user.name my_name"
     Then the exit status should be 3
     And the output should contain:
       """
@@ -83,7 +91,7 @@ Feature: Setting repo configuration options
 
   Scenario: Missing repo folder
     Given I delete the folder "test_path_2"
-    When I run "repo config 'user.name my_name'"
+    When I run "repo config user.name my_name"
     Then the exit status should be 3
     And the output should contain:
       """

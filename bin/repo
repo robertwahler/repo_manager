@@ -38,7 +38,7 @@ HELP
 # get options from the command line, these options override both config files
 # and defaults
 options = {}
-OptionParser.new do |opts|
+optparser = OptionParser.new do |opts|
   opts.banner = help
 
   # get override config file
@@ -78,14 +78,30 @@ OptionParser.new do |opts|
     exit 0
   end
 
-  begin
-    opts.parse!
-  rescue OptionParser::InvalidOption => e
-    puts "repo #{e}"
-    puts "repo --help for more information"
-    exit 1
-  end
+end
 
+# first pass, process until the action/subcommand, errors
+# will be raised for invalid options that occur before the action/subcommand
+begin
+  optparser.order!
+rescue OptionParser::InvalidOption => e
+  puts "repo #{e}"
+  puts "repo --help for more information"
+  exit 1
+end
+
+
+# second pass find all global options that may come after the action/subcommand
+# and its args, no errors raised, validity will be checked by action parser
+argv = []
+while unknown_arg = ARGV.shift
+  argv << unknown_arg
+  begin
+    optparser.order!
+  rescue OptionParser::InvalidOption => e
+    # put unknown args back on ARGV
+    e.recover(ARGV)
+  end
 end
 
 # options from config file, if it exists, will not overwrite command line
@@ -107,5 +123,5 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = Repoman::App.new(FileUtils.pwd, options)
+app = Repoman::App.new(FileUtils.pwd, argv, options)
 app.run

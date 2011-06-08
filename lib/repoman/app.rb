@@ -1,5 +1,6 @@
 require 'configatron'
 require 'term/ansicolor'
+require 'optparse'
 
 class String
   include Term::ANSIColor
@@ -11,9 +12,10 @@ module Repoman
 
   class App
 
-    def initialize(working_dir, options={})
+    def initialize(working_dir, argv=[], options={})
       @working_dir = working_dir
       @options = options
+      @argv = argv
       if @options[:verbose]
         puts "working_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
@@ -27,7 +29,7 @@ module Repoman
       begin
 
         if action_argument_required?
-          action = ARGV.shift
+          action = @argv.shift
           unless AVAILABLE_ACTIONS.include?(action)
             if action.nil?
               puts "repo action required"
@@ -37,7 +39,7 @@ module Repoman
             puts "repo --help for more information"
             exit 1
           end
-          args = ARGV
+          args = @argv
           puts "repo run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
           result = send(action, args)
@@ -72,24 +74,37 @@ module Repoman
     # 'git config' pass through
     #
     # arg[0] contains the commandline to pass to 'git config', remaining
-    # ARGV, if any, assumed to be filters.
+    # @argv, if any, assumed to be filters.
     #
     # examples:
     #
-    #   repo config "core.autocrlf false" test*
-    #   repo config "branch.master.remote origin"
-    #   repo config "branch.master.merge refs/heads/master" t* --dry-run
+    #   repo config core.autocrlf false --filter=test
+    #   repo config branch.master.remote origin
+    #   repo config branch.master.merge refs/heads/master" --filter=test.*,somerepo1
     #
     # @return [Numeric] pass through of 'git config' result code
     def config(args)
       #Grit.debug = true
       st = 0
       result = 0
-      config_args = ARGV.shift || '--list'
-      filters = ARGV
 
-      # validate command line options
-      raise "config option not allowed" if config_args.match(/--global|--system/)
+      # optparse on args so that only allowed options pass to git config
+      OptionParser.new do |opts|
+        opts.banner = "Usage: repo config name value\n" +
+                      "       repo config --list\n" +
+                      "Options:"
+        opts.on("-l", "--list", "List option pass-through")
+        begin
+          opts.parse(args)
+        rescue OptionParser::InvalidOption => e
+          puts "config error: #{e}"
+          puts opts
+          exit 1
+        end
+      end
+
+      args = ['--list'] if args.empty?
+      filters = ['.*']
 
       repos(filters).each do |repo|
 
@@ -111,7 +126,7 @@ module Repoman
             puts ": #{repo.path}"
             options = {:raise => true}
             begin
-              output = repo.repo.git.config(options, config_args.split(' '))
+              output = repo.repo.git.config(options, args)
             rescue Grit::Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err

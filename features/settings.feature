@@ -26,6 +26,14 @@ Feature: Configuration via yaml file
       config file: config.conf
       """
 
+  Scenario: Specified config file option but not given on command line
+    When I run "repo path --verbose --config"
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      missing argument: --config
+      """
+
   Scenario: Specified config file not found
     When I run "repo path --verbose --config config.conf"
     Then the exit status should be 1
