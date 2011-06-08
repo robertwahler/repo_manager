@@ -128,4 +128,4 @@ else
 end
 
 app = Repoman::App.new(FileUtils.pwd, argv, options)
-app.run
+app.execute

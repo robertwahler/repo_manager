@@ -25,7 +25,7 @@ module Repoman
       $stdout.sync = true
     end
 
-    def run
+    def execute
       begin
 
         if action_argument_required?
@@ -89,6 +89,8 @@ module Repoman
       case action
         when 'config'
           config(['--help'])
+        when 'init'
+          init(['--help'])
         else
           puts 'no help available for action'
           exit(0)
