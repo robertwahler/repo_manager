@@ -50,7 +50,7 @@ def run(cmd)
     if $c
       print $c.cyan, cmd, $c.clear, "\n"
     else
-      puts cmd 
+      puts cmd
     end
 
     exec(cmd)
@@ -124,7 +124,7 @@ prompt
 # --------------------------------------------------
 # Watchr Rules
 # --------------------------------------------------
-watch( '^features/(.*)\.feature'   )   { run_default_cucumber }
+watch( '^features/(.*)\.feature'   )   { |m| run_feature(m[0]) }
 
 watch( '^bin/(.*)'   )   { run_default_cucumber }
 watch( '^lib/(.*)'   )   { run_default_cucumber }

@@ -8,7 +8,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[list path status config]
+  AVAILABLE_ACTIONS = %w[help list path status config]
 
   class App
 
@@ -71,6 +71,30 @@ module Repoman
       end
     end
 
+    def help(args)
+      action = args.shift
+
+      unless action
+        puts 'no action specified'
+        puts 'Usage: repo help action'
+        exit(0)
+      end
+
+      action = action.downcase
+      unless AVAILABLE_ACTIONS.include?(action)
+        puts "invalid action: #{action}"
+        exit(0)
+      end
+
+      case action
+        when 'config'
+          config(['--help'])
+        else
+          puts 'no help available for action'
+          exit(0)
+      end
+    end
+
     # 'git config' pass through
     #
     # arg[0] contains the commandline to pass to 'git config', remaining
@@ -90,9 +114,9 @@ module Repoman
 
       # optparse on args so that only allowed options pass to git config
       OptionParser.new do |opts|
-        opts.banner = "Usage: repo config name value\n" +
+        opts.banner = "Usage: repo config section.name value\n" +
                       "       repo config --list\n" +
-                      "Options:"
+                      "Allowed pass-through options:"
         opts.on("-l", "--list", "List all variables set in config file")
         begin
           opts.parse(args)
