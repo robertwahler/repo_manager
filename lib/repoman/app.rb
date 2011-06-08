@@ -8,7 +8,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[help list path status config]
+  AVAILABLE_ACTIONS = %w[help list path init status config]
 
   class App
 
@@ -95,10 +95,78 @@ module Repoman
       end
     end
 
-    # 'git config' pass through
+    # 'git init' pass through
     #
-    # arg[0] contains the commandline to pass to 'git config', remaining
-    # @argv, if any, assumed to be filters.
+    # Running git init in an existing repository is safe.
+    #
+    # examples:
+    #
+    #   repo init
+    #   repo init --filter=test
+    #
+    # @return [Numeric] pass through of 'git init' result code
+    def init(args)
+      #Grit.debug = true
+      st = 0
+      result = 0
+
+      # optparse on args so that only allowed options pass to git config
+      OptionParser.new do |opts|
+        opts.banner = "Usage: repo init\n" +
+                      "       repo init --quiet\n" +
+                      "Allowed pass-through options:"
+        opts.on("-q", "--quiet", "Only print error and warning messages, all other output will be suppressed")
+        begin
+          opts.parse(args)
+        rescue OptionParser::InvalidOption => e
+          puts "config error: #{e}"
+          puts opts
+          exit 1
+        end
+      end
+
+      filters = @options[:filter] || []
+
+      repos(filters).each do |repo|
+
+        begin
+          st = repo.status.bitfield
+        rescue InvalidRepositoryError => e
+          st = 0 #Status::INVALID
+        rescue NoSuchPathError => e
+          st = Status::NOPATH
+        end
+
+        result |= st unless (st == 0)
+
+        case st
+          when (Status::NOPATH)
+            print repo.name.red
+            print ": #{repo.path}"
+            puts " [no such path]"
+          else
+            print repo.name.green
+            puts ": #{repo.path}"
+            options = {:raise => true}
+            begin
+              git = Grit::Git.new(File.join(repo.path, '.git'))
+              output = git.init(options, args)
+              if repo.attributes.include?(:remotes)
+                repo.attributes[:remotes].each do |key, value|
+                  output += git.remote(options, ['add', key.to_s, value.to_s])
+                end
+              end
+            rescue Grit::Git::CommandFailed => e
+              result |= e.exitstatus
+              output = e.err
+            end
+            puts output
+        end
+      end
+      result
+    end
+
+    # 'git config' pass through
     #
     # examples:
     #

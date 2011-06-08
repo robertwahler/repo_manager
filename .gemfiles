@@ -14,6 +14,7 @@ bin/repo
 config/cucumber.yml
 features/bin.feature
 features/config.feature
+features/help.feature
 features/list.feature
 features/path.feature
 features/settings.feature
