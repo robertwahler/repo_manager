@@ -18,6 +18,7 @@ features/help.feature
 features/init.feature
 features/list.feature
 features/path.feature
+features/run.feature
 features/settings.feature
 features/status.feature
 features/step_definitions/.gitignore
