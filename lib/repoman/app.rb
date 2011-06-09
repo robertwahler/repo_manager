@@ -8,7 +8,13 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[help list path init status config run]
+  AVAILABLE_ACTIONS = %w[help list path init status config git]
+
+  # these commands don't need to have the 'git' arg precede them
+  GIT_NATIVE_SUPPORT = %w[add branch checkout commit diff fetch
+                          grep log merge mv pull push rm show tag
+                          gc remote ls-files cat-file diff-files
+                          diff-index]
 
   class App
 
@@ -30,6 +36,14 @@ module Repoman
 
         if action_argument_required?
           action = @argv.shift
+          args = @argv
+
+          # push action back to args if this is a native pass-through command
+          if GIT_NATIVE_SUPPORT.include?(action)
+            args.unshift(action)
+            action = 'git'
+          end
+
           unless AVAILABLE_ACTIONS.include?(action)
             if action.nil?
               puts "repo action required"
@@ -39,7 +53,6 @@ module Repoman
             puts "repo --help for more information"
             exit 1
           end
-          args = @argv
           puts "repo run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
           result = send(action, args)
@@ -104,16 +117,16 @@ module Repoman
     #
     # examples:
     #
-    #   repo run ls-files
-    #   repo run git ls-files
+    #   repo ls-files
+    #   repo git ls-files
     #
-    #   repo run add .
-    #   repo run add . --filter=test
-    #   repo run git add . --filter=test
+    #   repo add .
+    #   repo add . --filter=test
+    #   repo git add . --filter=test
     #
     #
     # @return [Numeric] pass through of 'git init' result code
-    def run(args)
+    def git(args)
       #Grit.debug = true
       raise "no git command given" if args.empty?
 
@@ -181,6 +194,8 @@ module Repoman
       OptionParser.new do |opts|
         opts.banner = "Usage: repo init\n" +
                       "       repo init --quiet\n" +
+                      "n" +
+                      "Run 'repo git init' to pass through all options to the native version t\n" +
                       "Allowed pass-through options:"
         opts.on("-q", "--quiet", "Only print error and warning messages, all other output will be suppressed")
         begin
@@ -252,6 +267,8 @@ module Repoman
       OptionParser.new do |opts|
         opts.banner = "Usage: repo config section.name value\n" +
                       "       repo config --list\n" +
+                      "n" +
+                      "Run 'repo git config' to pass through all options to the native version t\n" +
                       "Allowed pass-through options:"
         opts.on("-l", "--list", "List all variables set in config file")
         begin

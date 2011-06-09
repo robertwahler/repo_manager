@@ -1,11 +1,13 @@
 TODO
 ====
 
-* add back dry-run option when adding features that can be destructive, i.e. commit, pull, copy, add, ...
+* add dry-run option when adding features that can be destructive, i.e. commit, pull, copy, add, ...
 * remove configatron usage from app.rb, put repos in @options hash
-* status should show summary
+* status should show summary at the end
 * move --short and --untracked option processing to app.status and provide help
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
+* remove unhelpful config command, use native instead
+* verify relative and absolute paths both work with all config file locations
 
 subcommands
 ----------
