@@ -127,7 +127,6 @@ module Repoman
     #
     # @return [Numeric] pass through of 'git init' result code
     def git(args)
-      #Grit.debug = true
       raise "no git command given" if args.empty?
 
       # the first arg is optionally 'git'
@@ -158,14 +157,14 @@ module Repoman
           else
             print repo.name.green
             puts ": #{repo.path}"
-            options = {:raise => true}
             output = ''
             begin
-              Dir.chdir(repo.fullpath) do
-                git = Grit::Git.new(File.join(repo.fullpath, '.git'))
-                output = git.native(command, options, args)
-              end
-            rescue Grit::Git::CommandFailed => e
+              #Dir.chdir(repo.fullpath) do
+                git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
+                #git = Git::open(repo.fullpath)
+                output = git.native(command, args)
+              #end
+            rescue Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err
             end
@@ -186,7 +185,6 @@ module Repoman
     #
     # @return [Numeric] pass through of 'git init' result code
     def init(args)
-      #Grit.debug = true
       st = 0
       result = 0
 
@@ -229,17 +227,16 @@ module Repoman
           else
             print repo.name.green
             puts ": #{repo.path}"
-            options = {:raise => true}
             output = ''
             begin
-              git = Grit::Git.new(File.join(repo.path, '.git'))
-              output = git.init(options, args)
+              git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
+              output = git.native('init', args)
               if repo.attributes.include?(:remotes)
                 repo.attributes[:remotes].each do |key, value|
-                  output += git.remote(options, ['add', key.to_s, value.to_s])
+                  output += git.native('remote', ['add', key.to_s, value.to_s])
                 end
               end
-            rescue Grit::Git::CommandFailed => e
+            rescue Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err
             end
@@ -259,7 +256,6 @@ module Repoman
     #
     # @return [Numeric] pass through of 'git config' result code
     def config(args)
-      #Grit.debug = true
       st = 0
       result = 0
 
@@ -301,10 +297,9 @@ module Repoman
           else
             print repo.name.green
             puts ": #{repo.path}"
-            options = {:raise => true}
             begin
-              output = repo.repo.git.config(options, args)
-            rescue Grit::Git::CommandFailed => e
+              output = repo.repo.lib.native('config', args)
+            rescue Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err
             end
@@ -476,7 +471,7 @@ module Repoman
         attributes = attributes.merge(repo_config[name.to_sym]) if repo_config[name.to_sym]
         path = attributes[:path]
         if filters.find {|filter| name.match(/#{filter}/)}
-          result << Repo.new(path, attributes.dup)
+          result << Repoman::Repo.new(path, attributes.dup)
         end
       end
       result

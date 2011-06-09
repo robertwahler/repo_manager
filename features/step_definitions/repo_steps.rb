@@ -1,4 +1,4 @@
-require 'grit'
+require 'git'
 require 'fileutils'
 
 def in_path(path, &block)
@@ -11,39 +11,33 @@ end
 
 def repo_init(folder)
   create_dir(folder)
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
+  repo_path = fullpath(folder)
+  repo = Git.init(repo_path)
 end
 
 def repo_add_all(folder)
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
-
-  # grit commands must be done in the repo working folder
+  repo_path = fullpath(folder)
+  repo = Git.init(repo_path)
   in_path(repo_path) do
     repo.add('.').should be_true
   end
 end
 
 def repo_add_file(filename, folder)
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
-
-  # grit commands must be done in the repo working folder
-  in_path(repo_path) do
-    repo.add(filename).should be_true
-  end
+  repo_path = fullpath(folder)
+  repo = Git.init(repo_path)
+  repo.add(filename).should be_true
 end
 
 def repo_commit_all(folder)
-  repo_path = File.join(current_dir, folder)
-  repo = Grit::Repo.init(repo_path)
+  repo_path = fullpath(folder)
+  repo = Git.init(repo_path)
 
-  # grit commands must be done in the repo working folder
-  in_path(repo_path) do
+  # git commands must be done in the repo working folder
+  #in_path(repo_path) do
     # commit
     repo.commit_all("cucumber commit").should be_true
-  end
+  #end
 end
 
 def repo_file_exists?(folder, filename)

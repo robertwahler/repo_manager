@@ -37,11 +37,11 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
   s.add_dependency 'configatron', '>= 2.5.1'
-  s.add_dependency 'grit', '= 2.4.1'
+  s.add_dependency 'git', '= 1.2.5'
 
   s.add_development_dependency "bundler", ">= 1.0.7"
   s.add_development_dependency "rspec", "= 1.3.1"
-  s.add_development_dependency "cucumber", ">= 0.9.4"
+  s.add_development_dependency "cucumber", "= 0.9.4"
   s.add_development_dependency "aruba", "= 0.2.2"
   s.add_development_dependency "rake", ">= 0.8.7"
   s.add_development_dependency "yard", ">= 0.6.2"

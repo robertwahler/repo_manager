@@ -6,4 +6,5 @@ module Repoman
   class NoSuchPathError < StandardError
   end
 
+
 end

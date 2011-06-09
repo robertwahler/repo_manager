@@ -8,6 +8,8 @@ TODO
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
 * remove unhelpful config command, use native instead
 * verify relative and absolute paths both work with all config file locations
+* remove dependency on ruby-git since we are only using native git calls now
+* remove gemfiles, not helpful
 
 subcommands
 ----------

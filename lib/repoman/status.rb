@@ -1,15 +1,15 @@
-require 'grit'
+require 'git'
 
 module Repoman
 
-  # Simplified version of Grit's Status class that uses Git porcelain commands.
+  # Simplified version of ruby-git's class that uses Git porcelain commands.
   #
   # Porcelain commands are useful since they handle ignored files and ignore
   # non-commitable changes.  Speed is not a big concern.  There is only one
   # call needed to the Git binary. No plumbing commands are used.
   class Status
     include Enumerable
-    
+
     # repo status unchanged/clean
     CLEAN = 0
 
@@ -26,7 +26,7 @@ module Repoman
     def initialize(repo)
       @files = {}
       @repo = repo
-      Dir.chdir(@repo.working_dir) do
+      Dir.chdir(@repo.dir.path) do
         construct_status
       end
     end
@@ -55,7 +55,7 @@ module Repoman
     def untracked
       @files.select { |k, f| f.type == '?' }
     end
-    
+
     # @return [Boolean] false unless a file has been modified/changed
     def changed?
       !changed.empty?
@@ -102,7 +102,7 @@ module Repoman
         # Y = working tree
         #
         # From git 1.7+ documentation
-        #   
+        #
         #   X          Y     Meaning
         #   -------------------------------------------------
         #             [MD]   not updated
@@ -127,13 +127,13 @@ module Repoman
         #   -------------------------------------------------
         #
         #
-        # simplify:  
+        # simplify:
         #   combine X and Y and boil down status returns to just four types,
         #   M ? A D
         #
         # example output:
         # output = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
-        output = @repo.git.status({}, '--porcelain', '-z').split("\000")
+        output = @repo.lib.native('status', ['--porcelain', '-z']).split("\000")
         while line = output.shift
           file_hash = nil
           st, filename = line.split(" ")

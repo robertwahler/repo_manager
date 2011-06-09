@@ -12,7 +12,7 @@ The following gems are required
 
 * Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
 * Configatron for configuration support <http://github.com/markbates/configatron>
-* Grit for git repository support <http://github.com/mojombo/grit>
+* Ruby-git for git repository support <http://github.com/schacon/ruby-git>
 
 
 Development dependencies
