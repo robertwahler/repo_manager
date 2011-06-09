@@ -42,7 +42,7 @@ options = {}
 optparser = OptionParser.new do |opts|
   opts.banner = help
 
-  opts.on("--filter f1,f2,f3", Array, "List of Regex repository names filters") do |list|
+  opts.on("--repos f1,f2,f3", "--filter f1,f2,f3", Array, "List of Regex repository name filters") do |list|
     options[:filter] = list
   end
 

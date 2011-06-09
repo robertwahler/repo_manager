@@ -1,9 +1,18 @@
 @announce
 Feature: Listing repo path information
 
-  As an interactive user or automated script
-  The application should show the repository path
-  to stdout so that it can be used for scripting
+  As an interactive user or automated script, the application should show the
+  repository path defined in the config file to stdout so that it can be used
+  for scripting.
+
+  Example: chdir to the path of the repo named "my_repo_name"
+
+    cd $(repo path my_repo_name)
+
+  Example: chdir to the path of the repo named "my_repo_name"
+
+    cd $(repo path --filter=my_repo_name)
+
 
   Background: A valid config file
     Given a file named "repo.conf" with:
@@ -52,6 +61,13 @@ Feature: Listing repo path information
 
   Scenario: Multiple filters delimited. Regex allowed on each filter separately
     When I run "repo path --filter=test1,t...2,t...3"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
+      """
+    When I run "repo path --repos=test1,t...2,t...3"
     Then the exit status should be 0
     And the output should contain:
       """
