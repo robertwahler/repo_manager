@@ -12,7 +12,7 @@ module Aruba
     def run(cmd, fail_on_error=true)
 
       # run development version in verbose mode
-      cmd = cmd.gsub(/^repo/, "#{APP_BIN_PATH} --verbose")
+      cmd = cmd.gsub(/^repo/, "ruby -S #{APP_BIN_PATH} --verbose")
 
       # run original aruba 'run'
       old_run(cmd, fail_on_error)
