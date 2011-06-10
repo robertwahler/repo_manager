@@ -3,7 +3,7 @@ Repoman
 
 CLI for batch management of multiple Git repositories.  Repositories don't
 need to be related.
-<http://github.com/robertwahler/repoman>
+<https://github.com/robertwahler/repoman>
 
 
 Run-time dependencies
@@ -40,6 +40,22 @@ rake -T
     rake spec          # Run specs
     rake test          # Run specs and features
 
+
+Development Environment
+-----------------------
+
+all systems
+
+    cd ~/workspace
+    git clone https://github.com/robertwahler/repoman
+    cd repoman
+
+    gem bundle install
+    bundle install
+
+colored output on windows
+
+    gem install win32console
 
 Autotesting with Watchr
 -------------------------
