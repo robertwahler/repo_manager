@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Repoman  do
-  
+
   before(:each) do
     @filename = 'input.txt'
     create_file(@filename, "the quick brown fox")
