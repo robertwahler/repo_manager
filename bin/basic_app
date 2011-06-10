@@ -20,7 +20,7 @@ help = banner
 help += <<HELP
 
 Options:
- 
+
 HELP
 
 options = {}
@@ -49,7 +49,7 @@ OptionParser.new do |opts|
   end
 
   opts.on("--config FILE", "Load configuration options from FILE") do |file|
-    options[:config] = file 
+    options[:config] = file
   end
 
   # no argument, shows at tail.  This will print an options summary.
@@ -57,7 +57,7 @@ OptionParser.new do |opts|
     puts opts
     exit 0
   end
-  
+
   begin
     opts.parse!
   rescue OptionParser::InvalidOption => e

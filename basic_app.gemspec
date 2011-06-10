@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   end
 
   s.name        = "basic_app"
-  s.version     = File.open(File.join(File.dirname(__FILE__), 'VERSION'), "r") { |f| f.read } 
+  s.version     = File.open(File.join(File.dirname(__FILE__), 'VERSION'), "r") { |f| f.read }
   s.platform    = Gem::Platform::RUBY
   s.authors     = []
   s.email       = []
@@ -52,9 +52,9 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.has_rdoc = 'yard'
-  s.rdoc_options     = [ 
-                         '--title', 'BasicApp Documentation', 
-                         '--main', 'README.markdown', 
+  s.rdoc_options     = [
+                         '--title', 'BasicApp Documentation',
+                         '--main', 'README.markdown',
                          '--line-numbers',
                          '--inline-source'
                        ]
