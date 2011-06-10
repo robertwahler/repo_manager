@@ -26,9 +26,7 @@ module Repoman
     def initialize(repo)
       @files = {}
       @repo = repo
-      Dir.chdir(@repo.dir.path) do
-        construct_status
-      end
+      construct_status
     end
 
     # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED

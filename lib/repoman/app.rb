@@ -159,11 +159,8 @@ module Repoman
             puts ": #{repo.path}"
             output = ''
             begin
-              #Dir.chdir(repo.fullpath) do
-                git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
-                #git = Git::open(repo.fullpath)
-                output = git.native(command, args)
-              #end
+              git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
+              output = git.native(command, args)
             rescue Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err
