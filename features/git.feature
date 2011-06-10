@@ -123,7 +123,7 @@ Feature: Running an arbitrary git command
       test1: test_path_1
 
       test2: test_path_2
-      fatal: Not a git repository:
+      fatal: Not a git repository
       """
 
   Scenario: Run Repoman status command on an invalid repo

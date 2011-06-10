@@ -6,7 +6,7 @@ describe Repoman do
     filename = File.expand_path('../../../repoman.gemspec', __FILE__)
     eval(File.read(filename), nil, filename)
   end
-  
+
   describe 'gemspec' do
 
     it "should return the gem VERSION" do
@@ -27,31 +27,19 @@ describe Repoman do
         @gemspec.executables.is_a?(Array).should == true
       end
 
-      describe 'without an existing cache' do
+      describe 'without .gemfiles cache' do
         before(:each) do
           File.stub!('exists?').and_return false
           @gemspec = load_gemspec
         end
 
-        it "should not blow up" do
+        it "should return 'files' from using 'git ls-files" do
+          File.exists?(File.expand_path('../../../.gemfiles', __FILE__)).should == false
           @gemspec.files.is_a?(Array).should == true
           @gemspec.files.include?('VERSION').should == true
         end
-      end
-
-      describe 'without a git repo' do
-        before(:each) do
-          File.stub!('directory?').and_return false
-          @gemspec = load_gemspec
-        end
-
-        it "should return 'files' from cache" do
-          File.directory?(File.expand_path('../../../.git', __FILE__)).should == false
-          @gemspec.files.is_a?(Array).should == true
-          @gemspec.files.include?('VERSION').should == true
-        end
-        it "should return 'executables' from cache"  do
-          File.directory?(File.expand_path('../../../.git', __FILE__)).should == false
+        it "should return 'executables' from 'git ls-files"  do
+          File.exists?(File.expand_path('../../../.gemfiles', __FILE__)).should == false
           @gemspec.executables.is_a?(Array).should == true
         end
       end
@@ -64,12 +52,12 @@ describe Repoman do
         end
 
         it "should return 'files' from cache" do
-          system('git --version').should == false 
+          system('git --version').should == false
           @gemspec.files.is_a?(Array).should == true
           @gemspec.files.include?('VERSION').should == true
         end
         it "should return 'executables' from cache"  do
-          system('git --version').should == false 
+          system('git --version').should == false
           @gemspec.executables.is_a?(Array).should == true
         end
 

@@ -29,6 +29,7 @@ features/support/env.rb
 lib/repoman.rb
 lib/repoman/app.rb
 lib/repoman/errors.rb
+lib/repoman/git/lib.rb
 lib/repoman/repo.rb
 lib/repoman/settings.rb
 lib/repoman/status.rb

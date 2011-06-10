@@ -1,4 +1,4 @@
-require 'grit'
+require 'git'
 require 'pathname'
 
 module Repoman
@@ -32,7 +32,7 @@ module Repoman
       return @repo if @repo
       raise NoSuchPathError unless File.exists?(fullpath)
       raise InvalidRepositoryError unless File.exists?(File.join(fullpath, '.git'))
-      @repo = Grit::Repo.new(fullpath)
+      @repo = Git.open(fullpath)
     end
 
     def fullpath
