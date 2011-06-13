@@ -319,7 +319,11 @@ module Repoman
       filters += @options[:filter] if @options[:filter]
 
       repos(filters).each do |repo|
-        puts repo.path
+        if repo.path && repo.path.match(/ /)
+          puts '"' + repo.path + '"'
+        else
+          puts repo.path
+        end
       end
     end
 

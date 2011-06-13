@@ -8,6 +8,7 @@ Feature: Listing repo path information
   Example: chdir to the path of the repo named "my_repo_name"
 
     cd $(repo path my_repo_name)
+    cd $(repo path my_repo_name)
 
   Example: chdir to the path of the repo named "my_repo_name"
 
@@ -79,5 +80,23 @@ Feature: Listing repo path information
     And the output should contain:
       """
       test_path_1
+      test_path_2
+      """
+
+  Scenario: Folder with spaces should be quoted
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test_path 1
+        test2:
+          path: test_path_2
+      """
+    When I run "repo path"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      "test_path 1"
       test_path_2
       """
