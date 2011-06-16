@@ -1,7 +1,7 @@
 require 'aruba'
 require 'fileutils'
 
-APP_BIN_PATH = File.join(ENV['PWD'], 'bin', 'basic_app')
+APP_BIN_PATH = File.join(FileUtils.pwd, 'bin', 'basic_app')
 
 module Aruba
   module Api
