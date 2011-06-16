@@ -147,8 +147,6 @@ module Repoman
           st = Status::NOPATH
         end
 
-        result |= st unless (st == 0)
-
         case st
           when (Status::NOPATH)
             print repo.name.red
@@ -161,6 +159,7 @@ module Repoman
             begin
               git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
               output = git.native(command, args)
+              result |= $?.exitstatus unless ($?.exitstatus == 0)
             rescue Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err

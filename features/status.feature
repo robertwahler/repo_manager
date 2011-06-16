@@ -189,3 +189,25 @@ Feature: Listing repo path information
              untracked: new_file1.txt
       .
       """
+
+  Scenario: Folders with spaces in path, run 'git ls-files' on each repo
+    Given a repo in folder "test 1/test path 1" with the following:
+      | filename         | status | content  |
+      | .gitignore       | CM     | tmp/*    |
+    And a file named "repo1.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
+      """
+      When I run "repo status --unmodified=DOTS --config=repo1.conf"
+    Then the exit status should be 4
+    And the output should contain:
+      """
+      M    test1: test 1/test path 1
+             modified: .gitignore
+      .
+      """

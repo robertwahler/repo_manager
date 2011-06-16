@@ -85,7 +85,7 @@ Feature: Running an arbitrary git command
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
     When I run "repo git status --porcelain"
-    Then the exit status should be 4
+    Then the exit status should be 0
     And the output should contain:
       """
       test1: test_path_1
@@ -136,13 +136,48 @@ Feature: Running an arbitrary git command
       I    test2: test_path_2 [not a valid repo]
       """
 
-  Scenario: Missing repo folder
+  Scenario: Native and repoman status command missing repo folder has different
+    exit status values
     Given I delete the folder "test_path_2"
     When I run "repo git status --filter=test2 --unmodified DOTS --no-verbose"
-    Then the exit status should be 1
+    Then the exit status should be 0
     And the output should contain exactly:
       """
       test2: test_path_2 [no such path]
 
       """
+    When I run "repo status --filter=test2 --unmodified DOTS --no-verbose"
+    Then the exit status should be 1
 
+
+  Scenario: Folders with spaces in path
+    Given a repo in folder "test 1/test path 1" with the following:
+      | filename         | status | content   |
+      | testfile 1.txt   | CM     | something |
+    And a file named "repo1.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
+      """
+    When I run "repo git ls-files --config repo1.conf"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test1: test 1/test path 1
+      testfile 1.txt
+      test2: test_path_2
+      .gitignore
+      """
+#     When I run "repo git status --config repo1.conf"
+#     Then the exit status should be 0
+#     And the output should contain:
+#       """
+#       test1: test 1/test path 1
+#       .gitignore
+#       test2: test_path_2
+#       .gitignore
+#       """
