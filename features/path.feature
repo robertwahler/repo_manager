@@ -14,6 +14,28 @@ Feature: Listing repo path information
 
     cd $(repo path --filter=my_repo_name)
 
+  Example: chdir to the path of the repo named "my_repo_name" using a Bash
+           function. This handles repo paths that contain spaces.
+
+    .bashrc:
+
+      function rcd(){ cd "$(repo path $@)"; }
+
+    usage:
+
+      rcd my_repo_name
+
+  Example: repo versions of Bash's pushd and popd
+
+    .bashrc:
+
+      function rpushd(){ pushd "$(repo path $@)"; }
+      alias rpopd="popd"
+
+    usage:
+
+      rcd my_repo_name
+
 
   Background: A valid config file
     Given a file named "repo.conf" with:
@@ -83,20 +105,3 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Folder with spaces should be quoted
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path 1
-        test2:
-          path: test_path_2
-      """
-    When I run "repo path"
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      "test_path 1"
-      test_path_2
-      """

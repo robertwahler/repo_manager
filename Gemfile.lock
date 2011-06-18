@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    repoman (0.2.1)
+    repoman (0.2.2)
       configatron (>= 2.5.1)
       git (= 1.2.5)
       term-ansicolor (>= 1.0.4)

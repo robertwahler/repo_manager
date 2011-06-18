@@ -307,22 +307,25 @@ module Repoman
 
     # Show repo working folder path from the config file
     #
-    # @example: chdir to the path of the repo named "my_repo_name"
-    #   cd $(repo path my_repo_name)
-    # @example: chdir to the path of the repo named "my_repo_name"
-    #   cd $(repo path --filter=my_repo_name)
+    # @example: chdir to the path of the repo named "my_repo_name" using Bash function
+    #
+    #     function rcd(){ cd "$(repo path $@)"; }
+    #
+    #     rcd my_repo_name
+    #
+    # @example: repo versions of Bash's pushd and popd
+    #
+    #     function rpushd(){ pushd "$(repo path $@)"; }
+    #     alias rpopd="popd"
+    #
+    #     rcd my_repo_name
     #
     # @return [String] path to repo
     def path(args)
       filters = args.dup
       filters += @options[:filter] if @options[:filter]
-
       repos(filters).each do |repo|
-        if repo.path && repo.path.match(/ /)
-          puts '"' + repo.path + '"'
-        else
-          puts repo.path
-        end
+        puts repo.path
       end
     end
 
