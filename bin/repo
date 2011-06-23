@@ -63,8 +63,13 @@ optparser = OptionParser.new do |opts|
     options[:unmodified].upcase!
   end
 
-  opts.on("-c", "--[no-]coloring", "Ansi color in output") do |c|
-    options[:coloring] = c
+  opts.on("-c", "--[no-]coloring [MODE]", "Ansi color in output. MODE=AUTO (default) or ALWAYS") do |c|
+    options[:coloring] = c.nil? ? "AUTO" : c
+    options[:coloring].upcase! if options[:coloring]
+    unless [nil, false, "AUTO", "ALWAYS"].include?(options[:coloring])
+      puts "invalid color option"
+      exit 1
+    end
   end
 
   opts.on("--version", "Display current version") do
@@ -111,7 +116,7 @@ end
 # options from config file, if it exists, will not overwrite command line
 options = Repoman::Settings.new(FileUtils.pwd, options).options
 
-if STDOUT.isatty
+if STDOUT.isatty || (options[:coloring] == 'ALWAYS')
   Term::ANSIColor::coloring = options[:coloring]
 
   if options[:coloring] && Repoman::WINDOWS

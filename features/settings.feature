@@ -61,6 +61,12 @@ Feature: Configuration via yaml file
       options:
         coloring: true
       """
+    And a file named "repo_with_always_coloring.conf" with:
+      """
+      ---
+      options:
+        coloring: ALWAYS
+      """
     When I run "repo path --verbose --config repo_no_coloring.conf"
     Then the output should contain:
       """
@@ -69,7 +75,7 @@ Feature: Configuration via yaml file
     When I run "repo path --verbose --config repo_no_coloring.conf --coloring"
     Then the output should contain:
       """
-      :coloring=>true
+      :coloring=>"AUTO"
       """
     When I run "repo path --verbose --config repo_with_coloring.conf"
     Then the output should contain:
@@ -80,6 +86,11 @@ Feature: Configuration via yaml file
     Then the output should contain:
       """
       :coloring=>false
+      """
+    When I run "repo path --verbose --config repo_with_always_coloring.conf"
+    Then the output should contain:
+      """
+      :coloring=>"ALWAYS"
       """
 
   Scenario: Reading default valid config files ordered by priority.
