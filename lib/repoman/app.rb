@@ -4,6 +4,12 @@ require 'optparse'
 
 class String
   include Term::ANSIColor
+
+  # used for HERE docs, strips the leading whitespace based on the
+  # whitespace in the first line
+  def unindent
+    gsub /^#{self[/\A\s*/]}/, ''
+  end
 end
 
 module Repoman
@@ -186,11 +192,15 @@ module Repoman
 
       # optparse on args so that only allowed options pass to git config
       OptionParser.new do |opts|
-        opts.banner = "Usage: repo init\n" +
-                      "       repo init --quiet\n" +
-                      "n" +
-                      "Run 'repo git init' to pass through all options to the native version t\n" +
-                      "Allowed pass-through options:"
+        opts.banner = <<-USAGE.unindent
+                        Usage: repo init
+                               repo init --quiet
+
+                        Run 'repo git init' to pass through all options to the native version
+
+                        Allowed pass-through options:
+                      USAGE
+
         opts.on("-q", "--quiet", "Only print error and warning messages, all other output will be suppressed")
         begin
           opts.parse(args)
@@ -259,8 +269,8 @@ module Repoman
       OptionParser.new do |opts|
         opts.banner = "Usage: repo config section.name value\n" +
                       "       repo config --list\n" +
-                      "n" +
-                      "Run 'repo git config' to pass through all options to the native version t\n" +
+                      "\n" +
+                      "Run 'repo git config' to pass through all options to the native version\n" +
                       "Allowed pass-through options:"
         opts.on("-l", "--list", "List all variables set in config file")
         begin
