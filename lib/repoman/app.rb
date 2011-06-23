@@ -235,7 +235,7 @@ module Repoman
             output = ''
             begin
               git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
-              output = git.native('init', args)
+              output = git.native('init')
               if repo.attributes.include?(:remotes)
                 repo.attributes[:remotes].each do |key, value|
                   output += git.native('remote', ['add', key.to_s, value.to_s])

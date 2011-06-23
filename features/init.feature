@@ -56,7 +56,7 @@ Feature: Initializing a repo
   Scenario: Default options with filtering using ARGV
     Given a directory named "test_path_1"
     And a directory named "test_path_2"
-    When I run "repo init t.st2"
+    When I run "repo init t.st2 repo2 repo4"
     Then the exit status should be 0
     And the output should contain:
       """
