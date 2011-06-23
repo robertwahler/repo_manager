@@ -83,8 +83,8 @@ module Repoman
         exit(e.status)
       rescue Exception => e
         STDERR.puts("repo command failed, error(s) follow")
-        STDERR.puts("Use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts("#{e.message}".red)
+        STDERR.puts("Use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
       end
@@ -190,7 +190,7 @@ module Repoman
       st = 0
       result = 0
 
-      # optparse on args so that only allowed options pass to git config
+      # optparse on args so that only allowed options pass to git
       OptionParser.new do |opts|
         opts.banner = <<-USAGE.unindent
                         Usage: repo init

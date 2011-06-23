@@ -1,7 +1,8 @@
 TODO
 ====
 
-* add dry-run option when adding features that can be destructive, i.e. commit, pull, copy, add, ...
+* add dry-run option when adding features that can be destructive, i.e. commit,
+  pull, copy, add, ...
 * remove configatron usage from app.rb, put repos in @options hash
 * status should show summary at the end
 * move --short and --untracked option processing to app.status and provide help
@@ -11,6 +12,10 @@ TODO
 * remove dependency on ruby-git since we are only using native git calls now
 * add alias examples: rpushd, rpopd, rcd
 * add logger
+* init and status are repoman commands, pass through args as filters.  Use  git
+  native if additional options are needed.
+* validate git native args.  Make sure they don't look like repos by comparing
+  each arg to repo keys, if so bail.  Allow override with an -f --force option.
 
 subcommands
 ----------
