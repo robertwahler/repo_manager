@@ -7,7 +7,13 @@ Feature: Initializing a repo
   Example usage:
 
     repo init
+    repo init test1 test2
+
+  These are the same:
+
     repo init --filter=t.*
+    repo init --repos=t.*
+    repo init t.*
 
   Background: A valid config file
     Given a file named "repo.conf" with:
@@ -33,10 +39,24 @@ Feature: Initializing a repo
       | test_path_1/.git/config |
       | test_path_2/.git/config |
 
-  Scenario: Default options with filtering
+  Scenario: Default options with filtering using '--filter'
     Given a directory named "test_path_1"
     And a directory named "test_path_2"
     When I run "repo init --filter=t.st2"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      Initialized empty Git repository
+      """
+    And the following files should exist:
+      | test_path_2/.git/config |
+    And the following files should not exist:
+      | test_path_1/.git/config |
+
+  Scenario: Default options with filtering using ARGV
+    Given a directory named "test_path_1"
+    And a directory named "test_path_2"
+    When I run "repo init t.st2"
     Then the exit status should be 0
     And the output should contain:
       """

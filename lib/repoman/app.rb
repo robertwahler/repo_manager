@@ -194,14 +194,12 @@ module Repoman
       OptionParser.new do |opts|
         opts.banner = <<-USAGE.unindent
                         Usage: repo init
-                               repo init --quiet
+                               repo init repo1 repo1
+                               repo init --filter=repo1,repo1
+                               repo init --filter=repo.
 
-                        Run 'repo git init' to pass through all options to the native version
-
-                        Allowed pass-through options:
+                        Run 'repo git init' instead to pass through all options to the native version
                       USAGE
-
-        opts.on("-q", "--quiet", "Only print error and warning messages, all other output will be suppressed")
         begin
           opts.parse(args)
         rescue OptionParser::InvalidOption => e
@@ -211,7 +209,8 @@ module Repoman
         end
       end
 
-      filters = @options[:filter] || []
+      filters = args.dup
+      filters += @options[:filter] if @options[:filter]
 
       repos(filters).each do |repo|
 
