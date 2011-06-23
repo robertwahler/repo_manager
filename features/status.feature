@@ -8,8 +8,8 @@ Feature: Listing repo path information
 
     repo status
     repo status --short
-    repo status test2 --unmodified DOTS"
-    repo status test2 --unmodified DOTS"
+    repo status repo1 --unmodified DOTS
+    repo status repo1 repo2 --unmodified DOTS
 
   Equivalent filtering:
 

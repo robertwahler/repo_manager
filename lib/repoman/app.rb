@@ -424,7 +424,7 @@ module Repoman
 
             # print MUAD status letters
             print (st & Status::CHANGED == Status::CHANGED) ? "M".red : " "
-            print (st & Status::UNTRACKED == Status::UNTRACKED) ? "?".blue : " "
+            print (st & Status::UNTRACKED == Status::UNTRACKED) ? "?".blue.bold : " "
             print (st & Status::ADDED == Status::ADDED) ? "A".green : " "
             print (st & Status::DELETED == Status::DELETED) ? "D".yellow : " "
 
@@ -437,9 +437,9 @@ module Repoman
                 puts "       modified: #{f.path}".red
               end
 
-              # untracked (?.blue)
+              # untracked (?.blue.bold)
               repo.status.untracked.sort.each do |k, f|
-                puts "       untracked: #{f.path}".blue
+                puts "       untracked: #{f.path}".blue.bold
               end
 
               # added (A.green)
