@@ -7,34 +7,52 @@ Feature: Listing repo path information
 
   Example: chdir to the path of the repo named "my_repo_name"
 
-    cd $(repo path my_repo_name)
-    cd $(repo path my_repo_name)
+      cd $(repo path my_repo_name)
+      cd $(repo path my_repo_name)
 
   Example: chdir to the path of the repo named "my_repo_name"
 
-    cd $(repo path --filter=my_repo_name)
+      cd $(repo path --filter=my_repo_name)
 
   Example: chdir to the path of the repo named "my_repo_name" using a Bash
            function. This handles repo paths that contain spaces.
 
-    .bashrc:
+    vim ~/.bashrc
 
-      function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
+        function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
 
     usage:
 
-      rcd my_repo_n
+        rcd my_repo_n
 
   Example: repo versions of Bash's pushd and popd
 
-    .bashrc:
+    vim ~/.bashrc
 
-      function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
-      alias rpopd="popd"
+        function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
+        alias rpopd="popd"
 
     usage:
 
-      rpushd my
+        rpushd my
+
+
+  Example: enable bash repo name completion for the rcd and rpushd commands
+
+    vim ~/.bashrc
+
+        function _repo_names()
+        {
+          local cur opts
+          COMPREPLY=()
+          cur="${COMP_WORDS[COMP_CWORD]}"
+          opts=`repo list --listing=name --no-color`
+
+          COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+          return 0
+        }
+        complete -F _repo_names rcd rpushd
+
 
   Background: A valid config file
     Given a file named "repo.conf" with:

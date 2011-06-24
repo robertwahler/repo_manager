@@ -25,6 +25,7 @@ module Repoman
       configatron.options.set_default(:short, false)
       configatron.options.set_default(:unmodified, 'HIDE')
       configatron.options.set_default(:match, 'ALL')
+      configatron.options.set_default(:listing, 'ALL')
 
       # set default config if not given on command line
       config = @options[:config]
@@ -53,6 +54,7 @@ module Repoman
       @options[:short] = configatron.options.short unless @options.include?(:short)
       @options[:unmodified] = configatron.options.unmodified unless @options.include?(:unmodified)
       @options[:match] = configatron.options.match unless @options.include?(:match)
+      @options[:listing] = configatron.options.listing unless @options.include?(:listing)
 
     end
 
