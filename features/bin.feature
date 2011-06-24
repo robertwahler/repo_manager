@@ -18,10 +18,6 @@ Feature: Options via a command line interface (CLI)
       """
       .*
         Usage: .*
-      .*
-      Options:
-      .*
-          -v, --\[no-\]verbose               Run verbosely
       """
 
   Scenario: Invalid option

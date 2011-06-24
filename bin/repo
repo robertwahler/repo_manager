@@ -12,12 +12,17 @@ available_actions = Repoman::AVAILABLE_ACTIONS
 banner = <<BANNER
 repo: CLI for batch management of multiple Git repositories
 
-  Usage: repo [options] action [action pass-through arguments] [options]
+  Usage: repo [options] action [filters|action pass-through options] [options]
 BANNER
 banner << "\nActions: #{available_actions.join(' ')}\n" unless available_actions.empty?
 
 help = banner
 help += <<HELP
+
+Use 'repo help' for help on actions.
+
+  repo help init
+  repo help git
 
 Examples:
 
@@ -29,10 +34,11 @@ Examples:
 
   repo --verbose --no-color config --list --filter=my_repo1,my_repo2
   repo --verbose --no-color config core.autocrlf true filter=my.*
+  repo --verbose --no-color git config --list
   repo --verbose --no-color config --list
-  repo config
 
-Options:
+General options:
+(use 'repo help action' for action options)
 
 HELP
 
@@ -63,7 +69,7 @@ optparser = OptionParser.new do |opts|
     options[:unmodified].upcase!
   end
 
-  opts.on("-c", "--[no-]coloring [MODE]", "Ansi color in output. MODE=AUTO (default) or ALWAYS") do |c|
+  opts.on("-c", "--[no-]coloring [MODE]", "ANSI color in output. MODE=AUTO (default) or ALWAYS") do |c|
     options[:coloring] = c.nil? ? "AUTO" : c
     options[:coloring].upcase! if options[:coloring]
     unless [nil, false, "AUTO", "ALWAYS"].include?(options[:coloring])

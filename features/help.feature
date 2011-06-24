@@ -2,13 +2,12 @@
 Feature: Show help on pass-through command/action options
 
   The application should detail which Git command options
-  are available as pass-options.
+  are available as pass-through options.
 
   Example usage:
 
-    repo help config
     repo help init
-    repo help push
+    repo help git
 
   Scenario: Valid command, help available
     When I run "repo help init"

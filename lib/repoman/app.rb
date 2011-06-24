@@ -106,13 +106,12 @@ module Repoman
       end
 
       case action
-        when 'config'
-          config(['--help'])
+        # TODO: Simplify, use: send(action, ['--help'])
         when 'init'
           init(['--help'])
-        when 'run'
+        when 'git'
           puts 'Run git with any git subcommands and options'
-          puts 'Usage: repo [options] run args'
+          puts 'Usage: repo [options] git args'
         else
           puts 'no help available for action'
       end
@@ -203,7 +202,7 @@ module Repoman
         begin
           opts.parse(args)
         rescue OptionParser::InvalidOption => e
-          puts "config error: #{e}"
+          puts "option error: #{e}"
           puts opts
           exit 1
         end

@@ -23,7 +23,7 @@ Feature: Listing repo path information
 
     usage:
 
-      rcd my_repo_name
+      rcd my_repo_n
 
   Example: repo versions of Bash's pushd and popd
 
@@ -34,8 +34,7 @@ Feature: Listing repo path information
 
     usage:
 
-      rcd my_repo_name
-
+      rpushd my
 
   Background: A valid config file
     Given a file named "repo.conf" with:

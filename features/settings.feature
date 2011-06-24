@@ -10,9 +10,9 @@ Feature: Configuration via yaml file
   ["./repo.conf", "./.repo.conf", "./config/repo.conf", "~/.repo.conf"]
 
   All command line options can be read from the config file from the "options:"
-  block. This options block is optional.  The "repos" block describes the repo
-  names and attributes.  The repos block is required.  Commands the operate on
-  repos will fail if the repos block is invalid or missing.
+  block. The "options" block is optional.  The "repos" block describes the repo
+  names and attributes.  The "repos" block is required.  Commands that operate
+  on repos will fail if the repos block is invalid or missing.
 
   NOTE: All file system testing is done via the Aruba gem.  The home folder
   config file is stubbed to prevent testing contamination in case it exists.
