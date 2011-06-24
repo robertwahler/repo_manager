@@ -94,8 +94,11 @@ module Repoman
       action = args.shift
 
       unless action
-        puts 'no action specified'
-        puts 'Usage: repo help action'
+        puts "no action specified"
+        puts "Usage: repo help action"
+        puts ""
+        puts "Where 'action' is one of: #{AVAILABLE_ACTIONS.join(' ')}"
+
         exit(0)
       end
 
@@ -106,15 +109,16 @@ module Repoman
       end
 
       case action
-        # TODO: Simplify, use: send(action, ['--help'])
-        when 'init'
-          init(['--help'])
+        when 'help'
+          puts "Provide help for an action"
+          puts "Usage: repo help [action]"
         when 'git'
-          puts 'Run git with any git subcommands and options'
-          puts 'Usage: repo [options] git args'
+          puts "Run git with any git subcommands and options"
+          puts "Usage: repo [options] git args [options]"
         else
-          puts 'no help available for action'
+          send(action, ['--help'])
       end
+
       exit(0)
     end
 
@@ -267,6 +271,36 @@ module Repoman
     #
     # @return [String] path to repo
     def path(args)
+
+      OptionParser.new do |opts|
+        opts.banner = <<-USAGE.unindent
+                        Show repo working folder path from the config file
+
+                        Usage: repo path
+
+                        Example: Create an 'alias' named 'rcd' to chdir to the path of the repo
+                                 named "my_repo_name" using a Bash function 'rcd()'
+
+                            function rcd(){ cd "$(repo path $@)"; }
+
+                            rcd my_repo_name
+
+                        Example: repo versions of Bash's pushd and popd
+
+                            function rpushd(){ pushd "$(repo path $@)"; }
+                            alias rpopd="popd"
+
+                            rcd my_repo_name
+                      USAGE
+        begin
+          opts.parse!(args)
+        rescue OptionParser::InvalidOption => e
+          puts "option error: #{e}"
+          puts opts
+          exit 1
+        end
+      end
+
       filters = args.dup
       filters += @options[:filter] if @options[:filter]
       repos(filters).each do |repo|
@@ -276,6 +310,41 @@ module Repoman
 
     # List repo info from the config file
     def list(args)
+
+      OptionParser.new do |opts|
+        opts.banner = <<-USAGE.unindent
+                        List repository information contained in the configuration file to STDOUT.
+                        The actual repositories are not validated.  The list command operates only
+                        on the config file.
+
+                        Usage: repo list
+
+                        Examples:
+
+                          repo list
+                          repo list --short
+
+                        Equivalent filtering:
+
+                          repo list --filter=test1
+                          repo list test1
+
+                        Options:
+                      USAGE
+
+        opts.on("--short", "Run listing commands in brief mode") do |s|
+          @options[:short] = s
+        end
+
+        begin
+          opts.parse!(args)
+        rescue OptionParser::InvalidOption => e
+          puts "option error: #{e}"
+          puts opts
+          exit 1
+        end
+      end
+
       filters = args.dup
       filters += @options[:filter] if @options[:filter]
 
@@ -295,7 +364,7 @@ module Repoman
       end
     end
 
-    # Output status of all repos to STDOUT
+    # Output status of repos to STDOUT
     #
     # @example:
     #
@@ -303,6 +372,48 @@ module Repoman
     #
     # @return [Number] bitfield with combined repo status
     def status(args)
+      OptionParser.new do |opts|
+
+        opts.banner = <<-USAGE.unindent
+                        Show summary status of repos
+
+                        Usage: repo status
+
+                        Examples:
+
+                          repo status
+                          repo status --short
+                          repo status repo1 --unmodified DOTS
+                          repo status repo1 repo2 --unmodified DOTS
+
+                        Equivalent filtering:
+
+                          repo status --filter=test2 --unmodified DOTS
+                          repo status test2 --unmodified DOTS"
+
+                        Use git status directly:
+
+                          repo git status
+
+                        Options:
+                      USAGE
+        opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
+          @options[:unmodified] = u || "SHOW"
+          @options[:unmodified].upcase!
+        end
+        opts.on("--short", "Summary status only, do not show individual file status") do |s|
+          @options[:short] = s
+        end
+
+        begin
+          opts.parse!(args)
+        rescue OptionParser::InvalidOption => e
+          puts "option error: #{e}"
+          puts opts
+          exit 1
+        end
+      end
+
       filters = args.dup
       filters += @options[:filter] if @options[:filter]
 
