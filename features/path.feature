@@ -37,7 +37,7 @@ Feature: Listing repo path information
         rpushd my
 
 
-  Example: enable bash repo name completion for the rcd and rpushd commands
+  Example: enable bash repo name completion for the repo, rcd, and rpushd commands
 
     vim ~/.bashrc
 
@@ -51,7 +51,7 @@ Feature: Listing repo path information
           COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
           return 0
         }
-        complete -F _repo_names rcd rpushd
+        complete -F _repo_names rcd rpushd repo
 
 
   Background: A valid config file
