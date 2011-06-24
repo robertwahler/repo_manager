@@ -281,13 +281,13 @@ module Repoman
                         Example: Create an 'alias' named 'rcd' to chdir to the path of the repo
                                  named "my_repo_name" using a Bash function 'rcd()'
 
-                            function rcd(){ cd "$(repo path $@)"; }
+                            function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
 
                             rcd my_repo_name
 
                         Example: repo versions of Bash's pushd and popd
 
-                            function rpushd(){ pushd "$(repo path $@)"; }
+                            function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
                             alias rpopd="popd"
 
                             rcd my_repo_name
@@ -332,8 +332,12 @@ module Repoman
                         Options:
                       USAGE
 
-        opts.on("--short", "Run listing commands in brief mode") do |s|
-          @options[:short] = s
+        opts.on("--listing MODE", "Listing format.  ALL (default) SHORT, NAME, PATH") do |u|
+          @options[:listing] = u || 'ALL'
+          @options[:listing].upcase!
+          unless ["ALL", "SHORT", "NAME", "PATH"].include?(@options[:listing])
+            raise "invalid lising mode '#{@options[:listing]}' for '--listing' option"
+          end
         end
 
         begin
@@ -345,21 +349,27 @@ module Repoman
         end
       end
 
+      listing_mode = @options[:listing] || 'ALL'
       filters = args.dup
       filters += @options[:filter] if @options[:filter]
 
       repos(filters).each do |repo|
-        if @options[:short]
-          print repo.name.green
-          puts ": #{repo.path}"
-        else
-          attributes = repo.attributes.dup
-          base_dir = attributes.delete(:base_dir)
-          name = attributes.delete(:name)
-          print name.green
-          puts ":"
-          puts attributes.to_yaml
-          puts ""
+        case listing_mode
+          when 'SHORT'
+            print repo.name.green
+            puts ": #{repo.path}"
+          when 'NAME'
+            puts repo.name.green
+          when 'PATH'
+            puts repo.path
+          else
+            attributes = repo.attributes.dup
+            base_dir = attributes.delete(:base_dir)
+            name = attributes.delete(:name)
+            print name.green
+            puts ":"
+            puts attributes.to_yaml
+            puts ""
         end
       end
     end

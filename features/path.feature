@@ -19,7 +19,7 @@ Feature: Listing repo path information
 
     .bashrc:
 
-      function rcd(){ cd "$(repo --match=ONE path $@)"; }
+      function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
 
     usage:
 
@@ -29,7 +29,7 @@ Feature: Listing repo path information
 
     .bashrc:
 
-      function rpushd(){ pushd "$(repo path --match=ONE $@)"; }
+      function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
       alias rpopd="popd"
 
     usage:

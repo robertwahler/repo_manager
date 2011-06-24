@@ -8,7 +8,9 @@ Feature: Listing repo information contained in the configuration file
   Example usage:
 
     repo list
-    repo list --short
+    repo list --listing=SHORT
+    repo list --listing=NAME
+    repo list --listing=PATH
 
   Equivalent filtering:
 
@@ -21,16 +23,30 @@ Feature: Listing repo information contained in the configuration file
       ---
       repos:
         test1:
-          path: test1
+          path: test_path_1
         test2:
-          path: test2
+          path: test_path_2
       """
-    When I run "repo list --short"
+    When I run "repo list --listing=SHORT"
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test1
-      test2: test2
+      test1: test_path_1
+      test2: test_path_2
+      """
+    When I run "repo list --listing=NAME"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test1
+      test2
+      """
+    When I run "repo list --listing=PATH"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
       """
 
   Scenario: Missing path defaults to repo name
@@ -42,7 +58,7 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test2
       """
-    When I run "repo list --short"
+    When I run "repo list --listing=SHORT"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -56,7 +72,7 @@ Feature: Listing repo information contained in the configuration file
       ---
       repos:
       """
-    When I run "repo list --short"
+    When I run "repo list --listing=SHORT"
     Then the exit status should be 0
 
   Scenario: Remotes short and long format
@@ -71,14 +87,14 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test2
       """
-    When I run "repo list --filter=test1 --short --no-verbose"
+      When I run "repo list --filter=test1 --listing=SHORT --no-verbose"
     Then the exit status should be 0
     And the output should contain exactly:
       """
       test1: test1
 
       """
-    When I run "repo list test1 --short --no-verbose"
+    When I run "repo list test1 --listing=SHORT --no-verbose"
     Then the output should contain exactly:
       """
       test1: test1
