@@ -18,12 +18,12 @@ module Repoman
 
     # read options for YAML config with ERB processing and initialize configatron
     def configure(options)
-      # set configatron defaults
+
+      # config file options may be blank, give them a default
       configatron.options.set_default(:verbose, false)
       configatron.options.set_default(:coloring, true)
       configatron.options.set_default(:short, false)
       configatron.options.set_default(:unmodified, 'HIDE')
-
 
       # set default config if not given on command line
       config = @options[:config]
@@ -46,7 +46,7 @@ module Repoman
         raise "config file not found" if @options[:config]
       end
 
-      # set options from config file unless already set via command line
+      # the command line options override options read from the config file
       @options[:verbose] = configatron.options.verbose unless @options.include?(:verbose)
       @options[:coloring] = configatron.options.coloring unless @options.include?(:coloring)
       @options[:short] = configatron.options.short unless @options.include?(:short)

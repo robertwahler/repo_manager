@@ -95,7 +95,7 @@ module Repoman
 
       unless action
         puts "no action specified"
-        puts "Usage: repo help action"
+        puts "Usage: repo help action | repo --help"
         puts ""
         puts "Where 'action' is one of: #{AVAILABLE_ACTIONS.join(' ')}"
 

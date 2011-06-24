@@ -32,12 +32,7 @@ end
 def repo_commit_all(folder)
   repo_path = fullpath(folder)
   repo = Git.init(repo_path)
-
-  # git commands must be done in the repo working folder
-  #in_path(repo_path) do
-    # commit
-    repo.commit_all("cucumber commit").should be_true
-  #end
+  repo.commit_all("cucumber commit").should be_true
 end
 
 def repo_file_exists?(folder, filename)
