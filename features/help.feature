@@ -11,11 +11,11 @@ Feature: Show help on pass-through command/action options
     repo help push
 
   Scenario: Valid command, help available
-    When I run "repo help config"
+    When I run "repo help init"
     Then the exit status should be 0
     And the output should contain:
       """
-      Usage: repo config
+      Usage: repo init
       """
 
   Scenario: Valid command, no help available

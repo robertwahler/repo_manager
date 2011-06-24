@@ -14,10 +14,10 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[help list path init status config git]
+  AVAILABLE_ACTIONS = %w[help list path init status git]
 
   # these commands don't need to have the 'git' arg precede them
-  GIT_NATIVE_SUPPORT = %w[add branch checkout commit diff fetch
+  GIT_NATIVE_SUPPORT = %w[add config branch checkout commit diff fetch
                           grep log merge mv pull push rm show tag
                           gc remote ls-files cat-file diff-files
                           diff-index]
@@ -241,69 +241,6 @@ module Repoman
                   output += git.native('remote', ['add', key.to_s, value.to_s])
                 end
               end
-            rescue Git::CommandFailed => e
-              result |= e.exitstatus
-              output = e.err
-            end
-            puts output
-        end
-      end
-      result
-    end
-
-    # 'git config' pass through
-    #
-    # examples:
-    #
-    #   repo config core.autocrlf false --filter=test
-    #   repo config branch.master.remote origin
-    #   repo config branch.master.merge refs/heads/master" --filter=test.*,somerepo1
-    #
-    # @return [Numeric] pass through of 'git config' result code
-    def config(args)
-      st = 0
-      result = 0
-
-      # optparse on args so that only allowed options pass to git config
-      OptionParser.new do |opts|
-        opts.banner = "Usage: repo config section.name value\n" +
-                      "       repo config --list\n" +
-                      "\n" +
-                      "Run 'repo git config' to pass through all options to the native version\n" +
-                      "Allowed pass-through options:"
-        opts.on("-l", "--list", "List all variables set in config file")
-        begin
-          opts.parse(args)
-        rescue OptionParser::InvalidOption => e
-          puts "config error: #{e}"
-          puts opts
-          exit 1
-        end
-      end
-
-      args = ['--list'] if args.empty?
-      filters = @options[:filter] || []
-
-      repos(filters).each do |repo|
-
-        begin
-          st = repo.status.bitfield
-        rescue InvalidRepositoryError, NoSuchPathError => e
-          st = Status::INVALID | Status::NOPATH
-        end
-
-        result |= st unless (st == 0)
-
-        case st
-          when (Status::INVALID | Status::NOPATH)
-            print repo.name.red
-            print ": #{repo.path}"
-            puts " [unable to read repo]"
-          else
-            print repo.name.green
-            puts ": #{repo.path}"
-            begin
-              output = repo.repo.lib.native('config', args)
             rescue Git::CommandFailed => e
               result |= e.exitstatus
               output = e.err
