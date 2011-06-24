@@ -19,7 +19,7 @@ Feature: Listing repo path information
 
     .bashrc:
 
-      function rcd(){ cd "$(repo path $@)"; }
+      function rcd(){ cd "$(repo --match=ONE path $@)"; }
 
     usage:
 
@@ -29,7 +29,7 @@ Feature: Listing repo path information
 
     .bashrc:
 
-      function rpushd(){ pushd "$(repo path $@)"; }
+      function rpushd(){ pushd "$(repo path --match=ONE $@)"; }
       alias rpopd="popd"
 
     usage:
@@ -80,6 +80,27 @@ Feature: Listing repo path information
       """
       test_path_2
       """
+
+  Scenario: Single Filter using --match mode
+    When I run "repo path --filter=test --match ALL"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
+      """
+    When I run "repo path --filter=test --match=FIRST"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      """
+    And the output should not contain:
+      """
+      test_path_2
+      """
+    When I run "repo path --filter=test --match=ONE"
+    Then the exit status should be 1
 
   Scenario: Multiple filters delimited. Regex allowed on each filter separately
     When I run "repo path --filter=test1,t...2,t...3"

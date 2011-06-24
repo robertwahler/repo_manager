@@ -52,6 +52,15 @@ optparser = OptionParser.new do |opts|
     options[:filter] = list
   end
 
+  opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, or ONE (fails if more than 1 match)") do |m|
+    options[:match] = m || "ALL"
+    options[:match].upcase!
+    unless ["ALL", "FIRST", "ONE"].include?(options[:match])
+      puts "invalid match option"
+      exit 1
+    end
+  end
+
   opts.on("--config FILE", "Load configuration options from FILE") do |file|
     options[:config] = file
   end
@@ -59,7 +68,6 @@ optparser = OptionParser.new do |opts|
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
   end
-
 
   opts.on("-c", "--[no-]coloring [MODE]", "ANSI color in output. MODE=AUTO (default) or ALWAYS") do |c|
     options[:coloring] = c.nil? ? "AUTO" : c

@@ -521,6 +521,7 @@ module Repoman
     # @return [Array] of Repo
     def repos(filters=['.*'])
       raise "config file not found" unless @options[:config]
+      match_count = 0
       filters = ['.*'] if filters.empty?
       repo_config = configatron.repos.to_hash
       base_dir = File.dirname(@options[:config])
@@ -531,6 +532,9 @@ module Repoman
         path = attributes[:path]
         if filters.find {|filter| name.match(/#{filter}/)}
           result << Repoman::Repo.new(path, attributes.dup)
+          match_count += 1
+          break if @options[:match] == 'FIRST'
+          raise "match mode = ONE, multiple repos found" if (@options[:match] == 'ONE' && match_count > 1)
         end
       end
       result
