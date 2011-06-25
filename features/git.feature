@@ -29,6 +29,9 @@ Feature: Running an arbitrary git command
       repo git add . --filter=test
       repo git add . --repos=test
 
+    Short formatted log information
+
+      repo git log -1 --pretty=format:"%h committed %cr"
 
   Background: A valid config file
     Given a repo in folder "test_path_1" with the following:
