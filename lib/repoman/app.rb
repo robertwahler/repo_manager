@@ -246,7 +246,7 @@ module Repoman
               end
             rescue Git::CommandFailed => e
               result |= e.exitstatus
-              output = e.err
+              output = e.error
             end
             puts output
         end

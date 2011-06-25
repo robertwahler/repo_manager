@@ -6,7 +6,6 @@ TODO
 * status should show summary at the end
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
 * verify relative and absolute paths both work with all config file locations
-* remove dependency on ruby-git since we are only using native git calls now
 * add logger
 * validate git native args.  Make sure they don't look like repos by comparing
   each arg to repo keys, if so bail.  Allow override with an -f --force option.

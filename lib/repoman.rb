@@ -7,6 +7,11 @@ require 'repoman/settings'
 require 'repoman/status'
 require 'repoman/repo'
 
+lib = Git::Lib.new(nil, nil)
+unless lib.meets_required_version?
+  $stderr.puts "[WARNING] The repoman gem requires git #{lib.required_command_version.join('.')} or later for the status command functionality, but only found #{lib.current_command_version.join('.')}. You should probably upgrade."
+end
+
 # Master namespace
 module Repoman
 

@@ -1,5 +1,3 @@
-require 'git'
-
 module Repoman
 
   # Simplified version of ruby-git's class that uses Git porcelain commands.

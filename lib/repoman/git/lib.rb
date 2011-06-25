@@ -17,8 +17,12 @@ module Git
 
   class Lib
 
+    # need 'git status --porcelain'
+    def required_command_version
+      [1, 7, 0, 0]
+    end
+
     # liberate the ruby-git's private command method with a few tweaks
-    # ala Grit's error handling.
     def native(cmd, opts = [], chdir = true, redirect = '', &block)
       ENV['GIT_DIR'] = @git_dir
       ENV['GIT_INDEX_FILE'] = @git_index_file
@@ -52,4 +56,3 @@ module Git
   end
 
 end
-
