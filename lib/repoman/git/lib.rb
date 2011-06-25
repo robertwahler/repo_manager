@@ -2,22 +2,15 @@ require 'git'
 
 module Git
 
-  # This error class lifted from the Grit gem
-  # Raised when a native git command exits with non-zero.
   class CommandFailed < StandardError
-    # The full git command that failed as a String.
     attr_reader :command
-
-    # The integer exit status.
     attr_reader :exitstatus
+    attr_reader :error
 
-    # Everything output on the command's stderr as a String.
-    attr_reader :err
-
-    def initialize(command, exitstatus, err='')
+    def initialize(command, exitstatus, error='')
       @command = command
       @exitstatus = exitstatus
-      @err = err
+      @error = error
       super "Command exited with #{exitstatus}: #{command}"
     end
   end
