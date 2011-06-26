@@ -22,8 +22,19 @@ module Git
       [1, 7, 0, 0]
     end
 
+    # validatation once and only once with warning to STDERR
+    def validate
+      return if defined? @@validated
+      unless meets_required_version?
+        $stderr.puts "[WARNING] The repoman gem requires git #{required_command_version.join('.')} or later for the status command functionality, but only found #{current_command_version.join('.')}. You should probably upgrade."
+      end
+      @@validated = true
+    end
+
     # liberate the ruby-git's private command method with a few tweaks
     def native(cmd, opts = [], chdir = true, redirect = '', &block)
+      validate
+
       ENV['GIT_DIR'] = @git_dir
       ENV['GIT_INDEX_FILE'] = @git_index_file
       ENV['GIT_WORK_TREE'] = @git_work_dir

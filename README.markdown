@@ -5,6 +5,27 @@ CLI for batch management of multiple Git repositories.  Repositories don't
 need to be related.
 <https://github.com/robertwahler/repoman>
 
+Bash completion
+---------------
+
+vim ~/.bashrc
+
+    function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
+    function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
+    alias rpopd="popd"
+
+    # provide completion for repo names
+    function _repo_names()
+    {
+      local cur opts prev
+      COMPREPLY=()
+      cur="${COMP_WORDS[COMP_CWORD]}"
+      opts=`repo list --listing=name --no-color`
+
+      COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+      return 0
+    }
+    complete -F _repo_names rcd rpushd repo
 
 Run-time dependencies
 ---------------------
