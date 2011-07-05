@@ -133,7 +133,6 @@ the keep_local_copy merge type will always ignore upstream changes if a merge co
     git config merge.keep_local_copy.name "always keep the local copy during merge"
     git config merge.keep_local_copy.driver "true"
 
-
 Commit
 ------
 
@@ -211,4 +210,4 @@ Ctrl-\
 Copyright
 ---------
 
-Copyright (c) 2010 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
+Copyright (c) 2010-2011 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
