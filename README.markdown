@@ -50,7 +50,7 @@ Development dependencies
 Rake tasks
 ----------
 
-rake -T
+bundle exec rake -T
 
     rake build         # Build repoman-0.0.1.gem into the pkg directory
     rake doc:clean     # Remove generated documenation
