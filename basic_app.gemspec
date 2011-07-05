@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "basic_app"
 
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
-  s.add_dependency 'configatron', '>= 2.5.1'
+  s.add_dependency 'configatron', '= 2.6.4'
 
   s.add_development_dependency "bundler", ">= 1.0.14"
   s.add_development_dependency "rspec", "= 1.3.1"
