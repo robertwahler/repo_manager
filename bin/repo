@@ -56,7 +56,7 @@ optparser = OptionParser.new do |opts|
     options[:match] = m || "ALL"
     options[:match].upcase!
     unless ["ALL", "FIRST", "ONE"].include?(options[:match])
-      puts "invalid match option"
+      puts "repo, invalid match option: #{options[:match]}"
       exit 1
     end
   end
@@ -73,7 +73,7 @@ optparser = OptionParser.new do |opts|
     options[:coloring] = c.nil? ? "AUTO" : c
     options[:coloring].upcase! if options[:coloring]
     unless [nil, false, "AUTO", "ALWAYS"].include?(options[:coloring])
-      puts "invalid color option"
+      puts "repo, invalid color option: #{options[:coloring]}"
       exit 1
     end
   end
