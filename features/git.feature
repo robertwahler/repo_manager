@@ -17,6 +17,11 @@ Feature: Running an arbitrary git command
 
       repo status -v
 
+   Add and commit all
+
+      repo add .
+      repo commit -m "automatic add and commit"
+
    Since there is no Repoman version of the 'ls-files' command, these command
    lines are equivalent:
 
@@ -175,12 +180,28 @@ Feature: Running an arbitrary git command
       test2: test_path_2
       .gitignore
       """
-#     When I run "repo git status --config repo1.conf"
-#     Then the exit status should be 0
-#     And the output should contain:
-#       """
-#       test1: test 1/test path 1
-#       .gitignore
-#       test2: test_path_2
-#       .gitignore
-#       """
+
+  Scenario: Add and commit on each repo with uncommited change on one repo
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | .gitignore       | M      | tmp/*    |
+    When I run "repo status"
+    Then the exit status should be 4
+    And the output should contain:
+      """
+      M    test1: test_path_1
+             modified: .gitignore
+      """
+    When I run "repo add . --repo test1"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test1: test_path_1
+
+      """
+    When I run "repo commit -m 'automatic commit via repoman' --repos test1"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+       1 files changed, 1 insertions(+), 0 deletions(-)
+      """

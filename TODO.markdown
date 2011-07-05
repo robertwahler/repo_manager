@@ -1,6 +1,7 @@
 TODO
 ====
 
+* stop using OptionParser, we don't want to use short options for non pass-through commands
 * don't pass through destructive git commands unless they are in the approved
   list, i.e. prevent 'git reset'.  Alternatively, create a banned list that requires '--force'
 * make sure common options are passed to git. i.e. '--verbose'

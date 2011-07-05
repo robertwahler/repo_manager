@@ -48,10 +48,11 @@ options = {}
 optparser = OptionParser.new do |opts|
   opts.banner = help
 
-  opts.on("--repos f1,f2,f3", "--filter f1,f2,f3", Array, "List of Regex repository name filters") do |list|
+  opts.on("-r", "--repos f1,f2,f3", "--filter f1,f2,f3", Array, "List of Regex repository name filters") do |list|
     options[:filter] = list
   end
 
+  # TODO: optionparser will add short options if we don't.  Stop using OptionParser, we don't want to use short options
   opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, or ONE (fails if more than 1 match)") do |m|
     options[:match] = m || "ALL"
     options[:match].upcase!
@@ -59,10 +60,6 @@ optparser = OptionParser.new do |opts|
       puts "repo, invalid match option: #{options[:match]}"
       exit 1
     end
-  end
-
-  opts.on("--config FILE", "Load configuration options from FILE") do |file|
-    options[:config] = file
   end
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
@@ -78,14 +75,14 @@ optparser = OptionParser.new do |opts|
     end
   end
 
+  opts.on("--config FILE", "Load configuration options from FILE") do |file|
+    options[:config] = file
+  end
+
   opts.on("--version", "Display current version") do
     puts "repo, version " + Repoman.version
     exit 0
   end
-
-#   opts.on("-d", "--dry-run", "Run action but omit the final execute step.  Useful combined with --verbose") do |d|
-#     options[:dry_run] = d
-#   end
 
   # no argument, shows at tail.  This will print an options summary.
   opts.on_tail("-h", "--help", "Show this message") do
@@ -105,6 +102,18 @@ rescue OptionParser::InvalidOption => e
   exit 1
 end
 
+
+# OptionParse is too helpful and matchs short options with long.  Before the
+# second pass, replace short git options with long because we can't tell option
+# parser to not use short options.
+ARGV.each_with_index do |arg, index|
+  # check and replace each short git option
+  # that could be parsed by main parser
+  case arg
+    when '-m'
+      ARGV[index] = '--message'
+  end
+end
 
 # second pass find all global options that may come after the action/subcommand
 # and its args, no errors raised, validity will be checked by action parser
