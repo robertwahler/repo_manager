@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'git', '= 1.2.5'
 
   s.add_development_dependency "bundler", ">= 1.0.14"
-  s.add_development_dependency "rspec", "= 1.3.1"
+  s.add_development_dependency "rspec", ">= 2.6.0"
   s.add_development_dependency "cucumber", "= 0.9.4"
   s.add_development_dependency "aruba", "= 0.2.2"
   s.add_development_dependency "rake", "= 0.8.7"
