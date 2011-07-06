@@ -31,7 +31,6 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "repoman"
 
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
-  s.add_dependency 'configatron', '= 2.6.4'
   s.add_dependency 'git', '= 1.2.5'
 
   s.add_development_dependency "bundler", ">= 1.0.14"
