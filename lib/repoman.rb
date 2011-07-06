@@ -1,5 +1,7 @@
 # require all files here
 require 'rbconfig'
+require 'repoman/core/hash'
+require 'repoman/core/array'
 require 'repoman/errors'
 require 'repoman/git/lib'
 require 'repoman/app'
