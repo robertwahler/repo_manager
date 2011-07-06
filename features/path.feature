@@ -75,20 +75,20 @@ Feature: Listing repo path information
       """
 
   Scenario: Single Filter, allows for regex
-    When I run "repo path --filter=test"
+    When I run "repo path --filter=test --no-verbose"
     Then the exit status should be 0
     And the output should contain:
       """
       test_path_1
       test_path_2
       """
-    When I run "repo path --filter=test$"
+    When I run "repo path --filter=test$ --no-verbose"
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
-    When I run "repo path --filter=t.st1"
+    When I run "repo path --filter=t.st1 --no-verbose"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -107,7 +107,7 @@ Feature: Listing repo path information
       test_path_1
       test_path_2
       """
-    When I run "repo path --filter=test --match=FIRST"
+    When I run "repo path --filter=test --match=FIRST --no-verbose"
     Then the exit status should be 0
     And the output should contain:
       """

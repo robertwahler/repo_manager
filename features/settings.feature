@@ -46,24 +46,44 @@ Feature: Configuration via yaml file
     Given a file named "repo.conf" with:
       """
       ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
       options:
         coloring: true
       """
     And a file named "repo_no_coloring.conf" with:
       """
       ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
       options:
         coloring: false
       """
     And a file named "repo_with_coloring.conf" with:
       """
       ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
       options:
         coloring: true
       """
     And a file named "repo_with_always_coloring.conf" with:
       """
       ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
       options:
         coloring: ALWAYS
       """

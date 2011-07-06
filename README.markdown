@@ -32,7 +32,6 @@ Run-time dependencies
 The following gems are required
 
 * Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
-* Configatron for configuration support <http://github.com/markbates/configatron>
 * Ruby-git for git repository support <http://github.com/schacon/ruby-git>
 
 

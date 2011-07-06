@@ -1,4 +1,3 @@
-require 'configatron'
 require 'term/ansicolor'
 require 'optparse'
 
@@ -533,12 +532,13 @@ module Repoman
       raise "config file not found" unless @options[:config]
       match_count = 0
       filters = ['.*'] if filters.empty?
-      repo_config = configatron.repos.to_hash
+      repo_config = @options[:repos]
       base_dir = File.dirname(@options[:config])
       result = []
-      configatron.repos.configatron_keys.sort.each do |name|
+      repo_config.keys.sort_by{ |sym| sym.to_s}.each do |key|
+        name = key.to_s
         attributes = {:name => name, :base_dir => base_dir}
-        attributes = attributes.merge(repo_config[name.to_sym]) if repo_config[name.to_sym]
+        attributes = attributes.merge(repo_config[key]) if repo_config[key]
         path = attributes[:path]
         if filters.find {|filter| name.match(/#{filter}/)}
           result << Repoman::Repo.new(path, attributes.dup)

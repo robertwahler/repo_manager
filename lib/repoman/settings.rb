@@ -1,13 +1,73 @@
-require 'configatron'
+require 'yaml'
+
+class Hash
+
+  # sorted yaml
+  def to_yaml( opts = {} )
+    YAML::quick_emit( object_id, opts ) do |out|
+      out.map( taguri, to_yaml_style ) do |map|
+        sorted_keys = keys
+        sorted_keys = begin
+          sorted_keys.sort
+        rescue
+          sorted_keys.sort_by {|k| k.to_s} rescue sorted_keys
+        end
+
+        sorted_keys.each do |k|
+          map.add( k, fetch(k) )
+        end
+      end
+    end
+  end
+
+  # active_support hash key functions
+  def symbolize_keys!
+    self.replace(self.symbolize_keys)
+  end
+
+  def symbolize_keys
+    inject({}) do |options, (key, value)|
+      options[(key.to_sym rescue key) || key] = value
+      options
+    end
+  end
+
+  def recursively_symbolize_keys!
+    self.symbolize_keys!
+    self.values.each do |v|
+      if v.is_a? Hash
+        v.recursively_symbolize_keys!
+      elsif v.is_a? Array
+        v.recursively_symbolize_keys!
+      end
+    end
+    self
+  end
+
+end
+
+class Array
+  def recursively_symbolize_keys!
+    self.each do |item|
+      if item.is_a? Hash
+        item.recursively_symbolize_keys!
+      elsif item.is_a? Array
+        item.recursively_symbolize_keys!
+      end
+    end
+  end
+end
+
 
 module Repoman
+
 
   class Settings
 
     def initialize(working_dir, options={})
       @working_dir = working_dir
       @options = options
-      configure(options)
+      configure
     end
 
     def options
@@ -16,16 +76,22 @@ module Repoman
 
   private
 
-    # read options for YAML config with ERB processing and initialize configatron
-    def configure(options)
+    # read options from YAML config
+    def configure
 
-      # config file options may be blank, give them a default
-      configatron.options.set_default(:verbose, false)
-      configatron.options.set_default(:coloring, true)
-      configatron.options.set_default(:short, false)
-      configatron.options.set_default(:unmodified, 'HIDE')
-      configatron.options.set_default(:match, 'ALL')
-      configatron.options.set_default(:listing, 'ALL')
+      # config file default options
+      configuration = {
+                        :options => {
+                          :verbose => false,
+                          :coloring => true,
+                          :short => false,
+                          :unmodified => 'HIDE',
+                          :match => 'ALL',
+                          :listing => 'ALL'
+                        },
+                          :repos => {
+                        }
+                      }
 
       # set default config if not given on command line
       config = @options[:config]
@@ -41,20 +107,25 @@ module Repoman
       if config && File.exists?(config)
         # rewrite options full path for config for later use
         @options[:config] = config
-        # load configatron options from the config file
-        configatron.configure_from_yaml(config)
+
+        # load options from the config file, overwriting hard-coded defaults
+        config_contents = YAML::load(File.open(config))
+        configuration.merge!(config_contents) if config_contents && config_contents.is_a?(Hash)
+
+        # symbolize top level keys
+        configuration.symbolize_keys!
+
       else
         # user specified a config file?, no error if user did not specify config file
         raise "config file not found" if @options[:config]
       end
 
       # the command line options override options read from the config file
-      @options[:verbose] = configatron.options.verbose unless @options.include?(:verbose)
-      @options[:coloring] = configatron.options.coloring unless @options.include?(:coloring)
-      @options[:short] = configatron.options.short unless @options.include?(:short)
-      @options[:unmodified] = configatron.options.unmodified unless @options.include?(:unmodified)
-      @options[:match] = configatron.options.match unless @options.include?(:match)
-      @options[:listing] = configatron.options.listing unless @options.include?(:listing)
+      @options = configuration[:options].merge!(@options)
+      @options.symbolize_keys!
+
+      # repos hash
+      @options[:repos] = configuration[:repos].recursively_symbolize_keys! if configuration[:repos]
 
     end
 
