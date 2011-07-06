@@ -74,7 +74,7 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Single Filter, allows for regex
+  Scenario: Single Filter, allows for regex, liberal filter
     When I run "repo path --filter=test --no-verbose"
     Then the exit status should be 0
     And the output should contain:
@@ -82,12 +82,16 @@ Feature: Listing repo path information
       test_path_1
       test_path_2
       """
+
+  Scenario: Single Filter, allows for regex, filter restricting at end of word
     When I run "repo path --filter=test$ --no-verbose"
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
+
+  Scenario: Single Filter, allows for regex, filter with character placeholder
     When I run "repo path --filter=t.st1 --no-verbose"
     Then the exit status should be 0
     And the output should contain:
@@ -99,7 +103,7 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Single Filter using --match mode
+  Scenario: Single Filter using --match mode=ALL
     When I run "repo path --filter=test --match ALL"
     Then the exit status should be 0
     And the output should contain:
@@ -107,6 +111,8 @@ Feature: Listing repo path information
       test_path_1
       test_path_2
       """
+
+  Scenario: Single Filter using --match mode=FIRST
     When I run "repo path --filter=test --match=FIRST --no-verbose"
     Then the exit status should be 0
     And the output should contain:
@@ -117,10 +123,13 @@ Feature: Listing repo path information
       """
       test_path_2
       """
+
+  Scenario: Single Filter using --match mode=ONE
     When I run "repo path --filter=test --match=ONE"
     Then the exit status should be 1
 
-  Scenario: Multiple filters delimited. Regex allowed on each filter separately
+  Scenario: Multiple filters delimited. Regex allowed on each filter
+    separately, --filter switch
     When I run "repo path --filter=test1,t...2,t...3"
     Then the exit status should be 0
     And the output should contain:
@@ -128,6 +137,9 @@ Feature: Listing repo path information
       test_path_1
       test_path_2
       """
+
+  Scenario: Multiple filters delimited. Regex allowed on each filter
+    separately, --repos switch
     When I run "repo path --repos=test1,t...2,t...3"
     Then the exit status should be 0
     And the output should contain:
@@ -135,6 +147,9 @@ Feature: Listing repo path information
       test_path_1
       test_path_2
       """
+
+  Scenario: Multiple filters delimited. Regex allowed on each filter
+    separately, args instead of switch
     When I run "repo path test1 t...2 t...3"
     Then the exit status should be 0
     And the output should contain:

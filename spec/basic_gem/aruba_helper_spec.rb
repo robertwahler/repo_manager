@@ -4,7 +4,7 @@ describe Repoman  do
 
   before(:each) do
     @filename = 'input.txt'
-    create_file(@filename, "the quick brown fox")
+    write_file(@filename, "the quick brown fox")
   end
 
   describe 'Aruba::API.current_dir' do

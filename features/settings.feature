@@ -113,7 +113,7 @@ Feature: Configuration via yaml file
       :coloring=>"ALWAYS"
       """
 
-  Scenario: Reading default valid config files ordered by priority.
+  Scenario: Reading default valid config files ordered by priority
     Given a file named "repo.conf" with:
       """
       ---
@@ -140,14 +140,49 @@ Feature: Configuration via yaml file
       """
       repo1: repo1
       """
-    When I delete the file "repo.conf"
-    And I run "repo list --listing=SHORT"
+    And the output should not contain:
+      """
+      repo2: repo2
+      """
+    And the output should not contain:
+      """
+      repo3: repo3
+      """
+
+  Scenario: Reading default config file '.repo.conf'
+    Given a file named ".repo.conf" with:
+      """
+      ---
+      repos:
+        repo2:
+          path: repo2
+      """
+    And a file named "config/repo.conf" with:
+      """
+      ---
+      repos:
+        repo3:
+          path: repo3
+      """
+    When I run "repo list --listing=SHORT"
     Then the output should contain:
       """
       repo2: repo2
       """
-    When I delete the file ".repo.conf"
-    And I run "repo list --listing=SHORT"
+    And the output should not contain:
+      """
+      repo3: repo3
+      """
+
+  Scenario: Reading default config file 'config/repo.conf
+    Given a file named "config/repo.conf" with:
+      """
+      ---
+      repos:
+        repo3:
+          path: repo3
+      """
+    When I run "repo list --listing=SHORT"
     Then the output should contain:
       """
       repo3: repo3

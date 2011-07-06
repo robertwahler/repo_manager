@@ -17,8 +17,8 @@ Feature: Listing repo information contained in the configuration file
     repo list --filter=test1
     repo list test1
 
-  Scenario: Default action, no filter, valid config, valid repos
-    And a file named "repo.conf" with:
+  Scenario: Default action, no filter, --listing==SHORT
+    Given a file named "repo.conf" with:
       """
       ---
       repos:
@@ -34,12 +34,34 @@ Feature: Listing repo information contained in the configuration file
       test1: test_path_1
       test2: test_path_2
       """
+
+  Scenario: Default action, no filter, --listing=NAME
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test_path_1
+        test2:
+          path: test_path_2
+      """
     When I run "repo list --listing=NAME"
     Then the exit status should be 0
     And the output should contain:
       """
       test1
       test2
+      """
+
+  Scenario: Default action, no filter, --listing=PATH
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test_path_1
+        test2:
+          path: test_path_2
       """
     When I run "repo list --listing=PATH"
     Then the exit status should be 0
@@ -50,7 +72,7 @@ Feature: Listing repo information contained in the configuration file
       """
 
   Scenario: Missing path defaults to repo name
-    And a file named "repo.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       repos:
@@ -67,7 +89,7 @@ Feature: Listing repo information contained in the configuration file
       """
 
   Scenario: Missing repos is still valid
-    And a file named "repo.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       repos:
@@ -75,8 +97,8 @@ Feature: Listing repo information contained in the configuration file
     When I run "repo list --listing=SHORT"
     Then the exit status should be 0
 
-  Scenario: Remotes short and long format
-    And a file named "repo.conf" with:
+  Scenario: Remotes short format with --filter repo
+    Given a file named "repo.conf" with:
       """
       ---
       repos:
@@ -87,20 +109,46 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test2
       """
-      When I run "repo list --filter=test1 --listing=SHORT --no-verbose"
+    When I run `repo list --filter=test1 --listing=SHORT --no-verbose`
     Then the exit status should be 0
     And the output should contain exactly:
       """
       test1: test1
 
       """
-    When I run "repo list test1 --listing=SHORT --no-verbose"
+
+  Scenario: Remotes short format with arg repo
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test1
+          remotes:
+            origin: ./remotes/test1.git
+        test2:
+          path: test2
+      """
+    When I run `repo list test1 --listing=SHORT --no-verbose`
     Then the output should contain exactly:
       """
       test1: test1
 
       """
-    When I run "repo list"
+
+  Scenario: Remotes long format
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test1
+          remotes:
+            origin: ./remotes/test1.git
+        test2:
+          path: test2
+      """
+    When I run `repo list`
     And the output should match:
       """
       test1:

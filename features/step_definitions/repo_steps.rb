@@ -54,22 +54,22 @@ Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|
     status.split("").each do |st|
       case st
         when "?"
-          create_file(File.join(folder, filename), content)
+          write_file(File.join(folder, filename), content)
         when "A"
-          create_file(File.join(folder, filename), content)
+          write_file(File.join(folder, filename), content)
           repo_add_file(filename, folder)
         when "M"
           raise "create file '#{filename}' before modifying it" unless repo_file_exists?(folder, filename)
           append_to_file(File.join(folder, filename), content)
         when "C"
           unless repo_file_exists?(folder, filename)
-            create_file(File.join(folder, filename), content)
+            write_file(File.join(folder, filename), content)
           end
           repo_add_file(filename, folder)
           repo_commit_all(folder)
         when "D"
           unless repo_file_exists?(folder, filename)
-            create_file(File.join(folder, filename), content)
+            write_file(File.join(folder, filename), content)
             repo_add_file(filename, folder)
             repo_commit_all(folder)
           end

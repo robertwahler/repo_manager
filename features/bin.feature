@@ -7,7 +7,7 @@ Feature: Options via a command line interface (CLI)
   In order to configure options
 
   Scenario: Version info
-    When I run "repo --version"
+    When I run `repo --version`
     Then the exit status should be 0
     And the output should match /repo, version ([\d]+\.[\d]+\.[\d]+$)/
 
