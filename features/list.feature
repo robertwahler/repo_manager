@@ -27,7 +27,7 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test_path_2
       """
-    When I run "repo list --listing=SHORT"
+    When I run `repo list --listing=SHORT"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -45,7 +45,7 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test_path_2
       """
-    When I run "repo list --listing=NAME"
+    When I run `repo list --listing=NAME"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -63,7 +63,7 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test_path_2
       """
-    When I run "repo list --listing=PATH"
+    When I run `repo list --listing=PATH"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -80,7 +80,7 @@ Feature: Listing repo information contained in the configuration file
         test2:
           path: test2
       """
-    When I run "repo list --listing=SHORT"
+    When I run `repo list --listing=SHORT"
     Then the exit status should be 0
     And the output should contain:
       """
@@ -94,7 +94,7 @@ Feature: Listing repo information contained in the configuration file
       ---
       repos:
       """
-    When I run "repo list --listing=SHORT"
+    When I run `repo list --listing=SHORT"
     Then the exit status should be 0
 
   Scenario: Remotes short format with --filter repo

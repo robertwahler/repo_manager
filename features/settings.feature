@@ -20,14 +20,14 @@ Feature: Configuration via yaml file
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
-    When I run "repo path --verbose --config config.conf"
+    When I run `repo path --verbose --config config.conf"
     Then the output should contain:
       """
       config file: config.conf
       """
 
   Scenario: Specified config file option but not given on command line
-    When I run "repo path --verbose --config"
+    When I run `repo path --verbose --config"
     Then the exit status should be 1
     And the output should contain:
       """
@@ -35,7 +35,7 @@ Feature: Configuration via yaml file
       """
 
   Scenario: Specified config file not found
-    When I run "repo path --verbose --config config.conf"
+    When I run `repo path --verbose --config config.conf"
     Then the exit status should be 1
     And the output should contain:
       """
@@ -87,27 +87,27 @@ Feature: Configuration via yaml file
       options:
         coloring: ALWAYS
       """
-    When I run "repo path --verbose --config repo_no_coloring.conf"
+    When I run `repo path --verbose --config repo_no_coloring.conf"
     Then the output should contain:
       """
       :coloring=>false
       """
-    When I run "repo path --verbose --config repo_no_coloring.conf --coloring"
+    When I run `repo path --verbose --config repo_no_coloring.conf --coloring"
     Then the output should contain:
       """
       :coloring=>"AUTO"
       """
-    When I run "repo path --verbose --config repo_with_coloring.conf"
+    When I run `repo path --verbose --config repo_with_coloring.conf"
     Then the output should contain:
       """
       :coloring=>true
       """
-    When I run "repo path --verbose --config repo_with_coloring.conf --no-coloring"
+    When I run `repo path --verbose --config repo_with_coloring.conf --no-coloring"
     Then the output should contain:
       """
       :coloring=>false
       """
-    When I run "repo path --verbose --config repo_with_always_coloring.conf"
+    When I run `repo path --verbose --config repo_with_always_coloring.conf"
     Then the output should contain:
       """
       :coloring=>"ALWAYS"
@@ -135,7 +135,7 @@ Feature: Configuration via yaml file
         repo3:
           path: repo3
       """
-    When I run "repo list --listing=SHORT"
+    When I run `repo list --listing=SHORT"
     Then the output should contain:
       """
       repo1: repo1
@@ -164,7 +164,7 @@ Feature: Configuration via yaml file
         repo3:
           path: repo3
       """
-    When I run "repo list --listing=SHORT"
+    When I run `repo list --listing=SHORT"
     Then the output should contain:
       """
       repo2: repo2
@@ -182,7 +182,7 @@ Feature: Configuration via yaml file
         repo3:
           path: repo3
       """
-    When I run "repo list --listing=SHORT"
+    When I run `repo list --listing=SHORT"
     Then the output should contain:
       """
       repo3: repo3
