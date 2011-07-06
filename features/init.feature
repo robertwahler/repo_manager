@@ -29,7 +29,7 @@ Feature: Initializing a repo
   Scenario: Default options
     Given a directory named "test_path_1"
     And a directory named "test_path_2"
-    When I run "repo init"
+    When I run `repo init`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -42,7 +42,7 @@ Feature: Initializing a repo
   Scenario: Default options with filtering using '--filter'
     Given a directory named "test_path_1"
     And a directory named "test_path_2"
-    When I run "repo init --filter=t.st2"
+    When I run `repo init --filter=t.st2`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -56,7 +56,7 @@ Feature: Initializing a repo
   Scenario: Default options with filtering using ARGV
     Given a directory named "test_path_1"
     And a directory named "test_path_2"
-    When I run "repo init t.st2 repo2 repo4"
+    When I run `repo init t.st2 repo2 repo4`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -69,7 +69,7 @@ Feature: Initializing a repo
 
   Scenario: 1 missing folder
     Given a directory named "test_path_1"
-    When I run "repo init"
+    When I run `repo init`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -86,7 +86,7 @@ Feature: Initializing a repo
       | test_path_2/.git/config |
 
   Scenario: All folders are missing
-    When I run "repo init"
+    When I run `repo init`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -104,7 +104,7 @@ Feature: Initializing a repo
     And a repo in folder "test_path_2" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
-    When I run "repo init"
+    When I run `repo init`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -131,7 +131,7 @@ Feature: Initializing a repo
       """
     Given a directory named "test_path_1"
     And a directory named "test_path_2"
-    When I run "repo init"
+    When I run `repo init`
     Then the exit status should be 0
     And the output should contain:
       """

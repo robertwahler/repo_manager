@@ -9,7 +9,7 @@ Feature: Show help on pass-through command/action options
     repo help git
 
  Scenario Outline: Valid action, help available
-    When I run `repo help <action>"
+    When I run `repo help <action>`
     Then the exit status should be 0
     And the output should match:
       """
@@ -26,7 +26,7 @@ Feature: Show help on pass-through command/action options
     | help    |
 
   Scenario: Missing action
-    When I run `repo help"
+    When I run `repo help`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -34,7 +34,7 @@ Feature: Show help on pass-through command/action options
       """
 
   Scenario: Invalid action
-    When I run `repo help badaction"
+    When I run `repo help badaction`
     Then the exit status should be 0
     And the output should contain:
       """

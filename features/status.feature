@@ -34,7 +34,7 @@ Feature: Listing repo path information
       """
 
   Scenario: No uncommited changes, no filter, valid config, valid repos
-    When I run `repo status"
+    When I run `repo status`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -44,7 +44,7 @@ Feature: Listing repo path information
       """
       ..
       """
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the output should contain:
       """
       ..
@@ -55,14 +55,14 @@ Feature: Listing repo path information
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | test_file3.txt   | C      | hi file3 |
-    When I run `repo status"
+    When I run `repo status`
     Then the exit status should be 0
     And the output should contain:
       """
       no modified repositories, all working folders are clean
       """
-    When I run "touch test_path_1/test_file3.txt"
-    And I run "repo status"
+    When I run `touch test_path_1/test_file3.txt`
+    And I run `repo status`
     Then the output should contain:
       """
       no modified repositories, all working folders are clean
@@ -70,7 +70,7 @@ Feature: Listing repo path information
 
   Scenario: Invalid repo
     Given I delete the folder "test_path_2/.git"
-    When I run `repo status test1 test2 --unmodified DOTS"
+    When I run `repo status test1 test2 --unmodified DOTS`
     Then the exit status should be 2
     And the output should contain:
       """
@@ -80,7 +80,7 @@ Feature: Listing repo path information
 
   Scenario: Missing repo folder
     Given I delete the folder "test_path_2"
-    When I run `repo status --filter=test2 --unmodified DOTS --no-verbose"
+    When I run `repo status --filter=test2 --unmodified DOTS --no-verbose`
     Then the exit status should be 1
     And the output should contain exactly:
       """
@@ -92,7 +92,7 @@ Feature: Listing repo path information
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the exit status should be 4
     And the output should contain:
       """
@@ -100,7 +100,7 @@ Feature: Listing repo path information
              modified: .gitignore
       .
       """
-    When I run `repo status --short --unmodified=DOTS"
+    When I run `repo status --short --unmodified=DOTS`
     And the output should contain:
       """
       M    test1: test_path_1
@@ -111,7 +111,7 @@ Feature: Listing repo path information
     Given a repo in folder "test_path_2" with the following:
       | filename      | status | content          |
       | new_file2.txt | A      | hello new file2  |
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the exit status should be 8
     And the output should contain:
       """
@@ -128,7 +128,7 @@ Feature: Listing repo path information
     Given a repo in folder "test_path_1" with the following:
       | filename         | status |
       | .gitignore       | D      |
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the exit status should be 16
     And the output should contain:
       """
@@ -142,7 +142,7 @@ Feature: Listing repo path information
       | filename      | status | content          |
       | new_file1.txt | ?      | hello new file1  |
       | new_file2.txt | ?      | hello new file2  |
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the exit status should be 32
     And the output should contain:
       """
@@ -162,7 +162,7 @@ Feature: Listing repo path information
       | .gitignore       | M      | tmp/*              |
       | new_file1.txt    | ?      | hello new file1    |
       | new_file2.txt    | ?      | hello new file2    |
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the exit status should be 60
     And the output should contain:
       """
@@ -181,7 +181,7 @@ Feature: Listing repo path information
       | .gitignore    | DC     | new_file2.txt    |
       | new_file1.txt | ?      | hello new file1  |
       | new_file2.txt | ?      | hello new file2  |
-    When I run `repo status --unmodified=DOTS"
+    When I run `repo status --unmodified=DOTS`
     Then the exit status should be 32
     And the output should contain:
       """
@@ -203,7 +203,7 @@ Feature: Listing repo path information
         test2:
           path: test_path_2
       """
-    When I run `repo status --unmodified=DOTS --config=repo1.conf"
+    When I run `repo status --unmodified=DOTS --config=repo1.conf`
     Then the exit status should be 4
     And the output should contain:
       """

@@ -56,7 +56,7 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run 'git ls-files' on each repo
-    When I run `repo git ls-files"
+    When I run `repo git ls-files`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -67,7 +67,7 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run 'ls-files' on each repo, 'git' is an optional first argument
-    When I run `repo ls-files"
+    When I run `repo ls-files`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -78,7 +78,7 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run 'git status' on each repo with no changes
-    When I run `repo git status --porcelain"
+    When I run `repo git status --porcelain`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -92,7 +92,7 @@ Feature: Running an arbitrary git command
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo git status --porcelain"
+    When I run `repo git status --porcelain`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -106,7 +106,7 @@ Feature: Running an arbitrary git command
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo status"
+    When I run `repo status`
     Then the exit status should be 4
     And the output should contain:
       """
@@ -115,7 +115,7 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Missing all run arguments
-    When I run `repo git"
+    When I run `repo git`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -124,7 +124,7 @@ Feature: Running an arbitrary git command
 
   Scenario: Run native git status command on an invalid repo
     Given I delete the folder "test_path_2/.git"
-    When I run `repo git status --porcelain --repos=test1,test2"
+    When I run `repo git status --porcelain --repos=test1,test2`
     Then the exit status should be 128
     And the output should contain:
       """
@@ -136,7 +136,7 @@ Feature: Running an arbitrary git command
 
   Scenario: Run Repoman status command on an invalid repo
     Given I delete the folder "test_path_2/.git"
-    When I run `repo status --repos=test1,test2 --unmodified=SHOW"
+    When I run `repo status --repos=test1,test2 --unmodified=SHOW`
     Then the exit status should be 2
     And the output should contain:
       """
@@ -147,14 +147,14 @@ Feature: Running an arbitrary git command
   Scenario: Native and repoman status command missing repo folder has different
     exit status values
     Given I delete the folder "test_path_2"
-    When I run `repo git status --filter=test2 --unmodified DOTS --no-verbose"
+    When I run `repo git status --filter=test2 --unmodified DOTS --no-verbose`
     Then the exit status should be 0
     And the output should contain exactly:
       """
       test2: test_path_2 [no such path]
 
       """
-    When I run `repo status --filter=test2 --unmodified DOTS --no-verbose"
+    When I run `repo status --filter=test2 --unmodified DOTS --no-verbose`
     Then the exit status should be 1
 
 
@@ -171,7 +171,7 @@ Feature: Running an arbitrary git command
         test2:
           path: test_path_2
       """
-    When I run `repo git ls-files --config repo1.conf"
+    When I run `repo git ls-files --config repo1.conf`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -185,21 +185,21 @@ Feature: Running an arbitrary git command
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo status"
+    When I run `repo status`
     Then the exit status should be 4
     And the output should contain:
       """
       M    test1: test_path_1
              modified: .gitignore
       """
-    When I run `repo add . --repo test1"
+    When I run `repo add . --repo test1`
     Then the exit status should be 0
     And the output should contain:
       """
       test1: test_path_1
 
       """
-    When I run `repo commit -m 'automatic commit via repoman' --repos test1"
+    When I run `repo commit -m 'automatic commit via repoman' --repos test1`
     Then the exit status should be 0
     And the output should contain:
       """
