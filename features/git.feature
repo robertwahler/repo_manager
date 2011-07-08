@@ -55,6 +55,14 @@ Feature: Running an arbitrary git command
           path: test_path_2
       """
 
+  Scenario: Missing all run arguments
+    When I run `repo git`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      no git command given
+      """
+
   Scenario: Run 'git ls-files' on each repo
     When I run `repo git ls-files`
     Then the exit status should be 0
@@ -100,26 +108,6 @@ Feature: Running an arbitrary git command
        M .gitignore
       test2: test_path_2
 
-      """
-
-  Scenario: Run Repoman 'status' on each repo with uncommited change
-    Given a repo in folder "test_path_1" with the following:
-      | filename         | status | content  |
-      | .gitignore       | M      | tmp/*    |
-    When I run `repo status`
-    Then the exit status should be 4
-    And the output should contain:
-      """
-      M    test1: test_path_1
-             modified: .gitignore
-      """
-
-  Scenario: Missing all run arguments
-    When I run `repo git`
-    Then the exit status should be 1
-    And the output should contain:
-      """
-      no git command given
       """
 
   Scenario: Run native git status command on an invalid repo
@@ -181,17 +169,10 @@ Feature: Running an arbitrary git command
       .gitignore
       """
 
-  Scenario: Add and commit on each repo with uncommited change on one repo
+  Scenario: Git 'add' on a repo with uncommited change
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo status`
-    Then the exit status should be 4
-    And the output should contain:
-      """
-      M    test1: test_path_1
-             modified: .gitignore
-      """
     When I run `repo add . --repo test1`
     Then the exit status should be 0
     And the output should contain:
@@ -199,6 +180,11 @@ Feature: Running an arbitrary git command
       test1: test_path_1
 
       """
+
+  Scenario: Git 'commit' on a repo with an added file
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | new_stuff.txt    | A      | tmp/*    |
     When I run `repo commit -m 'automatic commit via repoman' --repos test1`
     Then the exit status should be 0
     And the output should contain:

@@ -42,7 +42,8 @@ Feature: Configuration via yaml file
       config file not found
       """
 
-  Scenario: Reading options from config file with overrides on command line
+ Scenario: Reading options from specified config file, ignoring the
+    default config file
     Given a file named "repo.conf" with:
       """
       ---
@@ -65,6 +66,55 @@ Feature: Configuration via yaml file
       options:
         coloring: false
       """
+    When I run `repo path --verbose --config repo_no_coloring.conf`
+    Then the output should contain:
+      """
+      :coloring=>false
+      """
+    And the output should not contain:
+      """
+      :coloring=>true
+      """
+
+  Scenario: Reading options from specified config file, ignoring the
+    default config file with override on command line
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
+      options:
+        coloring: true
+      """
+    And a file named "repo_no_coloring.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test 1/test path 1
+        test2:
+          path: test_path_2
+      options:
+        coloring: false
+      """
+    When I run `repo path --verbose --config repo_no_coloring.conf --coloring`
+    Then the output should contain:
+      """
+      :coloring=>"AUTO"
+      """
+    And the output should not contain:
+      """
+      :coloring=>false
+      """
+    And the output should not contain:
+      """
+      :coloring=>true
+      """
+
+ Scenario: Reading options from config file with negative override on command line
     And a file named "repo_with_coloring.conf" with:
       """
       ---
@@ -76,7 +126,14 @@ Feature: Configuration via yaml file
       options:
         coloring: true
       """
-    And a file named "repo_with_always_coloring.conf" with:
+    When I run `repo path --verbose --config repo_with_coloring.conf --no-coloring`
+    Then the output should contain:
+      """
+      :coloring=>false
+      """
+
+  Scenario: Reading text options from config file
+    Given a file named "repo_with_always_coloring.conf" with:
       """
       ---
       repos:
@@ -86,26 +143,6 @@ Feature: Configuration via yaml file
           path: test_path_2
       options:
         coloring: ALWAYS
-      """
-    When I run `repo path --verbose --config repo_no_coloring.conf`
-    Then the output should contain:
-      """
-      :coloring=>false
-      """
-    When I run `repo path --verbose --config repo_no_coloring.conf --coloring`
-    Then the output should contain:
-      """
-      :coloring=>"AUTO"
-      """
-    When I run `repo path --verbose --config repo_with_coloring.conf`
-    Then the output should contain:
-      """
-      :coloring=>true
-      """
-    When I run `repo path --verbose --config repo_with_coloring.conf --no-coloring`
-    Then the output should contain:
-      """
-      :coloring=>false
       """
     When I run `repo path --verbose --config repo_with_always_coloring.conf`
     Then the output should contain:
