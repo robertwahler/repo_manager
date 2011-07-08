@@ -1,6 +1,5 @@
-
+# convert/normalize DOS CRLF endings
 def normalize(str)
-  # convert/normalize DOS CRLF endings
   str.gsub!(/\r\n/, "\n") if str.match("\r\n")
   str
 end
@@ -15,68 +14,48 @@ def process_and_check_file_content(file, partial_content, expect_match)
   end
 end
 
-# substitute back in each tokenized regexp after all
-# text has been escaped
+# substitute back in each tokenized regexp after all text has been escaped
 def process_regex_tokens(str)
   str = str.gsub(/<%NUMBER[^%]*%>/, '\d+')
   str = str.gsub(/<%PK[^%]*%>/, '\d+')
-  #str = str.gsub(/<%[ ]*STRING[^%]*%>/, '.+')
   str = str.gsub(/<%STRING[^%]*%>/, '.+')
   str
 end
 
 Then /^the normalized output should contain:$/ do |partial_output|
-  unless @no_fail
-    str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
-    normalize(combined_output).should =~ Regexp.compile(str)
-  end
+  str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
+  normalize(combined_output).should =~ Regexp.compile(str)
 end
 
 Then /^the normalized output should not contain:$/ do |partial_output|
-  unless @no_fail
-    str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
-    normalize(combined_output).should_not =~ Regexp.compile(str)
-  end
+  str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
+  normalize(combined_output).should_not =~ Regexp.compile(str)
 end
 
 Then /^the normalized output should contain exactly:$/ do |partial_output|
-  unless @no_fail
-    normalize(combined_output).should == normalize(partial_output)
-  end
+  normalize(combined_output).should == normalize(partial_output)
 end
 
 Then /^the normalized output should match \/([^\/]*)\/$/ do |partial_output|
-  unless @no_fail
-    normalize(combined_output).should =~ /#{normalize(partial_output)}/
-  end
+  normalize(combined_output).should =~ /#{normalize(partial_output)}/
 end
 
 Then /^the normalized output should not match \/([^\/]*)\/$/ do |partial_output|
-  unless @no_fail
-    normalize(combined_output).should_not =~ /#{normalize(partial_output)}/
-  end
+  normalize(combined_output).should_not =~ /#{normalize(partial_output)}/
 end
 
 Then /^the normalized output should match:$/ do |partial_output|
-  unless @no_fail
-    normalize(combined_output).should =~ /#{normalize(partial_output)}/m
-  end
+  normalize(combined_output).should =~ /#{normalize(partial_output)}/m
 end
 
 Then /^the normalized output should not match:$/ do |partial_output|
-  unless @no_fail
-    normalize(combined_output).should_not =~ /#{normalize(partial_output)}/m
-  end
+  normalize(combined_output).should_not =~ /#{normalize(partial_output)}/m
 end
 
 Then /^the file "([^"]*)" should contain:$/ do |file, partial_content|
-  unless @no_fail
-    process_and_check_file_content(fullpath(file), partial_content, true)
-  end
+  process_and_check_file_content(fullpath(file), partial_content, true)
 end
 
 Then /^the file "([^"]*)" should not contain:$/ do |file, partial_content|
-  unless @no_fail
-    process_and_check_file_content(fullpath(file), partial_content, false)
-  end
+  process_and_check_file_content(fullpath(file), partial_content, false)
 end
