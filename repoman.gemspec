@@ -30,20 +30,17 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "repoman"
 
-  s.add_dependency 'term-ansicolor', '>= 1.0.4'
+  s.add_dependency 'term-ansicolor', '>= 1.0.5'
   s.add_dependency 'git', '= 1.2.5'
 
   s.add_development_dependency "bundler", ">= 1.0.14"
   s.add_development_dependency "rspec", ">= 2.6.0"
   s.add_development_dependency "cucumber", "~> 1.0"
-  s.add_development_dependency "aruba", "~> 0.4"
-  s.add_development_dependency "rake", "= 0.8.7"
-  s.add_development_dependency "yard", ">= 0.6.4"
+  s.add_development_dependency "aruba", "~> 0.4.2"
+  s.add_development_dependency "rake", ">= 0.8.7"
 
-  # Specify a markdown gem for rake doc:generate
-  #
-  # Without the development dependency, running yard rake
-  # tasks will fail.  Kramdown chosen to provide a pure Ruby solution.
+  # doc generation
+  s.add_development_dependency "yard", ">= 0.6.4"
   s.add_development_dependency "kramdown", ">= 0.12.0"
 
   s.files        = gemfiles.split("\n")
