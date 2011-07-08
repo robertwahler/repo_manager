@@ -41,6 +41,5 @@ spec/basic_gem/basic_gem_spec.rb
 spec/basic_gem/gemspec_spec.rb
 spec/repoman/array_spec.rb
 spec/repoman/git_spec.rb
-spec/spec.opts
 spec/spec_helper.rb
 spec/watchr.rb
