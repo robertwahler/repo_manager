@@ -33,7 +33,7 @@ Feature: Listing repo path information
           path: test_path_2
       """
 
-  Scenario: No uncommited changes, no filter, valid config, valid repos
+  Scenario: No uncommitted changes, default output
     When I run `repo status`
     Then the exit status should be 0
     And the output should contain:
@@ -44,6 +44,8 @@ Feature: Listing repo path information
       """
       ..
       """
+
+  Scenario: No uncommitted changes, using dots to show progress, one dot per file
     When I run `repo status --unmodified=DOTS`
     Then the output should contain:
       """
@@ -51,18 +53,13 @@ Feature: Listing repo path information
       no modified repositories, all working folders are clean
       """
 
-  Scenario: Uncommitable changes don't show
+  Scenario: Uncommittable changes don't show
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | test_file3.txt   | C      | hi file3 |
-    When I run `repo status`
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      no modified repositories, all working folders are clean
-      """
     When I run `touch test_path_1/test_file3.txt`
     And I run `repo status`
+    Then the exit status should be 0
     Then the output should contain:
       """
       no modified repositories, all working folders are clean
@@ -88,7 +85,7 @@ Feature: Listing repo path information
 
       """
 
-  Scenario: One uncommited change
+  Scenario: One uncommitted change
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
@@ -100,6 +97,11 @@ Feature: Listing repo path information
              modified: .gitignore
       .
       """
+
+  Scenario: One uncommitted change, don't show individual files
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | .gitignore       | M      | tmp/*    |
     When I run `repo status --short --unmodified=DOTS`
     And the output should contain:
       """
@@ -152,7 +154,7 @@ Feature: Listing repo path information
       .
       """
 
-  Scenario: One uncommited change, two untracked files, one added, and one deleted file
+  Scenario: One uncommitted change, two untracked files, one added, and one deleted file
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content            |
       | deleted_file.txt | D      | hello deleted file |
