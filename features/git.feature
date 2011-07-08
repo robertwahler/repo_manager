@@ -86,6 +86,19 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run 'git status' on each repo with no changes
+    When I run `repo git status`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test1: test_path_1
+      # On branch master
+      nothing to commit (working directory clean)
+      test2: test_path_2
+      # On branch master
+      nothing to commit (working directory clean)
+      """
+
+  Scenario: Run 'git status --porcelain' on each repo with no changes
     When I run `repo git status --porcelain`
     Then the exit status should be 0
     And the output should contain:

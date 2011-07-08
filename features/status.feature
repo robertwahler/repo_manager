@@ -109,7 +109,7 @@ Feature: Listing repo path information
       .
       """
 
-  Scenario: One added file
+  Scenario: One new file added
     Given a repo in folder "test_path_2" with the following:
       | filename      | status | content          |
       | new_file2.txt | A      | hello new file2  |
@@ -124,6 +124,19 @@ Feature: Listing repo path information
     And the output should not contain:
       """
       no modified repositories, all working folders are clean
+      """
+
+  Scenario: One existing file added to the index
+    Given a repo in folder "test_path_2" with the following:
+      | filename      | status | content    |
+      | .gitignore    | A      | new_stff   |
+    When I run `repo status --unmodified=DOTS`
+    Then the exit status should be 8
+    And the output should contain:
+      """
+      .
+        A  test2: test_path_2
+             added: .gitignore
       """
 
   Scenario: One deleted file

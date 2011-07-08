@@ -131,8 +131,12 @@ module Repoman
         # output = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
         output = @repo.lib.native('status', ['--porcelain', '-z']).split("\000")
         while line = output.shift
+          next unless line && line.length > 3
           file_hash = nil
-          st, filename = line.split(" ")
+          # first two chars, XY format
+          st = line[0..1]
+          # skip the space
+          filename = line[3..-1]
 
           case st
             when /\?/
@@ -142,14 +146,14 @@ module Repoman
               # renamed files 'to -> from', 'from' will be on the next line,
               # shift it off as we don't track this
               output.shift
-            when /A/
+            when /A/, /M /
               file_hash = {:type => 'A', :path => filename}
             when /M/
               file_hash = {:type => 'M', :path => filename}
             when /D/
               file_hash = {:type => 'D', :path => filename}
             else
-              raise "fatal error: unknown status condition: '#{st}'"
+              raise "fatal error: unknown git status condition: '#{st}'"
           end
 
           @files[filename] = StatusFile.new(file_hash) if (file_hash && filename)
