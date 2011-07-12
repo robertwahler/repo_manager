@@ -135,11 +135,13 @@ if STDOUT.isatty || (options[:coloring] == 'ALWAYS')
   Term::ANSIColor::coloring = options[:coloring]
 
   if options[:coloring] && Repoman::WINDOWS
-    begin
-      require 'Win32/Console/ANSI'
-    rescue LoadError
-      Term::ANSIColor::coloring = false
-      STDERR.puts 'WARNING: You must "gem install win32console" (1.2.0 or higher) to get color output on MRI/Windows'
+    unless ENV['ANSICON']
+      begin
+        require 'Win32/Console/ANSI'
+      rescue LoadError
+        Term::ANSIColor::coloring = false
+        STDERR.puts 'WARNING: You must "gem install win32console" (1.2.0 or higher) or use the ANSICON driver (https://github.com/adoxa/ansicon) to get color output on MRI/Windows'
+      end
     end
   end
 
