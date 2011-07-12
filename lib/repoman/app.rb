@@ -161,8 +161,6 @@ module Repoman
             print ": #{repo.path}"
             puts " [no such path]"
           else
-            print repo.name.green
-            puts ": #{repo.path}"
             output = ''
             begin
               git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
@@ -172,7 +170,11 @@ module Repoman
               result |= e.exitstatus
               output = e.error
             end
-            puts output
+            if output != ''
+              print repo.name.green
+              puts ": #{repo.path}"
+              puts output
+            end
         end
       end
       result

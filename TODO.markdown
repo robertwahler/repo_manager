@@ -1,6 +1,9 @@
 TODO
 ====
 
+* options should be an array or array of strings when read from a  config
+  file, that way they can be added to ARGV so they can be validated with
+  the normal validation logic.
 * native git commands like 'git add .' that don't change stdout, should not
   show name and path.  Basically, unless there is something to show, don't
   bother printing repo name to terminal

@@ -98,15 +98,16 @@ Feature: Running an arbitrary git command
       nothing to commit (working directory clean)
       """
 
-  Scenario: Run 'git status --porcelain' on each repo with no changes
+  Scenario: Run 'git status --porcelain' on each repo with no changes shows nothing on stdout
     When I run `repo git status --porcelain`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should not contain:
       """
       test1: test_path_1
-
+      """
+    And the output should not contain:
+      """
       test2: test_path_2
-
       """
 
   Scenario: Run native 'git status' on each repo with uncommited change
@@ -119,8 +120,6 @@ Feature: Running an arbitrary git command
       """
       test1: test_path_1
        M .gitignore
-      test2: test_path_2
-
       """
 
   Scenario: Run native git status command on an invalid repo
@@ -129,8 +128,6 @@ Feature: Running an arbitrary git command
     Then the exit status should be 128
     And the output should contain:
       """
-      test1: test_path_1
-
       test2: test_path_2
       fatal: Not a git repository
       """
@@ -188,10 +185,9 @@ Feature: Running an arbitrary git command
       | .gitignore       | M      | tmp/*    |
     When I run `repo add . --repo test1`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should not contain:
       """
       test1: test_path_1
-
       """
 
   Scenario: Git 'commit' on a repo with an added file
