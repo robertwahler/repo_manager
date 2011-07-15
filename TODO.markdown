@@ -1,6 +1,7 @@
 TODO
 ====
 
+* add find action that finds a repo based on all strings in the repo config
 * options should be an array or array of strings when read from a  config
   file, that way they can be added to ARGV so they can be validated with
   the normal validation logic.
