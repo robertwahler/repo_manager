@@ -89,6 +89,10 @@ module Repoman
       end
     end
 
+    # @group CLI commands
+    #
+    # CLI help
+    #
     def help(args)
       action = args.shift
 
@@ -121,6 +125,8 @@ module Repoman
       exit(0)
     end
 
+    # @group CLI commands
+    #
     # 'git' arbitrary command pass-through
     #
     # examples:
@@ -134,6 +140,7 @@ module Repoman
     #
     #
     # @return [Numeric] pass through of 'git init' result code
+    #
     def git(args)
       raise "no git command given" if args.empty?
 
@@ -180,6 +187,8 @@ module Repoman
       result
     end
 
+    # @group CLI commands
+    #
     # 'git init' pass through
     #
     # Running git init in an existing repository is safe.
@@ -190,6 +199,7 @@ module Repoman
     #   repo init --filter=test
     #
     # @return [Numeric] pass through of 'git init' result code
+    #
     def init(args)
       st = 0
       result = 0
@@ -255,15 +265,17 @@ module Repoman
       result
     end
 
+    # @group CLI commands
+    #
     # Show repo working folder path from the config file
     #
-    # @example: chdir to the path of the repo named "my_repo_name" using Bash function
+    # @example chdir to the path of the repo named "my_repo_name" using Bash function
     #
     #     function rcd(){ cd "$(repo path $@)"; }
     #
     #     rcd my_repo_name
     #
-    # @example: repo versions of Bash's pushd and popd
+    # @example repo versions of Bash's pushd and popd
     #
     #     function rpushd(){ pushd "$(repo path $@)"; }
     #     alias rpopd="popd"
@@ -271,6 +283,7 @@ module Repoman
     #     rcd my_repo_name
     #
     # @return [String] path to repo
+    #
     def path(args)
 
       OptionParser.new do |opts|
@@ -309,7 +322,10 @@ module Repoman
       end
     end
 
+    # @group CLI commands
+    #
     # List repo info from the config file
+    #
     def list(args)
 
       OptionParser.new do |opts|
@@ -375,18 +391,36 @@ module Repoman
       end
     end
 
-    # Output status of repos to STDOUT
+    # @group CLI commands
     #
-    # @example:
+    # Show simplified summary status of repos. The exit code is a bitfield that
+    # collects simplified status codes.
+    #
+    # @example Usage
     #
     #   repo status
+    #   repo status --short
+    #   repo status repo1 --unmodified DOTS
+    #   repo status repo1 repo2 --unmodified DOTS
+    #
+    # @example Equivalent filtering
+    #
+    #   repo status --filter=test2 --unmodified DOTS
+    #   repo status test2 --unmodified DOTS
+    #
+    # @example Alternatively, run the native git status command
+    #
+    #   repo git status
     #
     # @return [Number] bitfield with combined repo status
+    #
+    # @see Status bitfield return values
+    #
     def status(args)
       OptionParser.new do |opts|
 
         opts.banner = <<-USAGE.unindent
-                        Show summary status of repos
+                        Show simplified summary status of repos
 
                         Usage: repo status
 
@@ -460,9 +494,6 @@ module Repoman
                 need_lf = true
               else
                 raise "invalid mode '#{@options[:unmodified]}' for '--unmodified' option"
-              #
-              # good point to run commands that need a clean repo. i.e. pull
-              #
             end
 
           when Status::NOPATH
