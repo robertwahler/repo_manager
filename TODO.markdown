@@ -23,7 +23,7 @@ TODO
 * add '--all' switch that sets the filter to '*' This is the default behaviour
   anyway.  Make it a required switch for the git action unless --repos/--filter
   switch used
-
+* don't print path on status command, reserve that space for last commit
 
 subcommands
 ----------

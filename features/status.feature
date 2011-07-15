@@ -93,7 +93,7 @@ Feature: Listing repo path information
     Then the exit status should be 4
     And the output should contain:
       """
-      M    test1: test_path_1
+      M    test1
              modified: .gitignore
       .
       """
@@ -105,7 +105,7 @@ Feature: Listing repo path information
     When I run `repo status --short --unmodified=DOTS`
     And the output should contain:
       """
-      M    test1: test_path_1
+      M    test1
       .
       """
 
@@ -118,7 +118,7 @@ Feature: Listing repo path information
     And the output should contain:
       """
       .
-        A  test2: test_path_2
+        A  test2
              added: new_file2.txt
       """
     And the output should not contain:
@@ -135,7 +135,7 @@ Feature: Listing repo path information
     And the output should contain:
       """
       .
-        A  test2: test_path_2
+        A  test2
              added: .gitignore
       """
 
@@ -147,7 +147,7 @@ Feature: Listing repo path information
     Then the exit status should be 16
     And the output should contain:
       """
-         D test1: test_path_1
+         D test1
              deleted: .gitignore
       .
       """
@@ -161,7 +161,7 @@ Feature: Listing repo path information
     Then the exit status should be 32
     And the output should contain:
       """
-       ?   test1: test_path_1
+       ?   test1
              untracked: new_file1.txt
              untracked: new_file2.txt
       .
@@ -181,7 +181,7 @@ Feature: Listing repo path information
     Then the exit status should be 60
     And the output should contain:
       """
-      M?AD test1: test_path_1
+      M?AD test1
              modified: .gitignore
              untracked: new_file1.txt
              untracked: new_file2.txt
@@ -200,12 +200,12 @@ Feature: Listing repo path information
     Then the exit status should be 32
     And the output should contain:
       """
-       ?   test1: test_path_1
+       ?   test1
              untracked: new_file1.txt
       .
       """
 
-  Scenario: Folders with spaces in path, run 'git ls-files' on each repo
+  Scenario: Folders with spaces in path
     Given a repo in folder "test 1/test path 1" with the following:
       | filename         | status | content  |
       | .gitignore       | CM     | tmp/*    |
@@ -222,7 +222,7 @@ Feature: Listing repo path information
     Then the exit status should be 4
     And the output should contain:
       """
-      M    test1: test 1/test path 1
+      M    test1
              modified: .gitignore
       .
       """

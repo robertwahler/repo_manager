@@ -138,7 +138,7 @@ Feature: Running an arbitrary git command
     Then the exit status should be 2
     And the output should contain:
       """
-           test1: test_path_1
+           test1
       I    test2: test_path_2 [not a valid repo]
       """
 

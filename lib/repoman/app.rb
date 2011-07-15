@@ -454,7 +454,7 @@ module Repoman
               when "HIDE"
                 # do nothing
               when "SHOW"
-                puts "     #{repo.name}: #{repo.path}"
+                puts "     #{repo.name}"
               when "DOTS"
                 print ".".green
                 need_lf = true
@@ -486,7 +486,7 @@ module Repoman
             print (st & Status::ADDED == Status::ADDED) ? "A".green : " "
             print (st & Status::DELETED == Status::DELETED) ? "D".yellow : " "
 
-            puts " #{repo.name}: #{repo.path}"
+            puts " #{repo.name}"
             need_lf = false
 
             unless @options[:short]
