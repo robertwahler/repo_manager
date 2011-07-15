@@ -21,8 +21,9 @@ TODO
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
 * verify relative and absolute paths both work with all config file locations
 * add logger
-* validate git native args.  Make sure they don't look like repos by comparing
-  each arg to repo keys, if so bail.  Allow override with an -f --force option.
+* git add and git commit should check repo status prior to execute and
+  skip command if na
+* don't print path on status command, reserve that space for last commit
 
 subcommands
 ----------
