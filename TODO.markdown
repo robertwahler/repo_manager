@@ -4,12 +4,11 @@ TODO
 * options should be an array or array of strings when read from a  config
   file, that way they can be added to ARGV so they can be validated with
   the normal validation logic.
-* native git commands like 'git add .' that don't change stdout, should not
-  show name and path.  Basically, unless there is something to show, don't
-  bother printing repo name to terminal
-* stop using OptionParser, we don't want to use short options for non pass-through commands, checkout out 'slop'
+* stop using OptionParser, we don't want to use short options for non
+  pass-through commands, checkout out 'slop'
 * don't pass through destructive git commands unless they are in the approved
-  list, i.e. prevent 'git reset'.  Alternatively, create a banned list that requires '--force'
+  list, i.e. prevent 'git reset'.  Alternatively, create a banned list that
+  requires '--force'
 * make sure common options are passed to git. i.e. '--verbose'
 * provide native repo completion via --completion option so the entire ARGV can
   be scanned and passed back to bash.  We have to load ruby anyway, might as
@@ -21,8 +20,10 @@ TODO
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
 * verify relative and absolute paths both work with all config file locations
 * add logger
-* validate git native args.  Make sure they don't look like repos by comparing
-  each arg to repo keys, if so bail.  Allow override with an -f --force option.
+* add '--all' switch that sets the filter to '*' This is the default behaviour
+  anyway.  Make it a required switch for the git action unless --repos/--filter
+  switch used
+
 
 subcommands
 ----------
