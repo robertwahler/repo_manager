@@ -419,29 +419,36 @@ module Repoman
     def status(args)
       OptionParser.new do |opts|
 
-        opts.banner = <<-USAGE.unindent
-                        Show simplified summary status of repos
+        text = File.read(__FILE__)
+        help_text = text.match(/(^\s*# Show simplified summary status.*)^\s*def status/m)
+        help_text = $1
+        # help_text = text.match(/^\s*# (Show simplified summary status.*)^\s*?def/m)
 
-                        Usage: repo status
+        opts.banner = help_text
 
-                        Examples:
+#         opts.banner = <<-USAGE.unindent
+#                         Show simplified summary status of repos
 
-                          repo status
-                          repo status --short
-                          repo status repo1 --unmodified DOTS
-                          repo status repo1 repo2 --unmodified DOTS
+#                         Usage: repo status
 
-                        Equivalent filtering:
+#                         Examples:
 
-                          repo status --filter=test2 --unmodified DOTS
-                          repo status test2 --unmodified DOTS"
+#                           repo status
+#                           repo status --short
+#                           repo status repo1 --unmodified DOTS
+#                           repo status repo1 repo2 --unmodified DOTS
 
-                        Use git status directly:
+#                         Equivalent filtering:
 
-                          repo git status
+#                           repo status --filter=test2 --unmodified DOTS
+#                           repo status test2 --unmodified DOTS"
 
-                        Options:
-                      USAGE
+#                         Use git status directly:
+
+#                           repo git status
+
+#                         Options:
+#                       USAGE
         opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
           @options[:unmodified] = u || "SHOW"
           @options[:unmodified].upcase!
