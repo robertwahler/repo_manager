@@ -89,7 +89,7 @@ module Repoman
       end
     end
 
-    # @group CLI commands
+    # @group CLI actions
     #
     # CLI help
     #
@@ -116,8 +116,7 @@ module Repoman
           puts "Provide help for an action"
           puts "Usage: repo help [action]"
         when 'git'
-          puts "Run git with any git subcommands and options"
-          puts "Usage: repo [options] git args [options]"
+          puts help_for_method(:git, :comment_starting_with => "Native 'git' command")
         else
           send(action, ['--help'])
       end
@@ -125,11 +124,11 @@ module Repoman
       exit(0)
     end
 
-    # @group CLI commands
+    # @group CLI actions
     #
-    # 'git' arbitrary command pass-through
+    # Native 'git' command pass-through
     #
-    # examples:
+    # @example Usage: repo [options] git args [options]
     #
     #   repo ls-files
     #   repo git ls-files
@@ -137,7 +136,6 @@ module Repoman
     #   repo add .
     #   repo add . --filter=test
     #   repo git add . --filter=test
-    #
     #
     # @return [Numeric] pass through of 'git init' result code
     #
@@ -187,18 +185,22 @@ module Repoman
       result
     end
 
-    # @group CLI commands
+    # @group CLI actions
     #
-    # 'git init' pass through
+    # Pass through for 'git init'
     #
     # Running git init in an existing repository is safe.
     #
-    # examples:
+    # @example Usage: repo init
     #
     #   repo init
-    #   repo init --filter=test
+    #   repo init repo1 repo1
+    #   repo init --filter=repo1,repo1
+    #   repo init --filter=repo.
     #
-    # @return [Numeric] pass through of 'git init' result code
+    # Run 'repo git init' instead to pass through all options to the native version
+    #
+    # @return [Number] pass through of 'git init' result code
     #
     def init(args)
       st = 0
@@ -206,14 +208,7 @@ module Repoman
 
       # optparse on args so that only allowed options pass to git
       OptionParser.new do |opts|
-        opts.banner = <<-USAGE.unindent
-                        Usage: repo init
-                               repo init repo1 repo1
-                               repo init --filter=repo1,repo1
-                               repo init --filter=repo.
-
-                        Run 'repo git init' instead to pass through all options to the native version
-                      USAGE
+        opts.banner = help_for_method(:init, :comment_starting_with => "Pass through for 'git init'")
         begin
           opts.parse(args)
         rescue OptionParser::InvalidOption => e
@@ -265,19 +260,24 @@ module Repoman
       result
     end
 
-    # @group CLI commands
+    # @group CLI actions
     #
     # Show repo working folder path from the config file
     #
-    # @example chdir to the path of the repo named "my_repo_name" using Bash function
+    # @example Usage: repo path
     #
-    #     function rcd(){ cd "$(repo path $@)"; }
+    #   repo path
+    #   repo --no-color --match=ONE path
+    #
+    # @example Create a Bash 'alias' named 'rcd' to chdir to the folder of the repo
+    #
+    #     function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
     #
     #     rcd my_repo_name
     #
-    # @example repo versions of Bash's pushd and popd
+    # @example Repo versions of Bash's pushd and popd
     #
-    #     function rpushd(){ pushd "$(repo path $@)"; }
+    #     function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
     #     alias rpopd="popd"
     #
     #     rcd my_repo_name
@@ -287,25 +287,7 @@ module Repoman
     def path(args)
 
       OptionParser.new do |opts|
-        opts.banner = <<-USAGE.unindent
-                        Show repo working folder path from the config file
-
-                        Usage: repo path
-
-                        Example: Create an 'alias' named 'rcd' to chdir to the path of the repo
-                                 named "my_repo_name" using a Bash function 'rcd()'
-
-                            function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
-
-                            rcd my_repo_name
-
-                        Example: repo versions of Bash's pushd and popd
-
-                            function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
-                            alias rpopd="popd"
-
-                            rcd my_repo_name
-                      USAGE
+        opts.banner = help_for_method(:path, :comment_starting_with => "Show repo working folder path")
         begin
           opts.parse!(args)
         rescue OptionParser::InvalidOption => e
@@ -322,33 +304,29 @@ module Repoman
       end
     end
 
-    # @group CLI commands
+    # @group CLI actions
     #
-    # List repo info from the config file
+    # List repository information contained in the configuration file to STDOUT.
+    # The actual repositories are not validated.  The list command operates only
+    # on the config file.
+    #
+    # @example Usage: repo list
+    #
+    #   repo list
+    #   repo list --short
+    #
+    # @example Equivalent filtering
+    #
+    #   repo list --filter=test1
+    #   repo list test1
+    #
+    # @return [Number] 0 if successful
     #
     def list(args)
 
       OptionParser.new do |opts|
-        opts.banner = <<-USAGE.unindent
-                        List repository information contained in the configuration file to STDOUT.
-                        The actual repositories are not validated.  The list command operates only
-                        on the config file.
-
-                        Usage: repo list
-
-                        Examples:
-
-                          repo list
-                          repo list --short
-
-                        Equivalent filtering:
-
-                          repo list --filter=test1
-                          repo list test1
-
-                        Options:
-                      USAGE
-
+        help_text = help_for_method(:list, :comment_starting_with => "List repository information")
+        opts.banner = help_text + "\n\nOptions:"
         opts.on("--listing MODE", "Listing format.  ALL (default) SHORT, NAME, PATH") do |u|
           @options[:listing] = u || 'ALL'
           @options[:listing].upcase!
@@ -391,12 +369,12 @@ module Repoman
       end
     end
 
-    # @group CLI commands
+    # @group CLI actions
     #
     # Show simplified summary status of repos. The exit code is a bitfield that
     # collects simplified status codes.
     #
-    # @example Usage
+    # @example Usage: repo status
     #
     #   repo status
     #   repo status --short
@@ -419,29 +397,9 @@ module Repoman
     def status(args)
       OptionParser.new do |opts|
 
-        opts.banner = <<-USAGE.unindent
-                        Show simplified summary status of repos
+        help_text = help_for_method(:status, :comment_starting_with => "Show simplified summary status")
+        opts.banner = help_text + "\n\nOptions:"
 
-                        Usage: repo status
-
-                        Examples:
-
-                          repo status
-                          repo status --short
-                          repo status repo1 --unmodified DOTS
-                          repo status repo1 repo2 --unmodified DOTS
-
-                        Equivalent filtering:
-
-                          repo status --filter=test2 --unmodified DOTS
-                          repo status test2 --unmodified DOTS"
-
-                        Use git status directly:
-
-                          repo git status
-
-                        Options:
-                      USAGE
         opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
           @options[:unmodified] = u || "SHOW"
           @options[:unmodified].upcase!
@@ -581,6 +539,29 @@ module Repoman
         end
       end
       result
+    end
+
+    # Convert method comments block to help text
+    #
+    # @return [String] suitable for displaying on STDOUT
+    def  help_for_method(method_name, options={})
+      comment_starting_with = options[:comment_starting_with]
+      method_name = method_name.to_s
+      located_in_file = options[:located_in_file] || __FILE__
+      text = File.read(located_in_file)
+
+      result = text.match(/(^\s*#\s*#{comment_starting_with}.*)^\s*def #{method_name}/m)
+      result = $1
+      result = result.gsub(/ @example/, '')
+      result = result.gsub(/ @return \[Number\]/, ' Exit code:')
+      result = result.gsub(/ @return .*/, '')
+      result = result.gsub(/ @see .*$/, '')
+
+      # strip the leading whitespace, the '#' and space
+      result = result.gsub(/^\s*# ?/, '')
+
+      # strip surrounding whitespace
+      result.strip
     end
 
   end
