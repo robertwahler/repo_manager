@@ -3,12 +3,6 @@ require 'optparse'
 
 class String
   include Term::ANSIColor
-
-  # used for HERE docs, strips the leading whitespace based on the
-  # whitespace in the first line
-  def unindent
-    gsub /^#{self[/\A\s*/]}/, ''
-  end
 end
 
 module Repoman
