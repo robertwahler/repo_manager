@@ -5,6 +5,8 @@ Feature: Listing repo path information
   repository path defined in the config file to stdout so that it can be used
   for scripting.
 
+  The 'path' action is an alias for the 'list' action with the 'listing=path' option
+
   Example: chdir to the path of the repo named "my_repo_name"
 
       cd $(repo path my_repo_name)
@@ -65,7 +67,16 @@ Feature: Listing repo path information
           path: test_path_2
       """
 
-  Scenario: Show path only
+  Scenario: Show path using 'path' as alias for 'list --listing=path'
+    When I run `repo path`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
+      """
+
+  Scenario: Show path using list action directly
     When I run `repo list --listing=path`
     Then the exit status should be 0
     And the output should contain:
@@ -150,15 +161,6 @@ Feature: Listing repo path information
 
   Scenario: Show path only using multiple args instead of filter switch
     When I run `repo list --listing=path test1 t...2 t...3`
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      test_path_1
-      test_path_2
-      """
-
-  Scenario: Show path using 'path' as alias for 'list --listing=path'
-    When I run `repo path test1 t...2 t...3`
     Then the exit status should be 0
     And the output should contain:
       """

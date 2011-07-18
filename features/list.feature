@@ -5,6 +5,8 @@ Feature: Listing repo information contained in the configuration file
   configuration file to stdout.  The actual repositories are not validated.
   The list command operates only on the config file.
 
+  See also: path.feature
+
   Example usage:
 
     repo list
