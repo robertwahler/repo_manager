@@ -65,8 +65,8 @@ Feature: Listing repo path information
           path: test_path_2
       """
 
-  Scenario: No filter, valid config, valid repos
-    When I run `repo path`
+  Scenario: Show path only
+    When I run `repo list --listing=path`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -74,8 +74,8 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Single Filter, allows for regex, liberal filter
-    When I run `repo path --filter=test --no-verbose`
+  Scenario: Show path only using liberal regex filter
+    When I run `repo list --listing=path --filter=test --no-verbose`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -83,37 +83,16 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Single Filter, allows for regex, filter restricting at end of word
-    When I run `repo path --filter=test$ --no-verbose`
+  Scenario: Show path only using with restrictive regex filter
+    When I run `repo list --listing=path --filter=test$ --no-verbose`
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
 
-  Scenario: Single Filter, allows for regex, filter with character placeholder
-    When I run `repo path --filter=t.st1 --no-verbose`
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      test_path_1
-      """
-    And the output should not contain:
-      """
-      test_path_2
-      """
-
-  Scenario: Single Filter using --match mode=ALL
-    When I run `repo path --filter=test --match ALL`
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      test_path_1
-      test_path_2
-      """
-
-  Scenario: Single Filter using --match mode=FIRST
-    When I run `repo path --filter=test --match=FIRST --no-verbose`
+  Scenario: Show path only using with character placeholder regex filter
+    When I run `repo list --listing=path --filter=t.st1 --no-verbose`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -124,13 +103,34 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Single Filter using --match mode=ONE
-    When I run `repo path --filter=test --match=ONE`
+  Scenario: Show path only using --match mode=ALL
+    When I run `repo list --listing=path --filter=test --match ALL`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
+      """
+
+  Scenario: Show path only using --match mode=FIRST
+    When I run `repo list --listing=path --filter=test --match=FIRST --no-verbose`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      """
+    And the output should not contain:
+      """
+      test_path_2
+      """
+
+  Scenario: Show path only using --match mode=ONE
+    When I run `repo list --listing=path --filter=test --match=ONE`
     Then the exit status should be 1
 
-  Scenario: Multiple filters delimited. Regex allowed on each filter
-    separately, --filter switch
-    When I run `repo path --filter=test1,t...2,t...3`
+  Scenario: Show path only using multiple delimited filters. Regex allowed on
+    each filter separately. Switch style: --filter
+    When I run `repo list --listing=path --filter=test1,t...2,t...3`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -138,9 +138,9 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Multiple filters delimited. Regex allowed on each filter
-    separately, --repos switch
-    When I run `repo path --repos=test1,t...2,t...3`
+  Scenario: Show path only using multiple delimited filters. Regex allowed on
+    each filter separately. Switch style: --repos
+    When I run `repo list --listing=path --repos=test1,t...2,t...3`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -148,8 +148,16 @@ Feature: Listing repo path information
       test_path_2
       """
 
-  Scenario: Multiple filters delimited. Regex allowed on each filter
-    separately, args instead of switch
+  Scenario: Show path only using multiple args instead of filter switch
+    When I run `repo list --listing=path test1 t...2 t...3`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      test_path_2
+      """
+
+  Scenario: Show path using 'path' as alias for 'list --listing=path'
     When I run `repo path test1 t...2 t...3`
     Then the exit status should be 0
     And the output should contain:
@@ -157,4 +165,3 @@ Feature: Listing repo path information
       test_path_1
       test_path_2
       """
-

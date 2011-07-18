@@ -115,6 +115,8 @@ module Repoman
         when 'help'
           puts "Provide help for an action"
           puts "Usage: repo help [action]"
+        when 'path'
+          puts help_for_method(:path, :comment_starting_with => "Show repository path")
         when 'git'
           puts help_for_method(:git, :comment_starting_with => "Native 'git' command")
         else
@@ -262,46 +264,16 @@ module Repoman
 
     # @group CLI actions
     #
-    # Show repo working folder path from the config file
+    # Show repository path contained in the configuration file to STDOUT.
     #
     # @example Usage: repo path
     #
-    #   repo path
-    #   repo --no-color --match=ONE path
+    # Alias for 'repo list --listing=path'
     #
-    # @example Create a Bash 'alias' named 'rcd' to chdir to the folder of the repo
-    #
-    #     function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
-    #
-    #     rcd my_repo_name
-    #
-    # @example Repo versions of Bash's pushd and popd
-    #
-    #     function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
-    #     alias rpopd="popd"
-    #
-    #     rcd my_repo_name
-    #
-    # @return [String] path to repo
+    # @see #list
     #
     def path(args)
-
-      OptionParser.new do |opts|
-        opts.banner = help_for_method(:path, :comment_starting_with => "Show repo working folder path")
-        begin
-          opts.parse!(args)
-        rescue OptionParser::InvalidOption => e
-          puts "option error: #{e}"
-          puts opts
-          exit 1
-        end
-      end
-
-      filters = args.dup
-      filters += @options[:filter] if @options[:filter]
-      repos(filters).each do |repo|
-        puts repo.path
-      end
+      list(args.push('--listing=path'))
     end
 
     # @group CLI actions
@@ -319,6 +291,19 @@ module Repoman
     #
     #   repo list --filter=test1
     #   repo list test1
+    #
+    # @example Create a Bash 'alias' named 'rcd' to chdir to the folder of the repo
+    #
+    #     function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
+    #
+    #     rcd my_repo_name
+    #
+    # @example Repo versions of Bash's pushd and popd
+    #
+    #     function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
+    #     alias rpopd="popd"
+    #
+    #     rcd my_repo_name
     #
     # @return [Number] 0 if successful
     #
