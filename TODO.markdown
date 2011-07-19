@@ -5,8 +5,6 @@ TODO
 * options should be an array or array of strings when read from a  config
   file, that way they can be added to ARGV so they can be validated with
   the normal validation logic.
-* stop using OptionParser, we don't want to use short options for non
-  pass-through commands, checkout out 'slop'
 * don't pass through destructive git commands unless they are in the approved
   list, i.e. prevent 'git reset'.  Use :include, :exclude hashes
 * make sure common options are passed to git. i.e. '--verbose'
@@ -22,7 +20,7 @@ TODO
   switch used
 * status command should have option to show last commit information
 * native git commands need to preserve ansi escape codes for coloring
-* add JSON output for machine parsable "--porcelain"
+* add JSON output for machine parsing, think "--porcelain" commands
 * refactor app.rb and break each action in to its own file in the action
   folder. Each action will be based on action/base.rb.  Base includes common
   functions like "help" and "to_json".  Required for API usage.

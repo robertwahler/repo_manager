@@ -103,9 +103,9 @@ rescue OptionParser::InvalidOption => e
 end
 
 
-# OptionParse is too helpful and matchs short options with long.  Before the
-# second pass, replace short git options with long because we can't tell option
-# parser to not use short options.
+# OptionParser is too helpful and matches short options with long.  Before the
+# second pass, replace short git options with long because we can't tell OptionParser
+# to stop matching short options to long.
 ARGV.each_with_index do |arg, index|
   # check and replace each short git option
   # that could be parsed by main parser
