@@ -13,7 +13,6 @@ Run-time dependencies
 The following gems are required by default in applications cloned from BasicApp.
 
 * Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
-* Configatron for configuration support <http://github.com/markbates/configatron>
 
 
 Development dependencies

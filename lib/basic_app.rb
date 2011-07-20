@@ -1,6 +1,9 @@
 # require all files here
 require 'rbconfig'
+require 'basic_app/core/hash'
+require 'basic_app/core/array'
 require 'basic_app/app'
+require 'basic_app/settings'
 
 # Master namespace
 module BasicApp

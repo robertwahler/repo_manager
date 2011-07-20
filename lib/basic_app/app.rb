@@ -1,4 +1,3 @@
-require 'configatron'
 require 'term/ansicolor'
 
 class String
@@ -11,21 +10,26 @@ module BasicApp
 
   class App
 
-    def initialize(working_dir, options={})
+    def initialize(working_dir, argv=[], options={})
       @working_dir = working_dir
       @options = options
+      @argv = argv
       if @options[:verbose]
         puts "working_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
+        puts "base_dir: #{@options[:base_dir]}".cyan if @options[:base_dir]
+        puts "config file: #{@options[:config]}".cyan if @options[:config]
       end
-      configure(options)
+      $stdout.sync = true
     end
 
-    def run
+    def execute
       begin
 
         if action_argument_required?
-          action = ARGV.shift
+          action = @argv.shift
+          args = @argv
+
           unless AVAILABLE_ACTIONS.include?(action)
             if action.nil?
               puts "basic_app action required"
@@ -35,9 +39,9 @@ module BasicApp
             puts "basic_app --help for more information"
             exit 1
           end
-          puts "basic_app run action: #{action}".cyan if @options[:verbose]
+          puts "basic_app run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
           raise "action #{action} not implemented" unless respond_to?(action)
-          result = send(action)
+          result = send(action, args)
         else
           #
           # default action if action_argument_required? is false
@@ -45,7 +49,12 @@ module BasicApp
           result = 0
         end
 
-        exit(result ? 0 : 1)
+        if result.is_a?(Numeric)
+          exit(result)
+        else
+          # handle all other return types
+          exit(result ? 0 : 1)
+        end
 
       rescue SystemExit => e
         # This is the normal exit point, exit code from the send result
@@ -55,6 +64,7 @@ module BasicApp
       rescue Exception => e
         STDERR.puts("basic_app command failed, error(s) follow:")
         STDERR.puts("#{e.message}".red)
+        STDERR.puts("Use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
       end
@@ -74,29 +84,6 @@ module BasicApp
     # true if application requires an action to be specified on the command line
     def action_argument_required?
       !AVAILABLE_ACTIONS.empty?
-    end
-
-    # read options for YAML config with ERB processing and initialize configatron
-    def configure(options)
-      config = @options[:config]
-      config = File.join(@working_dir, 'basic_app.conf') unless config
-      if File.exists?(config)
-        @base_dir = File.dirname(config)
-        puts "setting base_dir: #{@base_dir}".cyan if @options[:verbose]
-        # load configatron options from the config file
-        puts "loading config file: #{config}".cyan if @options[:verbose]
-        configatron.configure_from_yaml(config)
-      else
-        # user specified a config file?
-        raise "config file not found" if @options[:config]
-        # no error if user did not specify config file
-        puts "#{config} not found".yellow if @options[:verbose]
-      end
-
-      #
-      # set defaults, these will NOT override setting read from YAML
-      #
-
     end
 
   end
