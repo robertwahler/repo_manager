@@ -26,12 +26,23 @@ Feature: Listing repo path information
     And a file named "repo.conf" with:
       """
       ---
+      config: *.yml
+      """
+    And a file named "repo1.yml" with:
+      """
+      ---
       repos:
         test1:
           path: test_path_1
+      """
+    And a file named "repo2.yml" with:
+      """
+      ---
+      repos:
         test2:
           path: test_path_2
       """
+
 
   Scenario: No uncommitted changes, default output
     When I run `repo status`

@@ -224,3 +224,80 @@ Feature: Configuration via yaml file
       """
       repo3: repo3
       """
+
+  Scenario: Config file is a pattern, read from multiple files
+    Given a file named "config/repo1.yml" with:
+      """
+      ---
+      repos:
+        repo1:
+          path: repo1
+      """
+    And a file named "config/repo2.yml" with:
+      """
+      ---
+      repos:
+        repo2:
+          path: repo2
+      """
+    When I run `repo list --listing=SHORT --config config/*.yml`
+    Then the output should contain:
+      """
+      repo1: repo1
+      repo2: repo2
+      """
+
+  Scenario: Config file on command line is a pattern, but doesn't match any files
+    When I run `repo path --config config/*.invalid_pattern`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      config file not found
+      """
+
+  Scenario: Config file pattern doesn't match any files
+    Given a file named "repo.conf" with:
+      """
+      ---
+      config: config/*.invalid_pattern
+      repos:
+        repo0:
+          path: repo0
+      """
+    When I run `repo path`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      config file pattern did not match any files
+      """
+
+  Scenario: Config file contains a config file pattern, read from mutiple files
+    Given a file named "repo.conf" with:
+      """
+      ---
+      config: config/*.yml
+      repos:
+        repo0:
+          path: repo0
+      """
+    And a file named "config/repo1.yml" with:
+      """
+      ---
+      repos:
+        repo1:
+          path: repo1
+      """
+    And a file named "config/repo2.yml" with:
+      """
+      ---
+      repos:
+        repo2:
+          path: repo2
+      """
+    When I run `repo list --listing=SHORT`
+    Then the output should contain:
+      """
+      repo0: repo0
+      repo1: repo1
+      repo2: repo2
+      """
