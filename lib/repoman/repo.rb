@@ -35,7 +35,7 @@ module Repoman
     end
 
     def fullpath
-      if absolute_path?(path)
+      if Pathname.new(path).absolute?
         path
       else
         File.expand_path(path, @base_dir)
@@ -48,19 +48,5 @@ module Repoman
       Dir.chdir(fullpath, &block)
     end
 
-    # Test if absolute path (T/F)
-    #
-    # @param [String] dir path to test
-    #
-    # @return [Boolean] true if dir is an absolute path
-    def absolute_path?(dir)
-      if WINDOWS
-        dir =~ %r{\A([a-zA-Z]+:)?(/|\\)}
-      else
-        dir =~ %r{\A/}
-      end
-    end
-
   end
-
 end
