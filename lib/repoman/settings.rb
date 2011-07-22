@@ -1,4 +1,5 @@
 require 'yaml'
+require 'pathname'
 
 module Repoman
 
@@ -58,7 +59,7 @@ module Repoman
 
         # config file may point to additional config files to load
         pattern = configuration[:config]
-        pattern = File.join(@working_dir, pattern) if pattern
+        pattern = File.join(@working_dir, pattern) if pattern && !Pathname.new(pattern).absolute?
 
       elsif config && !Dir.glob(config).empty?
         pattern = config
