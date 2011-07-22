@@ -48,21 +48,6 @@ module Repoman
       Dir.chdir(fullpath, &block)
     end
 
-
-
-    # Test if root dir (T/F)
-    #
-    # @param [String] dir directory to test
-    #
-    # @return [Boolean] true if dir is root directory
-    def root_dir?(dir)
-      if WINDOWS
-        dir == "/" || dir == "\\" || dir =~ %r{\A[a-zA-Z]+:(\\|/)\Z}
-      else
-        dir == "/"
-      end
-    end
-
     # Test if absolute path (T/F)
     #
     # @param [String] dir path to test
