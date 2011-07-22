@@ -65,7 +65,7 @@ module Repoman
         pattern = config
       else
         # user specified a config file?, no error if user did not specify config file
-        raise "config file not found" if @options[:config]
+        raise "config file not found: #{config}" if @options[:config]
       end
 
       # store the original full config filename or pattern for later use, the pattern read from
@@ -75,7 +75,7 @@ module Repoman
       # process pattern for additional config files and merge the repos key
       if pattern
         files = Dir.glob(pattern)
-        raise "config file pattern did not match any files" if files.empty?
+        raise "config file pattern did not match any files: #{pattern}" if files.empty?
         files.sort.each do |file|
           config_contents = YAML::load(File.open(file))
           config_contents.symbolize_keys! if config_contents && config_contents.is_a?(Hash)
