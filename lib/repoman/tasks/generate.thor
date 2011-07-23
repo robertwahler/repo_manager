@@ -1,9 +1,6 @@
-#!/usr/bin/env ruby
-
 module Repoman
 
   module ThorHelper
-
     def do_config(file, options = {})
       @name = options[:name]
       @path = options[:path]
