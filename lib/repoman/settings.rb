@@ -24,7 +24,7 @@ module Repoman
       configuration = {
                         :options => {
                           :verbose => false,
-                          :coloring => true,
+                          :coloring => 'AUTO',
                           :short => false,
                           :unmodified => 'HIDE',
                           :match => 'ALL',
