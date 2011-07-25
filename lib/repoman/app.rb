@@ -279,7 +279,10 @@ module Repoman
     # @example Usage: repo list
     #
     #   repo list
-    #   repo list --short
+    #   repo list --listing ALL
+    #   repo list --listing SHORT
+    #   repo list --listing=NAME
+    #   repo list --listing=PATH
     #
     # @example Equivalent filtering
     #
@@ -306,8 +309,8 @@ module Repoman
       OptionParser.new do |opts|
         help_text = help_for_method(:list, :comment_starting_with => "List repository information")
         opts.banner = help_text + "\n\nOptions:"
-        opts.on("--listing MODE", "Listing format.  ALL (default) SHORT, NAME, PATH") do |u|
-          @options[:listing] = u || 'ALL'
+        opts.on("--listing MODE", "Listing format.  ALL, SHORT, NAME, PATH") do |u|
+          @options[:listing] = u
           @options[:listing].upcase!
           unless ["ALL", "SHORT", "NAME", "PATH"].include?(@options[:listing])
             raise "invalid lising mode '#{@options[:listing]}' for '--listing' option"
