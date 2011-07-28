@@ -151,7 +151,7 @@ module Repoman
       # args should not match a repo name
       if ((!args.empty?) && (filters.empty?))
         repositories.each do |repo|
-          raise "repo name '#{repo.name}' cannot be used as a filter for git native commands" if args.include?(repo.name)
+          raise "repo name '#{repo.name}' cannot be used as a filter for git native commands, use --r, --repos, or --filter switches instead" if args.include?(repo.name)
         end
       end
 
