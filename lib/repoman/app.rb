@@ -516,7 +516,7 @@ module Repoman
         if filters.find {|filter| matches?(name, filter)}
           result << Repoman::Repo.new(path, attributes.dup)
           match_count += 1
-          break if @options[:match] == 'FIRST'
+          break if ((@options[:match] == 'FIRST') || (@options[:match] == 'EXACT'))
           raise "match mode = ONE, multiple repos found" if (@options[:match] == 'ONE' && match_count > 1)
         end
       end
@@ -524,7 +524,11 @@ module Repoman
     end
 
     def matches?(str, filter)
-      str.match(/#{filter}/)
+      if (@options[:match] == 'EXACT')
+        str == filter
+      else
+        str.match(/#{filter}/)
+      end
     end
 
     # Convert method comments block to help text

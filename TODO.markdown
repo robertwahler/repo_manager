@@ -1,7 +1,6 @@
 TODO
 ====
 
-* add --match EXACT option that skips regex for repo matching
 * help commands should show global options as well as options for individual
   commands
 * git native commands that are inferred by the missing 'git' action should not

@@ -102,6 +102,32 @@ Feature: Listing repo path information
       test_path_1
       """
 
+  Scenario: Show path only using an exact string filter '--match mode=EXACT'
+    When I run `repo list --listing=path --filter=test --no-verbose --match=EXACT`
+    Then the exit status should be 0
+    And the output should not contain:
+      """
+      test_path_1
+      """
+    When I run `repo list --listing=path --filter=t.st --no-verbose --match=EXACT`
+    Then the exit status should be 0
+    And the output should not contain:
+      """
+      test_path_1
+      """
+    When I run `repo list --listing=path --filter=est1 --no-verbose --match=EXACT`
+    Then the exit status should be 0
+    And the output should not contain:
+      """
+      test_path_1
+      """
+    When I run `repo list --listing=path --filter=test1 --no-verbose --match=EXACT`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test_path_1
+      """
+
   Scenario: Show path only using with character placeholder regex filter
     When I run `repo list --listing=path --filter=t.st1 --no-verbose`
     Then the exit status should be 0

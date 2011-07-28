@@ -53,10 +53,10 @@ optparser = OptionParser.new do |opts|
   end
 
   # TODO: optionparser will add short options if we don't.  Stop using OptionParser, we don't want to use short options
-  opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, or ONE (fails if more than 1 match)") do |m|
+  opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
     options[:match] = m || "ALL"
     options[:match].upcase!
-    unless ["ALL", "FIRST", "ONE"].include?(options[:match])
+    unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
       puts "repo, invalid match option: #{options[:match]}"
       exit 1
     end
