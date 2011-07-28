@@ -513,7 +513,7 @@ module Repoman
         attributes = {:name => name, :base_dir => base_dir}
         attributes = attributes.merge(repo_config[key]) if repo_config[key]
         path = attributes[:path]
-        if filters.find {|filter| name.match(/#{filter}/)}
+        if filters.find {|filter| matches?(name, filter)}
           result << Repoman::Repo.new(path, attributes.dup)
           match_count += 1
           break if @options[:match] == 'FIRST'
@@ -521,6 +521,10 @@ module Repoman
         end
       end
       result
+    end
+
+    def matches?(str, filter)
+      str.match(/#{filter}/)
     end
 
     # Convert method comments block to help text
