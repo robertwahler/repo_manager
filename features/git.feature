@@ -34,6 +34,16 @@ Feature: Running an arbitrary git command
       repo git add . --filter=test
       repo git add . --repos=test
 
+    Git native commands do not allow any args that match exactly to a repo name
+    unless a filter is specified or args=0.  Example, if 'screenshots' is a
+    repo name:
+
+        repo push # OK
+        repo push screenshots # error
+        repo git push screenshots # error
+        repo push -r screenshots # OK
+        repo git push -r screenshots # OK
+
     Short formatted log information
 
       repo git log -1 --pretty=format:"%h committed %cr"
@@ -84,6 +94,43 @@ Feature: Running an arbitrary git command
       test2
       .gitignore
       """
+
+  Scenario: Run 'ls-files' on each repo using a filter
+    When I run `repo ls-files --repos=test1`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      test1
+      .gitignore
+      """
+    And the output should not contain:
+      """
+      test2
+      .gitignore
+      """
+
+  Scenario: Run 'ls-files' using a repo name as an argument with no filter
+    supplied (failure)
+    When I run `repo ls-files test1`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      'test1' cannot be used as a filter
+      """
+
+  Scenario: Run 'git ls-files' using a repo name as an argument with no filter
+    supplied (failure)
+    When I run `repo git ls-files test1`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      'test1' cannot be used as a filter
+      """
+
+  Scenario: Run 'git ls-files' using argument that is not a repo name with no
+    filter supplied (success)
+    When I run `repo git ls-files .gitignore`
+    Then the exit status should be 0
 
   Scenario: Run 'git status' on each repo with no changes
     When I run `repo git status`

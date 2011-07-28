@@ -41,7 +41,6 @@ module Repoman
           if GIT_NATIVE_SUPPORT.include?(action)
             args.unshift(action)
             action = 'git'
-            # args should not match a repo name using the 'inferred' git syntax
           end
 
           unless AVAILABLE_ACTIONS.include?(action)
@@ -147,8 +146,16 @@ module Repoman
       st = 0
       result = 0
       filters = @options[:filter] || []
+      repositories = repos(filters)
 
-      repos(filters).each do |repo|
+      # args should not match a repo name
+      if ((!args.empty?) && (filters.empty?))
+        repositories.each do |repo|
+          raise "repo name '#{repo.name}' cannot be used as a filter for git native commands" if args.include?(repo.name)
+        end
+      end
+
+      repositories.each do |repo|
         begin
           st = repo.status.bitfield
         rescue InvalidRepositoryError => e

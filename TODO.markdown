@@ -3,19 +3,6 @@ TODO
 
 * help commands should show global options as well as options for individual
   commands
-* add '--all' switch that sets the filter to '*' This is the default behaviour
-  anyway.  Make it a required switch for the git action unless --repos/--filter
-  switch used
-
-  ---or---
-
-  git native commands that are inferred by the missing 'git' action should not
-  allow any args that match exactly to a repo name.  i.e.
-      repo push # OK
-      repo push screenshots # error
-      repo git push screenshots # OK even though it still won't work
-      repo push -r screenshots # OK and works as expected
-      repo git push -r screenshots # OK and works as expected
 * add replaceable params as params: in master config file.  These  can be used
   in repo config yaml.
 * add find action that finds a repo based on all strings in the repo config
