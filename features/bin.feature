@@ -1,10 +1,8 @@
 @announce
 Feature: Options via a command line interface (CLI)
 
-  As an interactive user or automated script
-  The application should accept options on the command line
-  These options should override hard coded defaults
-  In order to configure options
+  The application should accept options on the command line.  These options
+  should override hard coded defaults
 
   Scenario: Version info
     When I run `repo --version`

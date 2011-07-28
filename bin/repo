@@ -131,6 +131,9 @@ end
 # options from config file, if it exists, will not overwrite command line
 options = Repoman::Settings.new(FileUtils.pwd, options).options
 
+# add summary of genernal options for use by action help commands
+options[:general_options_summary] = optparser.summarize
+
 if STDOUT.isatty || (options[:coloring] == 'ALWAYS')
   Term::ANSIColor::coloring = options[:coloring]
 
@@ -151,3 +154,4 @@ end
 
 app = Repoman::App.new(FileUtils.pwd, argv, options)
 app.execute
+

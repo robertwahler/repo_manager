@@ -1,8 +1,7 @@
 @announce
 Feature: Listing repo path information
 
-  As an interactive user or automated script. The application should show the
-  repository status to stdout
+  Show the repository status to stdout
 
   Example usage:
 

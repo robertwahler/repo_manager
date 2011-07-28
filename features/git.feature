@@ -1,11 +1,11 @@
 @announce
 Feature: Running an arbitrary git command
 
-  As an interactive user or automated script. The application should run an
-  arbitrary git command echoing output and collecting status result codes.  Repoman
-  provides alternatives to some of the git commands. For example, Repoman has its own
-  status command that provides summary information.  To use the native command, you must
-  place the arg 'git' in front of the status command.
+  The application should run an arbitrary git command echoing output and
+  collecting status result codes.  Repoman provides alternatives to some of the
+  git commands. For example, Repoman has its own status command that provides
+  summary information.  To use the native command, you must place the arg 'git'
+  in front of the status command.
 
   Example:
 

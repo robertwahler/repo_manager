@@ -559,6 +559,9 @@ module Repoman
 
       # strip surrounding whitespace
       result.strip
+
+      result += "General options:\n"
+      result += @options[:general_options_summary].to_s
     end
 
   end

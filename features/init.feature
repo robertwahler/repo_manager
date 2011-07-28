@@ -1,8 +1,7 @@
 @announce
 Feature: Initializing a repo
 
-  As an interactive user or automated script. The application should
-  intialize a repository from the command line
+  The application should initialize a repository from the command line
 
   Example usage:
 

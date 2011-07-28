@@ -1,7 +1,7 @@
 Feature: Show help on pass-through command/action options
 
-  The application should detail which Git command options
-  are available as pass-through options.
+  The application should detail which Git command options are available as
+  pass-through options.
 
   Example usage:
 

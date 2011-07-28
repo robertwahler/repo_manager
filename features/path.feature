@@ -1,9 +1,8 @@
 @announce
 Feature: Listing repo path information
 
-  As an interactive user or automated script, the application should show the
-  repository path defined in the config file to stdout so that it can be used
-  for scripting.
+  Show the repository path defined in the config file to stdout so that it can
+  be used for scripting.
 
   The 'path' action is an alias for the 'list' action with the 'listing=path' option
 
