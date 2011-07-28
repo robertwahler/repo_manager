@@ -3,7 +3,13 @@ TODO
 
 * help commands should show global options as well as options for individual
   commands
-* git native commands that are inferred by the missing 'git' action should not
+* add '--all' switch that sets the filter to '*' This is the default behaviour
+  anyway.  Make it a required switch for the git action unless --repos/--filter
+  switch used
+
+  ---or---
+
+  git native commands that are inferred by the missing 'git' action should not
   allow any args that match exactly to a repo name.  i.e.
       repo push # OK
       repo push screenshots # error
@@ -26,9 +32,6 @@ TODO
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
 * verify relative and absolute paths both work with all config file locations
 * add logger
-* add '--all' switch that sets the filter to '*' This is the default behaviour
-  anyway.  Make it a required switch for the git action unless --repos/--filter
-  switch used
 * status command should have option to show last commit information
 * native git commands need to preserve ANSI escape codes for coloring
 * add JSON output for machine parsing, think "--porcelain" commands

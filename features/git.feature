@@ -68,9 +68,9 @@ Feature: Running an arbitrary git command
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test_path_1
+      test1
       .gitignore
-      test2: test_path_2
+      test2
       .gitignore
       """
 
@@ -79,9 +79,9 @@ Feature: Running an arbitrary git command
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test_path_1
+      test1
       .gitignore
-      test2: test_path_2
+      test2
       .gitignore
       """
 
@@ -90,10 +90,10 @@ Feature: Running an arbitrary git command
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test_path_1
+      test1
       # On branch master
       nothing to commit (working directory clean)
-      test2: test_path_2
+      test2
       # On branch master
       nothing to commit (working directory clean)
       """
@@ -118,7 +118,7 @@ Feature: Running an arbitrary git command
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test_path_1
+      test1
        M .gitignore
       """
 
@@ -128,7 +128,7 @@ Feature: Running an arbitrary git command
     Then the exit status should be 128
     And the output should contain:
       """
-      test2: test_path_2
+      test2
       fatal: Not a git repository
       """
 
@@ -173,9 +173,9 @@ Feature: Running an arbitrary git command
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test 1/test path 1
+      test1
       testfile 1.txt
-      test2: test_path_2
+      test2
       .gitignore
       """
 

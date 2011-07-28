@@ -41,6 +41,7 @@ module Repoman
           if GIT_NATIVE_SUPPORT.include?(action)
             args.unshift(action)
             action = 'git'
+            # args should not match a repo name using the 'inferred' git syntax
           end
 
           unless AVAILABLE_ACTIONS.include?(action)
@@ -172,8 +173,7 @@ module Repoman
               output = e.error
             end
             if output != ''
-              print repo.name.green
-              puts ": #{repo.path}"
+              puts repo.name.green
               puts output
             end
         end
