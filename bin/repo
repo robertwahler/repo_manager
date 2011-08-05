@@ -92,8 +92,8 @@ optparser = OptionParser.new do |opts|
 
 end
 
-# first pass, process until the action/subcommand, errors
-# will be raised for invalid options that occur before the action/subcommand
+# first pass, process until the action/subcommand, errors will be raised for
+# invalid options that occur before the action/subcommand
 begin
   optparser.order!
 rescue OptionParser::InvalidOption => e
@@ -104,8 +104,8 @@ end
 
 
 # OptionParser is too helpful and matches short options with long.  Before the
-# second pass, replace short git options with long because we can't tell OptionParser
-# to stop matching short options to long.
+# second pass, replace short git options with long because we can't tell
+# OptionParser to stop matching short options to long.
 ARGV.each_with_index do |arg, index|
   # check and replace each short git option
   # that could be parsed by main parser
@@ -131,7 +131,7 @@ end
 # options from config file, if it exists, will not overwrite command line
 options = Repoman::Settings.new(FileUtils.pwd, options).options
 
-# add summary of genernal options for use by action help commands
+# add summary of general options for use by action help commands
 options[:general_options_summary] = optparser.summarize
 
 if STDOUT.isatty || (options[:coloring] == 'ALWAYS')
@@ -154,4 +154,3 @@ end
 
 app = Repoman::App.new(FileUtils.pwd, argv, options)
 app.execute
-
