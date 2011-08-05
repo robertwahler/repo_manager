@@ -82,7 +82,7 @@ Feature: Listing repo path information
     And the output should contain:
       """
       .
-      I    test2: test_path_2 [not a valid repo]
+      I      test2: test_path_2 [not a valid repo]
       """
 
   Scenario: Missing repo folder
@@ -91,7 +91,7 @@ Feature: Listing repo path information
     Then the exit status should be 1
     And the output should contain exactly:
       """
-      X    test2: test_path_2 [no such folder]
+      X      test2: test_path_2 [no such folder]
 
       """
 
@@ -103,8 +103,8 @@ Feature: Listing repo path information
     Then the exit status should be 4
     And the output should contain:
       """
-      M    test1
-             modified: .gitignore
+      M     test1
+              modified: .gitignore
       .
       """
 
@@ -115,7 +115,7 @@ Feature: Listing repo path information
     When I run `repo status --short --unmodified=DOTS`
     And the output should contain:
       """
-      M    test1
+      M     test1
       .
       """
 
@@ -128,8 +128,8 @@ Feature: Listing repo path information
     And the output should contain:
       """
       .
-        A  test2
-             added: new_file2.txt
+        A   test2
+              added: new_file2.txt
       """
     And the output should not contain:
       """
@@ -145,8 +145,8 @@ Feature: Listing repo path information
     And the output should contain:
       """
       .
-        A  test2
-             added: .gitignore
+        A   test2
+              added: .gitignore
       """
 
   Scenario: One deleted file
@@ -157,8 +157,8 @@ Feature: Listing repo path information
     Then the exit status should be 16
     And the output should contain:
       """
-         D test1
-             deleted: .gitignore
+         D  test1
+              deleted: .gitignore
       .
       """
 
@@ -171,9 +171,9 @@ Feature: Listing repo path information
     Then the exit status should be 32
     And the output should contain:
       """
-       ?   test1
-             untracked: new_file1.txt
-             untracked: new_file2.txt
+       ?    test1
+              untracked: new_file1.txt
+              untracked: new_file2.txt
       .
       """
 
@@ -191,12 +191,12 @@ Feature: Listing repo path information
     Then the exit status should be 60
     And the output should contain:
       """
-      M?AD test1
-             modified: .gitignore
-             untracked: new_file1.txt
-             untracked: new_file2.txt
-             added: added_file.txt
-             deleted: deleted_file.txt
+      M?AD  test1
+              modified: .gitignore
+              untracked: new_file1.txt
+              untracked: new_file2.txt
+              added: added_file.txt
+              deleted: deleted_file.txt
       .
       """
 
@@ -210,8 +210,8 @@ Feature: Listing repo path information
     Then the exit status should be 32
     And the output should contain:
       """
-       ?   test1
-             untracked: new_file1.txt
+       ?    test1
+              untracked: new_file1.txt
       .
       """
 
@@ -232,7 +232,7 @@ Feature: Listing repo path information
     Then the exit status should be 4
     And the output should contain:
       """
-      M    test1
-             modified: .gitignore
+      M     test1
+              modified: .gitignore
       .
       """

@@ -18,6 +18,7 @@ module Repoman
     ADDED =  8
     DELETED =  16
     UNTRACKED =  32
+    UNMERGED = 64
 
     attr_reader :files
 
@@ -27,13 +28,14 @@ module Repoman
       construct_status
     end
 
-    # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED
+    # @return [Numeric] 0 if CLEAN or bitfield with status: CHANGED | UNTRACKED | ADDED | DELETED | UNMERGED
     def bitfield
-      # M ? A D
+      # M ? A D U
       (changed? ? CHANGED : 0) |
       (untracked? ? UNTRACKED : 0) |
       (added? ? ADDED : 0) |
-      (deleted? ? DELETED : 0)
+      (deleted? ? DELETED : 0) |
+      (unmerged? ? UNMERGED : 0)
     end
 
     def changed
@@ -50,6 +52,10 @@ module Repoman
 
     def untracked
       @files.select { |k, f| f.type == '?' }
+    end
+
+    def unmerged
+      @files.select { |k, f| f.type == 'U' }
     end
 
     # @return [Boolean] false unless a file has been modified/changed
@@ -70,6 +76,11 @@ module Repoman
     # @return [Boolean] false unless there is a new/untracked file
     def untracked?
       !untracked.empty?
+    end
+
+    # @return [Boolean] false unless there is an unmerged file
+    def unmerged?
+      !unmerged.empty?
     end
 
     def [](file)
@@ -123,12 +134,32 @@ module Repoman
         #   -------------------------------------------------
         #
         #
-        # simplify:
-        #   combine X and Y and boil down status returns to just four types,
-        #   M ? A D
+        # simplify porcelain output:
+        #
+        #   combine X and Y and boil down status returns to just five types,
+        #   M ? A D U
         #
         # example output:
-        # output = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
+        #
+        #  output = [" M .gitignore", "R  testing s.txt", "test space.txt", "?? new_file1.txt"]
+        #
+        # show working folder status with just five status condtions
+        #
+        #   exact matches for untracked and unmerged
+        #
+        #     '??' => 'untracked' [untracked.blue]
+        #     'DD', 'AU', 'UD', 'UA', 'DU', 'AA', 'UU' => 'unmerged' [unmerged.red.bold]
+        #
+        #   added with working folder clear
+        #
+        #     /R./ => 'renamed' [added.green], special handling required
+        #     /A /, /M /, /D /, /R /, /C / => 'added' [added.green]
+        #
+        #   everything else can be described by working folder status character
+        #
+        #     /.D/ => 'deleted', [deleted.yellow]
+        #     /.M/ => 'modified', [changed.red]
+
         output = @repo.lib.native('status', ['--porcelain', '-z']).split("\000")
         while line = output.shift
           next unless line && line.length > 3
@@ -138,20 +169,21 @@ module Repoman
           # skip the space
           filename = line[3..-1]
 
+          # renamed files 'to -> from', 'from' will be on the next line,
+          # shift it off as we don't track this
+          output.shift if st.match(/R/)
+
           case st
-            when /\?/
+            when '??'
               file_hash = {:type => '?', :path => filename}
-            when /R/
+            when 'DD', 'AU', 'UD', 'UA', 'DU', 'AA', 'UU'
+              file_hash = {:type => 'U', :path => filename}
+            when 'A ', 'M ', 'D ', 'R ', 'C '
               file_hash = {:type => 'A', :path => filename}
-              # renamed files 'to -> from', 'from' will be on the next line,
-              # shift it off as we don't track this
-              output.shift
-            when /A/, /M /
-              file_hash = {:type => 'A', :path => filename}
-            when /M/
-              file_hash = {:type => 'M', :path => filename}
-            when /D/
+            when /.D/
               file_hash = {:type => 'D', :path => filename}
+            when /.M/
+              file_hash = {:type => 'M', :path => filename}
             else
               raise "fatal error: unknown git status condition: '#{st}'"
           end

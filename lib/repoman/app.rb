@@ -445,24 +445,25 @@ module Repoman
 
           when Status::NOPATH
             puts "" if need_lf
-            print "X    #{repo.name}: #{repo.path}"
+            print "X      #{repo.name}: #{repo.path}"
             puts " [no such folder]".red
             need_lf = false
 
           when Status::INVALID
             puts "" if need_lf
-            print "I    #{repo.name}: #{repo.path}"
+            print "I      #{repo.name}: #{repo.path}"
             puts " [not a valid repo]".red
             need_lf = false
 
           else
             puts "" if need_lf
 
-            # print MUAD status letters
+            # print M?ADU status letters
             print (st & Status::CHANGED == Status::CHANGED) ? "M".red : " "
             print (st & Status::UNTRACKED == Status::UNTRACKED) ? "?".blue.bold : " "
             print (st & Status::ADDED == Status::ADDED) ? "A".green : " "
             print (st & Status::DELETED == Status::DELETED) ? "D".yellow : " "
+            print (st & Status::UNMERGED == Status::UNMERGED) ? "U".red.bold : " "
 
             puts " #{repo.name}"
             need_lf = false
@@ -470,22 +471,27 @@ module Repoman
             unless @options[:short]
               # modified (M.red)
               repo.status.changed.sort.each do |k, f|
-                puts "       modified: #{f.path}".red
+                puts "        modified: #{f.path}".red
               end
 
               # untracked (?.blue.bold)
               repo.status.untracked.sort.each do |k, f|
-                puts "       untracked: #{f.path}".blue.bold
+                puts "        untracked: #{f.path}".blue.bold
               end
 
               # added (A.green)
               repo.status.added.sort.each do |k, f|
-                puts "       added: #{f.path}".green
+                puts "        added: #{f.path}".green
               end
 
               # deleted (D.yellow)
               repo.status.deleted.sort.each do |k, f|
-                puts "       deleted: #{f.path}".yellow
+                puts "        deleted: #{f.path}".yellow
+              end
+
+              # unmerged (U.red.bold)
+              repo.status.unmerged.sort.each do |k, f|
+                puts "        unmerged: #{f.path}".red.bold
               end
             end
         end
