@@ -1,6 +1,7 @@
 TODO
 ====
 
+* repo status can't handle "copy" status.  Even "repo git status" fails
 * add replaceable params as params: in master config file.  These  can be used
   in repo config yaml.
 * add find action that finds a repo based on all strings in the repo config
