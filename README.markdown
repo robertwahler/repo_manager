@@ -1,12 +1,60 @@
 Repoman
 ========
 
-CLI for batch management of multiple Git repositories.  Repositories don't
-need to be related.
+Command line interface (CLI) for batch management of multiple, unrelated
+Git repositories.
+
+Overview
+--------
+
+Repoman is a wrapper for Git, the distributed version control system.
+Repoman's wrapper functions allow a single git command to be executed
+across multiple, unrelated git repositories.
+
+For example, you have two git repositories named 'repo1' and 'repo2' and
+you want to check the status of each repo.
+
+### without repoman
+
+    cd ~/workspace/delphi/repo1
+    git status
+
+    cd ~/workspace/delphi/repo2
+    git status
+
+### using repoman
+
+    repo status
+
+### Suitable for
+
+* Light weight mirroring of data accross a network.  This is a job for
+  rsync.  Or is it?  If you develop for multiple platforms across multiple
+  (virtual) machines rsync'ing may not be the best option.  If you already
+  have everything tucked into git repositiories, you can use a single
+  'repo pull'  command to mirror all of your repositories to one location
+  for backup or reference.
+
+### Not suitable for
+
+* Maintaining related source code repositories.  There are suitable tools
+  for that including git's own 'git submodules',
+  [git-subtree](https://github.com/apenwarr/git-subtree), and
+  [GitSlave](http://gitslave.sourceforge.net/)
+
+
+
 <https://github.com/robertwahler/repoman>
 
 Bash completion
 ---------------
+Handy functions for use under Bash.  These work fine on Win32 using
+Git-Bash.
+
+* rcd: repo cd (change directory).  Wrapper for 'cd', allows for simple cd
+  <repo name> to anywhere on the filesystem.
+* rpushd: repo pushd (push directory).  Wrapper for 'pushd'.
+
 
 vim ~/.bashrc
 
