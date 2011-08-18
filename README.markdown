@@ -28,7 +28,7 @@ you want to check the status of each repo.
 
 ### Suitable for
 
-* Light weight mirroring of data accross a network.  This is a job for
+* Light weight mirroring of data accross a network.  That is a job for
   rsync.  Or is it?  If you develop for multiple platforms across multiple
   (virtual) machines rsync'ing may not be the best option.  If you already
   have everything tucked into git repositiories, you can use a single
