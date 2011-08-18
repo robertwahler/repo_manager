@@ -17,7 +17,8 @@ describe BasicApp do
 
     before(:each) do
       @gemfiles_filename = File.expand_path(File.dirname(__FILE__) + '/../../.gemfiles')
-      @gemfiles = File.open(@gemfiles_filename, "r") {|f| f.read}
+      raise ".gemfiles not found.  Please run 'rake gemfiles'" unless File.exists?(@gemfiles_filename)
+      @gemfiles = File.open(@gemfiles_filename, "rb") {|f| f.read}
       @eol = @gemfiles.match("\r\n") ? "\r\n" : "\n"
     end
 

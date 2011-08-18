@@ -46,7 +46,6 @@ Gem::Specification.new do |s|
   s.executables  = gemfiles.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
   s.require_paths = ["lib"]
 
-  s.has_rdoc = 'yard'
   s.rdoc_options     = [
                          '--title', 'BasicApp Documentation',
                          '--main', 'README.markdown',

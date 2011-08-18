@@ -132,9 +132,15 @@ the keep_local_copy merge type will always ignore upstream changes if a merge co
     git config merge.keep_local_copy.name "always keep the local copy during merge"
     git config merge.keep_local_copy.driver "true"
 
+Create gem filename cache
+-------------------------
+
+    rake gemfiles
+
 Commit
 ------
 
+    git add .gemfiles
     git add Gemfile.lock
     git commit -a -m "renamed basic_app to oct"
 
