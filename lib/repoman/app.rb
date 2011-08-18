@@ -435,7 +435,7 @@ module Repoman
               when "HIDE"
                 # do nothing
               when "SHOW"
-                puts "     #{repo.name}"
+                puts "       #{repo.name}"
               when "DOTS"
                 print ".".green
                 need_lf = true
