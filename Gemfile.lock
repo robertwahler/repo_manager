@@ -8,7 +8,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    aruba (0.4.5)
+    aruba (0.4.3)
       bcat (>= 0.6.1)
       childprocess (>= 0.1.9)
       cucumber (>= 0.10.7)
@@ -27,7 +27,6 @@ GEM
       term-ansicolor (>= 1.0.5)
     diff-lcs (1.1.2)
     ffi (1.0.9)
-    ffi (1.0.9-x86-mingw32)
     gherkin (2.4.11)
       json (>= 1.4.6)
     gherkin (2.4.11-x86-mingw32)
@@ -55,7 +54,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  aruba (= 0.4.5)
+  aruba (= 0.4.3)
   bundler (>= 1.0.14)
   cucumber (~> 1.0)
   rake (>= 0.8.7)
