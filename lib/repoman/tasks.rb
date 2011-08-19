@@ -1,3 +1,5 @@
 require 'thor/util'
 
-Thor::Util.load_thorfile File.expand_path(File.dirname(__FILE__) + '/tasks/generate.thor')
+Dir.glob( File.join(File.dirname(__FILE__), 'tasks', '**', '*.thor')  ).each do |task|
+  Thor::Util.load_thorfile task
+end
