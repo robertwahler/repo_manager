@@ -1,6 +1,15 @@
-# convert/normalize DOS CRLF endings
+def expand_tabs(data, indent=8)
+  data.gsub(/([^\t\n]*)\t/) {
+    $1 + " " * (indent - ($1.size % indent))
+  }
+end
+
 def normalize(str)
+  # convert/normalize DOS CRLF endings
   str.gsub!(/\r\n/, "\n") if str.match("\r\n")
+  if str.match("\t")
+    str = expand_tabs(str)
+  end
   str
 end
 
@@ -24,32 +33,32 @@ end
 
 Then /^the normalized output should contain:$/ do |partial_output|
   str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
-  normalize(combined_output).should =~ Regexp.compile(str)
+  normalize(all_output).should =~ Regexp.compile(str)
 end
 
 Then /^the normalized output should not contain:$/ do |partial_output|
   str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
-  normalize(combined_output).should_not =~ Regexp.compile(str)
+  normalize(all_output).should_not =~ Regexp.compile(str)
 end
 
 Then /^the normalized output should contain exactly:$/ do |partial_output|
-  normalize(combined_output).should == normalize(partial_output)
+  normalize(all_output).should == normalize(partial_output)
 end
 
 Then /^the normalized output should match \/([^\/]*)\/$/ do |partial_output|
-  normalize(combined_output).should =~ /#{normalize(partial_output)}/
+  normalize(all_output).should =~ /#{normalize(partial_output)}/
 end
 
 Then /^the normalized output should not match \/([^\/]*)\/$/ do |partial_output|
-  normalize(combined_output).should_not =~ /#{normalize(partial_output)}/
+  normalize(all_output).should_not =~ /#{normalize(partial_output)}/
 end
 
 Then /^the normalized output should match:$/ do |partial_output|
-  normalize(combined_output).should =~ /#{normalize(partial_output)}/m
+  normalize(all_output).should =~ /#{normalize(partial_output)}/m
 end
 
 Then /^the normalized output should not match:$/ do |partial_output|
-  normalize(combined_output).should_not =~ /#{normalize(partial_output)}/m
+  normalize(all_output).should_not =~ /#{normalize(partial_output)}/m
 end
 
 Then /^the file "([^"]*)" should contain:$/ do |file, partial_content|

@@ -181,12 +181,12 @@ Feature: Running an arbitrary git command
 
   Scenario: Run Repoman status command on an invalid repo
     Given I delete the folder "test_path_2/.git"
-    When I run `repo status --repos=test1,test2 --unmodified=SHOW`
+    When I run `repo status --repos=test1,test2 --unmodified=SHOW --no-verbose`
     Then the exit status should be 2
-    And the output should contain:
+    And the normalized output should contain:
       """
-             test1
-      I      test2: test_path_2 [not a valid repo]
+              test1
+      I       test2: test_path_2 [not a valid repo]
       """
 
   Scenario: Native and repoman status command missing repo folder has different
