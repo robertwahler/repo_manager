@@ -17,10 +17,9 @@ Feature: Configuration via yaml file
   NOTE: All file system testing is done via the Aruba gem.  The home folder
   config file is stubbed to prevent testing contamination in case it exists.
 
-
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
-    When I run `repo path --verbose --config config.conf`
+    When I run `repo path --verbose --config=config.conf`
     Then the output should contain:
       """
       config file: config.conf
@@ -35,7 +34,7 @@ Feature: Configuration via yaml file
       """
 
   Scenario: Specified config file not found
-    When I run `repo path --verbose --config config.conf`
+    When I run `repo path --verbose --config=config.conf`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -66,7 +65,7 @@ Feature: Configuration via yaml file
       options:
         coloring: false
       """
-    When I run `repo path --verbose --config repo_no_coloring.conf`
+    When I run `repo path --verbose --config=repo_no_coloring.conf`
     Then the output should contain:
       """
       :coloring=>false
@@ -100,7 +99,7 @@ Feature: Configuration via yaml file
       options:
         coloring: false
       """
-    When I run `repo path --verbose --config repo_no_coloring.conf --coloring`
+    When I run `repo path --verbose --config=repo_no_coloring.conf --coloring`
     Then the output should contain:
       """
       :coloring=>"AUTO"
@@ -126,7 +125,7 @@ Feature: Configuration via yaml file
       options:
         coloring: true
       """
-    When I run `repo path --verbose --config repo_with_coloring.conf --no-coloring`
+    When I run `repo path --verbose --config=repo_with_coloring.conf --no-coloring`
     Then the output should contain:
       """
       :coloring=>false
@@ -144,7 +143,7 @@ Feature: Configuration via yaml file
       options:
         coloring: ALWAYS
       """
-    When I run `repo path --verbose --config repo_with_always_coloring.conf`
+    When I run `repo path --verbose --config=repo_with_always_coloring.conf`
     Then the output should contain:
       """
       :coloring=>"ALWAYS"
@@ -240,7 +239,7 @@ Feature: Configuration via yaml file
         repo2:
           path: repo2
       """
-    When I run `repo list --listing=SHORT --config config/*.yml`
+    When I run `repo list --listing=SHORT --config=config/*.yml`
     Then the output should contain:
       """
       repo1: repo1
@@ -248,7 +247,7 @@ Feature: Configuration via yaml file
       """
 
   Scenario: Config file on command line is a pattern, but doesn't match any files
-    When I run `repo path --config config/*.invalid_pattern`
+    When I run `repo path --config=config/*.invalid_pattern`
     Then the exit status should be 1
     And the output should contain:
       """

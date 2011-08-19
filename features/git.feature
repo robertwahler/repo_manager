@@ -248,7 +248,7 @@ Feature: Running an arbitrary git command
         test2:
           path: test_path_2
       """
-    When I run `repo git ls-files --config repo1.conf`
+    When I run `repo git ls-files --config=repo1.conf`
     Then the exit status should be 0
     And the output should contain:
       """
