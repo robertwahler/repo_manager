@@ -99,9 +99,3 @@ end
 Given /^I delete the file "([^"]*)"$/ do |filename|
   FileUtils.rm(File.join(current_dir, filename))
 end
-
-Given /^I delete the folder "([^"]*)"$/ do |folder|
-  in_current_dir do
-    FileUtils.rm_rf(folder)
-  end
-end

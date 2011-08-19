@@ -170,36 +170,68 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run native git status command on an invalid repo
-    Given I delete the folder "test_path_2/.git"
-    When I run `repo git status --porcelain --repos=test1,test2`
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test_path_1
+        test2:
+          path: test_path_2
+        bad_repo:
+          path: not_a_repo
+      """
+    And a directory named "not_a_repo"
+    When I run `repo git status --porcelain --repos=test1,test2,bad_repo`
     Then the exit status should be 128
     And the output should contain:
       """
-      test2
+      bad_repo
       fatal: Not a git repository
       """
 
   Scenario: Run Repoman status command on an invalid repo
-    Given I delete the folder "test_path_2/.git"
-    When I run `repo status --repos=test1,test2 --unmodified=SHOW --no-verbose`
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test_path_1
+        test2:
+          path: test_path_2
+        bad_repo:
+          path: not_a_repo
+      """
+    And a directory named "not_a_repo"
+    When I run `repo status --repos=test1,bad_repo --unmodified=SHOW --no-verbose`
     Then the exit status should be 2
     And the normalized output should contain:
       """
+      I       bad_repo: not_a_repo [not a valid repo]
               test1
-      I       test2: test_path_2 [not a valid repo]
       """
 
   Scenario: Native and repoman status command missing repo folder has different
     exit status values
-    Given I delete the folder "test_path_2"
-    When I run `repo git status --filter=test2 --unmodified DOTS --no-verbose`
+    Given a file named "repo.conf" with:
+      """
+      ---
+      repos:
+        test1:
+          path: test_path_1
+        test2:
+          path: test_path_2
+        bad_repo:
+          path: bad_repo_path
+      """
+    When I run `repo git status --filter=bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 0
     And the output should contain exactly:
       """
-      test2: test_path_2 [no such path]
+      bad_repo: bad_repo_path [no such path]
 
       """
-    When I run `repo status --filter=test2 --unmodified DOTS --no-verbose`
+    When I run `repo status --filter=bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 1
 
 

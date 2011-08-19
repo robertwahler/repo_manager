@@ -76,22 +76,37 @@ Feature: Listing repo path information
       """
 
   Scenario: Invalid repo
-    Given I delete the folder "test_path_2/.git"
-    When I run `repo status test1 test2 --unmodified DOTS --no-verbose`
+    Given a file named "repo.conf" with:
+      """
+      ---
+      config: *.yml
+      repos:
+        bad_repo:
+          path: not_a_repo
+      """
+    And a directory named "not_a_repo"
+    When I run `repo status test1 test2 bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 2
     And the normalized output should contain:
       """
-      .
-      I       test2: test_path_2 [not a valid repo]
+      I       bad_repo: not_a_repo [not a valid repo]
+      ..
       """
 
   Scenario: Missing repo folder
-    Given I delete the folder "test_path_2"
-    When I run `repo status --filter=test2 --unmodified DOTS --no-verbose`
+    Given a file named "repo.conf" with:
+      """
+      ---
+      config: *.yml
+      repos:
+        bad_repo:
+          path: not_a_repo
+      """
+    When I run `repo status --filter=bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 1
     And the normalized output should contain:
       """
-      X       test2: test_path_2 [no such folder]
+      X       bad_repo: not_a_repo [no such folder]
       """
 
   Scenario: One uncommitted change

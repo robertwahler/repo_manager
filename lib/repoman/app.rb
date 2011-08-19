@@ -133,7 +133,7 @@ module Repoman
     #   repo add . --filter=test
     #   repo git add . --filter=test
     #
-    # @return [Numeric] pass through of 'git init' result code
+    # @return [Numeric] pass through of 'git' result code
     #
     def git(args)
       raise "no git command given" if args.empty?
