@@ -547,7 +547,7 @@ module Repoman
     # Convert method comments block to help text
     #
     # @return [String] suitable for displaying on STDOUT
-    def  help_for_method(method_name, options={})
+    def help_for_method(method_name, options={})
       comment_starting_with = options[:comment_starting_with]
       method_name = method_name.to_s
       located_in_file = options[:located_in_file] || __FILE__

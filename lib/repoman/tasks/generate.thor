@@ -21,7 +21,8 @@ module Repoman
 
   # @example Generate a repo config
   #
-  #   thor repoman:generate:config tmp/config.yml --name=test_me --path='tmp/aruba/test1' -r='//peach/data/repos' --force
+  #   thor repoman:generate:config tmp/config.yml --name=test_me --path='tmp/aruba/test1' \
+  #                                -r='//peach/data/repos' --force
   #
   class Generate < Thor
     include Thor::Actions
