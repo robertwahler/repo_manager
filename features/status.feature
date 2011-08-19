@@ -106,7 +106,7 @@ Feature: Listing repo path information
     Then the exit status should be 1
     And the normalized output should contain:
       """
-      X       bad_repo: not_a_repo [no such folder]
+      X       bad_repo: not_a_repo [no such path]
       """
 
   Scenario: One uncommitted change

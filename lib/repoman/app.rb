@@ -446,7 +446,7 @@ module Repoman
           when Status::NOPATH
             puts "" if need_lf
             print "X\t#{repo.name}: #{repo.path}"
-            puts " [no such folder]".red
+            puts " [no such path]".red
             need_lf = false
 
           when Status::INVALID
