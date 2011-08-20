@@ -104,7 +104,7 @@ Feature: Configuration via yaml file
       :color=>false
       """
 
- Scenario: Negative override on command line with alternative spelling '--coloring'
+ Scenario: Negative override on command line with alternative spelling '--no-coloring'
     And a file named "with_color.conf" with:
       """
       ---

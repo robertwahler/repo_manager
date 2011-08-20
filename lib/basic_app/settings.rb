@@ -51,8 +51,7 @@ module BasicApp
       end
 
       # the command line options override options read from the config file
-      @options = configuration[:options].merge!(@options)
-      @options.symbolize_keys!
+      @options = configuration[:options].symbolize_keys!.merge!(@options)
 
     end
 
