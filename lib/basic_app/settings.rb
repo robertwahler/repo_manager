@@ -23,7 +23,7 @@ module BasicApp
       configuration = {
                         :options => {
                           :verbose => false,
-                          :coloring => 'AUTO'
+                          :color => 'AUTO'
                         }
                       }
 

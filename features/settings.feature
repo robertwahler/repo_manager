@@ -45,22 +45,22 @@ Feature: Configuration via yaml file
       """
       ---
       options:
-        coloring: true
+        color: true
       """
-    And a file named "no_coloring.conf" with:
+    And a file named "no_color.conf" with:
       """
       ---
       options:
-        coloring: false
+        color: false
       """
-    When I run `basic_app action --verbose --config no_coloring.conf`
+    When I run `basic_app action --verbose --config no_color.conf`
     Then the output should contain:
       """
-      :coloring=>false
+      :color=>false
       """
     And the output should not contain:
       """
-      :coloring=>true
+      :color=>true
       """
 
   Scenario: Reading options from specified config file, ignoring the
@@ -69,51 +69,51 @@ Feature: Configuration via yaml file
       """
       ---
       options:
-        coloring: true
+        color: true
       """
-    And a file named "no_coloring.conf" with:
+    And a file named "no_color.conf" with:
       """
       ---
       options:
-        coloring: false
+        color: false
       """
-    When I run `basic_app action --verbose --config no_coloring.conf --coloring`
+    When I run `basic_app action --verbose --config no_color.conf --color`
     Then the output should contain:
       """
-      :coloring=>"AUTO"
+      :color=>"AUTO"
       """
     And the output should not contain:
       """
-      :coloring=>false
+      :color=>false
       """
     And the output should not contain:
       """
-      :coloring=>true
+      :color=>true
       """
 
  Scenario: Reading options from config file with negative override on command line
-    And a file named "with_coloring.conf" with:
+    And a file named "with_color.conf" with:
       """
       ---
       options:
-        coloring: true
+        color: true
       """
-    When I run `basic_app action --verbose --config with_coloring.conf --no-coloring`
+    When I run `basic_app action --verbose --config with_color.conf --no-color`
     Then the output should contain:
       """
-      :coloring=>false
+      :color=>false
       """
 
   Scenario: Reading text options from config file
-    Given a file named "with_always_coloring.conf" with:
+    Given a file named "with_always_color.conf" with:
       """
       ---
       options:
-        coloring: ALWAYS
+        color: ALWAYS
       """
-    When I run `basic_app action --verbose --config with_always_coloring.conf`
+    When I run `basic_app action --verbose --config with_always_color.conf`
     Then the output should contain:
       """
-      :coloring=>"ALWAYS"
+      :color=>"ALWAYS"
       """
 
