@@ -27,6 +27,7 @@ GEM
       term-ansicolor (>= 1.0.5)
     diff-lcs (1.1.2)
     ffi (1.0.9)
+    ffi (1.0.9-x86-mingw32)
     gherkin (2.4.11)
       json (>= 1.4.6)
     gherkin (2.4.11-x86-mingw32)
