@@ -31,19 +31,18 @@ module Repoman
           end
 
           say "committing..."
-          `repo commit --message='hi' --no-verbose --no-color --repos #{filter}`
+          `repo commit --message='automatic commit' --no-verbose --no-color --repos #{filter}`
           unless $?.exitstatus == 0
             say "add command failed, exiting"
             exit 1
           end
 
-          # TODO: optionally push to remote
+          # TODO: optionally push to origin
           say "pushing..."
 
           say "done", :green
         end
 
     end
-
   end
 end
