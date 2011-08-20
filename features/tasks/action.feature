@@ -54,6 +54,7 @@ Feature: Thor action tasks
       """
     When I run `repo status`
     Then the exit status should be 0
+    And the should update the default remote
     When I run `repo git log -1 --pretty=format:'%s' --repos test1`
     Then the output should contain:
       """
