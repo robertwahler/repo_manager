@@ -66,11 +66,11 @@ optparser = OptionParser.new do |opts|
     options[:verbose] = v
   end
 
-  opts.on("-c", "--[no-]coloring [MODE]", "ANSI color in output. MODE=AUTO (default) or ALWAYS") do |c|
-    options[:coloring] = c.nil? ? "AUTO" : c
-    options[:coloring].upcase! if options[:coloring]
-    unless [nil, false, "AUTO", "ALWAYS"].include?(options[:coloring])
-      puts "repo, invalid color option: #{options[:coloring]}"
+  opts.on("-c", "--[no-]coloring [MODE]", "--[no-]color [MODE]", "ANSI color in output. MODE=AUTO (default) or ALWAYS") do |c|
+    options[:color] = c.nil? ? "AUTO" : c
+    options[:color].upcase! if options[:color]
+    unless [nil, false, "AUTO", "ALWAYS"].include?(options[:color])
+      puts "repo, invalid color option: #{options[:color]}"
       exit 1
     end
   end
@@ -134,10 +134,10 @@ options = Repoman::Settings.new(FileUtils.pwd, options).options
 # add summary of general options for use by action help commands
 options[:general_options_summary] = optparser.summarize
 
-if STDOUT.isatty || (options[:coloring] == 'ALWAYS')
-  Term::ANSIColor::coloring = options[:coloring]
+if STDOUT.isatty || (options[:color] == 'ALWAYS')
+  Term::ANSIColor::coloring = options[:color]
 
-  if options[:coloring] && Repoman::WINDOWS
+  if options[:color] && Repoman::WINDOWS
     unless ENV['ANSICON']
       begin
         require 'Win32/Console/ANSI'

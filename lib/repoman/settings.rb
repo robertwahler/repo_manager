@@ -24,7 +24,7 @@ module Repoman
       configuration = {
                         :options => {
                           :verbose => false,
-                          :coloring => 'AUTO',
+                          :color => 'AUTO',
                           :short => false,
                           :unmodified => 'HIDE',
                           :match => 'ALL',
@@ -86,8 +86,7 @@ module Repoman
       end
 
       # the command line options override options read from the config file
-      @options = configuration[:options].merge!(@options)
-      @options.symbolize_keys!
+      @options = configuration[:options].symbolize_keys!.merge!(@options)
 
       # repos hash
       @options[:repos] = configuration[:repos].recursively_symbolize_keys! if configuration[:repos]
