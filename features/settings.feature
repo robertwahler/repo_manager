@@ -104,6 +104,19 @@ Feature: Configuration via yaml file
       :color=>false
       """
 
+ Scenario: Negative override on command line with alternative spelling '--coloring'
+    And a file named "with_color.conf" with:
+      """
+      ---
+      options:
+        color: true
+      """
+    When I run `basic_app action --verbose --config with_color.conf --no-coloring`
+    Then the output should contain:
+      """
+      :color=>false
+      """
+
   Scenario: Reading text options from config file
     Given a file named "with_always_color.conf" with:
       """

@@ -31,7 +31,7 @@ OptionParser.new do |opts|
     options[:verbose] = v
   end
 
-  opts.on("-c", "--[no-]color [MODE]", "ANSI color in output. MODE=AUTO (default) or ALWAYS") do |c|
+  opts.on("-c", "--[no-]coloring [MODE]", "--[no-]color [MODE]", "ANSI color in output. MODE=AUTO (default) or ALWAYS") do |c|
     options[:color] = c.nil? ? "AUTO" : c
     options[:color].upcase! if options[:color]
     unless [nil, false, "AUTO", "ALWAYS"].include?(options[:color])
