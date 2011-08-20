@@ -52,9 +52,9 @@ Feature: Configuration via yaml file
         test2:
           path: test_path_2
       options:
-        coloring: true
+        color: true
       """
-    And a file named "repo_no_coloring.conf" with:
+    And a file named "repo_no_color.conf" with:
       """
       ---
       repos:
@@ -63,16 +63,16 @@ Feature: Configuration via yaml file
         test2:
           path: test_path_2
       options:
-        coloring: false
+        color: false
       """
-    When I run `repo path --verbose --config=repo_no_coloring.conf`
+    When I run `repo path --verbose --config=repo_no_color.conf`
     Then the output should contain:
       """
-      :coloring=>false
+      :color=>false
       """
     And the output should not contain:
       """
-      :coloring=>true
+      :color=>true
       """
 
   Scenario: Reading options from specified config file, ignoring the
@@ -86,9 +86,9 @@ Feature: Configuration via yaml file
         test2:
           path: test_path_2
       options:
-        coloring: true
+        color: true
       """
-    And a file named "repo_no_coloring.conf" with:
+    And a file named "repo_no_color.conf" with:
       """
       ---
       repos:
@@ -97,24 +97,24 @@ Feature: Configuration via yaml file
         test2:
           path: test_path_2
       options:
-        coloring: false
+        color: false
       """
-    When I run `repo path --verbose --config=repo_no_coloring.conf --coloring`
+    When I run `repo path --verbose --config=repo_no_color.conf --color`
     Then the output should contain:
       """
-      :coloring=>"AUTO"
+      :color=>"AUTO"
       """
     And the output should not contain:
       """
-      :coloring=>false
+      :color=>false
       """
     And the output should not contain:
       """
-      :coloring=>true
+      :color=>true
       """
 
  Scenario: Reading options from config file with negative override on command line
-    And a file named "repo_with_coloring.conf" with:
+    And a file named "repo_with_color.conf" with:
       """
       ---
       repos:
@@ -123,16 +123,29 @@ Feature: Configuration via yaml file
         test2:
           path: test_path_2
       options:
-        coloring: true
+        color: true
       """
-    When I run `repo path --verbose --config=repo_with_coloring.conf --no-coloring`
+    When I run `repo path --verbose --config=repo_with_color.conf --no-color`
     Then the output should contain:
       """
-      :coloring=>false
+      :color=>false
+      """
+
+ Scenario: Negative override on command line with alternative spelling '--coloring'
+    And a file named "with_color.conf" with:
+      """
+      ---
+      options:
+        color: true
+      """
+    When I run `repo path --verbose --config with_color.conf --no-coloring`
+    Then the output should contain:
+      """
+      :color=>false
       """
 
   Scenario: Reading text options from config file
-    Given a file named "repo_with_always_coloring.conf" with:
+    Given a file named "repo_with_always_color.conf" with:
       """
       ---
       repos:
@@ -141,12 +154,12 @@ Feature: Configuration via yaml file
         test2:
           path: test_path_2
       options:
-        coloring: ALWAYS
+        color: ALWAYS
       """
-    When I run `repo path --verbose --config=repo_with_always_coloring.conf`
+    When I run `repo path --verbose --config=repo_with_always_color.conf`
     Then the output should contain:
       """
-      :coloring=>"ALWAYS"
+      :color=>"ALWAYS"
       """
 
   Scenario: Reading default valid config files ordered by priority
