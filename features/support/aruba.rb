@@ -6,16 +6,13 @@ APP_BIN_PATH = File.join(FileUtils.pwd, 'bin', 'repo')
 module Aruba
   module Api
 
-   alias_method :old_run_simple, :run_simple
+   alias_method :old_detect_ruby, :detect_ruby
 
     # override aruba
-    def run_simple(cmd, fail_on_error=true)
-
-      # run development version in verbose mode
+    def detect_ruby(cmd)
       cmd = cmd.gsub(/^repo/, "ruby -S #{APP_BIN_PATH} --verbose")
-
-      # run original aruba 'run'
-      old_run_simple(cmd, fail_on_error)
+      # run original aruba 'detect_ruby'
+      old_detect_ruby(cmd)
     end
   end
 end
