@@ -3,15 +3,16 @@ module Repoman
   class Action < Thor
     include Repoman::ThorHelper
 
-    class_option :force, :type => :boolean, :desc => "Force overwrite, answer 'yes' to any prompts"
+    class_option :force, :type => :boolean, :desc => "Force overwrite and answer 'yes' to any prompts"
 
-    method_option :message, :type => :string,:desc => "Override 'automatic commit' message"
+    method_option :repos, :type => :string, :desc => "Restrict update to comma delimited list of repo names", :banner => "repo1,repo2"
+    method_option :message, :type => :string, :desc => "Override 'automatic commit' message"
     method_option 'no-push', :type => :boolean, :default => false, :desc => "Force overwrite of existing config file"
-    desc "update", "run repo add -A, repo commit, and repo push on all changed repos "
+    desc "update", "run repo add -A, repo commit, and repo push on all changed repos"
     def update
 
-      # TODO: add --filter command
-      output = `repo status --short --unmodified=HIDE --no-verbose --no-color`
+      initial_filter = options[:repos] ? "--repos=#{options[:repos]}" : ""
+      output = `repo status --short --unmodified=HIDE --no-verbose --no-color #{initial_filter}`
 
       case $?.exitstatus
         when 0
@@ -24,8 +25,8 @@ module Repoman
             st,repo = line.split("\t")
             repos << repo
           end
-
           filter = repos.join(',')
+
           unless options[:force]
             say "Repositories '#{filter}' are modified."
             unless ask("Add, commit and push them? (y/n)") == 'y'

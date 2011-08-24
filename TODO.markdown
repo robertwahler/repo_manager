@@ -1,6 +1,8 @@
 TODO
 ====
 
+* raise an error if no repos match. ie '--repos/--filters' has an pattern that
+  doesn't match any configured repository
 * remove git gem and duplicate needed method.  The use of ENV[] will break on
   win32 and ruby 1.9.3
 * add replaceable params as params: in master config file.  These  can be used

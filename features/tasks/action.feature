@@ -38,6 +38,23 @@ Feature: Thor action tasks
       no changed repos
       """
 
+  Scenario: Uncommitted changes filtered out with the '--repos' param
+    Given a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | .gitignore       | M      | tmp/*    |
+    And a repo in folder "test_path_2" with the following:
+      | filename         | status | content  |
+      | .gitignore       | M      | tmp/*    |
+      | test             | ?      | test     |
+    And a repo in folder "my_clean_repo" with the following:
+      | filename         | status | content  |
+      | .gitignore       | C      | tmp/*    |
+    When I run `thor repoman:action:update --force --repos=my_clean_repo`
+    Then the output should contain:
+      """
+      no changed repos
+      """
+
   Scenario: Uncommitted changes in multiple repos, non-interactive, custom commit message
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
