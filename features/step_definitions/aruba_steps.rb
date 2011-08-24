@@ -31,6 +31,14 @@ def process_regex_tokens(str)
   str
 end
 
+Then /^its output should contain "([^"]*)"$/ do |expected|
+  assert_partial_output(expected, output_from(@commands.last))
+end
+
+Then /^its output should contain:$/ do |expected|
+  assert_partial_output(expected, output_from(@commands.last))
+end
+
 Then /^the normalized output should contain:$/ do |partial_output|
   str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
   normalize(all_output).should =~ Regexp.compile(str)
