@@ -10,5 +10,5 @@ Before do
 end
 
 Before('@slow_process') do
-  @aruba_io_wait_seconds = 1
+  @aruba_io_wait_seconds = 2
 end

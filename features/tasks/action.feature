@@ -38,7 +38,7 @@ Feature: Thor action tasks
       no changed repos
       """
 
-  Scenario: Uncommitted changes in multiple repos, non-interactive
+  Scenario: Uncommitted changes in multiple repos, non-interactive, custom commit message
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
@@ -48,7 +48,7 @@ Feature: Thor action tasks
       | test             | ?      | test     |
     And the repo in folder "test_path_1" has a remote named "origin" in folder "test_path_1.remote.git"
     And the repo in folder "test_path_2" has a remote named "origin" in folder "test_path_2.remote.git"
-    When I run `thor repoman:action:update --force`
+    When I run `thor repoman:action:update --force --message="my custom commit message"`
     Then the output should contain:
       """
       updating test1,test2
@@ -64,6 +64,10 @@ Feature: Thor action tasks
     Then the exit status should be 0
     When I run `repo --no-verbose git log -1 --pretty=format:'%s' --repos test1`
     Then the output should contain:
+      """
+      my custom commit message
+      """
+    Then the output should not contain:
       """
       automatic commit
       """
