@@ -1,10 +1,9 @@
 @announce
 Feature: Thor action tasks
 
-
   Run repo add -A, repo commit, and repo push on all dirty repos via Thor
 
-  Background: A valid config file
+  Background: Test repositories and a valid config file
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
@@ -14,16 +13,16 @@ Feature: Thor action tasks
     And a file named "repo.conf" with:
       """
       ---
-      config: *.yml
+      config: repos/*.yml
       """
-    And a file named "repo1.yml" with:
+    And a file named "repos/repo1.yml" with:
       """
       ---
       repos:
         test1:
           path: test_path_1
       """
-    And a file named "repo2.yml" with:
+    And a file named "repos/repo2.yml" with:
       """
       ---
       repos:
@@ -39,24 +38,37 @@ Feature: Thor action tasks
       no changed repos
       """
 
-  Scenario: One uncommitted change
+  Scenario: Uncommitted changes in multiple repos
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
+    And a repo in folder "test_path_2" with the following:
+      | filename         | status | content  |
+      | .gitignore       | M      | tmp/*    |
+      | test             | ?      | test     |
+    And the repo in folder "test_path_1" has a remote named "origin" in folder "test_path_1.remote.git"
+    And the repo in folder "test_path_2" has a remote named "origin" in folder "test_path_2.remote.git"
     When I run `thor repoman:action:update`
     Then the output should contain:
       """
-      updating test1
+      updating test1,test2
+      adding...
+      committing...
+      pushing...
       """
     And the output should not contain:
       """
-      test2
+      failed
       """
-    When I run `repo status`
+    When I run `repo status --no-verbose`
     Then the exit status should be 0
-    And the should update the default remote
-    When I run `repo git log -1 --pretty=format:'%s' --repos test1`
+    When I run `repo --no-verbose git log -1 --pretty=format:'%s' --repos test1`
     Then the output should contain:
       """
       automatic commit
+      """
+    When I run `repo push --no-verbose --repos test1`
+    Then its output should contain:
+      """
+      up-to-date
       """

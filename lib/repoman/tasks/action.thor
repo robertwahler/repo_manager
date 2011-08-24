@@ -1,9 +1,12 @@
+# @see features/tasks/atction.feature
 module Repoman
   class Action < Thor
 
+    method_option 'no-push', :type => :boolean, :default => false, :desc => "Force overwrite of existing config file"
     desc "update", "run repo add -A, repo commit, and repo push on all changed repos "
     def update
 
+      # TODO: add --filter command
       output = `repo status --short --unmodified=HIDE --no-verbose --no-color`
 
       case $?.exitstatus
@@ -23,22 +26,28 @@ module Repoman
           say "updating #{filter}"
 
           say "adding..."
-          # TODO: use system command instead of backticks so that we echo output
           `repo add -A --no-verbose --no-color --repos #{filter}`
           unless $?.exitstatus == 0
-            say "add command failed, exiting"
+            say "add failed, exiting"
             exit 1
           end
 
+          # TODO: add optional '--message' option
           say "committing..."
-          `repo commit --message='automatic commit' --no-verbose --no-color --repos #{filter}`
+          `repo commit --message='automatic commit @ #{Time.now}' --no-verbose --no-color --repos #{filter}`
           unless $?.exitstatus == 0
-            say "add command failed, exiting"
+            say "commit failed, exiting"
             exit 1
           end
 
-          # TODO: optionally push to origin
-          say "pushing..."
+          unless options['no-push']
+            say "pushing..."
+            `repo push --no-verbose --no-color --repos #{filter}`
+            unless $?.exitstatus == 0
+              say "push failed, exiting"
+              exit 1
+            end
+          end
 
           say "done", :green
         end

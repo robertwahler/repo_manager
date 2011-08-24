@@ -1,6 +1,8 @@
 TODO
 ====
 
+* remove git gem and duplicate needed method.  The use of ENV[] will break on
+  win32 and ruby 1.9.3
 * add replaceable params as params: in master config file.  These  can be used
   in repo config yaml.
 * add find action that finds a repo based on all strings in the repo config

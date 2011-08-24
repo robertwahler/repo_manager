@@ -10,9 +10,9 @@ def repo_exists?(folder)
 end
 
 def repo_init(folder)
-  create_dir(folder)
+  create_dir(folder) unless repo_exists?(folder)
   repo_path = fullpath(folder)
-  repo = Git.init(repo_path)
+  Git.init(repo_path)
 end
 
 def repo_add_all(folder)
@@ -41,6 +41,26 @@ end
 
 Given /^a repo in folder "([^"]*)"$/ do |folder|
   repo_init(folder)
+end
+
+Given /^(?:a|the) repo in folder "([^"]*)" has a remote named "([^"]*)" in folder "([^"]*)"$/ do |repo_folder, remote_name, remote_folder|
+  repo_init(repo_folder)
+  repo_path = fullpath(repo_folder)
+  remote_path = fullpath(remote_folder)
+
+  Dir.chdir repo_path do
+    `git remote add origin #{remote_path}`
+    raise "git remote add failed" unless $?.exitstatus == 0
+    `git config branch.master.remote origin`
+    raise "git config origin failed" unless $?.exitstatus == 0
+    `git config branch.master.merge refs/heads/master`
+    raise "git config refs failed" unless $?.exitstatus == 0
+    `git clone --bare #{repo_path} #{remote_path}`
+    raise "git clone failed" unless $?.exitstatus == 0
+#     `git push origin master:refs/heads/master`
+#     raise "git push failed" unless $?.exitstatus == 0
+  end
+
 end
 
 Given /^a repo in folder "([^"]*)" with the following:$/ do |folder, table|

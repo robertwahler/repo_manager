@@ -1,6 +1,6 @@
 module Repoman
 
-  module ThorHelper
+  module GenerateHelper
     def do_config(file, options = {})
       @name = options[:name]
       @path = options[:path]
@@ -27,6 +27,7 @@ module Repoman
   class Generate < Thor
     include Thor::Actions
     include Repoman::ThorHelper
+    include Repoman::GenerateHelper
 
     class_option :force, :type => :boolean, :desc => "Force overwrite of existing config file"
 
