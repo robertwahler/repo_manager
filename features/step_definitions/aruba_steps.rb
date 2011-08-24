@@ -31,6 +31,11 @@ def process_regex_tokens(str)
   str
 end
 
+# Given PENDING: some reason
+Given /^PENDING/ do
+  pending
+end
+
 Then /^its output should contain "([^"]*)"$/ do |expected|
   assert_partial_output(expected, output_from(@commands.last))
 end
