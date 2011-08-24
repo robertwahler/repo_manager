@@ -2,6 +2,8 @@
 module Repoman
   class Action < Thor
 
+    class_option :force, :type => :boolean, :desc => "Force overwrite, answer 'yes' to any prompts"
+
     method_option 'no-push', :type => :boolean, :default => false, :desc => "Force overwrite of existing config file"
     desc "update", "run repo add -A, repo commit, and repo push on all changed repos "
     def update
@@ -21,8 +23,14 @@ module Repoman
             repos << repo
           end
 
-          # TODO: optionally 'ask' user to continue
           filter = repos.join(',')
+          unless options[:force]
+            say "Repositories '#{filter}' are modified."
+            unless ask("Add, commit and push them? (y/n)") == 'y'
+              say "aborting"
+              exit 0
+            end
+          end
           say "updating #{filter}"
 
           say "adding..."
