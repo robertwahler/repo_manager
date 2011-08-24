@@ -8,7 +8,7 @@ module Repoman
     method_option :repos, :type => :string, :desc => "Restrict update to comma delimited list of repo names", :banner => "repo1,repo2"
     method_option :message, :type => :string, :desc => "Override 'automatic commit' message"
     method_option 'no-push', :type => :boolean, :default => false, :desc => "Force overwrite of existing config file"
-    desc "update", "run repo add -A, repo commit, and repo push on all changed repos"
+    desc "update", "run repo add -A, repo commit, and repo push on all modified repos"
     def update
 
       initial_filter = options[:repos] ? "--repos=#{options[:repos]}" : ""
@@ -39,24 +39,24 @@ module Repoman
           say "adding..."
           `repo add -A --no-verbose --no-color --repos #{filter}`
           unless $?.exitstatus == 0
-            say "add failed, exiting"
-            exit 1
+            say "add failed, exiting", :red
+            exit $?.exitstatus
           end
 
           commit_message = options[:message] || "automatic commit @ #{Time.now}"
           say "committing..."
           `repo commit --message=#{shell_quote(commit_message)} --no-verbose --no-color --repos #{filter}`
           unless $?.exitstatus == 0
-            say "commit failed, exiting"
-            exit 1
+            say "commit failed, exiting", :red
+            exit $?.exitstatus
           end
 
           unless options['no-push']
             say "pushing..."
             `repo push --no-verbose --no-color --repos #{filter}`
             unless $?.exitstatus == 0
-              say "push failed, exiting"
-              exit 1
+              say "push failed, exiting", :red
+              exit $?.exitstatus
             end
           end
 
