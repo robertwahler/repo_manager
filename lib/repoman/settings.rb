@@ -3,17 +3,32 @@ require 'pathname'
 
 module Repoman
 
+  # @see features/settings.feature
   class Settings
 
     def initialize(working_dir, options={})
       @working_dir = working_dir
       @options = options
-      configure
+      @repos = {}
+      @configuration = configure
     end
 
+    # entire configuration hash after processing all the individual YAML
+    # configuration files
+    def to_hash
+      @configuration
+    end
+
+    # just the configuration 'options' hash
     def options
       @options
     end
+
+    # just the hash of repos collected from individual YAML files
+    def repos
+      @repos
+    end
+
 
   private
 
@@ -83,10 +98,9 @@ module Repoman
       @options = configuration[:options].symbolize_keys!.merge!(@options)
 
       # repos hash
-      @options[:repos] = configuration[:repos].recursively_symbolize_keys! if configuration[:repos]
+      @repos = configuration[:repos].recursively_symbolize_keys! if configuration[:repos]
 
+      configuration
     end
-
   end
-
 end

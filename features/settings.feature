@@ -23,7 +23,21 @@ Feature: Configuration via yaml file
   found by globbing the repo_configuration_filespec.  The repository "path" can
   be absolute or relative to the master configuration file.
 
-  Example repos configuration hash:
+  Example master configuration file:
+
+      ---
+      options:
+        color: true
+      repo_configuration_filespec: config/*.yml
+      repos:
+        test1:
+          path: workspace/test_path_1
+          remotes:
+            origin: ../remotes/test1.git
+        test2:
+          path: /home/robert/repos/test_path_2
+
+  Example stand alone repo configuration file:
 
       ---
       repos:
@@ -33,6 +47,7 @@ Feature: Configuration via yaml file
             origin: ../remotes/test1.git
         test2:
           path: /home/robert/repos/test_path_2
+
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"

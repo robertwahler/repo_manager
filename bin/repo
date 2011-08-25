@@ -128,16 +128,17 @@ while unknown_arg = ARGV.shift
   end
 end
 
-# options from config file, if it exists, will not overwrite command line
-options = Repoman::Settings.new(FileUtils.pwd, options).options
+# settings from config file, if it exists, will not overwrite command line options
+settings = Repoman::Settings.new(FileUtils.pwd, options)
+color = settings.options[:color]
 
 # add summary of general options for use by action help commands
-options[:general_options_summary] = optparser.summarize
+settings.options[:general_options_summary] = optparser.summarize
 
-if STDOUT.isatty || (options[:color] == 'ALWAYS')
-  Term::ANSIColor::coloring = options[:color]
+if STDOUT.isatty || (color == 'ALWAYS')
+  Term::ANSIColor::coloring = color
 
-  if options[:color] && Repoman::WINDOWS
+  if color && Repoman::WINDOWS
     unless ENV['ANSICON']
       begin
         require 'Win32/Console/ANSI'
@@ -152,5 +153,5 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = Repoman::App.new(FileUtils.pwd, argv, options)
+app = Repoman::App.new(FileUtils.pwd, argv, settings.to_hash)
 app.execute

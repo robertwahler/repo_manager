@@ -17,9 +17,10 @@ module Repoman
 
   class App
 
-    def initialize(working_dir, argv=[], options={})
+    def initialize(working_dir, argv=[], configuration={})
       @working_dir = working_dir
-      @options = options
+      @configuration = configuration
+      @options = configuration[:options] || {}
       @argv = argv
       if @options[:verbose]
         puts "working_dir: #{@working_dir}".cyan
@@ -518,9 +519,9 @@ module Repoman
       raise "config file not found" unless @options[:config]
       match_count = 0
       filters = ['.*'] if filters.empty?
-      repo_config = @options[:repos]
       base_dir = File.dirname(@options[:config])
       result = []
+      repo_config = @configuration[:repos]
       repo_config.keys.sort_by{ |sym| sym.to_s}.each do |key|
         name = key.to_s
         attributes = {:name => name, :base_dir => base_dir}
