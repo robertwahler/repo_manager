@@ -11,7 +11,7 @@ Feature: Thor generate tasks
   '--config config/*.yml' pattern, multiple repostories can be configured from
   separate config files.
 
-  Example command
+  Example command:
 
       thor repoman:generate:config NAME
       thor repoman:generate:config NAME --path=PATH
@@ -25,6 +25,7 @@ Feature: Thor generate tasks
           path: some/path/my_repo_name
           remotes:
             origin: //my_smb/server/repos/my_repo_name.git
+
 
   Procedure:
 
@@ -40,38 +41,48 @@ Feature: Thor generate tasks
 
   Conventions:
 
-  * 'path' will be taken as the cwd if it has a '.git' folder, otherwise it
-    the path needs to be specified.
+  * 'path' will be taken as the cwd unless specified
   * 'name' has no convention and must be specified
   * 'FILE' will be constructed based on 'name' and the path taken from the
     repo.config 'config' option.  If no config value, use the working folder
     for the repo.config file itself.
-  * 'remote' will be constructed based on options[:defaults][:remote] and 'name'
-
+  * 'remote' will be constructed based on configuration[:defaults][:remote_dirname] and 'name'
 
   Background: Test repositories and a valid config file
-    Given a repo in folder "test_path_1" with the following:
+    Given a repo in folder "repo1_path" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
-    And a repo in folder "test_path_2" with the following:
+    And a repo in folder "repo2_path" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
-    And a file named "repo.conf" with:
+
+
+  Scenario: Repo config file not found
+    When I run `thor repoman:generate:config repo1`
+    Then the output should contain:
+      """
+      unable to find repo config file
+      """
+
+  Scenario: Specify path on the command line
+    Given a file named "repo.conf" with:
       """
       ---
-      config: repos/*.yml
+      repo_configuration_glob: repos/*.yml
       defaults:
-        remote: ../remotes
+        remote_dirname: ../remotes
       """
-
-  Scenario: Missing folder
-    Given PENDING
-
-  Scenario: Folder is not a git repo yet
-    Given PENDING
-
-  Scenario: Folder is already a git repo
-    Given PENDING
-
-  Scenario: Config file already exists
-    Given PENDING
+    When I run `thor repoman:generate:config repo1 --path="repo1_path"`
+    Then the output should contain:
+      """
+      Creating repoman configuration file
+      """
+    And the file "repos/repo1.yml" should contain:
+      """
+      ---
+      repos:
+        repo1:
+          path: repo1_path
+          remotes:
+            origin: ../remotes/repo1.git
+      """

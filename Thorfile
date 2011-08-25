@@ -1,3 +1,6 @@
 # encoding: utf-8
 
-require File.expand_path(File.dirname(__FILE__) + '/lib/repoman/tasks')
+# Use the repoman lib that is relative to this Thorfile
+$LOAD_PATH.unshift File.expand_path('../lib', __FILE__) unless $LOAD_PATH.include? File.expand_path('../lib', __FILE__)
+
+require 'repoman/tasks'
