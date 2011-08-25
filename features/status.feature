@@ -25,7 +25,7 @@ Feature: Listing repo path information
     And a file named "repo.conf" with:
       """
       ---
-      repo_configuration_filespec: *.yml
+      repo_configuration_glob: *.yml
       """
     And a file named "repo1.yml" with:
       """
@@ -79,7 +79,7 @@ Feature: Listing repo path information
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_filespec: *.yml
+      repo_configuration_glob: *.yml
       repos:
         bad_repo:
           path: not_a_repo
@@ -97,7 +97,7 @@ Feature: Listing repo path information
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_filespec: *.yml
+      repo_configuration_glob: *.yml
       repos:
         bad_repo:
           path: not_a_repo

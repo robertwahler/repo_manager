@@ -516,10 +516,10 @@ module Repoman
 
     # @return [Array] of Repo
     def repos(filters=['.*'])
-      raise "config file not found" unless @options[:config]
+      raise "config file not found" unless @configuration[:repo_configuration_filename]
       match_count = 0
       filters = ['.*'] if filters.empty?
-      base_dir = File.dirname(@options[:config])
+      base_dir = File.dirname(@configuration[:repo_configuration_filename])
       result = []
       repo_config = @configuration[:repos]
       repo_config.keys.sort_by{ |sym| sym.to_s}.each do |key|

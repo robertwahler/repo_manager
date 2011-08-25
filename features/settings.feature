@@ -18,17 +18,17 @@ Feature: Configuration via yaml file
 
   The "repos" block can be specified in the master configuration file and/or in
   separate YAML files by specifying a filespec pattern for the option key
-  "repo_configuration_filespec:".  If repo_configuration_filespec is specified,
-  the repos: hash from the master configuration file is merged with each file
-  found by globbing the repo_configuration_filespec.  The repository "path" can
-  be absolute or relative to the master configuration file.
+  "repo_configuration_glob:".  If repo_configuration_glob is specified, the
+  repos: hash from the master configuration file is merged with each file found
+  by globbing the repo_configuration_glob.  The repository "path" can be
+  absolute or relative to the master configuration file.
 
   Example master configuration file:
 
       ---
       options:
         color: true
-      repo_configuration_filespec: config/*.yml
+      repo_configuration_glob: config/*.yml
       repos:
         test1:
           path: workspace/test_path_1
@@ -303,7 +303,7 @@ Feature: Configuration via yaml file
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_filespec: config/*.invalid_pattern
+      repo_configuration_glob: config/*.invalid_pattern
       repos:
         repo0:
           path: repo0
@@ -319,7 +319,7 @@ Feature: Configuration via yaml file
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_filespec: config/*.yml
+      repo_configuration_glob: config/*.yml
       repos:
         repo0:
           path: repo0

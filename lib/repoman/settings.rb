@@ -9,7 +9,6 @@ module Repoman
     def initialize(working_dir, options={})
       @working_dir = working_dir
       @options = options
-      @repos = {}
       @configuration = configure
     end
 
@@ -26,7 +25,7 @@ module Repoman
 
     # just the hash of repos collected from individual YAML files
     def repos
-      @repos
+      configuration[:repos] || {}
     end
 
 
@@ -67,7 +66,7 @@ module Repoman
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
 
         # optional additional config files to merge
-        pattern = configuration[:repo_configuration_filespec]
+        pattern = configuration[:repo_configuration_glob]
         pattern = File.join(@working_dir, pattern) if pattern && !Pathname.new(pattern).absolute?
 
       elsif config && !Dir.glob(config).empty?
@@ -79,7 +78,7 @@ module Repoman
       end
 
       # store the original full config filename for later use
-      @options[:config] = config
+      configuration[:repo_configuration_filename] = config
 
       # process pattern for additional config files and merge the repos key
       if pattern
@@ -94,11 +93,10 @@ module Repoman
         end
       end
 
-      # the command line options override options read from the config file
-      @options = configuration[:options].symbolize_keys!.merge!(@options)
+      configuration.recursively_symbolize_keys!
 
-      # repos hash
-      @repos = configuration[:repos].recursively_symbolize_keys! if configuration[:repos]
+      # the command line options override options read from the config file
+      @options = configuration[:options].merge!(@options)
 
       configuration
     end

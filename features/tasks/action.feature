@@ -13,7 +13,7 @@ Feature: Thor action tasks
     And a file named "repo.conf" with:
       """
       ---
-      repo_configuration_filespec: repos/*.yml
+      repo_configuration_glob: repos/*.yml
       """
     And a file named "repos/repo1.yml" with:
       """
