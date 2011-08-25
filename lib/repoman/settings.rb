@@ -46,36 +46,30 @@ module Repoman
                  ].detect { |filename| File.exists?(filename) }
       end
 
-      # config can be a filename or pattern, if it is a pattern, then we sort
-      # by name and merge all the files.
-      #
-      # If config is a filename, then it may contain a repo filespec, these
-      # need to be merged as well.
-      #
       if config && File.exists?(config)
         # load options from the config file, overwriting hard-coded defaults
         config_contents = YAML::load(File.open(config))
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
 
-        # config file may point to additional config files to load
-        pattern = configuration[:config]
+        # optional additional config files to merge
+        pattern = configuration[:repo_configuration_filespec]
         pattern = File.join(@working_dir, pattern) if pattern && !Pathname.new(pattern).absolute?
 
       elsif config && !Dir.glob(config).empty?
+        # pattern was specified on the command line
         pattern = config
       else
         # user specified a config file?, no error if user did not specify config file
         raise "config file not found: #{config}" if @options[:config]
       end
 
-      # store the original full config filename or pattern for later use, the pattern read from
-      # the config file, if any, is not needed anymore
+      # store the original full config filename for later use
       @options[:config] = config
 
       # process pattern for additional config files and merge the repos key
       if pattern
         files = Dir.glob(pattern)
-        raise "config file pattern did not match any files: #{pattern}" if files.empty?
+        warn "config file pattern did not match any files: #{pattern}" if files.empty?
         files.sort.each do |file|
           config_contents = YAML::load(File.open(file))
           config_contents.symbolize_keys! if config_contents && config_contents.is_a?(Hash)

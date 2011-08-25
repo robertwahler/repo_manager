@@ -1,21 +1,38 @@
 @announce
 Feature: Configuration via yaml file
 
-  In order to configure options the program should process configuration
-  options via yaml. These options should override hard coded defaults but not
-  command line options.
+  In order to configure options the program should process YAML configuration
+  files. These options should override hard coded defaults but not command line
+  options.
 
-  Config files are read from multiple locations in order of priority.  Once a
-  config file is found, all other config files are ignored. Priority:
-  ["./repo.conf", "./.repo.conf", "./config/repo.conf", "~/.repo.conf"]
+  Master configuration files are read from multiple locations in order of
+  priority.  Once a master configuration file is found, all other config files
+  are ignored.  Priority: ["./repo.conf", "./.repo.conf", "./config/repo.conf",
+  "~/.repo.conf"]
 
-  All command line options can be read from the config file from the "options:"
-  block. The "options" block is optional.  The "repos" block describes the repo
-  names and attributes.  The "repos" block is required.  Commands that operate
-  on repos will fail if the repos block is invalid or missing.
+  All command line options can be read from the configuration file from the
+  "options:" block. The "options" block is optional.  The "repos" block
+  describes the repo names and attributes.  The "repos" block is required.
+  Commands that operate on repos will fail if the repos block is invalid or
+  missing.
 
-  NOTE: All file system testing is done via the Aruba gem.  The home folder
-  config file is stubbed to prevent testing contamination in case it exists.
+  The "repos" block can be specified in the master configuration file and/or in
+  separate YAML files by specifying a filespec pattern for the option key
+  "repo_configuration_filespec:".  If repo_configuration_filespec is specified,
+  the repos: hash from the master configuration file is merged with each file
+  found by globbing the repo_configuration_filespec.  The repository "path" can
+  be absolute or relative to the master configuration file.
+
+  Example repos configuration hash:
+
+      ---
+      repos:
+        test1:
+          path: workspace/test_path_1
+          remotes:
+            origin: ../remotes/test1.git
+        test2:
+          path: /home/robert/repos/test_path_2
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
@@ -271,13 +288,13 @@ Feature: Configuration via yaml file
     Given a file named "repo.conf" with:
       """
       ---
-      config: config/*.invalid_pattern
+      repo_configuration_filespec: config/*.invalid_pattern
       repos:
         repo0:
           path: repo0
       """
     When I run `repo path`
-    Then the exit status should be 1
+    Then the exit status should be 0
     And the output should contain:
       """
       config file pattern did not match any files
@@ -287,7 +304,7 @@ Feature: Configuration via yaml file
     Given a file named "repo.conf" with:
       """
       ---
-      config: config/*.yml
+      repo_configuration_filespec: config/*.yml
       repos:
         repo0:
           path: repo0
