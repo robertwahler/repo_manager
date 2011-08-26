@@ -171,7 +171,7 @@ module Repoman
 
           # renamed files 'to -> from', 'from' will be on the next line,
           # shift it off as we don't track this
-          output.shift if st.match(/R/)
+          output.shift if st.match(/[R|C]/)
 
           case st
             when '??'
