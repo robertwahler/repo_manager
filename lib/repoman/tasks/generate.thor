@@ -4,46 +4,62 @@ module Repoman
 
   module GenerateHelper
 
-    def do_config(name, options = {})
-
-      @name = name
-
+    def validate_options(name, options = {})
       file = options[:file]
-      @path = options[:path]
-      @remote = options[:remote]
+      path = options[:path]
+      remote = options[:remote]
 
-      unless file && @path && @remote
+      unless file && path && remote
         say "reading repo config file..."
-        configuration = ::Repoman::Settings.new(FileUtils.pwd).to_hash
-        puts configuration.inspect
+        repoman_options = {}
+        repoman_options[:config] = options[:config]
+        configuration = ::Repoman::Settings.new(FileUtils.pwd, repoman_options).to_hash
         raise "unable to find repo config file" unless configuration[:repo_configuration_filename]
       end
 
       unless file
-        glob =  configuration[:repo_configuration_glob]
+        glob = configuration[:repo_configuration_glob]
         puts glob
         config_folder =  File.dirname(glob) if glob
         unless config_folder
           say "repo_configuration_glob key not specified or invalid in repo.conf, please set key or specify '--file=' on the command line"
           exit 1
         end
-        file = File.join(config_folder, "#{name}.yml")
+        file = File.join(File.expand_path(config_folder), "#{name}.yml")
+        say file
       end
 
-      unless @remote
+      unless remote
         defaults = configuration[:defaults] || {}
         remote_dirname = defaults[:remote_dirname]
         unless remote_dirname
           say "[:defaults][:remote_dirname] not found in repo.conf, please set key or specify '--remote=' on the command line"
           exit 1
         end
-        @remote = "#{File.join(remote_dirname, @name + '.git')}"
+        remote = "#{File.join(remote_dirname, name + '.git')}"
       end
 
-      @path ||= FileUtils.pwd
+      path ||= FileUtils.pwd
+
+      # write back to options hash, but it is frozen, so dup a new one
+      configuration = options.dup
+      configuration[:file] = file
+      configuration[:path] = path
+      configuration[:remote] = remote
+
+      configuration
+    end
+
+    # write a YAML config file for a single repo
+    def do_config(name, options = {})
+      # set instance vars for generator
+      @name = name
+      @path = options[:path]
+      @remote = options[:remote]
 
       template_name = "templates/repo.erb"
 
+      file = options[:file]
       FileUtils.rm(file) if options[:force] && File.exist?(file)
 
       if File.exist?(file)
@@ -53,12 +69,16 @@ module Repoman
         template template_name, file
       end
     end
+
   end
 
   # @example Generate a repo config
   #
-  #   thor repoman:generate:config tmp/config.yml --name=test_me --path='tmp/aruba/test1' \
-  #                                -r='//peach/data/repos' --force
+  #   thor repoman:generate:config test_me
+  #
+  # @example Generate a repo config overriding the CWD
+  #
+  #   thor repoman:generate:config test_me --path='tmp/aruba/test1'
   #
   class Generate < Thor
     include Thor::Actions
@@ -66,13 +86,15 @@ module Repoman
     include Repoman::GenerateHelper
 
     class_option :force, :type => :boolean, :desc => "Force overwrite of existing config file"
+    class_option :config, :type => :string, :desc => "Repoman config file"
+    class_option :path, :type => :string, :aliases => "-p", :desc => "Full path to working folder"
+    class_option :file, :type => :string, :desc => "Repo config file name", :banner => "filename"
+    class_option :remote, :type => :string, :aliases => "-r", :desc => "Repo remote origin, i.e.  'git@host.git' or '//smb/path", :banner => "//smb/remote/path"
 
-    method_option :path, :type => :string, :aliases => "-p", :desc => "Full path to working folder"
-    method_option :file, :type => :string, :desc => "Repo config file name", :banner => "filename"
-    method_option :remote, :type => :string, :aliases => "-r", :desc => "Repo remote origin, i.e.  'git@host.git' or '//smb/path", :banner => "//smb/remote/path"
     desc "config REPO_NAME", "generate repoman config file for a single repo"
     def config(name)
-      do_config(name, options)
+      configuration = validate_options(name, options)
+      do_config(name, configuration)
     end
 
     private
