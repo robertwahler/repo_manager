@@ -1,6 +1,7 @@
 # @see features/tasks/action.feature
 module Repoman
   class Action < Thor
+    include Thor::Actions
     include Repoman::ThorHelper
 
     class_option :force, :type => :boolean, :desc => "Force overwrite and answer 'yes' to any prompts"
@@ -12,12 +13,17 @@ module Repoman
     def update
 
       initial_filter = options[:repos] ? "--repos=#{options[:repos]}" : ""
-      output = `repo status --short --unmodified=HIDE --no-verbose --no-color #{initial_filter}`
+      output = run("repo status --short --unmodified=HIDE --no-verbose --no-color #{initial_filter}", :capture => true)
 
       case $?.exitstatus
         when 0
           say 'no changed repos', :green
         else
+
+          unless output
+            say "failed to successfully run 'repo status'", :red
+            exit $?.exitstatus
+          end
 
           repos = []
           output = output.split("\n")
@@ -34,33 +40,22 @@ module Repoman
               exit 0
             end
           end
+
           say "updating #{filter}"
 
-          say "adding..."
-          `repo add -A --no-verbose --no-color --repos #{filter}`
-          unless $?.exitstatus == 0
-            say "add failed, exiting", :red
-            exit $?.exitstatus
-          end
+          run "repo add -A --no-verbose --repos #{filter}"
+          exit $?.exitstatus if ($?.exitstatus > 1)
 
           commit_message = options[:message] || "automatic commit @ #{Time.now}"
-          say "committing..."
-          `repo commit --message=#{shell_quote(commit_message)} --no-verbose --no-color --repos #{filter}`
-          unless $?.exitstatus == 0
-            say "commit failed, exiting", :red
-            exit $?.exitstatus
-          end
+          run "repo commit --message=#{shell_quote(commit_message)} --no-verbose --repos #{filter}"
+          exit $?.exitstatus if ($?.exitstatus > 1)
 
           unless options['no-push']
-            say "pushing..."
-            `repo push --no-verbose --no-color --repos #{filter}`
-            unless $?.exitstatus == 0
-              say "push failed, exiting", :red
-              exit $?.exitstatus
-            end
+            run "repo push --no-verbose --repos #{filter}"
+            exit $?.exitstatus if ($?.exitstatus > 1)
           end
 
-          say "done", :green
+          say "update finished", :green
         end
 
     end

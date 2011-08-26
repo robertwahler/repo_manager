@@ -69,9 +69,10 @@ Feature: Thor action tasks
     Then the output should contain:
       """
       updating test1,test2
-      adding...
-      committing...
-      pushing...
+      """
+    And the output should contain:
+      """
+      update finished
       """
     And the output should not contain:
       """
@@ -106,9 +107,10 @@ Feature: Thor action tasks
     Then the output should contain:
       """
       updating test2
-      adding...
-      committing...
-      pushing...
+      """
+    And the output should contain:
+      """
+      update finished
       """
     And the output should not contain:
       """
