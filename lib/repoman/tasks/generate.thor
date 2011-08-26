@@ -80,6 +80,49 @@ module Repoman
   #
   #   thor repoman:generate:config test_me --path='tmp/aruba/test1'
   #
+  # @example Extending the generate class to include initializing and pushing
+  #
+  #   # encoding: utf-8
+  #
+  #   require 'repoman/tasks'
+  #
+  #   module Repoman
+  #
+  #     class Generate < Thor
+  #
+  #       # Generate a repo config and 'git init' it from the working folder
+  #       #
+  #       # @example From the repo working
+  #       #
+  #       #   cd ~/my_repo_name
+  #       #   thor repoman:generate:init my_repo_name
+  #       #
+  #       desc "init REPO_NAME", "create repo config file and initialize the repo"
+  #       def init(name)
+  #         configuration = validate_options(name, options)
+  #         do_config(name, configuration)
+  #
+  #         run("git init")
+  #         run("git add .")
+  #         run("git commit -m 'initial commit'")
+  #         exit $?.exitstatus if ($?.exitstatus > 1)
+  #
+  #         run("git remote add origin #{configuration[:remote]}")
+  #         run("git config branch.master.remote origin")
+  #         run("git config branch.master.merge refs/heads/master")
+  #         exit $?.exitstatus if ($?.exitstatus > 1)
+  #
+  #         run("git clone --bare #{shell_quote(configuration[:path])} #{configuration[:remote]}")
+  #         exit $?.exitstatus if ($?.exitstatus > 1)
+  #
+  #         run("git push origin master:refs/heads/master")
+  #         exit $?.exitstatus if ($?.exitstatus > 1)
+  #
+  #         say "init done on '#{name}'", :green
+  #       end
+  #     end
+  #   end
+  #
   class Generate < Thor
     include Thor::Actions
     include Repoman::ThorHelper
