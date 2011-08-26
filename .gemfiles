@@ -9,6 +9,7 @@ LICENSE
 README.markdown
 Rakefile
 TODO.markdown
+Thorfile
 VERSION
 bin/repo
 config/cucumber.yml
@@ -25,6 +26,8 @@ features/step_definitions/aruba_steps.rb
 features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
+features/tasks/action.feature
+features/tasks/generate.feature
 lib/repoman.rb
 lib/repoman/app.rb
 lib/repoman/core/array.rb
@@ -34,8 +37,14 @@ lib/repoman/git/lib.rb
 lib/repoman/repo.rb
 lib/repoman/settings.rb
 lib/repoman/status.rb
+lib/repoman/tasks.rb
+lib/repoman/tasks/action.thor
+lib/repoman/tasks/generate.thor
+lib/repoman/tasks/templates/repo.erb
+lib/repoman/tasks/thor_helper.rb
 repoman.gemspec
 spec/aruba_helper.rb
+spec/basic_app/array_spec.rb
 spec/basic_gem/aruba_helper_spec.rb
 spec/basic_gem/basic_gem_spec.rb
 spec/basic_gem/gemspec_spec.rb
