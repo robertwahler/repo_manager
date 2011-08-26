@@ -34,7 +34,7 @@ module Repoman
           filter = repos.join(',')
 
           unless options[:force]
-            say "Repositories '#{filter}' are modified."
+            say "Repo(s) '#{filter}' have changed."
             unless ask("Add, commit and push them? (y/n)") == 'y'
               say "aborting"
               exit 0

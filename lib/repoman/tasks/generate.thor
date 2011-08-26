@@ -104,7 +104,7 @@ module Repoman
   #
   #         run("git init")
   #         run("git add .")
-  #         run("git commit -m 'initial commit'")
+  #         run("git commit --message #{shell_quote('initial commit')}")
   #         exit $?.exitstatus if ($?.exitstatus > 1)
   #
   #         run("git remote add origin #{configuration[:remote]}")

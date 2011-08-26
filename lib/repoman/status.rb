@@ -169,7 +169,7 @@ module Repoman
           # skip the space
           filename = line[3..-1]
 
-          # renamed files 'to -> from', 'from' will be on the next line,
+          # renamed/copied files 'to -> from', 'from' will be on the next line,
           # shift it off as we don't track this
           output.shift if st.match(/[R|C]/)
 
