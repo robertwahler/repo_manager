@@ -1,6 +1,9 @@
 TODO
 ====
 
+* verify 'git pull -filter=dredmor' throws error.  Note the bad switch '-filter'
+* YAML config files should allow ERB that evaluates keys from the master
+  config file.
 * raise an error if no repos match. ie '--repos/--filters' has an pattern that
   doesn't match any configured repository
 * remove git gem and duplicate needed method.  The use of ENV[] will break on
