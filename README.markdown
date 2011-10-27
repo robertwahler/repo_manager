@@ -20,10 +20,14 @@ Development dependencies
 
 Jump-starting a new gem with BasicGem
 -----------------------------------------
-The following steps illustrate creating a new gem called "mutagem" that handles file based mutexes.
-See <http://github.com/robertwahler/mutagem> for full source.
+The following steps illustrate creating a new gem called "mutagem" that handles
+file based mutexes.  See <http://github.com/robertwahler/mutagem> for full
+source.
 
-**NOTE:** _We are cloning from [BasicGem](http://github.com/robertwahler/basic_gem) directly.  Normally, you will want to clone from your own fork of BasicGem so that you can control and fine-tune which future BasicGem modifications you will support._
+**NOTE:** _We are cloning from
+[BasicGem](http://github.com/robertwahler/basic_gem) directly.  Normally, you
+will want to clone from your own fork of BasicGem so that you can control and
+fine-tune which future BasicGem modifications you will support._
 
     cd ~/workspace
     git clone git://github.com/robertwahler/basic_gem.git mutagem
