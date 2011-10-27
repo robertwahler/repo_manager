@@ -16,6 +16,13 @@ Feature: Configuration via yaml file
   Commands that operate on repos will fail if the repos block is invalid or
   missing.
 
+  Config file priority:
+
+      repo.conf
+      .repo.conf
+      config/repo.conf
+      ~/.repo.conf
+
   The "repos" block can be specified in the master configuration file and/or in
   separate YAML files by specifying a filespec pattern for the option key
   "repo_configuration_glob:".  If repo_configuration_glob is specified, the
@@ -163,7 +170,7 @@ Feature: Configuration via yaml file
       :color=>false
       """
 
- Scenario: Negative override on command line with alternative spelling '--coloring'
+ Scenario: Negative override on command line with alternative spelling '--no-coloring'
     And a file named "with_color.conf" with:
       """
       ---
