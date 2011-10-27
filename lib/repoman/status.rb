@@ -63,7 +63,7 @@ module Repoman
       !changed.empty?
     end
 
-    # @return [Boolean] false unless a file has added
+    # @return [Boolean] false unless a file has been added
     def added?
       !added.empty?
     end
