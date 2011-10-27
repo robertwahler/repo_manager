@@ -8,6 +8,13 @@ Feature: Configuration via yaml file
   Config files are read from multiple locations in order of priority.  Once a
   config file is found, all other config files are ignored.
 
+  Config file priority:
+
+      basic_app.conf
+      .basic_app.conf
+      config/basic_app.conf
+      ~/.basic_app.conf
+
   All command line options can be read from the config file from the "options:"
   block. The "options" block is optional.
 
