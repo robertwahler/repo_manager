@@ -50,8 +50,10 @@ namespace :doc do
 
 end
 
-# put the gemfiles task in the :build dependency chain
+# put the gemfiles task in the bundler dependency chain
 task :build => [:gemfiles]
+task :install => [:gemfiles]
+task :release => [:gemfiles]
 
 desc "Generate .gemfiles via 'git ls-files'"
 task :gemfiles do
