@@ -33,7 +33,10 @@ The following steps illustrate creating a new application called "oct." Oct
 is a simple command line utility that prints file listing permissions in octal
 notation. See <http://github.com/robertwahler/oct> for full source.
 
-**NOTE:** _We are cloning from [BasicApp](http://github.com/robertwahler/basic_app) directly.  Normally, you will want to clone from your own fork of BasicApp so that you can control and fine-tune which future BasicApp modifications you will support._
+**NOTE:** _We are cloning from
+[BasicApp](http://github.com/robertwahler/basic_app) directly.  Normally, you
+will want to clone from your own fork of BasicApp so that you can control and
+fine-tune which future BasicApp modifications you will support._
 
     cd ~/workspace
     git clone git://github.com/robertwahler/basic_app.git oct
@@ -164,8 +167,8 @@ Trusting pull of HEAD
 
 Conflict resolution
 
-*NOTE: Most conflicts can be resolved with 'git mergetool' but 'CONFLICT (delete/modify)' will
-need to be resolved by hand.*
+*NOTE: Most conflicts can be resolved with 'git mergetool' but 'CONFLICT
+(delete/modify)' will need to be resolved by hand.*
 
     git mergetool
     git commit
