@@ -22,9 +22,9 @@ module Repoman
 
     attr_reader :files
 
-    def initialize(repo)
+    def initialize(scm)
       @files = {}
-      @repo = repo
+      @scm = scm
       construct_status
     end
 
@@ -160,7 +160,7 @@ module Repoman
         #     /.D/ => 'deleted', [deleted.yellow]
         #     /.M/ => 'modified', [changed.red]
 
-        output = @repo.lib.native('status', ['--porcelain', '-z']).split("\000")
+        output = @scm.lib.native('status', ['--porcelain', '-z']).split("\000")
         while line = output.shift
           next unless line && line.length > 3
           file_hash = nil
