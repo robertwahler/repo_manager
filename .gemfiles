@@ -29,6 +29,15 @@ features/support/env.rb
 features/tasks/action.feature
 features/tasks/generate.feature
 lib/repoman.rb
+lib/repoman/actions.rb
+lib/repoman/actions/app.rb
+lib/repoman/actions/base.rb
+lib/repoman/actions/git.rb
+lib/repoman/actions/help.rb
+lib/repoman/actions/init.rb
+lib/repoman/actions/list.rb
+lib/repoman/actions/path.rb
+lib/repoman/actions/status.rb
 lib/repoman/app.rb
 lib/repoman/core.rb
 lib/repoman/core/array.rb
