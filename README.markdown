@@ -50,10 +50,11 @@ We are going to change the origin URL to our own server and setup a remote
 for pulling in future BasicApp changes. If our own repo is setup at
 git@red:oct.git, change the URL with sed:
 
-    sed -i 's/url =.*\.git$/url = git@red:oct.git/' .git/config
+    sed -i 's/url =.*\.git$/url = git@blue:oct.git/' .git/config
 
 Push up the unchanged BasicApp repo
 
+    git remote show origin
     git push origin master:refs/heads/master
 
 Allow Gemlock.lock and .gemfiles to be stored in the repo
@@ -78,6 +79,11 @@ the content is non-trivial.
     git mv lib/basic_app lib/oct
     git mv basic_app.gemspec oct.gemspec
 
+Commit moves now so git will see them as renames
+
+    git add .
+    git commit -m "rename BasicApp files"
+
     # BasicApp => Oct
     find ./bin -type f -exec sed -i 's/BasicApp/Oct/' '{}' +
     find . -name *.rb -exec sed -i 's/BasicApp/Oct/' '{}' +
@@ -93,7 +99,6 @@ the content is non-trivial.
     sed -i 's/basic_app/oct/' Rakefile
     sed -i 's/basic_app/oct/' oct.gemspec
 
-
 Replace TODO's and update documentation
 ---------------------------------------
 
@@ -104,6 +109,10 @@ Replace TODO's and update documentation
 * Replace VERSION
 * Modify .gemspec, add author information and replace the TODO's
 
+Create gemspec filename cache
+-------------------------
+
+    rake gemfiles
 
 Gem should now be functional
 ---------------------------
@@ -121,6 +130,8 @@ Set the merge type for the files we want to ignore in .git/info/attributes. You
 could specify .gitattributes instead of .git/info/attributes but then if your
 new gem is forked, your forked repos will miss out on document merges.
 
+    mkdir .git/info
+
     echo "README.markdown merge=keep_local_copy" >> .git/info/attributes
     echo "HISTORY.markdown merge=keep_local_copy" >> .git/info/attributes
     echo "TODO.markdown merge=keep_local_copy" >> .git/info/attributes
@@ -135,10 +146,6 @@ the keep_local_copy merge type will always ignore upstream changes if a merge co
     git config merge.keep_local_copy.name "always keep the local copy during merge"
     git config merge.keep_local_copy.driver "true"
 
-Create gem filename cache
--------------------------
-
-    rake gemfiles
 
 Commit
 ------
