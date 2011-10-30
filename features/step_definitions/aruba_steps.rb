@@ -44,6 +44,18 @@ Then /^its output should contain:$/ do |expected|
   assert_partial_output(expected, output_from(@commands.last))
 end
 
+# "the output should match" allows regex in the partial_output, if
+# you don't need regex, use "the output should contain" instead since
+# that way, you don't have to escape regex characters that
+# appear naturally in the output
+Then /^the last output should match \/([^\/]*)\/$/ do |expected|
+  assert_matching_output(expected, output_from(@commands.last))
+end
+
+Then /^the last output should match:$/ do |expected|
+  assert_matching_output(expected, output_from(@commands.last))
+end
+
 Then /^the normalized output should contain:$/ do |partial_output|
   str = process_regex_tokens(Regexp.escape(normalize(partial_output)))
   normalize(all_output).should =~ Regexp.compile(str)

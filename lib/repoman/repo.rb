@@ -24,14 +24,15 @@ module Repoman
     end
 
     def status
-      @status ||= Repoman::Status.new(repo)
+      @status ||= Repoman::Status.new(scm)
     end
 
-    def repo
-      return @repo if @repo
+    # version control system wrapper
+    def scm
+      return @scm if @scm
       raise NoSuchPathError unless File.exists?(fullpath)
       raise InvalidRepositoryError unless File.exists?(File.join(fullpath, '.git'))
-      @repo = Git.open(fullpath)
+      @scm = Git.open(fullpath)
     end
 
     def fullpath

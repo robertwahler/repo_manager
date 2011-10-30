@@ -150,5 +150,5 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = Repoman::App.new(FileUtils.pwd, argv, settings.to_hash)
+app = Repoman::App.new(argv, settings.to_hash)
 app.execute
