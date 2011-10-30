@@ -14,10 +14,19 @@ module Repoman
   #   repo git add . --filter=test
   #
   # @return [Numeric] pass through of 'git' result code
-  #
   class GitAction < AppAction
 
     def execute
+
+      OptionParser.new do |opts|
+        opts.banner = help
+        begin
+          opts.parse(args)
+        rescue OptionParser::InvalidOption => e
+          # do nothing, we are just passing through all options
+        end
+      end
+
       raise "no git command given" if args.empty?
 
       # the first arg is optionally 'git'
@@ -68,6 +77,10 @@ module Repoman
         end
       end
       result
+    end
+
+    def help
+      super :comment_starting_with => "Native 'git' command", :located_in_file => __FILE__
     end
 
   end

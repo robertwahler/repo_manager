@@ -16,7 +16,6 @@ module Repoman
   # Run 'repo git init' instead to pass through all options to the native version
   #
   # @return [Number] pass through of 'git init' result code
-  #
   class InitAction < AppAction
 
     def execute

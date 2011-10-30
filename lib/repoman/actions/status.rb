@@ -24,9 +24,7 @@ module Repoman
   # @return [Number] bitfield with combined repo status
   #
   # @see Status bitfield return values
-  #
   class StatusAction < AppAction
-
 
     def execute
       OptionParser.new do |opts|

@@ -26,11 +26,10 @@ module Repoman
     # @return [String] suitable for displaying on STDOUT
     def help(options={})
       comment_starting_with = options[:comment_starting_with] || ""
-      method_name = options[:method_name] || "execute"
       located_in_file = options[:located_in_file] || __FILE__
       text = File.read(located_in_file)
 
-      result = text.match(/(^\s*#\s*#{comment_starting_with}.*)^\s*def #{method_name}/m)
+      result = text.match(/(^\s*#\s*#{comment_starting_with}.*)^\s*class .* AppAction/m)
       result = $1
       result = result.gsub(/ @example/, '')
       result = result.gsub(/ @return \[Number\]/, ' Exit code:')

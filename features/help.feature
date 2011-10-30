@@ -11,19 +11,19 @@ Feature: Show help on pass-through command/action options
  Scenario Outline: Valid action, help available
     When I run `repo help <action>`
     Then the exit status should be 0
-    And the output should match:
+    And the last output should match:
       """
-      Usage:.*<action>.*
+      Usage: repo.* <action>
       """
 
   Examples:
     | action  |
-    | init    |
     | git     |
+    | help    |
+    | init    |
     | list    |
     | path    |
     | status  |
-    | help    |
 
   Scenario: Missing action
     When I run `repo help`
@@ -38,5 +38,5 @@ Feature: Show help on pass-through command/action options
     Then the exit status should be 0
     And the output should contain:
       """
-      invalid action
+      invalid help action
       """

@@ -33,7 +33,6 @@ module Repoman
   #     rcd my_repo_name
   #
   # @return [Number] 0 if successful
-  #
   class ListAction < AppAction
 
     def execute

@@ -52,14 +52,8 @@ module Repoman
             exit 1
           end
           puts "repo run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
-          #if action == 'list'
-            # transform action to a namespaced class, ie. 'list' = Repoman::ListAction
-            klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
-            result = klass.new(args, @configuration).execute
-          #else
-          #  raise "action #{action} not implemented" unless respond_to?(action)
-          #  result = send(action, args)
-          #end
+          klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
+          result = klass.new(args, @configuration).execute
         else
           #
           # default action if action_argument_required? is false
@@ -75,8 +69,7 @@ module Repoman
         end
 
       rescue SystemExit => e
-        # This is the normal exit point, exit code from the send result
-        # or exit from another point in the system
+        # This is the normal exit point
         puts "repo run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
@@ -88,44 +81,6 @@ module Repoman
       end
     end
 
-    # @group CLI actions
-    #
-    # CLI help
-    #
-    def help(args)
-      action = args.shift
-
-      unless action
-        puts "no action specified"
-        puts "Usage: repo help action | repo --help"
-        puts ""
-        puts "Where 'action' is one of: #{AVAILABLE_ACTIONS.join(' ')}"
-
-        exit(0)
-      end
-
-      action = action.downcase
-      unless AVAILABLE_ACTIONS.include?(action)
-        puts "invalid action: #{action}"
-        exit(0)
-      end
-
-      # TODO: refactor so that each action class knows how to handle help
-      case action
-        when 'help'
-          puts "Provide help for an action"
-          puts "Usage: repo help [action]"
-        when 'path'
-          puts help_for_method(:path, :comment_starting_with => "Show repository path")
-        when 'git'
-          puts help_for_method(:git, :comment_starting_with => "Native 'git' command")
-        else
-          send(action, ['--help'])
-      end
-
-      exit(0)
-    end
-
   private
 
     # true if application requires an action to be specified on the command line
@@ -133,32 +88,5 @@ module Repoman
       !AVAILABLE_ACTIONS.empty?
     end
 
-    # Convert method comments block to help text
-    #
-    # @return [String] suitable for displaying on STDOUT
-    def help_for_method(method_name, options={})
-      comment_starting_with = options[:comment_starting_with]
-      method_name = method_name.to_s
-      located_in_file = options[:located_in_file] || __FILE__
-      text = File.read(located_in_file)
-
-      result = text.match(/(^\s*#\s*#{comment_starting_with}.*)^\s*def #{method_name}/m)
-      result = $1
-      result = result.gsub(/ @example/, '')
-      result = result.gsub(/ @return \[Number\]/, ' Exit code:')
-      result = result.gsub(/ @return .*/, '')
-      result = result.gsub(/ @see .*$/, '')
-
-      # strip the leading whitespace, the '#' and space
-      result = result.gsub(/^\s*# ?/, '')
-
-      # strip surrounding whitespace
-      result.strip
-
-      result += "General options:\n"
-      result += @options[:general_options_summary].to_s
-    end
-
   end
-
 end
