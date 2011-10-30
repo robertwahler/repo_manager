@@ -1,7 +1,9 @@
+# The file is was originally cloned from BasicApp
+# https://robertwahler@github.com/robertwahler/basic_app.git
 module Repoman
 
   # An abstract superclass for basic action functionality specific to an
-  # application implementation
+  # application implementation.  Put application specific code here.
   class AppAction < BaseAction
 
     # @return [Array] of Repo

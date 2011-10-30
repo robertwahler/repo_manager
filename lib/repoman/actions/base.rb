@@ -1,7 +1,9 @@
+# The file is was originally cloned from BasicApp
+# https://robertwahler@github.com/robertwahler/basic_app.git
 module Repoman
 
   # An abstract superclass for basic action functionality maintained by
-  # the upstream BasicApp framework
+  # the upstream BasicApp framework.
   class BaseAction
 
     attr_reader :options
