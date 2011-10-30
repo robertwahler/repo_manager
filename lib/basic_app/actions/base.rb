@@ -30,9 +30,9 @@ module BasicApp
     # Convert method comments block to help text
     #
     # @return [String] suitable for displaying on STDOUT
-    def help(options={})
-      comment_starting_with = options[:comment_starting_with] || ""
-      located_in_file = options[:located_in_file] || __FILE__
+    def help(help_options={})
+      comment_starting_with = help_options[:comment_starting_with] || ""
+      located_in_file = help_options[:located_in_file] || __FILE__
       text = File.read(located_in_file)
 
       result = text.match(/(^\s*#\s*#{comment_starting_with}.*)^\s*class .* AppAction/m)
@@ -48,8 +48,13 @@ module BasicApp
       # strip surrounding whitespace
       result.strip
 
-      result += "General options:\n"
-      result += options[:general_options_summary].to_s
+      if configuration[:general_options_summary]
+        result += "\n"
+        result += "General options:\n"
+        result += configuration[:general_options_summary].to_s
+      end
+
+      result
     end
 
   end

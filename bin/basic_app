@@ -21,7 +21,7 @@ Options:
 HELP
 
 options = {}
-OptionParser.new do |opts|
+optparser = OptionParser.new do |opts|
   opts.banner = help
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
@@ -63,8 +63,12 @@ OptionParser.new do |opts|
 end
 
 # configuration from config file, if it exists, will not overwrite command line
-configuration = BasicApp::Settings.new(FileUtils.pwd, options)
-color = configuration.options[:color]
+settings = BasicApp::Settings.new(FileUtils.pwd, options)
+color = settings.options[:color]
+
+# add summary of general options for use by action help commands
+configuration = settings.to_hash
+configuration[:general_options_summary] = optparser.summarize
 
 if STDOUT.isatty || (color == 'ALWAYS')
   Term::ANSIColor::coloring = color
@@ -84,4 +88,4 @@ else
   Term::ANSIColor::coloring = false
 end
 
-BasicApp::App.new(ARGV.dup, configuration.to_hash).execute
+BasicApp::App.new(ARGV.dup, configuration).execute
