@@ -1,7 +1,7 @@
 module Repoman
 
   # An abstract superclass for basic action functionality maintained by
-  # upstream BasicApp
+  # the upstream BasicApp framework
   class BaseAction
 
     attr_reader :options
@@ -25,7 +25,7 @@ module Repoman
     #
     # @return [String] suitable for displaying on STDOUT
     def help(options={})
-      comment_starting_with = options[:comment_starting_with] || "#\n"
+      comment_starting_with = options[:comment_starting_with] || ""
       method_name = options[:method_name] || "execute"
       located_in_file = options[:located_in_file] || __FILE__
       text = File.read(located_in_file)

@@ -1,3 +1,7 @@
 require 'repoman/actions/base'
 require 'repoman/actions/app'
 require 'repoman/actions/list'
+require 'repoman/actions/path'
+require 'repoman/actions/git'
+require 'repoman/actions/init'
+require 'repoman/actions/status'
