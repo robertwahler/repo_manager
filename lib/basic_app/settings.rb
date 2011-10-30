@@ -7,9 +7,16 @@ module BasicApp
     def initialize(working_dir, options={})
       @working_dir = working_dir
       @options = options
-      configure
+      @configuration = configure
     end
 
+    # entire configuration hash after processing all the individual YAML
+    # configuration files
+    def to_hash
+      @configuration
+    end
+
+    # just the configuration 'options' hash
     def options
       @options
     end
@@ -18,6 +25,7 @@ module BasicApp
 
     # read options from YAML config
     def configure
+
 
       # config file default options
       configuration = {
@@ -50,9 +58,12 @@ module BasicApp
         raise "config file not found" if @options[:config]
       end
 
-      # the command line options override options read from the config file
-      @options = configuration[:options].symbolize_keys!.merge!(@options)
+      configuration.recursively_symbolize_keys!
 
+      # the command line options override options read from the config file
+      @options = configuration[:options].merge!(@options)
+
+      configuration
     end
 
   end
