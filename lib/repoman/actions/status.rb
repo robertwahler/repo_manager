@@ -33,11 +33,11 @@ module Repoman
         opts.banner = help_text + "\n\nOptions:"
 
         opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
-          @options[:unmodified] = u || "SHOW"
-          @options[:unmodified].upcase!
+          options[:unmodified] = u || "SHOW"
+          options[:unmodified].upcase!
         end
         opts.on("--short", "Summary status only, do not show individual file status") do |s|
-          @options[:short] = s
+          options[:short] = s
         end
 
         begin
@@ -50,7 +50,7 @@ module Repoman
       end
 
       filters = args.dup
-      filters += @options[:filter] if @options[:filter]
+      filters += options[:filter] if options[:filter]
 
       st = 0
       result = 0
@@ -74,7 +74,7 @@ module Repoman
 
           when Status::CLEAN
             count_unmodified += 1
-            case @options[:unmodified]
+            case options[:unmodified]
               when "HIDE"
                 # do nothing
               when "SHOW"
@@ -83,7 +83,7 @@ module Repoman
                 print ".".green
                 need_lf = true
               else
-                raise "invalid mode '#{@options[:unmodified]}' for '--unmodified' option"
+                raise "invalid mode '#{options[:unmodified]}' for '--unmodified' option"
             end
 
           when Status::NOPATH
@@ -111,7 +111,7 @@ module Repoman
             puts "\t#{repo.name}"
             need_lf = false
 
-            unless @options[:short]
+            unless options[:short]
               # modified (M.red)
               repo.status.changed.sort.each do |k, f|
                 puts "\t  modified: #{f.path}".red

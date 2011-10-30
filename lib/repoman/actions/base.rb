@@ -43,7 +43,7 @@ module Repoman
       result.strip
 
       result += "General options:\n"
-      result += @options[:general_options_summary].to_s
+      result += options[:general_options_summary].to_s
     end
 
   end

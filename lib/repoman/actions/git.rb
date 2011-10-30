@@ -36,7 +36,7 @@ module Repoman
       command = args.shift
       st = 0
       result = 0
-      filters = @options[:filter] || []
+      filters = options[:filter] || []
       repositories = repos(filters)
 
       # args should not match a repo name

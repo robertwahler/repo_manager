@@ -35,7 +35,7 @@ module Repoman
       end
 
       filters = args.dup
-      filters += @options[:filter] if @options[:filter]
+      filters += options[:filter] if options[:filter]
 
       repos(filters).each do |repo|
 

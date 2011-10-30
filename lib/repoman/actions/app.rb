@@ -30,7 +30,7 @@ module Repoman
     private
 
     def matches?(str, filter)
-      if (@options[:match] == 'EXACT')
+      if (options[:match] == 'EXACT')
         str == filter
       else
         str.match(/#{filter}/)
