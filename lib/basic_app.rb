@@ -1,7 +1,7 @@
 # require all files here
 require 'rbconfig'
-require 'basic_app/core/hash'
-require 'basic_app/core/array'
+require 'basic_app/core'
+require 'basic_app/actions'
 require 'basic_app/app'
 require 'basic_app/settings'
 

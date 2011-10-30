@@ -6,16 +6,15 @@ end
 
 module BasicApp
 
-  AVAILABLE_ACTIONS = %w[]
+  AVAILABLE_ACTIONS = %w[help]
 
   class App
 
-    def initialize(working_dir, argv=[], options={})
-      @working_dir = working_dir
-      @options = options
+    def initialize(argv=[], configuration={})
+      @configuration = configuration
+      @options = configuration[:options] || {}
       @argv = argv
       if @options[:verbose]
-        puts "working_dir: #{@working_dir}".cyan
         puts "options: #{@options.inspect}".cyan
         puts "base_dir: #{@options[:base_dir]}".cyan if @options[:base_dir]
         puts "config file: #{@options[:config]}".cyan if @options[:config]
@@ -39,9 +38,9 @@ module BasicApp
             puts "basic_app --help for more information"
             exit 1
           end
-          puts "basic_app run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
-          raise "action #{action} not implemented" unless respond_to?(action)
-          result = send(action, args)
+          puts "repo run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
+          klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
+          result = klass.new(args, @configuration).execute
         else
           #
           # default action if action_argument_required? is false
@@ -57,8 +56,7 @@ module BasicApp
         end
 
       rescue SystemExit => e
-        # This is the normal exit point, exit code from the send result
-        # or exit from another point in the system
+        # This is the normal exit point
         puts "basic_app run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
         exit(e.status)
       rescue Exception => e
@@ -69,15 +67,6 @@ module BasicApp
         exit(1)
       end
     end
-
-    #
-    # app commands start
-    #
-
-
-    #
-    # app commands end
-    #
 
   private
 

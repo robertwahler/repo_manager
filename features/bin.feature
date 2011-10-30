@@ -1,10 +1,8 @@
 @announce
 Feature: Options via a command line interface (CLI)
 
-  As an interactive user or automated script
-  The application should accept options on the command line
-  These options should override hard coded defaults
-  In order to configure options
+  The application should accept options on the command line.  These options
+  should override hard coded defaults
 
   Scenario: Version info
     When I run `basic_app --version`
@@ -18,10 +16,6 @@ Feature: Options via a command line interface (CLI)
       """
       .*
         Usage: .*
-      .*
-      Options:
-      .*
-          -v, --\[no-\]verbose               Run verbosely
       """
 
   Scenario: Invalid option
@@ -30,6 +24,16 @@ Feature: Options via a command line interface (CLI)
     And the output should match:
       """
       ^.* invalid option: --non-existing-option
+      ^.* --help for more information
+
+      """
+
+  Scenario: Invalid action
+    When I run `basic_app non-existing-action`
+    Then the exit status should be 1
+    And the output should match:
+      """
+      ^.* invalid action: non-existing-action
       ^.* --help for more information
 
       """
