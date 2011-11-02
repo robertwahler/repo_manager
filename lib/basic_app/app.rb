@@ -19,10 +19,13 @@ module BasicApp
       @argv = argv
       $stdout.sync = true
 
-      # logging gem global setup
-      Logging.logger.root.appenders = Logging.appenders.stdout
-      Logging.logger.root.level = :warn
-      Logging.logger.root.level = :debug if @options[:verbose]
+      # logging global setup, can be overridden using YAML, see logging.feature
+      format = {:pattern => '%-5l %c: %m\n'}
+      format = format.merge(:color_scheme => 'default') if @options[:color]
+      Logging.appenders.stdout('stdout', :layout => Logging.layouts.pattern(format))
+      logger.add_appenders('stdout')
+      logger.level = :warn
+      logger.level = :debug if @options[:verbose]
 
       logger.debug "options: #{@options.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
@@ -48,6 +51,7 @@ module BasicApp
           logger.debug "repo run action: #{action} #{args.join(' ')}"
 
           # testing ################
+          #logger.error "error"
           #logger.warn "warn"
           #logger.info "info"
           #Logging.show_configuration
@@ -75,7 +79,7 @@ module BasicApp
         exit(e.status)
       rescue Exception => e
         logger.error "basic_app command failed: #{e.message}"
-        STDERR.puts("Use '--verbose' for backtrace.") unless @options[:verbose]
+        STDERR.puts("Command failed, use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
       end

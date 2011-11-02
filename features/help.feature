@@ -1,5 +1,7 @@
 Feature: Show help on actions
 
+  Show help test to STDOUT for a given action.
+
   Example usage:
 
     basic_app help help
