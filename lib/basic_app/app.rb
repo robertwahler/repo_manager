@@ -21,7 +21,7 @@ module BasicApp
 
       # logging gem global setup
       Logging.logger.root.appenders = Logging.appenders.stdout
-      Logging.logger.root.level = :info
+      Logging.logger.root.level = :warn
       Logging.logger.root.level = :debug if @options[:verbose]
 
       logger.debug "options: #{@options.inspect}"
@@ -46,6 +46,13 @@ module BasicApp
             exit 1
           end
           logger.debug "repo run action: #{action} #{args.join(' ')}"
+
+          # testing ################
+          #logger.warn "warn"
+          #logger.info "info"
+          #Logging.show_configuration
+          # testing ################
+
           klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
           result = klass.new(args, @configuration).execute
         else
