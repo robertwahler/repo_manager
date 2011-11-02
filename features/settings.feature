@@ -1,9 +1,9 @@
 @announce
-Feature: Configuration via yaml file
+Feature: Configuration via YAML
 
-  In order to configure options the program should process YAML configuration
-  files. These options should override hard coded defaults but not command line
-  options.
+  In order to configure options, as an interactive user or automated script,
+  the program should process configuration options via YAML. These options
+  should override hard coded defaults but not command line options.
 
   Master configuration files are read from multiple locations in order of
   priority.  Once a master configuration file is found, all other config files
