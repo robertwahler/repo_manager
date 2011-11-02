@@ -1,3 +1,12 @@
+####################################################
+# The file is was originally cloned from "Basic App"
+# More information on "Basic App" can be found in the
+# "Basic App" repository.
+#
+# See https://robertwahler@github.com/robertwahler/
+####################################################
+require 'optparse'
+
 module Repoman
 
   # @group CLI actions

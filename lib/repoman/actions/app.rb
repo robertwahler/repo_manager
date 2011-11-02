@@ -1,5 +1,10 @@
-# The file is was originally cloned from BasicApp
-# https://robertwahler@github.com/robertwahler/basic_app.git
+####################################################
+# The file is was originally cloned from "Basic App"
+# More information on "Basic App" can be found in the
+# "Basic App" repository.
+#
+# See https://robertwahler@github.com/robertwahler/
+####################################################
 module Repoman
 
   # An abstract superclass for basic action functionality specific to an

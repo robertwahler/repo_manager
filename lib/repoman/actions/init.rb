@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Repoman
 
   # @group CLI actions

@@ -27,8 +27,5 @@ TODO
 * status command should have option to show last commit information
 * native git commands need to preserve ANSI escape codes for coloring
 * add JSON output for machine parsing, think "--porcelain" commands
-* refactor app.rb and break each action in to its own file in the action
-  folder. Each action will be based on action/base.rb.  Base includes common
-  functions like "help" and "to_json".  Required for API usage.
 * add man page via markdown and ronn.  Change 'help' action to call man
   page if man available.

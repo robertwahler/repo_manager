@@ -1,5 +1,4 @@
 require 'term/ansicolor'
-require 'optparse'
 
 class String
   include Term::ANSIColor
