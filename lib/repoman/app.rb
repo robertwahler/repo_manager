@@ -22,8 +22,8 @@ module Repoman
       @argv = argv
       $stdout.sync = true
 
-      config_filename = @options[:config]
-      BasicApp::Logger::Manager.new(config_filename, :logging, configuration)
+      config_filename = configuration[:repo_configuration_filename]
+      Repoman::Logger::Manager.new(config_filename, :logging, configuration)
 
       logger.debug "options: #{@options.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]

@@ -18,14 +18,14 @@ Feature: Logging to console and log files
   https://github.com/TwP/logging/blob/master/data/logging.yaml
 
   Scenario: Debug output to console via the "--verbose" switch
-    When I run `basic_app help --verbose`
+    When I run `repo help --verbose`
     Then the output should contain:
       """
       DEBUG
       """
 
   Scenario: No debug output to console without the "--verbose" switch
-    When I run `basic_app help`
+    When I run `repo help`
     Then the output should not contain:
       """
       DEBUG
@@ -33,7 +33,7 @@ Feature: Logging to console and log files
 
   Scenario: No debug output to console using a config file that only specifies a
     logger type of File
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -54,7 +54,7 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `basic_app help --verbose`
+    When I run `repo help --verbose`
     Then the output should not contain:
       """
       DEBUG
@@ -66,7 +66,7 @@ Feature: Logging to console and log files
 
 
   Scenario: Override default STDOUT appender level with a config file
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       logging:
@@ -93,7 +93,7 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `basic_app help --verbose`
+    When I run `repo help --verbose`
     Then the output should contain:
       """
       DEBUG
