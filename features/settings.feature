@@ -1,8 +1,7 @@
 @announce
 Feature: Configuration via YAML
 
-  In order to configure options, as an interactive user or automated script,
-  the program should process configuration options via YAML. These options
+  The application should process configuration options via YAML. These options
   should override hard coded defaults but not command line options.
 
   Config files are read from multiple locations in order of priority.  Once a
