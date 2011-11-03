@@ -19,13 +19,25 @@ module BasicApp
       @argv = argv
       $stdout.sync = true
 
-      # logging global setup, can be overridden using YAML, see logging.feature
-      format = {:pattern => '%-5l %c: %m\n'}
-      format = format.merge(:color_scheme => 'default') if @options[:color]
-      Logging.appenders.stdout('stdout', :layout => Logging.layouts.pattern(format))
-      logger.add_appenders('stdout')
-      logger.level = :warn
-      logger.level = :debug if @options[:verbose]
+      # logging global default level
+      Logging.logger.root.level = :warn
+      Logging.logger.root.level = :debug if @options[:verbose]
+
+      if @configuration[:logging]
+        Logging::Config::YamlConfigurator.load(@options[:config], 'logging')
+      else
+        # setup a default root level STDOUT logger
+        format = {:pattern => '%-5l %c: %m\n'}
+        format = format.merge(:color_scheme => 'default') if @options[:color]
+        Logging.appenders.stdout('stdout', :layout => Logging.layouts.pattern(format))
+        Logging.logger.root.add_appenders('stdout')
+      end
+
+      # debug
+      # Logging.show_configuration
+      # logger.error "error"
+      # logger.warn "warn"
+      # logger.info "info"
 
       logger.debug "options: #{@options.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
@@ -49,14 +61,6 @@ module BasicApp
             exit 1
           end
           logger.debug "repo run action: #{action} #{args.join(' ')}"
-
-          # testing ################
-          #logger.error "error"
-          #logger.warn "warn"
-          #logger.info "info"
-          #Logging.show_configuration
-          # testing ################
-
           klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
           result = klass.new(args, @configuration).execute
         else
@@ -78,7 +82,8 @@ module BasicApp
         logger.debug "basic_app run system exit: #{e}, status code: #{e.status}"
         exit(e.status)
       rescue Exception => e
-        logger.error "basic_app command failed: #{e.message}"
+        logger.fatal("basic_app fatal exception")
+        STDERR.puts("basic_app failed: #{e.message}".red)
         STDERR.puts("Command failed, use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
