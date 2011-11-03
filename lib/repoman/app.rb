@@ -27,7 +27,7 @@ module Repoman
 
       logger.debug "options: #{@options.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
-      logger.debug "config file: #{@options[:config]}" if @options[:config]
+      logger.debug "config file: #{configuration[:configuration_filename]}" if configuration[:configuration_filename]
     end
 
     def execute
