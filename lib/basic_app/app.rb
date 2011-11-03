@@ -1,7 +1,4 @@
 require 'term/ansicolor'
-require 'logging'
-
-include Logging.globally
 
 class String
   include Term::ANSIColor
@@ -19,25 +16,8 @@ module BasicApp
       @argv = argv
       $stdout.sync = true
 
-      # logging global default level
-      Logging.logger.root.level = :warn
-      Logging.logger.root.level = :debug if @options[:verbose]
-
-      if @configuration[:logging]
-        Logging::Config::YamlConfigurator.load(@options[:config], 'logging')
-      else
-        # setup a default root level STDOUT logger
-        format = {:pattern => '%-5l %c: %m\n'}
-        format = format.merge(:color_scheme => 'default') if @options[:color]
-        Logging.appenders.stdout('stdout', :layout => Logging.layouts.pattern(format))
-        Logging.logger.root.add_appenders('stdout')
-      end
-
-      # debug
-      # Logging.show_configuration
-      # logger.error "error"
-      # logger.warn "warn"
-      # logger.info "info"
+      config_filename = @options[:config]
+      BasicApp::Logger::Manager.new(config_filename, :logging, configuration)
 
       logger.debug "options: #{@options.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
