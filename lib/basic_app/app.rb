@@ -16,12 +16,12 @@ module BasicApp
       @argv = argv
       $stdout.sync = true
 
-      config_filename = @options[:config]
+      config_filename = configuration[:configuration_filename]
       BasicApp::Logger::Manager.new(config_filename, :logging, configuration)
 
       logger.debug "options: #{@options.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
-      logger.debug "config file: #{@options[:config]}" if @options[:config]
+      logger.debug "config file: #{configuration[:configuration_filename]}" if configuration[:configuration_filename]
     end
 
     def execute

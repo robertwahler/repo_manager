@@ -47,9 +47,6 @@ module BasicApp
       end
 
       if config && File.exists?(config)
-        # rewrite options full path for config for later use
-        @options[:config] = config
-
         # load options from the config file, overwriting hard-coded defaults
         config_contents = YAML::load(File.open(config))
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
@@ -57,6 +54,9 @@ module BasicApp
         # user specified a config file?, no error if user did not specify config file
         raise "config file not found" if @options[:config]
       end
+
+      # store the original full config filename for later use
+      configuration[:configuration_filename] = config
 
       configuration.recursively_symbolize_keys!
 
