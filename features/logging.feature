@@ -81,8 +81,9 @@ Feature: Logging to console and log files
             name          : stdout
             level         : debug
             layout:
-              type : Basic
-              format_as : string
+              type        : Pattern
+              pattern     : '[%d] %l %c : %m\n'
+              color_scheme: default
           - type          : File
             name          : logfile
             level         : debug
