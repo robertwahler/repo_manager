@@ -3,7 +3,7 @@
 # More information on "Basic App" can be found in the
 # "Basic App" repository.
 #
-# See https://robertwahler@github.com/robertwahler/
+# See http://github.com/robertwahler
 ####################################################
 require 'optparse'
 
