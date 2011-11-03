@@ -12,14 +12,13 @@ RSpec::Core::RakeTask.new do |spec|
   spec.rspec_opts = ['--color', '--format nested']
 end
 
-require 'cucumber'
 require 'cucumber/rake/task'
-Cucumber::Rake::Task.new(:features) do |task|
-  task.cucumber_opts = ["features"]
+Cucumber::Rake::Task.new do |t|
+  t.cucumber_opts = %w{}
 end
 
-desc "Run specs and features"
-task :test => [:spec, :features]
+desc "Run specs, both RSpec and Cucumber"
+task :test => [:spec, :cucumber]
 
 task :default => :test
 
