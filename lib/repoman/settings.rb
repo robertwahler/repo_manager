@@ -78,7 +78,7 @@ module Repoman
       end
 
       # store the original full config filename for later use
-      configuration[:repo_configuration_filename] = config
+      configuration[:configuration_filename] = config
 
       # process pattern for additional config files and merge the repos key
       if pattern

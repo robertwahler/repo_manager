@@ -22,7 +22,7 @@ module Repoman
       @argv = argv
       $stdout.sync = true
 
-      config_filename = configuration[:repo_configuration_filename]
+      config_filename = configuration[:configuration_filename]
       Repoman::Logger::Manager.new(config_filename, :logging, configuration)
 
       logger.debug "options: #{@options.inspect}"

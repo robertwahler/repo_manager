@@ -14,7 +14,7 @@ module Repoman
         repoman_options = {}
         repoman_options[:config] = options[:config]
         configuration = ::Repoman::Settings.new(FileUtils.pwd, repoman_options).to_hash
-        raise "unable to find repo config file" unless configuration[:repo_configuration_filename]
+        raise "unable to find repo config file" unless configuration[:configuration_filename]
       end
 
       unless file
