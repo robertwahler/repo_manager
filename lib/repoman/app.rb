@@ -20,12 +20,14 @@ module Repoman
       @configuration = configuration
       @options = configuration[:options] || {}
       @argv = argv
-      if @options[:verbose]
-        puts "options: #{@options.inspect}".cyan
-        puts "base_dir: #{@options[:base_dir]}".cyan if @options[:base_dir]
-        puts "config file: #{@options[:config]}".cyan if @options[:config]
-      end
       $stdout.sync = true
+
+      config_filename = @options[:config]
+      BasicApp::Logger::Manager.new(config_filename, :logging, configuration)
+
+      logger.debug "options: #{@options.inspect}"
+      logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
+      logger.debug "config file: #{@options[:config]}" if @options[:config]
     end
 
     def execute
@@ -50,7 +52,7 @@ module Repoman
             puts "repo --help for more information"
             exit 1
           end
-          puts "repo run action: #{action} #{args.join(' ')}".cyan if @options[:verbose]
+          logger.debug "repo run action: #{action} #{args.join(' ')}"
           klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
           result = klass.new(args, @configuration).execute
         else
@@ -69,12 +71,12 @@ module Repoman
 
       rescue SystemExit => e
         # This is the normal exit point
-        puts "repo run system exit: #{e}, status code: #{e.status}".green if @options[:verbose]
+        logger.debug "repo run system exit: #{e}, status code: #{e.status}"
         exit(e.status)
       rescue Exception => e
-        STDERR.puts("repo command failed, error(s) follow")
-        STDERR.puts("#{e.message}".red)
-        STDERR.puts("Use '--verbose' for backtrace.") unless @options[:verbose]
+        logger.fatal("repo fatal exception")
+        STDERR.puts("repo failed: #{e.message}".red)
+        STDERR.puts("Command failed, use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]
         exit(1)
       end

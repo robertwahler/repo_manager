@@ -3,6 +3,8 @@ Feature: Show help on pass-through command/action options
   The application should detail which Git command options are available as
   pass-through options.
 
+  Show help test to STDOUT for a given action.
+
   Example usage:
 
     repo help init

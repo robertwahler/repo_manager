@@ -10,7 +10,7 @@ module Aruba
 
     # override aruba
     def detect_ruby(cmd)
-      cmd = cmd.gsub(/^repo/, "ruby -S #{APP_BIN_PATH} --verbose")
+      cmd = cmd.gsub(/^repo/, "ruby -S #{APP_BIN_PATH}")
       # run original aruba 'detect_ruby'
       old_detect_ruby(cmd)
     end

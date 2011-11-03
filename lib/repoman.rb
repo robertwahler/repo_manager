@@ -7,6 +7,8 @@ require 'repoman/actions'
 require 'repoman/app'
 require 'repoman/settings'
 require 'repoman/repo'
+require 'repoman/logger'
+
 
 # Master namespace
 module Repoman
