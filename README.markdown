@@ -118,7 +118,7 @@ Gem should now be functional
 ---------------------------
 
     bundle exec rake spec
-    bundle exec rake features
+    bundle exec rake cucumber
 
 
 Setup git copy-merge
@@ -189,11 +189,11 @@ bundle exec rake -T
     rake build         # Build oct-0.0.1.gem into the pkg directory
     rake doc:clean     # Remove generated documenation
     rake doc:generate  # Generate YARD Documentation
-    rake features      # Run Cucumber features
+    rake cucumber      # Run Cucumber features
     rake install       # Build and install oct-0.0.1.gem into system gems
     rake release       # Create tag v0.0.1 and build and push oct-0.0.1.gem to Rubygems
     rake spec          # Run specs
-    rake test          # Run specs and features
+    rake test          # Run specs and cucumber
 
 
 Autotesting with Watchr
