@@ -45,7 +45,7 @@ module Repoman
           options[:listing] = u
           options[:listing].upcase!
           unless ["ALL", "SHORT", "NAME", "PATH"].include?(options[:listing])
-            raise "invalid lising mode '#{options[:listing]}' for '--listing' option"
+            raise "invalid listing mode '#{options[:listing]}' for '--listing' option"
           end
         end
 
