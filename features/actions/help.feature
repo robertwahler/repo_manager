@@ -17,6 +17,7 @@ Feature: Show help on actions
   Examples:
     | action  |
     | help    |
+    | list    |
 
   Scenario: Missing action
     When I run `basic_app help`
