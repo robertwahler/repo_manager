@@ -37,13 +37,13 @@ optparser = OptionParser.new do |opts|
     end
   end
 
+  opts.on("--config FILE", "Load configuration options from FILE") do |file|
+    options[:config] = file
+  end
+
   opts.on("--version", "Display current version") do
     puts "basic_app, version " + BasicApp.version
     exit 0
-  end
-
-  opts.on("--config FILE", "Load configuration options from FILE") do |file|
-    options[:config] = file
   end
 
   # no argument, shows at tail.  This will print an options summary.
@@ -52,14 +52,30 @@ optparser = OptionParser.new do |opts|
     exit 0
   end
 
-  begin
-    opts.parse!
-  rescue OptionParser::InvalidOption => e
-    puts "basic_app #{e}"
-    puts "basic_app --help for more information"
-    exit 1
-  end
+end
 
+# first pass, process until the action/subcommand, errors will be raised for
+# invalid options that occur before the action/subcommand
+begin
+  optparser.order!
+rescue OptionParser::InvalidOption => e
+  puts "basic_app #{e}"
+  puts "basic_app --help for more information"
+  exit 1
+end
+
+
+# second pass find all global options that may come after the action/subcommand
+# and its args, no errors raised, validity will be checked by action parser
+argv = []
+while unknown_arg = ARGV.shift
+  argv << unknown_arg
+  begin
+    optparser.order!
+  rescue OptionParser::InvalidOption => e
+    # put unknown args back on ARGV
+    e.recover(ARGV)
+  end
 end
 
 # configuration from config file, if it exists, will not overwrite command line
@@ -88,4 +104,4 @@ else
   Term::ANSIColor::coloring = false
 end
 
-BasicApp::App.new(ARGV.dup, configuration).execute
+BasicApp::App.new(argv, configuration).execute
