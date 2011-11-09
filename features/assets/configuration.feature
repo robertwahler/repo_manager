@@ -28,7 +28,7 @@ Feature: Asset configuration
 
 
  Background: A general app settings file
-    Given a file named "cond.conf" with:
+    Given a file named "basic_app.conf" with:
       """
       ---
       options:
@@ -45,7 +45,7 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `cond list --verbose`
+    When I run `basic_app list --verbose`
     Then the output should contain:
       """
       :path: user_path
@@ -59,7 +59,7 @@ Feature: Asset configuration
     And the folder "data/assets" with the following asset configurations:
       | name         | parent        | binary          |
       | asset1       | ../../global  | path_to/bin.exe |
-    When I run `cond list --verbose`
+    When I run `basic_app list --verbose`
     Then the output should contain:
       """
       :path: global_path
@@ -72,7 +72,7 @@ Feature: Asset configuration
     And the folder "data/assets" with the following asset configurations:
       | name         | parent        | path      |
       | asset1       | ../../global  | user_path |
-    When I run `cond list --verbose`
+    When I run `basic_app list --verbose`
     Then the output should contain:
       """
       :path: user_path

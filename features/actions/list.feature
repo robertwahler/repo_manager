@@ -5,12 +5,12 @@ Feature: Listing assets
 
   Example usage:
 
-    cond list
-    cond list --tags=adventure,favorites  --sort=ACQUIRED
-    cond list --format=HTML >> tmp/aruba/index.html
+    basic_app list
+    basic_app list --tags=adventure,favorites  --sort=ACQUIRED
+    basic_app list --format=HTML >> tmp/aruba/index.html
 
  Background: A master configuration file
-    Given a file named "cond.conf" with:
+    Given a file named "basic_app.conf" with:
       """
       ---
       options:
@@ -26,7 +26,7 @@ Feature: Listing assets
       | asset1       | /c/user_path  |
       | asset2       | /d/user_path  |
       | asset3       | /d/user_path1 |
-    When I run `cond list`
+    When I run `basic_app list`
     Then the output should contain:
       """
       asset1:
@@ -48,7 +48,7 @@ Feature: Listing assets
       | asset1       | /c/user_path  |
       | asset2       | /d/user_path  |
       | asset3       | /d/user_path1 |
-    When I run `cond list --verbose --list=PATH`
+    When I run `basic_app list --verbose --list=PATH`
     Then the output should contain:
       """
       /c/user_path

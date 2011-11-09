@@ -6,15 +6,15 @@ module Condenser
   #
   # List assets to the STDOUT
   #
-  # @example Usage: cond list
+  # @example Usage: basic_app list
   #
   # @example Filter by tags and sort by acquired date
   #
-  #  cond list --tags=adventure,favorites --sort=ACQUIRED
+  #  basic_app list --tags=adventure,favorites --sort=ACQUIRED
   #
   # @example HTML output to a file
   #
-  #  cond list --format=HTML >> tmp/aruba/index.html
+  #  basic_app list --format=HTML >> tmp/aruba/index.html
   #
   # @return [Number] 0 if successful
   class ListAction < AppAction
