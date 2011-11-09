@@ -1,0 +1,69 @@
+require 'optparse'
+
+module Condenser
+
+  # @group CLI actions
+  #
+  # List assets to the STDOUT
+  #
+  # @example Usage: cond list
+  #
+  # @example Filter by tags and sort by acquired date
+  #
+  #  cond list --tags=adventure,favorites --sort=ACQUIRED
+  #
+  # @example HTML output to a file
+  #
+  #  cond list --format=HTML >> tmp/aruba/index.html
+  #
+  # @return [Number] 0 if successful
+  class ListAction < AppAction
+
+    def execute
+
+      OptionParser.new do |opts|
+        opts.banner = help + "\n\nOptions:"
+        opts.on("--list MODE", "Listing mode.  ALL, NAME, PATH") do |u|
+          options[:list] = u
+          options[:list].upcase!
+          unless ["ALL", "NAME", "PATH"].include?(options[:list])
+            raise "invalid list mode '#{options[:list]}' for '--list' option"
+          end
+        end
+
+        begin
+          opts.parse!(args)
+        rescue OptionParser::InvalidOption => e
+          puts "option error: #{e}"
+          puts opts
+          exit 1
+        end
+      end
+
+      list_mode = options[:list] || 'ALL'
+
+      assets.each do |asset|
+        case list_mode
+          when 'NAME'
+            puts asset.name.green
+          when 'PATH'
+            puts asset.path
+          else
+            attributes = asset.attributes.dup
+            print asset.name.green
+            puts ":"
+            # strip trailing whitespace from YAML
+            puts attributes.to_yaml.gsub(/\s+$/, '')
+            puts ""
+        end
+      end
+
+    end
+
+    def help
+      super :comment_starting_with => "List assets", :located_in_file => __FILE__
+    end
+
+  end
+
+end
