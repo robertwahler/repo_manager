@@ -6,7 +6,7 @@ end
 
 module BasicApp
 
-  AVAILABLE_ACTIONS = %w[help]
+  AVAILABLE_ACTIONS = %w[help list]
 
   class App
 

@@ -9,6 +9,7 @@ module BasicApp
 
   # An abstract superclass for basic action functionality
   class BaseAction
+    include BasicApp::Assets
 
     attr_reader :options
 
