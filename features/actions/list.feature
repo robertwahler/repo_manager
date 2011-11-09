@@ -22,38 +22,35 @@ Feature: Listing assets
 
   Scenario: List all
     Given the folder "data/assets" with the following asset configurations:
-      | name         | path          |
-      | asset1       | /c/user_path  |
-      | asset2       | /d/user_path  |
-      | asset3       | /d/user_path1 |
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
     When I run `basic_app list`
     Then the output should contain:
       """
       asset1:
-      ---
-      :path: /c/user_path
+      --- {}
 
       asset2:
-      ---
-      :path: /d/user_path
+      --- {}
 
       asset3:
-      ---
-      :path: /d/user_path1
+      --- {}
       """
 
-  Scenario: List just path
+  Scenario: List just name
     Given the folder "data/assets" with the following asset configurations:
-      | name         | path          |
-      | asset1       | /c/user_path  |
-      | asset2       | /d/user_path  |
-      | asset3       | /d/user_path1 |
-    When I run `basic_app list --verbose --list=PATH`
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --list=NAME`
     Then the output should contain:
       """
-      /c/user_path
-      /d/user_path
-      /d/user_path1
+      asset1
+      asset2
+      asset3
       """
 
 

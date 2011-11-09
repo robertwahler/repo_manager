@@ -23,10 +23,10 @@ module BasicApp
 
       OptionParser.new do |opts|
         opts.banner = help + "\n\nOptions:"
-        opts.on("--list MODE", "Listing mode.  ALL, NAME, PATH") do |u|
+        opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
           options[:list] = u
           options[:list].upcase!
-          unless ["ALL", "NAME", "PATH"].include?(options[:list])
+          unless ["ALL", "NAME"].include?(options[:list])
             raise "invalid list mode '#{options[:list]}' for '--list' option"
           end
         end
@@ -46,8 +46,6 @@ module BasicApp
         case list_mode
           when 'NAME'
             puts asset.name.green
-          when 'PATH'
-            puts asset.path
           else
             attributes = asset.attributes.dup
             print asset.name.green
