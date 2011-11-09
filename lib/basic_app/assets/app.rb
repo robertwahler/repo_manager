@@ -5,7 +5,7 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-module Condenser
+module BasicApp
 
   # An abstract superclass for basic asset functionality specific to an
   # application implementation.  Put application specific code here.

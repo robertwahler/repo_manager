@@ -1,10 +1,10 @@
-require 'condenser/assets/base'
-require 'condenser/assets/app'
+require 'basic_app/assets/base'
+require 'basic_app/assets/app'
 
 require 'pathname'
 require 'fileutils'
 
-module Condenser
+module BasicApp
   module Assets
 
     # @return [Array] of Asset
@@ -25,7 +25,7 @@ module Condenser
       folders = Dir.glob(pattern)
       warn "config user folder pattern did not match any folders: #{pattern}" if folders.empty?
 
-      # set the condenser global datastore folder
+      # set the basic_app global datastore folder
       options={}
       parent = configuration[:folders][:global]
       if parent
@@ -39,7 +39,7 @@ module Condenser
       logger.debug "generating assets array"
       @assets = []
       folders.sort.each do |folder|
-        asset = Condenser::AppAsset.new(folder, options)
+        asset = BasicApp::AppAsset.new(folder, options)
         @assets << asset
       end
       @assets

@@ -1,6 +1,6 @@
 require 'optparse'
 
-module Condenser
+module BasicApp
 
   # @group CLI actions
   #

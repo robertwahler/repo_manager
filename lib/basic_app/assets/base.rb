@@ -5,9 +5,9 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-require 'condenser/assets/configuration'
+require 'basic_app/assets/configuration'
 
-module Condenser
+module BasicApp
 
   class BaseAsset
 
@@ -23,7 +23,7 @@ module Condenser
     end
 
     def configuration
-      @configuration ||= Condenser::AssetConfiguration.new(self)
+      @configuration ||= BasicApp::AssetConfiguration.new(self)
     end
 
     # attributes is the hash loaded from the asset config file

@@ -1,7 +1,7 @@
 require 'yaml'
 require 'pathname'
 
-module Condenser
+module BasicApp
 
   # asset_configuration saves just the user data by subtracting out the
   # global hash and writing just the result
@@ -63,7 +63,7 @@ module Condenser
         end
 
         logger.debug "AssetConfiguration loading parent: #{parent_folder}"
-        parent_configuration = Condenser::AssetConfiguration.new(@asset)
+        parent_configuration = BasicApp::AssetConfiguration.new(@asset)
         parent_configuration.load(parent_folder)
       end
 
