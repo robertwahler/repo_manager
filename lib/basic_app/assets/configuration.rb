@@ -26,8 +26,7 @@ module BasicApp
     # user datastore folder, can override parent datastore
     attr_accessor :folder
 
-    # global parent datastore config store folder, read asset from here
-    # first if exists
+    # parent datastore defaults folder, read asset from here first if exists
     attr_accessor :parent
 
     def initialize(asset)
@@ -54,9 +53,7 @@ module BasicApp
       # if a global parent folder is defined, load it first
       parent = contents.delete(:parent) || parent
       if parent
-        # TODO: load 'default' global folder first, if it exists
-
-        parent_folder = File.join(parent, 'assets', @asset.name)
+        parent_folder = File.join(parent)
         unless Pathname.new(parent_folder).absolute?
           base_folder = File.dirname(folder)
           parent_folder = File.join(base_folder, parent_folder)
@@ -66,8 +63,6 @@ module BasicApp
         parent_configuration = BasicApp::AssetConfiguration.new(@asset)
         parent_configuration.load(parent_folder)
       end
-
-      # TODO: load 'default' user folder first, if it exists
 
       # Load all attributes as hash 'attributes' so that merging
       # and adding new attributes doesn't require code changes. Note

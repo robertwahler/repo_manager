@@ -14,6 +14,13 @@ module BasicApp
     # asset name is tied to the name of the configuration folder (datastore)
     attr_accessor :name
 
+    # subclass factory
+    def self.create(name, config_folder=nil, options={})
+      name ||= :app_asset
+      classified_name = name.to_s.split('_').collect!{ |w| w.capitalize }.join
+      Object.const_get('BasicApp').const_get(classified_name).new(config_folder, options)
+    end
+
     def initialize(config_folder=nil, options={})
       configuration.parent = options[:parent]
       if config_folder

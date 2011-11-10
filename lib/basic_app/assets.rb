@@ -7,15 +7,25 @@ require 'fileutils'
 module BasicApp
   module Assets
 
+  # options hash
+    #
     # @return [Array] of Asset
-    def assets
-      return @assets if @assets
-      raise "config file not found" unless configuration[:configuration_filename]
+    #
+    def assets(options={})
+      type = options[:type] || :app_asset
 
+      if @assets
+        return @assets[type] if @assets[type]
+      else
+        @assets = {}
+      end
+
+      raise "config file not found" unless configuration[:configuration_filename]
       user_folder = configuration[:folders][:user]
       logger.debug "reading from user_folder:'#{user_folder}' "
 
-      pattern = File.join(user_folder, 'assets', '*/')
+      asset_folder = options[:asset_folder] || "#{type.to_s}s"
+      pattern = File.join(user_folder, asset_folder, '*/')
       # user_folder can be relative to main config file
       unless Pathname.new(pattern).absolute?
         base_folder = File.dirname(configuration[:configuration_filename])
@@ -25,25 +35,17 @@ module BasicApp
       folders = Dir.glob(pattern)
       warn "config user folder pattern did not match any folders: #{pattern}" if folders.empty?
 
-      # set the basic_app global datastore folder
-      options={}
-      parent = configuration[:folders][:global]
-      if parent
-        unless Pathname.new(parent).absolute?
-          base_folder = File.dirname(configuration[:configuration_filename])
-          parent = File.expand_path(File.join(base_folder, parent))
-        end
-        options[:parent] = parent
-      end
-
       logger.debug "generating assets array"
-      @assets = []
+      assets = []
       folders.sort.each do |folder|
-        asset = BasicApp::AppAsset.new(folder, options)
-        @assets << asset
+        # this is a good place to set a default ':parent' based on the
+        # options hash and the asset folder, ex: condenser
+        asset_options = {}
+        asset = BasicApp::AppAsset.create(type, folder, asset_options)
+        assets << asset
       end
-      @assets
-
+      @assets[type] = assets
+      @assets[type]
     end
 
   end

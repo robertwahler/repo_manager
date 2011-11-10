@@ -16,12 +16,11 @@ Feature: Listing assets
       options:
         color  : true
       folders:
-        global : global
         user   : data
       """
 
   Scenario: List all
-    Given the folder "data/assets" with the following asset configurations:
+    Given the folder "data/app_assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -40,7 +39,7 @@ Feature: Listing assets
       """
 
   Scenario: List just name
-    Given the folder "data/assets" with the following asset configurations:
+    Given the folder "data/app_assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
