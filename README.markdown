@@ -1,11 +1,9 @@
-Repoman
-========
+# Repoman #
 
 Command line interface (CLI) for batch management of multiple, unrelated
 Git repositories.
 
-Overview
---------
+## Overview ##
 
 Repoman is a wrapper for Git, the distributed version control system.
 Repoman's wrapper functions allow a single git command to be executed
@@ -26,7 +24,7 @@ you want to check the status of each repo.
 
     repo status
 
-### Suitable for
+### suitable for
 
 * Light weight mirroring of data across a network.  That is a job for
   rsync.  Or is it?  If you develop for multiple platforms across multiple
@@ -35,7 +33,7 @@ you want to check the status of each repo.
   'repo pull'  command to mirror all of your repositories to one location
   for backup or reference.
 
-### Not suitable for
+### not suitable for
 
 * Maintaining related source code repositories.  There are suitable tools
   for that including git's own 'git submodules',
@@ -43,11 +41,8 @@ you want to check the status of each repo.
   [GitSlave](http://gitslave.sourceforge.net/)
 
 
+## Bash completion ######################################################
 
-<https://github.com/robertwahler/repoman>
-
-Bash completion
----------------
 Handy functions for use under Bash.  These work fine on Win32 using
 Git-Bash.
 
@@ -75,16 +70,15 @@ vim ~/.bashrc
     }
     complete -F _repo_names rcd rpushd repo
 
-Run-time dependencies
----------------------
+## Run-time dependencies ##
+
 The following gems are required
 
 * Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
 * Ruby-git for git repository support <http://github.com/schacon/ruby-git>
 
 
-Development dependencies
-------------------------
+## Development dependencies ##
 
 * Bundler for dependency management <http://github.com/carlhuda/bundler>
 * Rspec for unit testing <http://github.com/dchelimsky/rspec>
@@ -94,8 +88,7 @@ Development dependencies
 * Kramdown for documentation markup processing <https://github.com/gettalong/kramdown>
 
 
-Rake tasks
-----------
+## Rake tasks ##
 
 bundle exec rake -T
 
@@ -109,8 +102,7 @@ bundle exec rake -T
     rake test          # Run specs and features
 
 
-Development Environment
------------------------
+## Development Environment ##
 
 all systems
 
@@ -125,17 +117,16 @@ colored output on windows
 
     gem install win32console
 
-Autotesting with Watchr
--------------------------
+## Autotesting with Watchr ##
 
 [Watchr](http://github.com/mynyml/watchr) provides a flexible alternative to Autotest.  A
 jump start script is provided in spec/watchr.rb.
 
-### Install watchr ###
+### Install watchr
 
     gem install watchr
 
-### Run watchr ###
+### Run watchr
 
     watchr spec/watchr.rb
 
@@ -151,7 +142,6 @@ Ctrl-\
     MENU: a = all , f = features  s = specs, l = last feature (none), q = quit
 
 
-Copyright
----------
+## Copyright ##
 
 Copyright (c) 2011 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
