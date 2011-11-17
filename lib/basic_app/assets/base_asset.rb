@@ -5,7 +5,7 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-require 'basic_app/assets/configuration'
+require 'basic_app/assets/asset_configuration'
 
 module BasicApp
 

@@ -1,5 +1,5 @@
-require 'basic_app/assets/base'
-require 'basic_app/assets/app'
+require 'basic_app/assets/base_asset'
+require 'basic_app/assets/app_asset'
 
 require 'pathname'
 require 'fileutils'
