@@ -27,9 +27,9 @@ module BasicApp
     def execute
       begin
 
+        args = @argv
         if action_argument_required?
           action = @argv.shift
-          args = @argv
 
           unless AVAILABLE_ACTIONS.include?(action)
             if action.nil?
