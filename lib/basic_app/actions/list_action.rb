@@ -23,11 +23,20 @@ module BasicApp
 
       OptionParser.new do |opts|
         opts.banner = help + "\n\nOptions:"
+
         opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
           options[:list] = u
           options[:list].upcase!
           unless ["ALL", "NAME"].include?(options[:list])
             raise "invalid list mode '#{options[:list]}' for '--list' option"
+          end
+        end
+
+        opts.on("--type ASSET_TYPE", "Asset type to list:  APP_ASSET (default)") do |t|
+          options[:type] = t
+          options[:type].upcase!
+          unless ["APP_ASSET"].include?(options[:type])
+            raise "unknown asset type '#{options[:type]}' for '--type' option"
           end
         end
 
@@ -41,8 +50,10 @@ module BasicApp
       end
 
       list_mode = options[:list] || 'ALL'
+      asset_options = {:type => :app_asset}
+      asset_options.merge!(:type => options[:type].downcase) if options[:type]
 
-      assets.each do |asset|
+      assets(asset_options).each do |asset|
         case list_mode
           when 'NAME'
             puts asset.name.green
