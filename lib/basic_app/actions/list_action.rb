@@ -51,7 +51,7 @@ module BasicApp
 
       list_mode = options[:list] || 'ALL'
       asset_options = {:type => :app_asset}
-      asset_options.merge!(:type => options[:type].downcase) if options[:type]
+      asset_options = asset_options.merge(:type => options[:type].downcase) if options[:type]
 
       assets(asset_options).each do |asset|
         case list_mode

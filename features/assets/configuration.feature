@@ -58,7 +58,7 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `basic_app list --verbose`
+    When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
       :path: user_path
@@ -71,7 +71,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | an_attribute  | parent                           | binary          |
       | asset1       |               | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --verbose`
+    When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
       :path: set_by_parent
@@ -84,7 +84,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | path          | parent                           | binary          |
       | asset1       | set_by_user   | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --verbose`
+    When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
       :path: set_by_user
