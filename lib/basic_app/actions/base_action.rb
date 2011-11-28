@@ -37,14 +37,21 @@ module BasicApp
       {}
     end
 
+    # TODO: render shouldn't print or puts, just return a string
     def render
-      assets(asset_options).each do |asset|
-        attributes = asset.attributes.dup
-        print asset.name.green
-        puts ":"
-        # strip trailing whitespace from YAML
-        puts attributes.to_yaml.gsub(/\s+$/, '')
-        puts ""
+      puts asset_options.inspect
+      template = options[:template]
+      if template
+        view = AppView.new(assets(asset_options))
+        print view.render
+      else
+        assets(asset_options).each do |asset|
+          attributes = asset.attributes.dup
+          print asset.name.green
+          puts ":"
+          puts attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
+          puts ""
+        end
       end
     end
 

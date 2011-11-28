@@ -23,6 +23,10 @@ module BasicApp
       OptionParser.new do |opts|
         opts.banner = help + "\n\nOptions:"
 
+        opts.on("--template [NAME]", "Use a template to render output. (Defaults to 'default.slim'") do |m|
+          options[:template] = m.nil? ? "DEFAULT" : m
+        end
+
         opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
           options[:list] = u
           options[:list].upcase!
@@ -50,12 +54,14 @@ module BasicApp
     end
 
     def asset_options
-      asset_options = {:type => :app_asset}
-      asset_options = asset_options.merge(:type => options[:type].downcase) if options[:type]
+      result = {:type => :app_asset}
+      result = result.merge(:type => options[:type].downcase) if options[:type]
     end
 
     def render
-      list_mode = options[:list] || 'ALL'
+      puts asset_options.inspect
+      # templates override all other modes, if no mode specified, allow super to handle
+      list_mode = options[:template] || options[:list]
       case list_mode
         when 'NAME'
           assets(asset_options).each do |asset|

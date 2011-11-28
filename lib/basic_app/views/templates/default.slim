@@ -1,0 +1,21 @@
+doctype strict
+html
+  head
+    title Default View
+    meta name="keywords" content="basic_app"
+
+  body
+    h1 Default Title
+    #content
+
+      - unless items.empty?
+        table
+          - for item in items do
+            tr
+              td = item.name
+      - else
+        p
+         | No assets found.
+
+    #footer
+      | Copyright &copy; 2011 GearheadForHire, LLC

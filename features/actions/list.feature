@@ -61,5 +61,39 @@ Feature: Listing assets
       asset3
       """
 
+  Scenario: List to screen using the built in default template
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --template  --type=app_asset --verbose`
+    Then the output should contain:
+      """
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+      <html>
+        <head>
+          <title>Default View</title>
+          <meta content="basic_app" name="keywords" />
+        </head>
+        <body>
+          <h1>Default Title</h1>
+          <div id="content">
+            <table>
+              <tr>
+                <td>asset1</td>
+              </tr>
+              <tr>
+                <td>asset2</td>
+              </tr>
+              <tr>
+                <td>asset3</td>
+              </tr>
+            </table>
+          </div>
+          <div id="footer">Copyright &copy; 2011 GearheadForHire, LLC</div>
+        </body>
+      </html>
+      """
 
 
