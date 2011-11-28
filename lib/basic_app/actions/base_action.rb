@@ -43,7 +43,7 @@ module BasicApp
       template = options[:template]
       if template
         view = AppView.new(assets(asset_options))
-        print view.render
+        puts view.render
       else
         assets(asset_options).each do |asset|
           attributes = asset.attributes.dup

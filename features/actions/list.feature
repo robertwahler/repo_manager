@@ -80,20 +80,25 @@ Feature: Listing assets
           <h1>Default Title</h1>
           <div id="content">
             <table>
-              <tr>
-                <td>asset1</td>
-              </tr>
-              <tr>
-                <td>asset2</td>
-              </tr>
-              <tr>
-                <td>asset3</td>
-              </tr>
+              <thead>
+                <tr>
+                  <td>Name</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>asset1</td>
+                </tr>
+                <tr>
+                  <td>asset2</td>
+                </tr>
+                <tr>
+                  <td>asset3</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div id="footer">Copyright &copy; 2011 GearheadForHire, LLC</div>
         </body>
       </html>
       """
-
-

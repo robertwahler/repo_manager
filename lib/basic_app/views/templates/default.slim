@@ -10,9 +10,13 @@ html
 
       - unless items.empty?
         table
-          - for item in items do
+          thead
             tr
-              td = item.name
+              td = "Name"
+          tbody
+            - for item in items do
+              tr
+                td = item.name
       - else
         p
          | No assets found.
