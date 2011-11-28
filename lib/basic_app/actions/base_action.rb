@@ -30,7 +30,7 @@ module BasicApp
     # @abstract
     def execute
       parse_options
-      render
+      puts render
     end
 
     def asset_options
@@ -39,20 +39,20 @@ module BasicApp
 
     # TODO: render shouldn't print or puts, just return a string
     def render
-      puts asset_options.inspect
       template = options[:template]
+      result = ""
       if template
         view = AppView.new(assets(asset_options))
-        puts view.render
+        result = view.render
       else
         assets(asset_options).each do |asset|
           attributes = asset.attributes.dup
-          print asset.name.green
-          puts ":"
-          puts attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
-          puts ""
+          result += asset.name.green + ":\n"
+          result += attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
+          result += "\n"
         end
       end
+      result
     end
 
     # Convert method comments block to help text

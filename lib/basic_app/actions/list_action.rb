@@ -59,17 +59,18 @@ module BasicApp
     end
 
     def render
-      puts asset_options.inspect
       # templates override all other modes, if no mode specified, allow super to handle
       list_mode = options[:template] || options[:list]
+      result = ""
       case list_mode
         when 'NAME'
           assets(asset_options).each do |asset|
-            puts asset.name.green
+            result += "#{asset.name.green}\n"
           end
         else
-          super
+          result = super
       end
+      result
     end
 
     def help
