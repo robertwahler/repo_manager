@@ -19,8 +19,7 @@ module BasicApp
   # @return [Number] 0 if successful
   class ListAction < AppAction
 
-    def execute
-
+    def parse_options
       OptionParser.new do |opts|
         opts.banner = help + "\n\nOptions:"
 
@@ -48,25 +47,23 @@ module BasicApp
           exit 1
         end
       end
+    end
 
-      list_mode = options[:list] || 'ALL'
+    def asset_options
       asset_options = {:type => :app_asset}
       asset_options = asset_options.merge(:type => options[:type].downcase) if options[:type]
+    end
 
-      assets(asset_options).each do |asset|
-        case list_mode
-          when 'NAME'
+    def render
+      list_mode = options[:list] || 'ALL'
+      case list_mode
+        when 'NAME'
+          assets(asset_options).each do |asset|
             puts asset.name.green
-          else
-            attributes = asset.attributes.dup
-            print asset.name.green
-            puts ":"
-            # strip trailing whitespace from YAML
-            puts attributes.to_yaml.gsub(/\s+$/, '')
-            puts ""
-        end
+          end
+        else
+          super
       end
-
     end
 
     def help
@@ -74,5 +71,4 @@ module BasicApp
     end
 
   end
-
 end

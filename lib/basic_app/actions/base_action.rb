@@ -23,9 +23,29 @@ module BasicApp
       @args = args
     end
 
+    def parse_options
+      # @abstract
+    end
+
     # @abstract
     def execute
-      raise "abstract method 'execute' has not been implemented"
+      parse_options
+      render
+    end
+
+    def asset_options
+      {}
+    end
+
+    def render
+      assets(asset_options).each do |asset|
+        attributes = asset.attributes.dup
+        print asset.name.green
+        puts ":"
+        # strip trailing whitespace from YAML
+        puts attributes.to_yaml.gsub(/\s+$/, '')
+        puts ""
+      end
     end
 
     # Convert method comments block to help text
