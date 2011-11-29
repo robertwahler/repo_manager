@@ -20,36 +20,30 @@ module BasicApp
   class ListAction < AppAction
 
     def parse_options
-      OptionParser.new do |opts|
-        opts.banner = help + "\n\nOptions:"
+      opts = super
 
-        opts.on("--template [NAME]", "Use a template to render output. (Defaults to 'default.slim'") do |m|
-          options[:template] = m.nil? ? "DEFAULT" : m
+      opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
+        options[:list] = u
+        options[:list].upcase!
+        unless ["ALL", "NAME"].include?(options[:list])
+          raise "invalid list mode '#{options[:list]}' for '--list' option"
         end
+      end
 
-        opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
-          options[:list] = u
-          options[:list].upcase!
-          unless ["ALL", "NAME"].include?(options[:list])
-            raise "invalid list mode '#{options[:list]}' for '--list' option"
-          end
+      opts.on("--type ASSET_TYPE", "Asset type to list:  APP_ASSET (default)") do |t|
+        options[:type] = t
+        options[:type].upcase!
+        unless ["APP_ASSET"].include?(options[:type])
+          raise "unknown asset type '#{options[:type]}' for '--type' option"
         end
+      end
 
-        opts.on("--type ASSET_TYPE", "Asset type to list:  APP_ASSET (default)") do |t|
-          options[:type] = t
-          options[:type].upcase!
-          unless ["APP_ASSET"].include?(options[:type])
-            raise "unknown asset type '#{options[:type]}' for '--type' option"
-          end
-        end
-
-        begin
-          opts.parse!(args)
-        rescue OptionParser::InvalidOption => e
-          puts "option error: #{e}"
-          puts opts
-          exit 1
-        end
+      begin
+        opts.parse!(args)
+      rescue OptionParser::InvalidOption => e
+        puts "option error: #{e}"
+        puts opts
+        exit 1
       end
     end
 

@@ -23,11 +23,21 @@ module BasicApp
       @args = args
     end
 
+    # Parse generic action options for all decendant actions
+    #
+    # @return [OptionParser] for use by decendant actions
     def parse_options
-      # @abstract
+      option_parser = OptionParser.new do |opts|
+        opts.banner = help + "\n\nOptions:"
+
+        opts.on("--template [NAME]", "Use a template to render output. (Default=default.slim)") do |m|
+          options[:template] = m.nil? ? "DEFAULT" : m
+        end
+
+      end
+      option_parser
     end
 
-    # @abstract
     def execute
       parse_options
       puts render
@@ -37,7 +47,9 @@ module BasicApp
       {}
     end
 
-    # TODO: render shouldn't print or puts, just return a string
+    # Render result to a string
+    #
+    # @return [String] suitable for displaying on STDOUT or writing to a file
     def render
       template = options[:template]
       result = ""
