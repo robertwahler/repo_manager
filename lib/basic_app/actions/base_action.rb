@@ -30,8 +30,12 @@ module BasicApp
       option_parser = OptionParser.new do |opts|
         opts.banner = help + "\n\nOptions:"
 
-        opts.on("--template [NAME]", "Use a template to render output. (Default=default.slim)") do |m|
-          options[:template] = m.nil? ? "DEFAULT" : m
+        opts.on("--template [NAME]", "Use a template to render output. (Default=default.slim)") do |template|
+          options[:template] = template.nil? ? "DEFAULT" : template
+        end
+
+        opts.on("--output FILENAME", "Render output directly to a file") do |filename|
+          options[:output] = filename
         end
 
       end
@@ -40,9 +44,17 @@ module BasicApp
 
     def execute
       parse_options
-      puts render
+      output = render
+
+      filename = options[:output]
+      if filename
+        File.open(filename, 'wb') {|f| f.write(output) }
+      else
+        puts output
+      end
     end
 
+    # assets will be passed these options
     def asset_options
       {}
     end

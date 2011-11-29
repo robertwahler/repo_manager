@@ -101,7 +101,6 @@ Feature: Listing assets
       </html>
       """
 
-  @wip
   Scenario: List to file using the built in default template
     Given the folder "data/app_assets" with the following asset configurations:
       | name         |

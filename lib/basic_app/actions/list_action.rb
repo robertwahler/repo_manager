@@ -12,9 +12,10 @@ module BasicApp
   #
   #  basic_app list --tags=adventure,favorites --sort=ACQUIRED
   #
-  # @example HTML output to a file
+  # @example output to a file
   #
-  #  basic_app list --format=HTML >> tmp/aruba/index.html
+  #  basic_app list --template >> tmp/aruba/index.html
+  #  basic_app list --template --output=tmp/aruba/index.html
   #
   # @return [Number] 0 if successful
   class ListAction < AppAction
