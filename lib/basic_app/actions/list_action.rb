@@ -51,6 +51,7 @@ module BasicApp
     def asset_options
       result = {:type => :app_asset}
       result = result.merge(:type => options[:type].downcase) if options[:type]
+      result
     end
 
     def render
