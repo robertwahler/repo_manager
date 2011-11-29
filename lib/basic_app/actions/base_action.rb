@@ -59,21 +59,30 @@ module BasicApp
       {}
     end
 
-    # Render result to a string
+    # items to be rendered, defaults to assets
+    #
+    # @return [Array] of items to be rendered
+    def items
+      assets(asset_options)
+    end
+
+    # Render items result to a string
     #
     # @return [String] suitable for displaying on STDOUT or writing to a file
     def render
       template = options[:template]
       result = ""
       if template
-        view = AppView.new(assets(asset_options))
+        view = AppView.new(items)
         result = view.render
       else
-        assets(asset_options).each do |asset|
-          attributes = asset.attributes.dup
-          result += asset.name.green + ":\n"
-          result += attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
-          result += "\n"
+        items.each do |item|
+          result += item.name.green + ":\n"
+          if item.respond_to?(:attributes)
+            attributes = item.attributes.dup
+            result += attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
+            result += "\n"
+          end
         end
       end
       result
