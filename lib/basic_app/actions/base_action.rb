@@ -44,14 +44,19 @@ module BasicApp
 
     def execute
       parse_options
-      output = render
+      process
 
+      output = render
       filename = options[:output]
       if filename
         File.open(filename, 'wb') {|f| f.write(output) }
       else
         puts output
       end
+    end
+
+    def process
+      # handle assets to items transformations, if any
     end
 
     # assets will be passed these options
