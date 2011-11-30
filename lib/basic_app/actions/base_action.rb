@@ -11,16 +11,37 @@ module BasicApp
   class BaseAction
     include BasicApp::Assets
 
-    attr_reader :options
-
+    # main configuration hash
     attr_reader :configuration
 
+    # options hash, read from configuration hash
+    attr_reader :options
+
+    # args as passed on command line
     attr_reader :args
 
     def initialize(args=[], configuration={})
       @configuration = configuration
       @options = configuration[:options] || {}
       @args = args
+    end
+
+    # wrapper for template option
+    def template
+      options[:template]
+    end
+
+    def template=(value)
+      options[:template] = value
+    end
+
+    # wrapper for file output option
+    def output
+      options[:output]
+    end
+
+    def output=(value)
+      options[:output] = value
     end
 
     # Parse generic action options for all decendant actions
@@ -45,18 +66,21 @@ module BasicApp
     def execute
       parse_options
       process
-
-      output = render
-      filename = options[:output]
-      if filename
-        File.open(filename, 'wb') {|f| f.write(output) }
-      else
-        puts output
-      end
     end
 
+    # handle "assets to items" transformations, if any, and write to output
     def process
-      # handle assets to items transformations, if any
+      write_to_output(render)
+    end
+
+    # TODO: add exception handler and pass return values
+    def write_to_output(content)
+      if output
+        File.open(output, 'wb') {|f| f.write(content) }
+      else
+        puts content
+      end
+      return 0
     end
 
     # assets will be passed these options
@@ -75,7 +99,6 @@ module BasicApp
     #
     # @return [String] suitable for displaying on STDOUT or writing to a file
     def render
-      template = options[:template]
       result = ""
       if template
         view = AppView.new(items)

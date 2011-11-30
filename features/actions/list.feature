@@ -23,7 +23,7 @@ Feature: Listing assets
   Scenario: Invalid asset type
     When I run `basic_app list --type=invalid_asset_type`
     Then the exit status should be 1
-    Then the output should contain:
+    And the output should contain:
       """
       unknown asset type
       """
@@ -35,7 +35,8 @@ Feature: Listing assets
       | asset2       |
       | asset3       |
     When I run `basic_app list --type=app_asset`
-    Then the output should contain:
+    Then the exit status should be 0
+    And the output should contain:
       """
       asset1:
       --- {}
@@ -52,7 +53,8 @@ Feature: Listing assets
       | asset2       |
       | asset3       |
     When I run `basic_app list --list=NAME --type=app_asset`
-    Then the output should contain:
+    Then the exit status should be 0
+    And the output should contain:
       """
       asset1
       asset2
@@ -66,7 +68,8 @@ Feature: Listing assets
       | asset2       |
       | asset3       |
     When I run `basic_app list --template  --type=app_asset --verbose`
-    Then the output should contain:
+    Then the exit status should be 0
+    And the output should contain:
       """
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html>
@@ -108,7 +111,8 @@ Feature: Listing assets
       | asset2       |
       | asset3       |
     When I run `basic_app list --template  --type=app_asset --output=data/output.html --verbose`
-    Then the file "data/output.html" should contain:
+    Then the exit status should be 0
+    And the file "data/output.html" should contain:
       """
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       <html>
