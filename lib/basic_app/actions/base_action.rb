@@ -20,46 +20,39 @@ module BasicApp
     # args as passed on command line
     attr_reader :args
 
+    # filename to template for rendering
+    attr_accessor :template
+
+    # filename to write output
+    attr_accessor :output
+
     def initialize(args=[], configuration={})
       @configuration = configuration
       @options = configuration[:options] || {}
       @args = args
     end
 
-    # wrapper for template option
-    def template
-      options[:template]
-    end
-
-    def template=(value)
-      options[:template] = value
-    end
-
-    # wrapper for file output option
-    def output
-      options[:output]
-    end
-
-    def output=(value)
-      options[:output] = value
-    end
-
     # Parse generic action options for all decendant actions
     #
     # @return [OptionParser] for use by decendant actions
     def parse_options
+      logger.debug "base_action parsing args: #{args.join(' ')}"
+
       option_parser = OptionParser.new do |opts|
         opts.banner = help + "\n\nOptions:"
 
-        opts.on("--template [NAME]", "Use a template to render output. (Default=default.slim)") do |template|
-          options[:template] = template.nil? ? "DEFAULT" : template
+        opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
+          options[:template] = template.nil? ? "default.slim" : t
+          @template = options[:template]
         end
 
-        opts.on("--output FILENAME", "Render output directly to a file") do |filename|
-          options[:output] = filename
+        opts.on("--output FILENAME", "Render output directly to a file") do |f|
+          options[:output] = f
+          @output = options[:output]
         end
 
       end
+
       option_parser
     end
 
@@ -76,8 +69,10 @@ module BasicApp
     # TODO: add exception handler and pass return values
     def write_to_output(content)
       if output
+        logger.debug "base_action writing to : #{output}"
         File.open(output, 'wb') {|f| f.write(content) }
       else
+        logger.debug "base_action writing to STDOUT"
         puts content
       end
       return 0
@@ -99,9 +94,12 @@ module BasicApp
     #
     # @return [String] suitable for displaying on STDOUT or writing to a file
     def render
+      logger.debug "base_action rendering"
       result = ""
       if template
+        logger.debug "base_action rendering with template : #{template}"
         view = AppView.new(items)
+        view.template = template
         result = view.render
       else
         items.each do |item|

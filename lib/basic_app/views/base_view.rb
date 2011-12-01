@@ -6,6 +6,8 @@
 # See http://github.com/robertwahler
 ####################################################
 
+require 'pathname'
+
 require 'slim'
 
 module BasicApp
@@ -40,7 +42,10 @@ module BasicApp
 
     # TODO: render based on file ext
     def render
-      Slim::Template.new(template, {:pretty => true}).render(self)
+      filename = template
+      filename = File.expand_path(File.join('../templates', filename), __FILE__) unless Pathname.new(filename).absolute?
+      raise "unable to find template file: #{filename}" unless File.exists?(filename)
+      Slim::Template.new(filename, {:pretty => true}).render(self)
     end
 
   end
