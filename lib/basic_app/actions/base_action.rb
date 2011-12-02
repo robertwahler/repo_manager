@@ -69,7 +69,7 @@ module BasicApp
     # TODO: add exception handler and pass return values
     def write_to_output(content)
       if output
-        logger.debug "base_action writing to : #{output}"
+        logger.info "writing output to : #{output}"
         File.open(output, 'wb') {|f| f.write(content) }
       else
         logger.debug "base_action writing to STDOUT"
@@ -93,12 +93,12 @@ module BasicApp
     # Render items result to a string
     #
     # @return [String] suitable for displaying on STDOUT or writing to a file
-    def render
+    def render(view_options={})
       logger.debug "base_action rendering"
       result = ""
       if template
         logger.debug "base_action rendering with template : #{template}"
-        view = AppView.new(items)
+        view = AppView.new(items, view_options)
         view.template = template
         result = view.render
       else

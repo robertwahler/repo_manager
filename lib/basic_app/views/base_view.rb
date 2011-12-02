@@ -7,8 +7,8 @@
 ####################################################
 
 require 'pathname'
-
 require 'slim'
+require 'chronic'
 
 module BasicApp
 
@@ -17,8 +17,10 @@ module BasicApp
   class BaseView
 
     attr_accessor :template
+    attr_accessor :options
 
-    def initialize(items)
+    def initialize(items, options={})
+      @options = options
       @items = items
       @template = File.expand_path('../templates/default.slim', __FILE__)
     end
@@ -28,14 +30,28 @@ module BasicApp
     end
 
     def title
-      @title || "Default Title"
+      @title || options[:title] || "Default Title"
     end
 
     def title=(value)
       @title = value
     end
 
-    # TODO: ERB binding
+    def date
+      return @date if @date
+
+      if options[:date]
+        @date = Chronic.parse(options[:date])
+        return @date if @date
+      end
+      @date = Date.today
+    end
+
+    def date=(value)
+      @date = value
+    end
+
+    # TODO: for ERB binding
     def get_binding
       binding
     end
