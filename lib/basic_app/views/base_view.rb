@@ -16,7 +16,6 @@ module BasicApp
   # using templates
   class BaseView
 
-    attr_accessor :template
     attr_accessor :options
 
     def initialize(items, options={})
@@ -27,6 +26,21 @@ module BasicApp
 
     def items
       @items
+    end
+
+    def template
+      return @template if @template.nil? || Pathname.new(@template).absolute?
+
+      # try relative to PWD
+      fullpath = File.expand_path(File.join(FileUtils.pwd, @template))
+      return fullpath if File.exists?(fullpath)
+
+      # try built in template folder
+      fullpath = File.expand_path(File.join('../templates', @template), __FILE__)
+    end
+
+    def template=(value)
+      @template = value
     end
 
     def title
@@ -56,12 +70,48 @@ module BasicApp
       binding
     end
 
+    # render a partial
+    #
+    # filename: unless absolute, it will be relative to the main template
+    #
+    # @example slim escapes HTML, use '=='
+    #
+    #   head
+    #   == render 'mystyle.css'
+    #
+    # @return [String] of non-escaped textual content
+    def partial(filename)
+      filename = partial_path(filename)
+      raise "unable to find partial file: #{filename}" unless File.exists?(filename)
+      File.open(filename, "rb") {|f| f.read}
+    end
+
     # TODO: render based on file ext
     def render
-      filename = template
-      filename = File.expand_path(File.join('../templates', filename), __FILE__) unless Pathname.new(filename).absolute?
-      raise "unable to find template file: #{filename}" unless File.exists?(filename)
-      Slim::Template.new(filename, {:pretty => true}).render(self)
+      raise "unable to find template file: #{template}" unless File.exists?(template)
+      Slim::Template.new(template, {:pretty => true}).render(self)
+    end
+
+  private
+
+    # full expanded path to the template and partials
+    #
+    def partial_path(filename)
+      return filename if filename.nil? || Pathname.new(filename).absolute?
+
+      # try relative to template
+      if template
+        base_folder = File.dirname(template)
+        filename = File.expand_path(File.join(base_folder, filename))
+        return filename if File.exists?(filename)
+      end
+
+      # try relative to PWD
+      filename = File.expand_path(File.join(FileUtils.pwd, filename))
+      return filename if File.exists?(filename)
+
+      # try built in template folder
+      filename = File.expand_path(File.join('../templates', filename), __FILE__)
     end
 
   end

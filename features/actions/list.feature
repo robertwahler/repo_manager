@@ -71,35 +71,73 @@ Feature: Listing assets
     Then the exit status should be 0
     And the output should contain:
       """
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-      <html>
+      <!DOCTYPE html>
+      <html lang="en">
         <head>
           <title>Default View</title>
+          <meta charset="utf-8" />
           <meta content="basic_app" name="keywords" />
+          <meta content="BasicApp default template" name="description" />
+          <meta content="Robert Wahler" name="author" />
+          <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
+          <style type="text/css">html, body {
+              background-color: #eee;
+            }
+            .container {
+              width: 820px;
+            }
+            .container > footer p {
+              text-align: center;
+            }
+            .page-header {
+              background-color: #f5f5f5;
+              padding: 20px 20px 10px;
+              margin: -20px -20px 20px;
+            }
+            /* The white background content wrapper */
+            .content {
+              background-color: #fff;
+              padding: 20px;
+              margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+              -webkit-border-radius: 0 0 6px 6px;
+                 -moz-border-radius: 0 0 6px 6px;
+                      border-radius: 0 0 6px 6px;
+              -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                 -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                      box-shadow: 0 1px 2px rgba(0,0,0,.15);
+            }
+            </style>
         </head>
         <body>
-          <h1>Default Title</h1>
-          <div id="content">
-            <table>
-              <thead>
-                <tr>
-                  <td>Name</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>asset1</td>
-                </tr>
-                <tr>
-                  <td>asset2</td>
-                </tr>
-                <tr>
-                  <td>asset3</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="container">
+            <div class="content">
+              <div class="page-header">
+                <h1>Assets Report</h1>
+              </div>
+              <h2>Assets</h2>
+              <table class="condensed-table bordered-table zebra-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>asset1</td>
+                  </tr>
+                  <tr>
+                    <td>asset2</td>
+                  </tr>
+                  <tr>
+                    <td>asset3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer>
+              <p>Copyright &copy; 2011 GearheadForHire, LLC</p>
+            </footer>
           </div>
-          <div id="footer">Copyright &copy; 2011 GearheadForHire, LLC</div>
         </body>
       </html>
       """
@@ -114,35 +152,73 @@ Feature: Listing assets
     Then the exit status should be 0
     And the file "data/output.html" should contain:
       """
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-      <html>
+      <!DOCTYPE html>
+      <html lang="en">
         <head>
           <title>Default View</title>
+          <meta charset="utf-8" />
           <meta content="basic_app" name="keywords" />
+          <meta content="BasicApp default template" name="description" />
+          <meta content="Robert Wahler" name="author" />
+          <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
+          <style type="text/css">html, body {
+              background-color: #eee;
+            }
+            .container {
+              width: 820px;
+            }
+            .container > footer p {
+              text-align: center;
+            }
+            .page-header {
+              background-color: #f5f5f5;
+              padding: 20px 20px 10px;
+              margin: -20px -20px 20px;
+            }
+            /* The white background content wrapper */
+            .content {
+              background-color: #fff;
+              padding: 20px;
+              margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+              -webkit-border-radius: 0 0 6px 6px;
+                 -moz-border-radius: 0 0 6px 6px;
+                      border-radius: 0 0 6px 6px;
+              -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                 -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                      box-shadow: 0 1px 2px rgba(0,0,0,.15);
+            }
+            </style>
         </head>
         <body>
-          <h1>Default Title</h1>
-          <div id="content">
-            <table>
-              <thead>
-                <tr>
-                  <td>Name</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>asset1</td>
-                </tr>
-                <tr>
-                  <td>asset2</td>
-                </tr>
-                <tr>
-                  <td>asset3</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="container">
+            <div class="content">
+              <div class="page-header">
+                <h1>Assets Report</h1>
+              </div>
+              <h2>Assets</h2>
+              <table class="condensed-table bordered-table zebra-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>asset1</td>
+                  </tr>
+                  <tr>
+                    <td>asset2</td>
+                  </tr>
+                  <tr>
+                    <td>asset3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer>
+              <p>Copyright &copy; 2011 GearheadForHire, LLC</p>
+            </footer>
           </div>
-          <div id="footer">Copyright &copy; 2011 GearheadForHire, LLC</div>
         </body>
       </html>
       """
