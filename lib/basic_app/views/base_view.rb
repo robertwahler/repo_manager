@@ -94,7 +94,7 @@ module BasicApp
 
   private
 
-    # full expanded path to the template and partials
+    # full expanded path to the given partial
     #
     def partial_path(filename)
       return filename if filename.nil? || Pathname.new(filename).absolute?

@@ -69,7 +69,7 @@ Feature: Listing assets
       | asset3       |
     When I run `basic_app list --template  --type=app_asset --verbose`
     Then the exit status should be 0
-    And the output should contain:
+    And the normalized output should contain:
       """
       <!DOCTYPE html>
       <html lang="en">
