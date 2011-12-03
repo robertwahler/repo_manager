@@ -83,7 +83,11 @@ module BasicApp
     def partial(filename)
       filename = partial_path(filename)
       raise "unable to find partial file: #{filename}" unless File.exists?(filename)
-      File.open(filename, "rb") {|f| f.read}
+      contents = File.open(filename, "rb") {|f| f.read}
+      # TODO: detect template EOL and match it to the partial's EOL
+      # force unix eol
+      contents.gsub!(/\r\n/, "\n") if contents.match("\r\n")
+      contents
     end
 
     # TODO: render based on file ext
