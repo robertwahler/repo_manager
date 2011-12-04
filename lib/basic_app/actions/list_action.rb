@@ -59,7 +59,8 @@ module BasicApp
         end
       end
 
-      # TODO: move to base_action
+      # Most decendants of BaseAction will only handle one type of asset, the
+      # list action is unique in that you can specify the type of asset to list
       opts.on("--type ASSET_TYPE", "Asset type to list:  app_asset (default)") do |t|
         options[:type] = t
         unless ["app_asset"].include?(options[:type])
@@ -77,11 +78,7 @@ module BasicApp
     end
 
     def asset_options
-      #TODO: this can all be moved to super
-      result = options
-      filters = args.dup
-      filters += options[:filter] if options[:filter]
-      result = result.merge(:filter => filters) unless filters.empty?
+      result = super
       result = result.merge(:type => :app_asset) unless options[:type]
       result
     end

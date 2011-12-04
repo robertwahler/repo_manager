@@ -94,7 +94,11 @@ module BasicApp
 
     # assets will be passed these options
     def asset_options
-      {}
+      result = options
+      filters = args.dup
+      filters += options[:filter] if options[:filter]
+      result = result.merge(:filter => filters) unless filters.empty?
+      result
     end
 
     # items to be rendered, defaults to assets
