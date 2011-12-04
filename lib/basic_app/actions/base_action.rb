@@ -51,6 +51,20 @@ module BasicApp
           @output = options[:output]
         end
 
+        opts.on("--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
+          options[:filter] = list
+        end
+
+        # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
+        opts.on("--match [MODE]", "Asset filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
+          options[:match] = m || "ALL"
+          options[:match].upcase!
+          unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
+            puts "invalid match mode option: #{options[:match]}"
+            exit 1
+          end
+        end
+
       end
 
       option_parser

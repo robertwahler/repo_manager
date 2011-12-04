@@ -40,7 +40,7 @@ module BasicApp
             puts "basic_app --help for more information"
             exit 1
           end
-          logger.debug "repo run action: #{action} #{args.join(' ')}"
+          logger.debug "execute action: #{action} #{args.join(' ')}"
           klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
           result = klass.new(args, @configuration).execute
         else

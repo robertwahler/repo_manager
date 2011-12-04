@@ -1,16 +1,48 @@
 @announce
 Feature: Listing assets
 
-  Assets can be listed to the screen in html or plain text
+  Asset configurations listed to the screen or file with or without templates
+  using regular expression (regex) filtering.
 
   Example usage:
 
-    basic_app list
-    basic_app list --type=asset_type
-    basic_app list --tags=adventure,favorites  --sort=ACQUIRED
-    basic_app list --format=HTML >> tmp/aruba/index.html
+      basic_app list
+      basic_app list --list=NAME
+      basic_app list --type=asset_type
+      basic_app list --template ~/templates/myTemplate.slim
 
- Background: A master configuration file
+  Example asset regex filtering:
+
+      basic_app list --filter=ass.t1,as.et2
+
+  Equivalent asset filtering:
+
+      basic_app list --filter=asset1,asset2
+      basic_app list --asset=asset1,asset2
+      basic_app list asset1 asset2
+
+  Equivalent usage, file writing:
+
+     basic_app list --template=default.slim --output=tmp/aruba/index.html
+     basic_app list --template=default.slim >> tmp/aruba/index.html
+
+  Example return just the first matching asset
+
+      basic_app list --match=FIRST
+
+  Example fail out if more than one matching asset
+
+      basic_app list --match=ONE
+
+  Example disable regex filter matching
+
+      basic_app list --match=EXACT
+
+  Example future usage (not implemented):
+
+      basic_app list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
+
+  Background: A master configuration file
     Given a file named "basic_app.conf" with:
       """
       ---
@@ -59,6 +91,114 @@ Feature: Listing assets
       asset1
       asset2
       asset3
+      """
+
+  Scenario: List just name using '--filter' option
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --filter=asset1 --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      asset1
+      """
+    And the output should not contain:
+      """
+      asset2
+      """
+    And the output should not contain:
+      """
+      asset3
+      """
+
+  Scenario: List just name using '--asset' option
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --asset=asset1 --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should contain exactly:
+      """
+      asset1
+
+      """
+
+  Scenario: List just name using passing filters as args
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list asset1 asset2 --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      asset1
+      asset2
+      """
+    And the output should not contain:
+      """
+      asset3
+      """
+
+  Scenario: List the first and only first matching asset with match mode '--match FIRST'
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --match=FIRST --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should contain exactly:
+      """
+      asset1
+
+      """
+
+  Scenario: Multiple matching assets fail hard with asset match mode '--match ONE'
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --match=ONE --list=NAME --type=app_asset`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      multiple matching assets found
+      """
+
+  Scenario: Regex asset matching of any part of asset name is the default match mode
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list a.s.t --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      asset1
+      asset2
+      asset3
+      """
+
+  Scenario: No regex asset matching with asset match mode '--match EXACT'
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list a.s.t --match=EXACT --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should not contain:
+      """
+      asset1
       """
 
   Scenario: List to screen using the built in default template
