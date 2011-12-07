@@ -3,6 +3,7 @@
 require 'basic_app'
 require 'optparse'
 require 'term/ansicolor'
+require 'fileutils'
 
 available_actions = BasicApp::AVAILABLE_ACTIONS
 
