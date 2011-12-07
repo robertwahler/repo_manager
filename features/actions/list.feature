@@ -362,3 +362,76 @@ Feature: Listing assets
         </body>
       </html>
       """
+
+  Scenario: No not overwrite existing output unless prompted 'Y/N' or given the '--force' option
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    And a file named "data/output.html" with:
+      """
+      this file was not overwritten
+      """
+    When I run `basic_app list --template  --type=app_asset --output=data/output.html --verbose`
+    Then the exit status should be 0
+    And the file "data/output.html" should contain:
+      """
+      this file was not overwritten
+      """
+    And the file "data/output.html" should not contain:
+      """
+      </html>
+      """
+
+  Scenario: Overwrite automatically for existing output using '--force'
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    And a file named "data/output.html" with:
+      """
+      this file was not overwritten
+      """
+    When I run `basic_app list --template  --type=app_asset --output=data/output.html --force --verbose`
+    Then the exit status should be 0
+    And the file "data/output.html" should not contain:
+      """
+      this file was not overwritten
+      """
+    And the file "data/output.html" should contain:
+      """
+        <body>
+          <div class="container">
+            <div class="content">
+              <div class="page-header">
+                <h1>Assets Report</h1>
+              </div>
+              <h2>Assets</h2>
+              <table class="condensed-table bordered-table zebra-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>asset1</td>
+                  </tr>
+                  <tr>
+                    <td>asset2</td>
+                  </tr>
+                  <tr>
+                    <td>asset3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer>
+              <p>Copyright &copy; 2011 GearheadForHire, LLC</p>
+            </footer>
+          </div>
+        </body>
+      </html>
+      """

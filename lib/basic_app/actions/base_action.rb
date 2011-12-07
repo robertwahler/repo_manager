@@ -51,6 +51,10 @@ module BasicApp
           @output = options[:output]
         end
 
+        opts.on("--force", "Overwrite file output without prompting") do |f|
+          options[:force] = f
+        end
+
         opts.on("--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
           options[:filter] = list
         end
@@ -83,8 +87,12 @@ module BasicApp
     # TODO: add exception handler and pass return values
     def write_to_output(content)
       if output
-        logger.info "writing output to : #{output}"
-        File.open(output, 'wb') {|f| f.write(content) }
+        if overwrite_output?
+          logger.info "writing output to : #{output}"
+          File.open(output, 'wb') {|f| f.write(content) }
+        else
+          logger.info "existing file not overwritten.  To overwrite automatically, use the '--force' option."
+        end
       else
         logger.debug "base_action writing to STDOUT"
         puts content
@@ -157,6 +165,35 @@ module BasicApp
         result += "\n"
         result += "General options:\n"
         result += configuration[:general_options_summary].to_s
+      end
+
+      result
+    end
+
+  private
+
+    # @return [Boolean] true if output doesn't exist or it is OK to overwrite
+    def overwrite_output?
+      return true unless File.exists?(output)
+
+      if options[:force]
+        logger.debug "overwriting output with --force option"
+        return true
+      end
+
+      unless STDOUT.isatty
+        logger.debug "TTY not detected, skipping overwrite prompt"
+        return false
+      end
+
+      result = false
+      print "File '#{output}' exists. Would you like overwrite? [y/n]: "
+      case gets.strip
+        when 'Y', 'y', 'yes'
+          logger.debug "user answered yes to overwrite prompt"
+          result = true
+        else
+          logger.debug "user answered no to overwrite prompt"
       end
 
       result
