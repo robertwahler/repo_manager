@@ -170,8 +170,6 @@ module BasicApp
       result
     end
 
-  private
-
     # @return [Boolean] true if output doesn't exist or it is OK to overwrite
     def overwrite_output?
       return true unless File.exists?(output)
