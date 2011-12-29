@@ -1,2 +1,2 @@
-require 'basic_app/views/base_view'
-require 'basic_app/views/app_view'
+require 'repoman/views/base_view'
+require 'repoman/views/app_view'

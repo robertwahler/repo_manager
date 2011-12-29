@@ -1,7 +1,7 @@
 require 'yaml'
 require 'pathname'
 
-module BasicApp
+module Repoman
 
   # asset_configuration saves just the user data by subtracting out the
   # global hash and writing just the result
@@ -60,7 +60,7 @@ module BasicApp
         end
 
         logger.debug "AssetConfiguration loading parent: #{parent_folder}"
-        parent_configuration = BasicApp::AssetConfiguration.new(@asset)
+        parent_configuration = Repoman::AssetConfiguration.new(@asset)
         parent_configuration.load(parent_folder)
       end
 

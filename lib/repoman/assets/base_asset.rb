@@ -5,9 +5,9 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-require 'basic_app/assets/asset_configuration'
+require 'repoman/assets/asset_configuration'
 
-module BasicApp
+module Repoman
 
   class BaseAsset
 
@@ -18,7 +18,7 @@ module BasicApp
     def self.create(name, config_folder=nil, options={})
       name ||= :app_asset
       classified_name = name.to_s.split('_').collect!{ |w| w.capitalize }.join
-      Object.const_get('BasicApp').const_get(classified_name).new(config_folder, options)
+      Object.const_get('Repoman').const_get(classified_name).new(config_folder, options)
     end
 
     def initialize(config_folder=nil, options={})
@@ -30,7 +30,7 @@ module BasicApp
     end
 
     def configuration
-      @configuration ||= BasicApp::AssetConfiguration.new(self)
+      @configuration ||= Repoman::AssetConfiguration.new(self)
     end
 
     # attributes is the hash loaded from the asset config file

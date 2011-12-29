@@ -1,10 +1,10 @@
-require 'basic_app/assets/base_asset'
-require 'basic_app/assets/app_asset'
+require 'repoman/assets/base_asset'
+require 'repoman/assets/app_asset'
 
 require 'pathname'
 require 'fileutils'
 
-module BasicApp
+module Repoman
   module Assets
 
   # options hash
@@ -45,7 +45,7 @@ module BasicApp
           # options hash and the asset folder, ex: condenser
           match_count += 1
           asset_options = {}
-          asset = BasicApp::AppAsset.create(type, folder, asset_options)
+          asset = Repoman::AppAsset.create(type, folder, asset_options)
           assets << asset
           break if ((options[:match] == 'FIRST') || (options[:match] == 'EXACT'))
           raise "match mode = ONE, multiple matching assets found filter" if (options[:match] == 'ONE' && match_count > 1)

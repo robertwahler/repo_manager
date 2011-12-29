@@ -5,11 +5,11 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-module BasicApp
+module Repoman
 
   # An abstract superclass for basic action functionality
   class BaseAction
-    include BasicApp::Assets
+    include Repoman::Assets
 
     # main configuration hash
     attr_reader :configuration

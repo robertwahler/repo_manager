@@ -10,7 +10,7 @@ require 'pathname'
 require 'slim'
 require 'chronic'
 
-module BasicApp
+module Repoman
 
   # An abstract superclass for basic view/reporting functionality
   # using templates

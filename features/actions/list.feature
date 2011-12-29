@@ -6,44 +6,44 @@ Feature: Listing assets
 
   Example usage:
 
-      basic_app list
-      basic_app list --list=NAME
-      basic_app list --type=asset_type
-      basic_app list --template ~/templates/myTemplate.slim
+      repo list
+      repo list --list=NAME
+      repo list --type=asset_type
+      repo list --template ~/templates/myTemplate.slim
 
   Example asset regex filtering:
 
-      basic_app list --filter=ass.t1,as.et2
+      repo list --filter=ass.t1,as.et2
 
   Equivalent asset filtering:
 
-      basic_app list --filter=asset1,asset2
-      basic_app list --asset=asset1,asset2
-      basic_app list asset1 asset2
+      repo list --filter=asset1,asset2
+      repo list --asset=asset1,asset2
+      repo list asset1 asset2
 
   Equivalent usage, file writing:
 
-     basic_app list --template=default.slim --output=tmp/aruba/index.html
-     basic_app list --template=default.slim >> tmp/aruba/index.html
+     repo list --template=default.slim --output=tmp/aruba/index.html
+     repo list --template=default.slim >> tmp/aruba/index.html
 
   Example return just the first matching asset
 
-      basic_app list --match=FIRST
+      repo list --match=FIRST
 
   Example fail out if more than one matching asset
 
-      basic_app list --match=ONE
+      repo list --match=ONE
 
   Example disable regex filter matching
 
-      basic_app list --match=EXACT
+      repo list --match=EXACT
 
   Example future usage (not implemented):
 
-      basic_app list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
+      repo list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
 
   Background: A master configuration file
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -53,7 +53,7 @@ Feature: Listing assets
       """
 
   Scenario: Invalid asset type
-    When I run `basic_app list --type=invalid_asset_type`
+    When I run `repo list --type=invalid_asset_type`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -66,7 +66,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -84,7 +84,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --list=NAME --type=app_asset`
+    When I run `repo list --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -99,7 +99,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --filter=asset1 --list=NAME --type=app_asset`
+    When I run `repo list --filter=asset1 --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -120,7 +120,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --asset=asset1 --list=NAME --type=app_asset`
+    When I run `repo list --asset=asset1 --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should contain exactly:
       """
@@ -134,7 +134,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list asset1 asset2 --list=NAME --type=app_asset`
+    When I run `repo list asset1 asset2 --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -152,7 +152,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --match=FIRST --list=NAME --type=app_asset`
+    When I run `repo list --match=FIRST --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should contain exactly:
       """
@@ -166,7 +166,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --match=ONE --list=NAME --type=app_asset`
+    When I run `repo list --match=ONE --list=NAME --type=app_asset`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -179,7 +179,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list a.s.t --list=NAME --type=app_asset`
+    When I run `repo list a.s.t --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -194,7 +194,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list a.s.t --match=EXACT --list=NAME --type=app_asset`
+    When I run `repo list a.s.t --match=EXACT --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -207,7 +207,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --template  --type=app_asset --verbose`
+    When I run `repo list --template  --type=app_asset --verbose`
     Then the exit status should be 0
     And the normalized output should contain:
       """
@@ -288,7 +288,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --template  --type=app_asset --output=data/output.html --verbose`
+    When I run `repo list --template  --type=app_asset --output=data/output.html --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should contain:
       """
@@ -373,7 +373,7 @@ Feature: Listing assets
       """
       this file was not overwritten
       """
-    When I run `basic_app list --template  --type=app_asset --output=data/output.html --verbose`
+    When I run `repo list --template  --type=app_asset --output=data/output.html --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should contain:
       """
@@ -394,7 +394,7 @@ Feature: Listing assets
       """
       this file was not overwritten
       """
-    When I run `basic_app list --template  --type=app_asset --output=data/output.html --force --verbose`
+    When I run `repo list --template  --type=app_asset --output=data/output.html --force --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should not contain:
       """

@@ -5,7 +5,7 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-module BasicApp
+module Repoman
 
   # An abstract superclass for basic view/reporting functionality specific to
   # an application implementation.  Put application specific code here.
