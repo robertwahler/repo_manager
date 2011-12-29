@@ -1,0 +1,14 @@
+# define cucumber profiles
+#
+# Example usage:
+#
+#     bundle exec cucumber --profile wip
+---
+<%
+rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
+rerun_opts = rerun.to_s.strip.empty? ? "--format pretty" : "--format pretty #{rerun}"
+std_opts = "--format pretty --tags ~@wip"
+%>
+default: <%= std_opts %> -r features
+wip: --tags @wip:3 --wip -r features
+rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip -r features

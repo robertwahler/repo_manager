@@ -1,0 +1,37 @@
+doctype html
+html lang="en"
+  head
+    title Default View
+
+    meta charset="utf-8"
+    meta name="keywords" content="basic_app"
+    meta name="description" content="BasicApp default template"
+    meta name="author" content="Robert Wahler"
+
+    link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"
+
+    style type="text/css"
+      == partial 'css/basic.css'
+
+  body
+    div class="container"
+      div class="content"
+        div class="page-header"
+          h1 Assets Report
+        - unless items.empty?
+          h2 Assets
+          table class="condensed-table bordered-table zebra-striped"
+            thead
+              tr
+                th = "Name"
+            tbody
+              - for item in items do
+                tr
+                  td = item.name
+        - else
+          p
+           | No assets found.
+
+      footer
+        p
+         | Copyright &copy; 2011 GearheadForHire, LLC

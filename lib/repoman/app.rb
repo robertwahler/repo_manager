@@ -33,9 +33,9 @@ module Repoman
     def execute
       begin
 
+        args = @argv
         if action_argument_required?
           action = @argv.shift
-          args = @argv
 
           # push action back to args if this is a native pass-through command
           if GIT_NATIVE_SUPPORT.include?(action)
@@ -52,7 +52,7 @@ module Repoman
             puts "repo --help for more information"
             exit 1
           end
-          logger.debug "repo run action: #{action} #{args.join(' ')}"
+          logger.debug "execute action: #{action} #{args.join(' ')}"
           klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
           result = klass.new(args, @configuration).execute
         else

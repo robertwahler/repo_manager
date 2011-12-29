@@ -1,5 +1,11 @@
 --verbose
+--plugin yard-cucumber
+lib/**/*.rb
+features/**/*.feature
+features/step_definitions/**/*.rb
+features/support/env.rb
 -
 LICENSE
 HISTORY.markdown
+TODO.markdown
 VERSION
