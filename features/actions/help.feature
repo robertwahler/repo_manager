@@ -9,7 +9,7 @@ Feature: Show help on pass-through command/action options
 
     repo help init
     repo help git
-	repo help help
+    repo help help
 
  Scenario Outline: Valid action, help available
     When I run `repo help <action>`
