@@ -3,6 +3,7 @@
 require 'repoman'
 require 'optparse'
 require 'term/ansicolor'
+require 'fileutils'
 
 available_actions = Repoman::AVAILABLE_ACTIONS
 
