@@ -4,8 +4,9 @@ module BasicApp
 
   # @group CLI actions
   #
-  # List assets to the screen or file with or without templates
-  # using regular expression (regex) filtering.
+  # List repository information contained in the configuration file to STDOUT.
+  # The actual repositories are not validated.  The list command operates only
+  # on the config file.
   #
   # @example Usage: basic_app list
   #
@@ -41,9 +42,18 @@ module BasicApp
   #
   #     basic_app list --match=EXACT
   #
-  # @example Future usage (not implemented):
+  # @example Create a Bash 'alias' named 'rcd' to chdir to the folder of the repo
   #
-  #     basic_app list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
+  #     function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
+  #
+  #     rcd my_repo_name
+  #
+  # @example Repo versions of Bash's pushd and popd
+  #
+  #     function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
+  #     alias rpopd="popd"
+  #
+  #     rcd my_repo_name
   #
   # @return [Number] 0 if successful
   class ListAction < AppAction
@@ -92,6 +102,11 @@ module BasicApp
           assets(asset_options).each do |asset|
             result += "#{asset.name.green}\n"
           end
+        when 'SHORT'
+          result += repo.name.green
+          result += ": #{repo.path}\n"
+        when 'PATH'
+          result += "#{repo.path}\n"
         else
           result = super
       end
