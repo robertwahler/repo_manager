@@ -222,7 +222,7 @@ Feature: Configuration via YAML
         repo3:
           path: repo3
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT --verbose`
     Then the output should contain:
       """
       repo1: repo1
@@ -251,7 +251,7 @@ Feature: Configuration via YAML
         repo3:
           path: repo3
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT`
     Then the output should contain:
       """
       repo2: repo2
@@ -269,7 +269,7 @@ Feature: Configuration via YAML
         repo3:
           path: repo3
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT`
     Then the output should contain:
       """
       repo3: repo3
@@ -290,7 +290,7 @@ Feature: Configuration via YAML
         repo2:
           path: repo2
       """
-    When I run `repo list --listing=SHORT --config=config/*.yml`
+    When I run `repo list --list=SHORT --config=config/*.yml`
     Then the output should contain:
       """
       repo1: repo1
@@ -344,7 +344,7 @@ Feature: Configuration via YAML
         repo2:
           path: repo2
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT`
     Then the output should contain:
       """
       repo0: repo0

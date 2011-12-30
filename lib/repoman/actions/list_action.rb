@@ -61,10 +61,10 @@ module Repoman
     def parse_options
       opts = super
 
-      opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
+      opts.on("--list MODE", "Listing mode.  ALL, NAME, SHORT, PATH") do |u|
         options[:list] = u
         options[:list].upcase!
-        unless ["ALL", "NAME"].include?(options[:list])
+        unless ["ALL", "NAME", "SHORT", "PATH"].include?(options[:list])
           raise "invalid list mode '#{options[:list]}' for '--list' option"
         end
       end
@@ -103,10 +103,14 @@ module Repoman
             result += "#{asset.name.green}\n"
           end
         when 'SHORT'
-          result += repo.name.green
-          result += ": #{repo.path}\n"
+          assets(asset_options).each do |repo|
+            result += repo.name.green
+            result += ": #{repo.path}\n"
+          end
         when 'PATH'
-          result += "#{repo.path}\n"
+          assets(asset_options).each do |repo|
+            result += "#{repo.path}\n"
+          end
         else
           result = super
       end
@@ -114,7 +118,7 @@ module Repoman
     end
 
     def help
-      super :comment_starting_with => "List assets", :located_in_file => __FILE__
+      super :comment_starting_with => "List repo", :located_in_file => __FILE__
     end
 
   end

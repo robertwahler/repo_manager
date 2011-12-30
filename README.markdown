@@ -63,7 +63,7 @@ vim ~/.bashrc
       local cur opts prev
       COMPREPLY=()
       cur="${COMP_WORDS[COMP_CWORD]}"
-      opts=`repo list --listing=name --no-color`
+      opts=`repo list --list=name --no-color`
 
       COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
       return 0

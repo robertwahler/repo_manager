@@ -4,7 +4,7 @@ Feature: Listing repo path information
   Show the repository path defined in the config file to stdout so that it can
   be used for scripting.
 
-  The 'path' action is an alias for the 'list' action with the 'listing=path' option
+  The 'path' action is an alias for the 'list' action with the 'list=path' option
 
   Example: chdir to the path of the repo named "my_repo_name"
 
@@ -47,7 +47,7 @@ Feature: Listing repo path information
           local cur opts
           COMPREPLY=()
           cur="${COMP_WORDS[COMP_CWORD]}"
-          opts=`repo list --listing=name --no-color`
+          opts=`repo list --list=name --no-color`
 
           COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
           return 0
@@ -66,7 +66,7 @@ Feature: Listing repo path information
           path: test_path_2
       """
 
-  Scenario: Show path using 'path' as alias for 'list --listing=path'
+  Scenario: Show path using 'path' as alias for 'list --list=path'
     When I run `repo path`
     Then the exit status should be 0
     And the output should contain:
@@ -76,7 +76,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path using list action directly
-    When I run `repo list --listing=path`
+    When I run `repo list --list=path`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -85,7 +85,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using liberal regex filter
-    When I run `repo list --listing=path --filter=test --no-verbose`
+    When I run `repo list --list=path --filter=test --no-verbose`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -94,7 +94,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using with restrictive regex filter
-    When I run `repo list --listing=path --filter=test$ --no-verbose`
+    When I run `repo list --list=path --filter=test$ --no-verbose`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -102,25 +102,25 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using an exact string filter '--match mode=EXACT'
-    When I run `repo list --listing=path --filter=test --no-verbose --match=EXACT`
+    When I run `repo list --list=path --filter=test --no-verbose --match=EXACT`
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
-    When I run `repo list --listing=path --filter=t.st --no-verbose --match=EXACT`
+    When I run `repo list --list=path --filter=t.st --no-verbose --match=EXACT`
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
-    When I run `repo list --listing=path --filter=est1 --no-verbose --match=EXACT`
+    When I run `repo list --list=path --filter=est1 --no-verbose --match=EXACT`
     Then the exit status should be 0
     And the output should not contain:
       """
       test_path_1
       """
-    When I run `repo list --listing=path --filter=test1 --no-verbose --match=EXACT`
+    When I run `repo list --list=path --filter=test1 --no-verbose --match=EXACT`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -128,7 +128,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using with character placeholder regex filter
-    When I run `repo list --listing=path --filter=t.st1 --no-verbose`
+    When I run `repo list --list=path --filter=t.st1 --no-verbose`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -140,7 +140,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using --match mode=ALL
-    When I run `repo list --listing=path --filter=test --match ALL`
+    When I run `repo list --list=path --filter=test --match ALL`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -149,7 +149,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using --match mode=FIRST
-    When I run `repo list --listing=path --filter=test --match=FIRST --no-verbose`
+    When I run `repo list --list=path --filter=test --match=FIRST --no-verbose`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -161,12 +161,12 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using --match mode=ONE
-    When I run `repo list --listing=path --filter=test --match=ONE`
+    When I run `repo list --list=path --filter=test --match=ONE`
     Then the exit status should be 1
 
   Scenario: Show path only using multiple delimited filters. Regex allowed on
     each filter separately. Switch style: --filter
-    When I run `repo list --listing=path --filter=test1,t...2,t...3`
+    When I run `repo list --list=path --filter=test1,t...2,t...3`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -176,7 +176,7 @@ Feature: Listing repo path information
 
   Scenario: Show path only using multiple delimited filters. Regex allowed on
     each filter separately. Switch style: --repos
-    When I run `repo list --listing=path --repos=test1,t...2,t...3`
+    When I run `repo list --list=path --repos=test1,t...2,t...3`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -185,7 +185,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Show path only using multiple args instead of filter switch
-    When I run `repo list --listing=path test1 t...2 t...3`
+    When I run `repo list --list=path test1 t...2 t...3`
     Then the exit status should be 0
     And the output should contain:
       """

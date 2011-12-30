@@ -8,7 +8,7 @@ module Repoman
   #
   # @example Usage: repo path
   #
-  # Alias for 'repo list --listing=path'
+  # Alias for 'repo list --list=path'
   #
   # @see #list
   class PathAction < AppAction
@@ -26,7 +26,7 @@ module Repoman
         end
       end
 
-      Repoman::ListAction.new(args.push('--listing=path'), configuration).execute
+      Repoman::ListAction.new(args.push('--list=path'), configuration).execute
     end
 
     def help

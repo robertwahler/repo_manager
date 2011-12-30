@@ -42,7 +42,7 @@ module Repoman
                           :short => false,
                           :unmodified => 'HIDE',
                           :match => 'ALL',
-                          :listing => 'ALL'
+                          :list => 'ALL'
                         },
                           :repos => {
                         }

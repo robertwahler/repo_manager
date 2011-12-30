@@ -436,7 +436,7 @@ Feature: Listing assets
       </html>
       """
 
-  Scenario: Default action, no filter, --listing==SHORT
+  Scenario: Default action, no filter, --list==SHORT
     Given a file named "repo.conf" with:
       """
       ---
@@ -446,7 +446,7 @@ Feature: Listing assets
         test2:
           path: test_path_2
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -454,7 +454,7 @@ Feature: Listing assets
       test2: test_path_2
       """
 
-  Scenario: Default action, no filter, --listing=NAME
+  Scenario: Default action, no filter, --list=NAME
     Given a file named "repo.conf" with:
       """
       ---
@@ -464,7 +464,7 @@ Feature: Listing assets
         test2:
           path: test_path_2
       """
-    When I run `repo list --listing=NAME`
+    When I run `repo list --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -472,7 +472,7 @@ Feature: Listing assets
       test2
       """
 
-  Scenario: Default action, no filter, --listing=PATH
+  Scenario: Default action, no filter, --list=PATH
     Given a file named "repo.conf" with:
       """
       ---
@@ -482,7 +482,7 @@ Feature: Listing assets
         test2:
           path: test_path_2
       """
-    When I run `repo list --listing=PATH`
+    When I run `repo list --list=PATH`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -499,7 +499,7 @@ Feature: Listing assets
         test2:
           path: test2
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -513,7 +513,7 @@ Feature: Listing assets
       ---
       repos:
       """
-    When I run `repo list --listing=SHORT`
+    When I run `repo list --list=SHORT`
     Then the exit status should be 0
 
   Scenario: Remotes short format with --filter repo
@@ -528,7 +528,7 @@ Feature: Listing assets
         test2:
           path: test2
       """
-    When I run `repo list --filter=test1 --listing=SHORT --no-verbose`
+    When I run `repo list --filter=test1 --list=SHORT --no-verbose`
     Then the exit status should be 0
     And the output should contain exactly:
       """
@@ -548,7 +548,7 @@ Feature: Listing assets
         test2:
           path: test2
       """
-    When I run `repo list test1 --listing=SHORT --no-verbose`
+    When I run `repo list test1 --list=SHORT --no-verbose`
     Then the output should contain exactly:
       """
       test1: test1
