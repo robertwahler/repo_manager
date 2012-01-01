@@ -201,7 +201,7 @@ Feature: Listing assets
       asset1
       """
 
-  Scenario: Matching happens on the asset name, not the path
+  Scenario: Matching only on the asset name, not the path
     Given the folder "data/app_assets" with the following asset configurations:
       | name         |
       | asset1       |

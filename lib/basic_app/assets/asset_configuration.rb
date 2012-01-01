@@ -43,8 +43,6 @@ module BasicApp
     # load an asset from a configuration folder
     def load(ds=nil)
       folder ||= ds
-      @asset.name = Pathname.new(folder).basename.to_s
-      logger.debug "Asset name: #{@asset.name}"
 
       file = File.join(folder, 'asset.conf')
       contents = YAML::load(File.open(file))

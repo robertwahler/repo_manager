@@ -42,9 +42,10 @@ module BasicApp
       assets = []
       logger.debug "generating assets array with filter array: #{filters.join(',')}"
       folders.sort.each do |folder|
-        logger.debug "matching name: #{folder}"
-        if filters.find {|filter| matches?(folder, filter)}
-          logger.debug "match found for: #{folder}"
+        folder_basename = Pathname.new(folder).basename.to_s
+        logger.debug "matching folder: #{folder} using basename: #{folder_basename}"
+        if filters.find {|filter| matches?(folder_basename, filter)}
+          logger.debug "match found for: #{folder_basename}"
           match_count += 1
           asset_options = {}
           asset = BasicApp::AppAsset.create(type, folder, asset_options)
