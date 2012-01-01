@@ -61,7 +61,7 @@ Feature: Asset configuration
     When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
-      :path: user_path
+      path: user_path
       """
 
   Scenario: Parent configuration fills in missing items
@@ -74,7 +74,7 @@ Feature: Asset configuration
     When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
-      :path: set_by_parent
+      path: set_by_parent
       """
 
   Scenario: User configuration file overrides global configuration file
@@ -87,5 +87,9 @@ Feature: Asset configuration
     When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
-      :path: set_by_user
+      path: set_by_user
+      """
+    And the output should not contain:
+      """
+      path: set_by_parent
       """

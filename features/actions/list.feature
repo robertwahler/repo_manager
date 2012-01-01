@@ -201,6 +201,19 @@ Feature: Listing assets
       asset1
       """
 
+  Scenario: Matching happens on the asset name, not the path
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list app_assets --list=NAME --type=app_asset`
+    Then the exit status should be 0
+    And the output should not contain:
+      """
+      asset
+      """
+
   Scenario: List to screen using the built in default template
     Given the folder "data/app_assets" with the following asset configurations:
       | name         |

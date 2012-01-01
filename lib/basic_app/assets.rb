@@ -5,6 +5,7 @@ require 'pathname'
 require 'fileutils'
 
 module BasicApp
+  # mixin module for actions used to describe and filter generic assets
   module Assets
 
   # options hash
@@ -21,7 +22,8 @@ module BasicApp
       end
 
       raise "config file not found" unless configuration[:configuration_filename]
-      user_folder = configuration[:folders][:user]
+      user_folder = configuration[:folders][:user] if configuration[:folders]
+      user_folder ||= ""
       logger.debug "reading from user_folder:'#{user_folder}' "
 
       asset_folder = options[:asset_folder] || "#{type.to_s}s"
@@ -40,9 +42,9 @@ module BasicApp
       assets = []
       logger.debug "generating assets array with filter array: #{filters.join(',')}"
       folders.sort.each do |folder|
+        logger.debug "matching name: #{folder}"
         if filters.find {|filter| matches?(folder, filter)}
-          # this is a good place to set a default ':parent' based on the
-          # options hash and the asset folder, ex: condenser
+          logger.debug "match found for: #{folder}"
           match_count += 1
           asset_options = {}
           asset = BasicApp::AppAsset.create(type, folder, asset_options)
