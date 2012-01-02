@@ -77,12 +77,6 @@ module BasicApp
       end
     end
 
-    def asset_options
-      result = super
-      result = result.merge(:type => :app_asset) unless options[:type]
-      result
-    end
-
     def render
       # templates override all other modes, if no mode specified, allow super to handle
       list_mode = options[:template] || options[:list]

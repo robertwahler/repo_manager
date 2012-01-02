@@ -119,9 +119,12 @@ module BasicApp
       filters += options[:filter] if options[:filter]
       result = result.merge(:filter => filters) unless filters.empty?
 
-      # TODO: do not hard code folder key in configuration
+      type = options[:type] || :app_asset
+      attributes_key = "#{type.to_s}s".to_sym
+      result = result.merge(:type => type)
+
       # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
-      result = result.merge(:assets_folder => configuration[:folders][:app_assets]) if configuration[:folders]
+      result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
 
       # optional key: :base_folder is the folder that contains the main config file
       result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename]))
