@@ -41,19 +41,16 @@ Feature: Asset configuration
       acquired  : 01/01/2011
       launched  : 01/01/2011
 
- Background: A general app settings file
+  Scenario: Specify assets folder explicity
     Given a file named "basic_app.conf" with:
       """
       ---
       options:
-        color  : true
+        color       : true
       folders:
-        user   : data
+        app_assets  : data/app_assets
       """
-
-
-  Scenario: No parent
-    Given a file named "data/app_assets/asset1/asset.conf" with:
+    And a file named "data/app_assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
@@ -64,8 +61,52 @@ Feature: Asset configuration
       path: user_path
       """
 
+  Scenario: Assets folder determined by convention, relative to config folder,
+    by convention the folder name is the asset class
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color       : true
+      """
+    And a file named "app_assets/asset1/asset.conf" with:
+      """
+      ---
+      path: user_path
+      """
+    When I run `basic_app list --verbose --type=app_asset`
+    Then the output should contain:
+      """
+      path: user_path
+      """
+
+  Scenario: Assets attributes are specified directly in the config file,
+    attributes key is by convention, the name of the asset class
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color       : true
+      app_assets:
+        asset1:
+          path: user_path
+      """
+    When I run `basic_app list --verbose --type=app_asset`
+    Then the output should contain:
+      """
+      path: user_path
+      """
+
   Scenario: Parent configuration fills in missing items
-    Given the folder "global/app_assets" with the following asset configurations:
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color       : true
+      folders:
+        app_assets  : data/app_assets
+      """
+    And the folder "global/app_assets" with the following asset configurations:
       | name         | path          |
       | default      | set_by_parent |
     And the folder "data/app_assets" with the following asset configurations:
@@ -78,7 +119,15 @@ Feature: Asset configuration
       """
 
   Scenario: User configuration file overrides global configuration file
-    Given the folder "global/app_assets" with the following asset configurations:
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color       : true
+      folders:
+        app_assets  : data/app_assets
+      """
+    And the folder "global/app_assets" with the following asset configurations:
       | name         | path          |
       | default      | set_by_parent |
     And the folder "data/app_assets" with the following asset configurations:

@@ -47,9 +47,9 @@ Feature: Listing assets
       """
       ---
       options:
-        color  : true
+        color       : true
       folders:
-        user   : data
+        app_assets  : data/app_assets
       """
 
   Scenario: Invalid asset type

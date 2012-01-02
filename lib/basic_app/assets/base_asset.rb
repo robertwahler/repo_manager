@@ -40,7 +40,7 @@ module BasicApp
       @name = Pathname.new(asset_name).basename.to_s
       logger.debug "Asset name: #{@name}"
 
-      @attributes = attributes
+      @attributes = attributes.dup
 
       if asset_name && File.exists?(asset_name)
         logger.debug "initializing new asset with folder: #{asset_name}"

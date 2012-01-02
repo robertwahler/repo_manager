@@ -89,8 +89,8 @@ module BasicApp
       result = ""
       case list_mode
         when 'NAME'
-          assets(asset_options).each do |asset|
-            result += "#{asset.name.green}\n"
+          items.each do |item|
+            result += "#{item.name.green}\n"
           end
         else
           result = super
