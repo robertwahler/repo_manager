@@ -23,20 +23,28 @@ module BasicApp
     # Call with classname to create.  Pass in optional configuration folder
     # name and/or a hash of attributes
     #
-    # @param [String] klassname classname (AppAsset) to initialize
-    def self.create(klassname, config_folder=nil, attributes={})
+    # @param [String] klassname (AppAsset) classname to initialize
+    # @param [String] asset_name (nil) asset name or folder name, if folder, will load YAML config
+    # @param [Hash] attributes ({}) initial attributes
+    #
+    # @return [BaseAsset] the created BaseAsset or decendent asset
+    def self.create(klassname, asset_name=nil, attributes={})
       klassname ||= :app_asset
       classified_name = klassname.to_s.split('_').collect!{ |w| w.capitalize }.join
-      Object.const_get('BasicApp').const_get(classified_name).new(config_folder, attributes)
+      Object.const_get('BasicApp').const_get(classified_name).new(asset_name, attributes)
     end
 
-    def initialize(config_folder=nil, attributes={})
-      @name = Pathname.new(config_folder).basename.to_s
+    # @param [String] asset_name (nil) asset name or folder name, if folder, will load YAML config
+    # @param [Hash] attributes ({}) initial attributes
+    def initialize(asset_name=nil, attributes={})
+      @name = Pathname.new(asset_name).basename.to_s
       logger.debug "Asset name: #{@name}"
 
-      if config_folder && File.exists?(config_folder)
-        logger.debug "initializing new asset with folder: #{config_folder}"
-        configuration.load(config_folder.to_s)
+      @attributes = attributes
+
+      if asset_name && File.exists?(asset_name)
+        logger.debug "initializing new asset with folder: #{asset_name}"
+        configuration.load(asset_name.to_s)
       end
     end
 

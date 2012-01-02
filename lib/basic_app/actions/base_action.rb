@@ -102,10 +102,13 @@ module BasicApp
 
     # assets will be passed these options
     def asset_options
-      result = options
+      # include all base action options
+      result = options.dup
+      # add filters from the command line
       filters = args.dup
       filters += options[:filter] if options[:filter]
       result = result.merge(:filter => filters) unless filters.empty?
+      # TODO: add asset_folder, asset_key and base folder (folder with config file)
       result
     end
 
