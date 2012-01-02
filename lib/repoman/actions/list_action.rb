@@ -87,20 +87,14 @@ module Repoman
       end
     end
 
-    def asset_options
-      result = super
-      result = result.merge(:type => :app_asset) unless options[:type]
-      result
-    end
-
     def render
       # templates override all other modes, if no mode specified, allow super to handle
       list_mode = options[:template] || options[:list]
       result = ""
       case list_mode
         when 'NAME'
-          assets(asset_options).each do |asset|
-            result += "#{asset.name.green}\n"
+          items.each do |item|
+            result += "#{item.name.green}\n"
           end
         when 'SHORT'
           assets(asset_options).each do |repo|

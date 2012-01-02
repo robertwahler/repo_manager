@@ -5,12 +5,13 @@
 #
 # See http://github.com/robertwahler
 ####################################################
+
+require 'basic_app/assets/asset_manager'
+
 module Repoman
 
   # An abstract superclass for basic action functionality
   class BaseAction
-    include Repoman::Assets
-
     # main configuration hash
     attr_reader :configuration
 
@@ -100,20 +101,42 @@ module Repoman
       return 0
     end
 
-    # assets will be passed these options
+    # TODO: create items/app_item class with at least the 'name' accessor
+    #
+    # assets: raw configuration handling system for items
+    def assets
+      return @assets if @assets
+      @assets = AssetManager.new(configuration).assets(asset_options)
+    end
+
+    # asset options separated from assets to make it easier to override assets
     def asset_options
-      result = options
+      # include all base action options
+      result = options.dup
+
+      # add filters from the command line
       filters = args.dup
       filters += options[:filter] if options[:filter]
       result = result.merge(:filter => filters) unless filters.empty?
+
+      type = options[:type] || :app_asset
+      attributes_key = "#{type.to_s}s".to_sym
+      result = result.merge(:type => type)
+
+      # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
+      result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
+
+      # optional key: :base_folder is the folder that contains the main config file
+      result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename]))
+
       result
     end
 
-    # items to be rendered, defaults to assets
+    # items to be rendered, defaults to assets, override to suit
     #
     # @return [Array] of items to be rendered
     def items
-      assets(asset_options)
+      assets
     end
 
     # Render items result to a string
