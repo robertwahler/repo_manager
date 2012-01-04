@@ -42,7 +42,7 @@ Feature: Asset configuration
       launched  : 01/01/2011
 
   Scenario: Specify assets folder explicity
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -55,7 +55,7 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `repo list --verbose --type=app_asset`
     Then the output should contain:
       """
       path: user_path
@@ -63,7 +63,7 @@ Feature: Asset configuration
 
   Scenario: Assets folder determined by convention, relative to config folder,
     by convention the folder name is the asset class
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -82,7 +82,7 @@ Feature: Asset configuration
 
   Scenario: Assets attributes are specified directly in the config file,
     attributes key is by convention, the name of the asset class
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -91,14 +91,14 @@ Feature: Asset configuration
         asset1:
           path: user_path
       """
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `repo list --verbose --type=app_asset`
     Then the output should contain:
       """
       path: user_path
       """
 
   Scenario: Parent configuration fills in missing items
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -119,7 +119,7 @@ Feature: Asset configuration
       """
 
   Scenario: User configuration file overrides global configuration file
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:

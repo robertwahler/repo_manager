@@ -6,7 +6,7 @@
 # See http://github.com/robertwahler
 ####################################################
 
-require 'basic_app/assets/asset_manager'
+require 'repoman/assets/asset_manager'
 
 module Repoman
 

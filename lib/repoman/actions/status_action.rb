@@ -28,38 +28,37 @@ module Repoman
   # @see Status bitfield return values
   class StatusAction < AppAction
 
-    def execute
-      OptionParser.new do |opts|
+    def parse_options
+      opts = super
 
-        help_text = help
-        opts.banner = help_text + "\n\nOptions:"
-
-        opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
-          options[:unmodified] = u || "SHOW"
-          options[:unmodified].upcase!
-        end
-        opts.on("--short", "Summary status only, do not show individual file status") do |s|
-          options[:short] = s
-        end
-
-        begin
-          opts.parse!(args)
-        rescue OptionParser::InvalidOption => e
-          puts "option error: #{e}"
-          puts opts
-          exit 1
-        end
+      opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
+        options[:unmodified] = u || "SHOW"
+        options[:unmodified].upcase!
       end
 
-      filters = args.dup
-      filters += options[:filter] if options[:filter]
+      opts.on("--short", "Summary status only, do not show individual file status") do |s|
+        options[:short] = s
+      end
+
+      begin
+        opts.parse!(args)
+      rescue OptionParser::InvalidOption => e
+        puts "option error: #{e}"
+        puts opts
+        exit 1
+      end
+    end
+
+    def process
 
       st = 0
       result = 0
       count_unmodified = 0
       need_lf = false
+      output = ""
 
-      repos(filters).each do |repo|
+      # TODO: alias items to repos for clarity
+      items.each do |repo|
 
         # M ? A D I X
         begin
@@ -80,72 +79,74 @@ module Repoman
               when "HIDE"
                 # do nothing
               when "SHOW"
-                puts "\t#{repo.name}"
+                output += "\t#{repo.name}\n"
               when "DOTS"
-                print ".".green
+                output += ".".green
                 need_lf = true
               else
                 raise "invalid mode '#{options[:unmodified]}' for '--unmodified' option"
             end
 
           when Status::NOPATH
-            puts "" if need_lf
-            print "X\t#{repo.name}: #{repo.path}"
-            puts " [no such path]".red
+            output += "\n" if need_lf
+            output += "X\t#{repo.name}: #{repo.path}"
+            output += " [no such path]".red + "\n"
             need_lf = false
 
           when Status::INVALID
-            puts "" if need_lf
-            print "I\t#{repo.name}: #{repo.path}"
-            puts " [not a valid repo]".red
+            output += "\n" if need_lf
+            output += "I\t#{repo.name}: #{repo.path}"
+            output += " [not a valid repo]".red + "\n"
             need_lf = false
 
           else
-            puts "" if need_lf
+            output += "\n" if need_lf
 
             # print M?ADU status letters
-            print (st & Status::CHANGED == Status::CHANGED) ? "M".red : " "
-            print (st & Status::UNTRACKED == Status::UNTRACKED) ? "?".blue.bold : " "
-            print (st & Status::ADDED == Status::ADDED) ? "A".green : " "
-            print (st & Status::DELETED == Status::DELETED) ? "D".yellow : " "
-            print (st & Status::UNMERGED == Status::UNMERGED) ? "U".red.bold : " "
+            output += (st & Status::CHANGED == Status::CHANGED) ? "M".red : " "
+            output += (st & Status::UNTRACKED == Status::UNTRACKED) ? "?".blue.bold : " "
+            output += (st & Status::ADDED == Status::ADDED) ? "A".green : " "
+            output += (st & Status::DELETED == Status::DELETED) ? "D".yellow : " "
+            output += (st & Status::UNMERGED == Status::UNMERGED) ? "U".red.bold : " "
 
-            puts "\t#{repo.name}"
+            output += "\t#{repo.name}\n"
             need_lf = false
 
             unless options[:short]
               # modified (M.red)
               repo.status.changed.sort.each do |k, f|
-                puts "\t  modified: #{f.path}".red
+                output += "\t  modified: #{f.path}".red + "\n"
               end
 
               # untracked (?.blue.bold)
               repo.status.untracked.sort.each do |k, f|
-                puts "\t  untracked: #{f.path}".blue.bold
+                output += "\t  untracked: #{f.path}".blue.bold + "\n"
               end
 
               # added (A.green)
               repo.status.added.sort.each do |k, f|
-                puts "\t  added: #{f.path}".green
+                output += "\t  added: #{f.path}".green + "\n"
               end
 
               # deleted (D.yellow)
               repo.status.deleted.sort.each do |k, f|
-                puts "\t  deleted: #{f.path}".yellow
+                output += "\t  deleted: #{f.path}".yellow + "\n"
               end
 
               # unmerged (U.red.bold)
               repo.status.unmerged.sort.each do |k, f|
-                puts "\t  unmerged: #{f.path}".red.bold
+                output += "\t  unmerged: #{f.path}".red.bold + "\n"
               end
             end
         end
       end
 
-      puts "" if need_lf
+      output += "\n" if need_lf
 
       # summary
-      puts "no modified repositories, all working folders are clean" if (count_unmodified == repos.size)
+      output += "no modified repositories, all working folders are clean\n" if (count_unmodified == items.size)
+
+      write_to_output(output)
 
       # numeric return
       result

@@ -8,7 +8,6 @@ require 'repoman/actions'
 require 'repoman/git'
 require 'repoman/app'
 require 'repoman/settings'
-require 'repoman/repo'
 require 'repoman/logger'
 
 

@@ -16,35 +16,26 @@ Feature: Listing repo path information
     repo status test2 --unmodified DOTS"
 
   Background: A valid config file
-    Given a repo in folder "test_path_1" with the following:
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        repo_assets  : config/repos
+      """
+    And the folder "config/repos" with the following asset configurations:
+      | name    | path         |
+      | test1   | test_path_1  |
+      | test2   | test_path_2  |
+    And a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
     And a repo in folder "test_path_2" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
-    And a file named "repo.conf" with:
-      """
-      ---
-      repo_configuration_glob: *.yml
-      """
-    And a file named "repo1.yml" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-      """
-    And a file named "repo2.yml" with:
-      """
-      ---
-      repos:
-        test2:
-          path: test_path_2
-      """
 
 
   Scenario: No uncommitted changes, default output
-    When I run `repo status`
+    When I run `repo status --verbose`
     Then the exit status should be 0
     And the output should contain:
       """

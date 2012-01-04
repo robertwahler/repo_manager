@@ -93,16 +93,16 @@ module Repoman
       result = ""
       case list_mode
         when 'NAME'
-          items.each do |item|
-            result += "#{item.name.green}\n"
+          items.each do |repo|
+            result += "#{repo.name.green}\n"
           end
         when 'SHORT'
-          assets(asset_options).each do |repo|
+          items.each do |repo|
             result += repo.name.green
             result += ": #{repo.path}\n"
           end
         when 'PATH'
-          assets(asset_options).each do |repo|
+          items.each do |repo|
             result += "#{repo.path}\n"
           end
         else

@@ -207,7 +207,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list app_assets --list=NAME --type=app_asset`
+    When I run `repo list app_assets --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -459,7 +459,7 @@ Feature: Listing assets
         test2:
           path: test_path_2
       """
-    When I run `repo list --list=SHORT`
+    When I run `repo list --list=SHORT --verbose`
     Then the exit status should be 0
     And the output should contain:
       """

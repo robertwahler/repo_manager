@@ -7,7 +7,7 @@
 ####################################################
 require 'pathname'
 
-require 'basic_app/assets/asset_configuration'
+require 'repoman/assets/asset_configuration'
 
 module Repoman
 
@@ -31,7 +31,7 @@ module Repoman
     def self.create(asset_type=:app_asset, asset_name=nil, attributes={})
       @asset_type = asset_type
       classified_name = asset_type.to_s.split('_').collect!{ |w| w.capitalize }.join
-      Object.const_get('BasicApp').const_get(classified_name).new(asset_name, attributes)
+      Object.const_get('Repoman').const_get(classified_name).new(asset_name, attributes)
     end
 
     # @param [String] asset_name (nil) asset name or folder name, if folder, will load YAML config
