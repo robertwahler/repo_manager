@@ -56,12 +56,12 @@ module Repoman
           options[:force] = f
         end
 
-        opts.on("--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
+        opts.on("-r", "--repos f1,f2,f3", "--filter f1,f2,f3", Array, "List of regex repository name filters") do |list|
           options[:filter] = list
         end
 
         # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
-        opts.on("--match [MODE]", "Asset filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
+        opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
           options[:match] = m || "ALL"
           options[:match].upcase!
           unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])

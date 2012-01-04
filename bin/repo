@@ -46,20 +46,6 @@ options = {}
 optparser = OptionParser.new do |opts|
   opts.banner = help
 
-  opts.on("-r", "--repos f1,f2,f3", "--filter f1,f2,f3", Array, "List of Regex repository name filters") do |list|
-    options[:filter] = list
-  end
-
-  # TODO: optionparser will add short options if we don't.  Stop using OptionParser, we don't want to use short options
-  opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
-    options[:match] = m || "ALL"
-    options[:match].upcase!
-    unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
-      puts "repo, invalid match option: #{options[:match]}"
-      exit 1
-    end
-  end
-
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
   end

@@ -20,7 +20,7 @@ Feature: Listing repo path information
       """
       ---
       folders:
-        repo_assets  : config/repos
+        repos  : config/repos
       """
     And the folder "config/repos" with the following asset configurations:
       | name    | path         |
@@ -70,7 +70,6 @@ Feature: Listing repo path information
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_glob: *.yml
       repos:
         bad_repo:
           path: not_a_repo
@@ -81,14 +80,12 @@ Feature: Listing repo path information
     And the normalized output should contain:
       """
       I       bad_repo: not_a_repo [not a valid repo]
-      ..
       """
 
   Scenario: Missing repo folder
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_glob: *.yml
       repos:
         bad_repo:
           path: not_a_repo

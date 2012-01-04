@@ -1,36 +1,36 @@
 @announce
-Feature: Listing assets
+Feature: Listing repos
 
-  Asset configurations listed to the screen or file with or without templates
+  repo configurations listed to the screen or file with or without templates
   using regular expression (regex) filtering.
 
   Example usage:
 
       repo list
       repo list --list=NAME
-      repo list --type=asset_type
+      repo list --type=repo_type
       repo list --template ~/templates/myTemplate.slim
 
-  Example asset regex filtering:
+  Example repo regex filtering:
 
       repo list --filter=ass.t1,as.et2
 
-  Equivalent asset filtering:
+  Equivalent repo filtering:
 
-      repo list --filter=asset1,asset2
-      repo list --asset=asset1,asset2
-      repo list asset1 asset2
+      repo list --filter=repo1,repo2
+      repo list --repo=repo1,repo2
+      repo list repo1 repo2
 
   Equivalent usage, file writing:
 
      repo list --template=default.slim --output=tmp/aruba/index.html
      repo list --template=default.slim >> tmp/aruba/index.html
 
-  Example return just the first matching asset
+  Example return just the first matching repo
 
       repo list --match=FIRST
 
-  Example fail out if more than one matching asset
+  Example fail out if more than one matching repo
 
       repo list --match=ONE
 
@@ -49,15 +49,7 @@ Feature: Listing assets
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
-      """
-
-  Scenario: Invalid asset type
-    When I run `repo list --type=invalid_asset_type`
-    Then the exit status should be 1
-    And the output should contain:
-      """
-      unknown asset type
+        repos  : data/app_assets
       """
 
   Scenario: List all
@@ -66,7 +58,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --type=app_asset`
+    When I run `repo list`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -84,7 +76,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --list=NAME --type=app_asset`
+    When I run `repo list --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -99,7 +91,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --filter=asset1 --list=NAME --type=app_asset`
+    When I run `repo list --filter=asset1 --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -114,13 +106,13 @@ Feature: Listing assets
       asset3
       """
 
-  Scenario: List just name using '--asset' option
+  Scenario: List just name using '--repos' option
     Given the folder "data/app_assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --asset=asset1 --list=NAME --type=app_asset`
+    When I run `repo list --repos=asset1 --list=NAME`
     Then the exit status should be 0
     And the output should contain exactly:
       """
@@ -134,7 +126,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list asset1 asset2 --list=NAME --type=app_asset`
+    When I run `repo list asset1 asset2 --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -152,7 +144,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --match=FIRST --list=NAME --type=app_asset`
+    When I run `repo list --match=FIRST --list=NAME`
     Then the exit status should be 0
     And the output should contain exactly:
       """
@@ -166,7 +158,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --match=ONE --list=NAME --type=app_asset`
+    When I run `repo list --match=ONE --list=NAME`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -179,7 +171,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list a.s.t --list=NAME --type=app_asset`
+    When I run `repo list a.s.t --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -194,7 +186,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list a.s.t --match=EXACT --list=NAME --type=app_asset`
+    When I run `repo list a.s.t --match=EXACT --list=NAME`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -207,7 +199,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list app_assets --list=NAME --type=app_asset`
+    When I run `repo list app_assets --list=NAME`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -220,7 +212,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --template  --type=app_asset --verbose`
+    When I run `repo list --template --verbose`
     Then the exit status should be 0
     And the normalized output should contain:
       """
@@ -301,7 +293,7 @@ Feature: Listing assets
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --template  --type=app_asset --output=data/output.html --verbose`
+    When I run `repo list --template --output=data/output.html --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should contain:
       """
@@ -386,7 +378,7 @@ Feature: Listing assets
       """
       this file was not overwritten
       """
-    When I run `repo list --template  --type=app_asset --output=data/output.html --verbose`
+    When I run `repo list --template --output=data/output.html --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should contain:
       """
@@ -407,7 +399,7 @@ Feature: Listing assets
       """
       this file was not overwritten
       """
-    When I run `repo list --template  --type=app_asset --output=data/output.html --force --verbose`
+    When I run `repo list --template --output=data/output.html --force --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should not contain:
       """

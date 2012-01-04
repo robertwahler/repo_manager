@@ -12,7 +12,6 @@ module Repoman
   #
   #     repo list
   #     repo list --list=NAME
-  #     repo list --type=asset_type
   #     repo list --template ~/templates/myTemplate.slim
   #
   # @example Asset regex filtering:
@@ -66,15 +65,6 @@ module Repoman
         options[:list].upcase!
         unless ["ALL", "NAME", "SHORT", "PATH"].include?(options[:list])
           raise "invalid list mode '#{options[:list]}' for '--list' option"
-        end
-      end
-
-      # Most decendants of BaseAction will only handle one type of asset, the
-      # list action is unique in that you can specify the type of asset to list
-      opts.on("--type ASSET_TYPE", "Asset type to list:  app_asset (default)") do |t|
-        options[:type] = t
-        unless ["app_asset"].include?(options[:type])
-          raise "unknown asset type '#{options[:type]}' for '--type' option"
         end
       end
 
