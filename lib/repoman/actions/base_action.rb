@@ -116,18 +116,16 @@ module Repoman
 
       # add filters from the command line
       filters = args.dup
-      filters += options[:filter] if options[:filter]
+      filters += result[:filter] if result[:filter]
       result = result.merge(:filter => filters) unless filters.empty?
 
-      type = options[:type] || :app_asset
-      attributes_key = "#{type.to_s}s".to_sym
-      result = result.merge(:type => type)
-
       # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
+      type = result[:type] || :app_asset
+      attributes_key = "#{type.to_s}s".to_sym
       result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
 
       # optional key: :base_folder is the folder that contains the main config file
-      result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename]))
+      result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename])) if configuration[:configuration_filename]
 
       result
     end
