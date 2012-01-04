@@ -1,5 +1,3 @@
-require 'optparse'
-
 module Repoman
 
   # @group CLI actions
@@ -20,26 +18,26 @@ module Repoman
   # @return [Number] pass through of 'git init' result code
   class InitAction < AppAction
 
-    def execute
+
+    def parse_options
+      opts = super
+
+      begin
+        opts.parse!(args)
+      rescue OptionParser::InvalidOption => e
+        puts "option error: #{e}"
+        puts opts
+        exit 1
+      end
+    end
+
+    def process
+
       st = 0
       result = 0
+      output = ""
 
-      # optparse on args so that only allowed options pass to git
-      OptionParser.new do |opts|
-        opts.banner = help
-        begin
-          opts.parse(args)
-        rescue OptionParser::InvalidOption => e
-          puts "option error: #{e}"
-          puts opts
-          exit 1
-        end
-      end
-
-      filters = args.dup
-      filters += options[:filter] if options[:filter]
-
-      repos(filters).each do |repo|
+      repos.each do |repo|
 
         begin
           st = repo.status.bitfield
@@ -53,28 +51,32 @@ module Repoman
 
         case st
           when (Status::NOPATH)
-            print repo.name.red
-            print ": #{repo.path}"
-            puts " [no such path]"
+            output += repo.name.red
+            output += ": #{repo.path}"
+            output += " [no such path]\n"
           else
-            print repo.name.green
-            puts ": #{repo.path}"
-            output = ''
+            output += repo.name.green
+            output += ": #{repo.path}\n"
+            git_output = ''
             begin
               git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
-              output = git.native('init')
+              git_output = git.native('init')
               if repo.attributes.include?(:remotes)
                 repo.attributes[:remotes].each do |key, value|
-                  output += git.native('remote', ['add', key.to_s, value.to_s])
+                  git_output += git.native('remote', ['add', key.to_s, value.to_s])
                 end
               end
             rescue Git::CommandFailed => e
               result |= e.exitstatus
-              output = e.error
+              git_output = e.error
             end
-            puts output
+            output += git_output
         end
       end
+
+      write_to_output(output)
+
+      # numeric return
       result
     end
 
