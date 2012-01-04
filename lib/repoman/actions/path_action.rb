@@ -14,18 +14,6 @@ module Repoman
   class PathAction < AppAction
 
     def execute
-
-      OptionParser.new do |opts|
-        opts.banner = help
-        begin
-          opts.parse!(args)
-        rescue OptionParser::InvalidOption => e
-          puts "option error: #{e}"
-          puts opts
-          exit 1
-        end
-      end
-
       Repoman::ListAction.new(args.push('--list=path'), configuration).execute
     end
 
