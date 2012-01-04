@@ -57,8 +57,7 @@ module Repoman
       need_lf = false
       output = ""
 
-      # TODO: alias items to repos for clarity
-      items.each do |repo|
+      repos.each do |repo|
 
         # M ? A D I X
         begin
@@ -144,7 +143,7 @@ module Repoman
       output += "\n" if need_lf
 
       # summary
-      output += "no modified repositories, all working folders are clean\n" if (count_unmodified == items.size)
+      output += "no modified repositories, all working folders are clean\n" if (count_unmodified == repos.size)
 
       write_to_output(output)
 

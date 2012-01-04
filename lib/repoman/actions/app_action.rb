@@ -26,6 +26,13 @@ module Repoman
 
       result
     end
+
+    # alias for items/assets
+    #
+    # @return [Array] of repos
+    def repos
+      items
+    end
   end
 
 end
