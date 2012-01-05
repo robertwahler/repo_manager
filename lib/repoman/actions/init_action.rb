@@ -18,18 +18,6 @@ module Repoman
   # @return [Number] pass through of 'git init' result code
   class InitAction < AppAction
 
-    def parse_options
-      opts = super
-
-      begin
-        opts.parse!(args)
-      rescue OptionParser::InvalidOption => e
-        puts "option error: #{e}"
-        puts opts
-        exit 1
-      end
-    end
-
     def process
 
       st = 0
