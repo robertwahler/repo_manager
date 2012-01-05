@@ -76,7 +76,7 @@ Feature: Listing repos
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo --verbose list --list=NAME`
+    When I run `repo list --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -118,6 +118,26 @@ Feature: Listing repos
       """
       asset1
 
+      """
+
+  Scenario: List with invalid options in varying positions on the command line
+    When I run `repo list --bad-option1 --repos=asset1 --list=NAME`
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      invalid option: --bad-option1
+      """
+    When I run `repo list arg1 arg2 --bad-option2 --repos=asset1 --list=NAME`
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      invalid option: --bad-option2
+      """
+    When I run `repo --bad-option3 list arg1 arg2 --repos=asset1 --list=NAME`
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      invalid option: --bad-option3
       """
 
   Scenario: List just name using passing filters as args

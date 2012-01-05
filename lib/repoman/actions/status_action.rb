@@ -28,24 +28,19 @@ module Repoman
   # @see Status bitfield return values
   class StatusAction < AppAction
 
+    # Add action specific options
     def parse_options
-      opts = super
+      super do |opts|
 
-      opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
-        options[:unmodified] = u || "SHOW"
-        options[:unmodified].upcase!
-      end
+        opts.on("-u", "--unmodified [MODE]", "Show unmodified repos.  MODE=SHOW (default), DOTS, or HIDE") do |u|
+          options[:unmodified] = u || "SHOW"
+          options[:unmodified].upcase!
+        end
 
-      opts.on("--short", "Summary status only, do not show individual file status") do |s|
-        options[:short] = s
-      end
+        opts.on("--short", "Summary status only, do not show individual file status") do |s|
+          options[:short] = s
+        end
 
-      begin
-        opts.parse!(args)
-      rescue OptionParser::InvalidOption => e
-        puts "option error: #{e}"
-        puts opts
-        exit 1
       end
     end
 

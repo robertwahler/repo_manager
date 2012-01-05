@@ -18,6 +18,11 @@ module Repoman
   # @return [Numeric] pass through of 'git' result code
   class GitAction < AppAction
 
+    # allow pass through of unknown options
+    def parse_options(parser_configuration = {:raise_on_invalid_option => false})
+      super parser_configuration
+    end
+
     def asset_options
       result = super
 
