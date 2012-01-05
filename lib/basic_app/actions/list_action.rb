@@ -48,32 +48,27 @@ module BasicApp
   # @return [Number] 0 if successful
   class ListAction < AppAction
 
+    # Add action specific options
     def parse_options
-      opts = super
+      super do |opts|
 
-      opts.on("--list MODE", "Listing mode.  ALL, NAME") do |u|
-        options[:list] = u
-        options[:list].upcase!
-        unless ["ALL", "NAME"].include?(options[:list])
-          raise "invalid list mode '#{options[:list]}' for '--list' option"
+        opts.on("--list MODE", "Listing mode.  ALL, NAME, SHORT, PATH") do |u|
+          options[:list] = u
+          options[:list].upcase!
+          unless ["ALL", "NAME", "SHORT", "PATH"].include?(options[:list])
+            raise "invalid list mode '#{options[:list]}' for '--list' option"
+          end
         end
-      end
 
-      # Most decendants of BaseAction will only handle one type of asset, the
-      # list action is unique in that you can specify the type of asset to list
-      opts.on("--type ASSET_TYPE", "Asset type to list:  app_asset (default)") do |t|
-        options[:type] = t
-        unless ["app_asset"].include?(options[:type])
-          raise "unknown asset type '#{options[:type]}' for '--type' option"
+        # Most decendants of BaseAction will only handle one type of asset, the
+        # list action is unique in that you can specify the type of asset to list
+        opts.on("--type ASSET_TYPE", "Asset type to list:  app_asset (default)") do |t|
+          options[:type] = t
+          unless ["app_asset"].include?(options[:type])
+            raise "unknown asset type '#{options[:type]}' for '--type' option"
+          end
         end
-      end
 
-      begin
-        opts.parse!(args)
-      rescue OptionParser::InvalidOption => e
-        puts "option error: #{e}"
-        puts opts
-        exit 1
       end
     end
 

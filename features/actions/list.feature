@@ -160,6 +160,26 @@ Feature: Listing assets
 
       """
 
+Scenario: List with invalid options in varying positions on the command line
+    When I run `basic_app list --bad-option1 --repos=asset1 --list=NAME`
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      invalid option: --bad-option1
+      """
+    When I run `basic_app list arg1 arg2 --bad-option2 --repos=asset1 --list=NAME`
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      invalid option: --bad-option2
+      """
+    When I run `basic_app --bad-option3 list arg1 arg2 --repos=asset1 --list=NAME`
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      invalid option: --bad-option3
+      """
+
   Scenario: Multiple matching assets fail hard with asset match mode '--match ONE'
     Given the folder "data/app_assets" with the following asset configurations:
       | name         |

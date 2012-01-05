@@ -31,16 +31,18 @@ module BasicApp
       @configuration = configuration
       @options = configuration[:options] || {}
       @args = args
+      logger.debug "initialize with args: #{args.inspect}"
     end
 
     # Parse generic action options for all decendant actions
     #
     # @return [OptionParser] for use by decendant actions
-    def parse_options
-      logger.debug "base_action parsing args: #{args.join(' ')}"
+    def parse_options(parser_configuration = {})
+      raise_on_invalid_option = parser_configuration.has_key?(:raise_on_invalid_option) ? parser_configuration[:raise_on_invalid_option] : true
+      logger.debug "base_action parsing args: #{args.inspect}, will raise on invalid: #{raise_on_invalid_option}"
 
       option_parser = OptionParser.new do |opts|
-        opts.banner = help + "\n\nOptions:"
+        opts.banner = help + "\n\nAction options:"
 
         opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
           options[:template] = template.nil? ? "default.slim" : t
@@ -70,7 +72,53 @@ module BasicApp
           end
         end
 
+        # allow decendants to add options
+        yield opts if block_given?
       end
+
+      # reprocess args for known options, see binary wrapper for first pass
+      # (first pass doesn't know about action specific options), find all
+      # action options that may come after the action/subcommand (options
+      # before subcommand have already been processed) and its args
+      logger.debug "(BaseAction) args before reprocessing: #{args.inspect}"
+      begin
+        option_parser.order!(args)
+      rescue OptionParser::InvalidOption => e
+        if raise_on_invalid_option
+          puts "option error: #{e}"
+          puts option_parser
+          exit 1
+        else
+          # parse and consume until we hit an unknown option (not arg), put it back so it
+          # can be shifted into the new array
+          e.recover(args)
+        end
+      end
+      logger.debug "(BaseAction) args before unknown collection: #{args.inspect}"
+
+      unknown_args = []
+      while unknown_arg = args.shift
+        logger.debug "(BaseAction) unknown_arg: #{unknown_arg.inspect}"
+        unknown_args << unknown_arg
+        begin
+          # consume options and stop at an arg
+          option_parser.order!(args)
+        rescue OptionParser::InvalidOption => e
+          if raise_on_invalid_option
+            puts "option error: #{e}"
+            puts option_parser
+            exit 1
+          else
+            # parse and consume until we hit an unknown option (not arg), put it back so it
+            # can be shifted into the new array
+            e.recover(args)
+          end
+        end
+      end
+      logger.debug "(BaseAction) args after unknown collection: #{args.inspect}"
+
+      @args = unknown_args.dup
+      logger.debug "(BaseAction) args after reprocessing: #{args.inspect}"
 
       option_parser
     end
@@ -114,7 +162,8 @@ module BasicApp
       # include all base action options
       result = options.dup
 
-      # add filters from the command line
+      # anything left on the command line should be filters as all options have
+      # been consumed, for pass through options, filters must be ignored by overwritting them
       filters = args.dup
       filters += result[:filter] if result[:filter]
       result = result.merge(:filter => filters) unless filters.empty?
