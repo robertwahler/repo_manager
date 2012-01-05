@@ -23,9 +23,8 @@ TODO
 * status should show summary at the end
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
 * verify relative and absolute paths both work with all config file locations
-* add logger
 * status command should have option to show last commit information
 * native git commands need to preserve ANSI escape codes for coloring
-* add JSON output for machine parsing, think "--porcelain" commands
+* add JSON output for machine parsing, think "--porcelain" commands, this can be done with ERB templates
 * add man page via markdown and ronn.  Change 'help' action to call man
   page if man available.
