@@ -4,7 +4,7 @@ Feature: Show help on actions
 
   Example usage:
 
-    basic_app help help
+      basic_app help help
 
  Scenario Outline: Valid action, help available
     When I run `basic_app help <action>`
@@ -17,6 +17,7 @@ Feature: Show help on actions
   Examples:
     | action  |
     | help    |
+    | list    |
 
   Scenario: Missing action
     When I run `basic_app help`

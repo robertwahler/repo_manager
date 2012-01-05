@@ -5,16 +5,27 @@
 #
 # See http://github.com/robertwahler
 ####################################################
+
+require 'basic_app/assets/asset_manager'
+
 module BasicApp
 
   # An abstract superclass for basic action functionality
   class BaseAction
-
-    attr_reader :options
-
+    # main configuration hash
     attr_reader :configuration
 
+    # options hash, read from configuration hash
+    attr_reader :options
+
+    # args as passed on command line
     attr_reader :args
+
+    # filename to template for rendering
+    attr_accessor :template
+
+    # filename to write output
+    attr_accessor :output
 
     def initialize(args=[], configuration={})
       @configuration = configuration
@@ -22,9 +33,132 @@ module BasicApp
       @args = args
     end
 
-    # @abstract
+    # Parse generic action options for all decendant actions
+    #
+    # @return [OptionParser] for use by decendant actions
+    def parse_options
+      logger.debug "base_action parsing args: #{args.join(' ')}"
+
+      option_parser = OptionParser.new do |opts|
+        opts.banner = help + "\n\nOptions:"
+
+        opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
+          options[:template] = template.nil? ? "default.slim" : t
+          @template = options[:template]
+        end
+
+        opts.on("--output FILENAME", "Render output directly to a file") do |f|
+          options[:output] = f
+          @output = options[:output]
+        end
+
+        opts.on("--force", "Overwrite file output without prompting") do |f|
+          options[:force] = f
+        end
+
+        opts.on("--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
+          options[:filter] = list
+        end
+
+        # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
+        opts.on("--match [MODE]", "Asset filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
+          options[:match] = m || "ALL"
+          options[:match].upcase!
+          unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
+            puts "invalid match mode option: #{options[:match]}"
+            exit 1
+          end
+        end
+
+      end
+
+      option_parser
+    end
+
     def execute
-      raise "abstract method 'execute' has not been implemented"
+      parse_options
+      process
+    end
+
+    # handle "assets to items" transformations, if any, and write to output
+    def process
+      write_to_output(render)
+    end
+
+    # TODO: add exception handler and pass return values
+    def write_to_output(content)
+      if output
+        if overwrite_output?
+          logger.info "writing output to : #{output}"
+          File.open(output, 'wb') {|f| f.write(content) }
+        else
+          logger.info "existing file not overwritten.  To overwrite automatically, use the '--force' option."
+        end
+      else
+        logger.debug "base_action writing to STDOUT"
+        puts content
+      end
+      return 0
+    end
+
+    # TODO: create items/app_item class with at least the 'name' accessor
+    #
+    # assets: raw configuration handling system for items
+    def assets
+      return @assets if @assets
+      @assets = AssetManager.new(configuration).assets(asset_options)
+    end
+
+    # asset options separated from assets to make it easier to override assets
+    def asset_options
+      # include all base action options
+      result = options.dup
+
+      # add filters from the command line
+      filters = args.dup
+      filters += result[:filter] if result[:filter]
+      result = result.merge(:filter => filters) unless filters.empty?
+
+      # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
+      type = result[:type] || :app_asset
+      attributes_key = "#{type.to_s}s".to_sym
+      result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
+
+      # optional key: :base_folder is the folder that contains the main config file
+      result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename])) if configuration[:configuration_filename]
+
+      result
+    end
+
+    # items to be rendered, defaults to assets, override to suit
+    #
+    # @return [Array] of items to be rendered
+    def items
+      assets
+    end
+
+    # Render items result to a string
+    #
+    # @return [String] suitable for displaying on STDOUT or writing to a file
+    def render(view_options={})
+      logger.debug "base_action rendering"
+      result = ""
+      if template
+        logger.debug "base_action rendering with template : #{template}"
+        view = AppView.new(items, view_options)
+        view.template = template
+        result = view.render
+      else
+        items.each do |item|
+          result += item.name.green + ":\n"
+          if item.respond_to?(:attributes)
+            attributes = item.attributes.dup
+            result += attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
+            result += "\n"
+          end
+        end
+      end
+      result
     end
 
     # Convert method comments block to help text
@@ -52,6 +186,33 @@ module BasicApp
         result += "\n"
         result += "General options:\n"
         result += configuration[:general_options_summary].to_s
+      end
+
+      result
+    end
+
+    # @return [Boolean] true if output doesn't exist or it is OK to overwrite
+    def overwrite_output?
+      return true unless File.exists?(output)
+
+      if options[:force]
+        logger.debug "overwriting output with --force option"
+        return true
+      end
+
+      unless STDOUT.isatty
+        logger.debug "TTY not detected, skipping overwrite prompt"
+        return false
+      end
+
+      result = false
+      print "File '#{output}' exists. Would you like overwrite? [y/n]: "
+      case gets.strip
+        when 'Y', 'y', 'yes'
+          logger.debug "user answered yes to overwrite prompt"
+          result = true
+        else
+          logger.debug "user answered no to overwrite prompt"
       end
 
       result
