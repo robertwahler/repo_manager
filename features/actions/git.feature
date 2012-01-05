@@ -96,7 +96,7 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run 'ls-files' on each repo using a filter
-    When I run `repo ls-files --repos=test1`
+    When I run `repo --verbose ls-files --repos=test1`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -111,7 +111,7 @@ Feature: Running an arbitrary git command
 
   Scenario: Run 'ls-files' using a repo name as an argument with no filter
     supplied (failure)
-    When I run `repo ls-files test1`
+    When I run `repo  ls-files test1`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -161,7 +161,7 @@ Feature: Running an arbitrary git command
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo git status --porcelain`
+    When I run `repo --verbose git status --porcelain`
     Then the exit status should be 0
     And the output should contain:
       """

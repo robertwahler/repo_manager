@@ -18,37 +18,41 @@ module Repoman
   # @return [Numeric] pass through of 'git' result code
   class GitAction < AppAction
 
-    def execute
+    def asset_options
+      result = super
 
-      OptionParser.new do |opts|
-        opts.banner = help
-        begin
-          opts.parse(args)
-        rescue OptionParser::InvalidOption => e
-          # do nothing, we are just passing through all options
-        end
-      end
+      # to allow pass through options, argument based filters must be ignored,
+      # delete the arg based filters and recreate from the --filter option
+      result.delete(:filter)
+      result = result.merge(:filter => options[:filter]) if options[:filter]
 
-      raise "no git command given" if args.empty?
+      result
+    end
+
+    def process
+      logger.debug "process() args: #{args.inspect}"
+      logger.debug "process() asset_options: #{asset_options.inspect}"
 
       # the first arg is optionally 'git'
-      args.shift if args[0] == 'git'
-      raise "no git command given" if args.empty?
+      unless args.empty?
+        args.shift if args[0] == 'git'
+      else
+        raise "no git command given" if args.empty?
+      end
 
       command = args.shift
       st = 0
       result = 0
-      filters = options[:filter] || []
-      repositories = repos(filters)
+      output = ""
 
       # args should not match a repo name
-      if ((!args.empty?) && (filters.empty?))
-        repositories.each do |repo|
+      if ((!args.empty?) && (!options[:filter]))
+        repos.each do |repo|
           raise "repo name '#{repo.name}' cannot be used as a filter for git native commands, use --r, --repos, or --filter switches instead" if args.include?(repo.name)
         end
       end
 
-      repositories.each do |repo|
+      repos.each do |repo|
         begin
           st = repo.status.bitfield
         rescue InvalidRepositoryError => e
@@ -59,25 +63,29 @@ module Repoman
 
         case st
           when (Status::NOPATH)
-            print repo.name.red
-            print ": #{repo.path}"
-            puts " [no such path]"
+            output += repo.name.red
+            output += ": #{repo.path}"
+            output += " [no such path]\n"
           else
-            output = ''
+            git_output = ''
             begin
               git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
-              output = git.native(command, args)
+              git_output = git.native(command, args)
               result |= $?.exitstatus unless ($?.exitstatus == 0)
             rescue Git::CommandFailed => e
               result |= e.exitstatus
-              output = e.error
+              git_output = e.error
             end
-            if output != ''
-              puts repo.name.green
-              puts output
+            if git_output != ''
+              output += repo.name.green + "\n"
+              output += git_output + "\n"
             end
         end
       end
+
+      write_to_output(output)
+
+      # numeric return
       result
     end
 

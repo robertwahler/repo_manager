@@ -76,7 +76,7 @@ Feature: Listing repos
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list --list=NAME`
+    When I run `repo --verbose list --list=NAME`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -577,6 +577,8 @@ Feature: Listing repos
       """
       test1:
       .*
+      :name: test1
+      :path: test1
       :remotes:.
         :origin: ./remotes/test1.git
       """

@@ -61,7 +61,6 @@ module Repoman
       # store the original full config filename for later use
       configuration[:configuration_filename] = config
 
-
       configuration.recursively_symbolize_keys!
 
       # the command line options override options read from the config file
@@ -69,7 +68,7 @@ module Repoman
 
       configuration
     end
-  
+
   end
 
 end

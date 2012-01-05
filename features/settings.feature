@@ -11,9 +11,8 @@ Feature: Configuration via YAML
 
   All command line options can be read from the configuration file from the
   "options:" block. The "options" block is optional.  The "repos" block
-  describes the repo names and attributes.  The "repos" block is required.
-  Commands that operate on repos will fail if the repos block is invalid or
-  missing.
+  describes the repo names and attributes.  The "repos" block is optional as
+  well, see assets/configuration.feature for alternative "repos" configuration.
 
   Config file priority:
 
@@ -23,18 +22,13 @@ Feature: Configuration via YAML
       ~/.repo.conf
 
   The "repos" block can be specified in the master configuration file and/or in
-  separate YAML files by specifying a filespec pattern for the option key
-  "repo_configuration_glob:".  If repo_configuration_glob is specified, the
-  repos: hash from the master configuration file is merged with each file found
-  by globbing the repo_configuration_glob.  The repository "path" can be
-  absolute or relative to the master configuration file.
+  separate YAML files.
 
   Example master configuration file:
 
       ---
       options:
         color: true
-      repo_configuration_glob: config/*.yml
       repos:
         test1:
           path: workspace/test_path_1
@@ -42,18 +36,6 @@ Feature: Configuration via YAML
             origin: ../remotes/test1.git
         test2:
           path: /home/robert/repos/test_path_2
-
-  Example stand alone repo configuration file:
-
-      ---
-      repos:
-        test1:
-          path: workspace/test_path_1
-          remotes:
-            origin: ../remotes/test1.git
-        test2:
-          path: /home/robert/repos/test_path_2
-
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
@@ -273,81 +255,4 @@ Feature: Configuration via YAML
     Then the output should contain:
       """
       repo3: repo3
-      """
-
-  Scenario: Config file is a pattern, read from multiple files
-    Given a file named "config/repo1.yml" with:
-      """
-      ---
-      repos:
-        repo1:
-          path: repo1
-      """
-    And a file named "config/repo2.yml" with:
-      """
-      ---
-      repos:
-        repo2:
-          path: repo2
-      """
-    When I run `repo list --list=SHORT --config=config/*.yml`
-    Then the output should contain:
-      """
-      repo1: repo1
-      repo2: repo2
-      """
-
-  Scenario: Config file on command line is a pattern, but doesn't match any files
-    When I run `repo path --config=config/*.invalid_pattern`
-    Then the exit status should be 1
-    And the output should contain:
-      """
-      config file not found
-      """
-
-  Scenario: Config file pattern doesn't match any files
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repo_configuration_glob: config/*.invalid_pattern
-      repos:
-        repo0:
-          path: repo0
-      """
-    When I run `repo path`
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      config file pattern did not match any files
-      """
-
-  Scenario: Config file contains a config file pattern, read from mutiple files
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repo_configuration_glob: config/*.yml
-      repos:
-        repo0:
-          path: repo0
-      """
-    And a file named "config/repo1.yml" with:
-      """
-      ---
-      repos:
-        repo1:
-          path: repo1
-      """
-    And a file named "config/repo2.yml" with:
-      """
-      ---
-      repos:
-        repo2:
-          path: repo2
-      """
-    When I run `repo list --list=SHORT`
-    Then the output should contain:
-      """
-      repo0: repo0
-      repo1: repo1
-      repo2: repo2
       """

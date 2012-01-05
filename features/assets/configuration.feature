@@ -48,14 +48,14 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        repos  : data/app_assets
       """
     And a file named "data/app_assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
       """
-    When I run `repo list --verbose --type=app_asset`
+    When I run `repo list --verbose`
     Then the output should contain:
       """
       path: user_path
@@ -69,12 +69,12 @@ Feature: Asset configuration
       options:
         color       : true
       """
-    And a file named "app_assets/asset1/asset.conf" with:
+    And a file named "repo_assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
       """
-    When I run `repo list --verbose --type=app_asset`
+    When I run `repo list --verbose`
     Then the output should contain:
       """
       path: user_path
@@ -87,11 +87,11 @@ Feature: Asset configuration
       ---
       options:
         color       : true
-      app_assets:
+      repos:
         asset1:
           path: user_path
       """
-    When I run `repo list --verbose --type=app_asset`
+    When I run `repo list --verbose`
     Then the output should contain:
       """
       path: user_path
@@ -104,7 +104,7 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        repos  : data/app_assets
       """
     And the folder "global/app_assets" with the following asset configurations:
       | name         | path          |
@@ -112,7 +112,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | an_attribute  | parent                           | binary          |
       | asset1       |               | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `repo list --verbose --type=app_asset`
+    When I run `repo list --verbose`
     Then the output should contain:
       """
       path: set_by_parent
@@ -125,7 +125,7 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        repos  : data/app_assets
       """
     And the folder "global/app_assets" with the following asset configurations:
       | name         | path          |
@@ -133,7 +133,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | path          | parent                           | binary          |
       | asset1       | set_by_user   | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `repo list --verbose --type=app_asset`
+    When I run `repo list --verbose`
     Then the output should contain:
       """
       path: set_by_user

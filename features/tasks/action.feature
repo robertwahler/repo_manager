@@ -13,22 +13,13 @@ Feature: Thor action tasks
     And a file named "repo.conf" with:
       """
       ---
-      repo_configuration_glob: repos/*.yml
+      folders:
+        repos  : repo/asset/configuration/files
       """
-    And a file named "repos/repo1.yml" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-      """
-    And a file named "repos/repo2.yml" with:
-      """
-      ---
-      repos:
-        test2:
-          path: test_path_2
-      """
+    And the folder "repo/asset/configuration/files" with the following asset configurations:
+      | name    | path         |
+      | test1   | test_path_1  |
+      | test2   | test_path_2  |
 
 
   Scenario: No uncommitted changes

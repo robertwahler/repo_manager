@@ -18,7 +18,6 @@ module Repoman
   # @return [Number] pass through of 'git init' result code
   class InitAction < AppAction
 
-
     def parse_options
       opts = super
 
