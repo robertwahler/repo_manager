@@ -117,7 +117,8 @@ settings = Repoman::Settings.new(FileUtils.pwd, options)
 color = settings.options[:color]
 
 # add summary of general options for use by action help commands
-settings.options[:general_options_summary] = optparser.summarize
+configuration = settings.to_hash
+configuration[:general_options_summary] = optparser.summarize
 
 if STDOUT.isatty || (color == 'ALWAYS')
   Term::ANSIColor::coloring = color
@@ -137,5 +138,5 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = Repoman::App.new(argv, settings.to_hash)
+app = Repoman::App.new(argv, configuration)
 app.execute

@@ -42,7 +42,7 @@ module Repoman
       logger.debug "base_action parsing args: #{args.inspect}, will raise on invalid: #{raise_on_invalid_option}"
 
       option_parser = OptionParser.new do |opts|
-        opts.banner = help + "\n\nOptions:"
+        opts.banner = help + "\n\nAction options:"
 
         opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
           options[:template] = template.nil? ? "default.slim" : t
