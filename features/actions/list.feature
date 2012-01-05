@@ -573,12 +573,16 @@ Feature: Listing repos
           path: test2
       """
     When I run `repo list`
-    And the output should match:
+    And the output should contain:
       """
       test1:
-      .*
+      ---
       :name: test1
       :path: test1
-      :remotes:.
+      :remotes:
         :origin: ./remotes/test1.git
+      test2:
+      ---
+      :name: test2
+      :path: test2
       """
