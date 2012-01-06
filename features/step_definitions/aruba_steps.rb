@@ -1,3 +1,5 @@
+require 'fileutils'
+
 def expand_tabs(data, indent=8)
   data.gsub(/([^\t\n]*)\t/) {
     $1 + " " * (indent - ($1.size % indent))
@@ -92,4 +94,12 @@ end
 
 Then /^the file "([^"]*)" should not contain:$/ do |file, partial_content|
   process_and_check_file_content(fullpath(file), partial_content, false)
+end
+
+Given /^the fixture "([^"]*)" is copied to "([^"]*)"$/ do |source, destination|
+  in_current_dir do
+    source = File.join("../../spec/fixtures/", source)
+    _mkdir(File.dirname(destination))
+    FileUtils.cp(source, destination)
+  end
 end

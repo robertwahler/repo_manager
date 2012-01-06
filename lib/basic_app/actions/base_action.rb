@@ -55,7 +55,7 @@ module BasicApp
         opts.banner = help + "\n\nAction options:"
 
         opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
-          options[:template] = template.nil? ? "default.slim" : t
+          options[:template] = t.nil? ? "default.slim" : t
           @template = options[:template]
         end
 
@@ -180,6 +180,8 @@ module BasicApp
 
       # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
       type = result[:type] || asset_type
+      result = result.merge(:type => type)
+
       attributes_key = "#{type.to_s}s".to_sym
       result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
 
