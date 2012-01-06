@@ -34,6 +34,16 @@ module BasicApp
       logger.debug "initialize with args: #{args.inspect}"
     end
 
+    # used by
+    #   * asset factory to create assets
+    #   * asset configuration to build attributes_key
+    #   * asset configuration to determine the default asset configuration file name
+    #
+    # @return [Symbol] asset type
+    def asset_type
+      :app_asset
+    end
+
     # Parse generic action options for all decendant actions
     #
     # @return [OptionParser] for use by decendant actions
@@ -169,7 +179,7 @@ module BasicApp
       result = result.merge(:filter => filters) unless filters.empty?
 
       # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
-      type = result[:type] || :app_asset
+      type = result[:type] || asset_type
       attributes_key = "#{type.to_s}s".to_sym
       result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
 
@@ -198,11 +208,12 @@ module BasicApp
         view.template = template
         result = view.render
       else
-        items.each do |item|
+        items.each_with_index do |item, index|
+          result += "\n" unless index == 0
           result += item.name.green + ":\n"
           if item.respond_to?(:attributes)
             attributes = item.attributes.dup
-            result += attributes.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
+            result += attributes.recursively_stringify_keys!.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
             result += "\n"
           end
         end

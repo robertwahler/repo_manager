@@ -72,8 +72,10 @@ Feature: Listing assets
       """
       asset1:
       --- {}
+
       asset2:
       --- {}
+
       asset3:
       --- {}
       """
