@@ -15,9 +15,6 @@ module Repoman
     def asset_options
       result = super
 
-      type = :repo_asset
-      result = result.merge(:type => type)
-
       attributes_key = :repos
       result = result.merge(:attributes_key => attributes_key)
 
@@ -26,6 +23,17 @@ module Repoman
 
       result
     end
+
+    # used by
+    #   * asset factory to create assets
+    #   * asset configuration to build attributes_key
+    #   * asset configuration to determine the default asset configuration file name
+    #
+    # @return [Symbol] asset type
+    def asset_type
+      :repo_asset
+    end
+
 
     # alias for items/assets
     #
