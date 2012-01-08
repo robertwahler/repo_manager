@@ -48,7 +48,7 @@ module BasicApp
 
       if config && File.exists?(config)
         # load options from the config file, overwriting hard-coded defaults
-        config_contents = YAML::load(File.open(config))
+        config_contents = YAML::load(File.open(config, "rb") {|f| f.read})
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
       else
         # user specified a config file?, no error if user did not specify config file
