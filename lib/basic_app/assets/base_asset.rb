@@ -18,6 +18,10 @@ module BasicApp
     # file.
     attr_accessor :name
 
+    # full path to asset configuration folder, the basename of the folder
+    # is usually the asset_name
+    attr_accessor :folder
+
     # subclass factory to create Assets
     #
     # Call with classname to create.  Pass in optional configuration folder
@@ -33,18 +37,34 @@ module BasicApp
       Object.const_get('BasicApp').const_get(classified_name).new(asset_name, attributes)
     end
 
-    # @param [String] asset_name (nil) asset name or folder name, if folder, will load YAML config
+    # @param [String] asset_name asset name or folder name, if folder, will load YAML config
     # @param [Hash] attributes ({}) initial attributes
-    def initialize(asset_name=nil, attributes={})
-      @name = Pathname.new(asset_name).basename.to_s
-      logger.debug "Asset name: #{@name}"
+    def initialize(asset_name, attributes={})
+      raise ArgumentError, "asset_name or folder required" unless (asset_name.is_a?(String) || asset_name.is_a?(Symbol))
 
-      @attributes = attributes.dup
+      @asset_key = nil
+      @folder = asset_name.to_s
+      @name = Pathname.new(folder).basename.to_s
 
-      if asset_name && File.exists?(asset_name)
-        logger.debug "initializing new asset with folder: #{asset_name}"
-        configuration.load(asset_name.to_s)
+      logger.debug "Asset name: #{name}"
+      logger.debug "Asset folder: #{folder}"
+
+      # allow for lazy loading (TODO), don't assign empty attributes
+      @attributes = attributes.dup unless attributes.empty?
+
+      if File.exists?(folder)
+        logger.debug "initializing new asset with folder: #{folder}"
+        configuration.load(folder)
       end
+    end
+
+    # The asset_key, if defined, will use as key to asset attributes when
+    # loading from YAML, if not defined, the entire YAML file will load.
+    # Override in decendants.
+    #
+    # @ return [Symbol] or nil
+    def asset_key
+      nil
     end
 
     def configuration
