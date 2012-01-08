@@ -53,6 +53,7 @@ module Repoman
       output = ""
 
       repos.each do |repo|
+        output = ""
 
         # M ? A D I X
         begin
@@ -133,6 +134,7 @@ module Repoman
               end
             end
         end
+        write_to_output(output)
       end
 
       output += "\n" if need_lf
