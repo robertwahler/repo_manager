@@ -58,8 +58,9 @@ module Repoman
       end
     end
 
-    # The asset_key, if defined, will use as key to asset attributes when
+    # The asset_key, if defined, will be used as key to asset attributes when
     # loading from YAML, if not defined, the entire YAML file will load.
+    #
     # Override in decendants.
     #
     # @ return [Symbol] or nil

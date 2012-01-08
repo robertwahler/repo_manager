@@ -144,7 +144,7 @@ module Repoman
         end
       else
         logger.debug "base_action writing to STDOUT"
-        puts content
+        print content
       end
       return 0
     end
