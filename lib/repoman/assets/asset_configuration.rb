@@ -66,7 +66,7 @@ module Repoman
 
       # use part of the contents keyed to asset_key, allows
       # mutiple asset_types to share the same configuration file
-      contents = contents[asset.asset_key].dup if asset.asset_key
+      contents = contents[asset.asset_key].dup if (asset.asset_key && contents.has_key?(asset.asset_key))
 
       # Load all attributes as hash 'attributes' so that merging
       # and adding new attributes doesn't require code changes. Note
