@@ -55,7 +55,7 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `repo list --verbose`
+    When I run `repo list`
     Then the output should contain:
       """
       path: user_path
@@ -74,8 +74,32 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `repo list --verbose`
+    When I run `repo list`
     Then the output should contain:
+      """
+      path: user_path
+      """
+
+  Scenario: Asset attribute read from asset configuration using the asset key ':repo'
+    Given a file named "repo.conf" with:
+      """
+      ---
+      # TODO: configuration file must exist, even when all attributes
+      # are determined by convention due to bug in 'base_folder' determination
+      """
+    And a file named "repo_assets/asset1/asset.conf" with:
+      """
+      ---
+      path: user_path
+      repo:
+        path: the_real_path
+      """
+    When I run `repo list`
+    Then the output should contain:
+      """
+      path: the_real_path
+      """
+    Then the output should not contain:
       """
       path: user_path
       """
@@ -91,7 +115,7 @@ Feature: Asset configuration
         asset1:
           path: user_path
       """
-    When I run `repo list --verbose`
+    When I run `repo list`
     Then the output should contain:
       """
       path: user_path
@@ -112,7 +136,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | an_attribute  | parent                           | binary          |
       | asset1       |               | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `repo list --verbose`
+    When I run `repo list`
     Then the output should contain:
       """
       path: set_by_parent
@@ -133,7 +157,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | path          | parent                           | binary          |
       | asset1       | set_by_user   | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `repo list --verbose`
+    When I run `repo list`
     Then the output should contain:
       """
       path: set_by_user
