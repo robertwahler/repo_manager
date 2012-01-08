@@ -29,6 +29,8 @@ module Repoman
     # parent datastore defaults folder, read asset from here first if exists
     attr_accessor :parent
 
+    attr_reader :asset
+
     def initialize(asset)
       logger.debug "initializing new AssetConfiguration with asset class: #{asset.class.to_s}"
       @asset = asset
@@ -45,7 +47,7 @@ module Repoman
       folder ||= ds
 
       file = File.join(folder, 'asset.conf')
-      contents = YAML::load(File.open(file))
+      contents = YAML::load(File.open(file, "rb") {|f| f.read})
       contents.symbolize_keys! if contents && contents.is_a?(Hash)
 
       # if a global parent folder is defined, load it first
@@ -58,9 +60,13 @@ module Repoman
         end
 
         logger.debug "AssetConfiguration loading parent: #{parent_folder}"
-        parent_configuration = Repoman::AssetConfiguration.new(@asset)
+        parent_configuration = Repoman::AssetConfiguration.new(asset)
         parent_configuration.load(parent_folder)
       end
+
+      # use part of the contents keyed to asset_key, allows
+      # mutiple asset_types to share the same configuration file
+      contents = contents[asset.asset_key].dup if asset.asset_key
 
       # Load all attributes as hash 'attributes' so that merging
       # and adding new attributes doesn't require code changes. Note
