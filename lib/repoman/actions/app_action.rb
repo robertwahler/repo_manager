@@ -11,19 +11,6 @@ module Repoman
   # application implementation.  Put application specific code here.
   class AppAction < BaseAction
 
-    # application overrides
-    def asset_options
-      result = super
-
-      attributes_key = :repos
-      result = result.merge(:attributes_key => attributes_key)
-
-      # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
-      result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
-
-      result
-    end
-
     # used by
     #   * asset factory to create assets
     #   * asset configuration to build attributes_key
@@ -34,6 +21,9 @@ module Repoman
       :repo_asset
     end
 
+    def asset_key
+      :repos
+    end
 
     # alias for items/assets
     #
