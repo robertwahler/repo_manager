@@ -45,7 +45,9 @@ lib/repoman/app.rb
 lib/repoman/assets.rb
 lib/repoman/assets/app_asset.rb
 lib/repoman/assets/asset_configuration.rb
+lib/repoman/assets/asset_manager.rb
 lib/repoman/assets/base_asset.rb
+lib/repoman/assets/repo_asset.rb
 lib/repoman/core.rb
 lib/repoman/core/array.rb
 lib/repoman/core/hash.rb
@@ -54,7 +56,6 @@ lib/repoman/git.rb
 lib/repoman/git/lib.rb
 lib/repoman/git/status.rb
 lib/repoman/logger.rb
-lib/repoman/repo.rb
 lib/repoman/settings.rb
 lib/repoman/tasks.rb
 lib/repoman/tasks/action.thor
