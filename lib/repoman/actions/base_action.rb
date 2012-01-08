@@ -34,16 +34,6 @@ module Repoman
       logger.debug "initialize with args: #{args.inspect}"
     end
 
-    # used by
-    #   * asset factory to create assets
-    #   * asset configuration to build attributes_key
-    #   * asset configuration to determine the default asset configuration file name
-    #
-    # @return [Symbol] asset type
-    def asset_type
-      :app_asset
-    end
-
     # Parse generic action options for all decendant actions
     #
     # @return [OptionParser] for use by decendant actions
@@ -167,6 +157,25 @@ module Repoman
       @assets = AssetManager.new(configuration).assets(asset_options)
     end
 
+    # used by
+    #   * asset factory to create assets
+    #   * asset configuration to build attributes_key
+    #   * asset configuration to determine the default asset configuration file name
+    #
+    # @return [Symbol] asset type
+    def asset_type
+      :app_asset
+    end
+
+    # used for
+    #   * attributes_key in configuration files
+    #   * folder name to asset configuration folders
+    #
+    # @return [Symbol] asset key
+    def asset_key
+      "#{asset_type.to_s}s".to_sym
+    end
+
     # asset options separated from assets to make it easier to override assets
     def asset_options
       # include all base action options
@@ -178,12 +187,13 @@ module Repoman
       filters += result[:filter] if result[:filter]
       result = result.merge(:filter => filters) unless filters.empty?
 
-      # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
+      # asset type to create
       type = result[:type] || asset_type
       result = result.merge(:type => type)
 
-      attributes_key = "#{type.to_s}s".to_sym
-      result = result.merge(:assets_folder => configuration[:folders][attributes_key]) if configuration[:folders]
+      # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
+      result = result.merge(:asset_key => asset_key)
+      result = result.merge(:assets_folder => configuration[:folders][asset_key]) if configuration[:folders]
 
       # optional key: :base_folder is the folder that contains the main config file
       result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename])) if configuration[:configuration_filename]
