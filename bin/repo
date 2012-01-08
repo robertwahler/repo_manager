@@ -138,4 +138,4 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = Repoman::App.new(argv, configuration).execute
+Repoman::App.new(argv, configuration).execute
