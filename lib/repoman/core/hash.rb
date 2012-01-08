@@ -42,4 +42,27 @@ class Hash
     self
   end
 
+  def stringify_keys!
+    self.replace(self.stringify_keys)
+end
+
+  def stringify_keys
+    inject({}) do |options, (key, value)|
+      options[(key.to_s rescue key) || key] = value
+      options
+    end
+  end
+
+  def recursively_stringify_keys!
+    self.stringify_keys!
+    self.values.each do |v|
+      if v.is_a? Hash
+        v.recursively_stringify_keys!
+      elsif v.is_a? Array
+        v.recursively_stringify_keys!
+      end
+    end
+    self
+  end
+
 end

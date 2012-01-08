@@ -30,7 +30,7 @@ module Repoman
     attr_accessor :parent
 
     def initialize(asset)
-      logger.debug "initializing new AssetConfiguration"
+      logger.debug "initializing new AssetConfiguration with asset class: #{asset.class.to_s}"
       @asset = asset
     end
 

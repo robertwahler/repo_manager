@@ -29,7 +29,6 @@ module Repoman
     #
     # @return [BaseAsset] the created BaseAsset or decendent asset
     def self.create(asset_type=:app_asset, asset_name=nil, attributes={})
-      @asset_type = asset_type
       classified_name = asset_type.to_s.split('_').collect!{ |w| w.capitalize }.join
       Object.const_get('Repoman').const_get(classified_name).new(asset_name, attributes)
     end
@@ -46,10 +45,6 @@ module Repoman
         logger.debug "initializing new asset with folder: #{asset_name}"
         configuration.load(asset_name.to_s)
       end
-    end
-
-    def asset_type
-      @asset_type ||= :app_asset
     end
 
     def configuration
