@@ -25,7 +25,7 @@ module BasicApp
       # type of asset to create, used to guess attributes_key and asset_folder name
       type = asset_options[:type] || :app_asset
 
-      attributes_key = asset_options[:attributes_key] || "#{type.to_s}s".to_sym
+      attributes_key = asset_options[:asset_key] || "#{type.to_s}s".to_sym
       assets = []
       filters = asset_options[:filter] || ['.*']
       match_count = 0
