@@ -18,6 +18,10 @@ Feature: Logging to console and log files
   https://github.com/TwP/logging/blob/master/data/logging.yaml
 
   Scenario: Debug output to console via the "--verbose" switch
+    Given a file named "repo.conf" with:
+      """
+      ---
+      """
     When I run `repo help --verbose`
     Then the output should contain:
       """
@@ -25,6 +29,10 @@ Feature: Logging to console and log files
       """
 
   Scenario: No debug output to console without the "--verbose" switch
+    Given a file named "repo.conf" with:
+      """
+      ---
+      """
     When I run `repo help`
     Then the output should not contain:
       """
