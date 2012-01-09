@@ -21,18 +21,23 @@ Feature: Listing repos
       repo list --repo=repo1,repo2
       repo list repo1 repo2
 
-  Equivalent usage, file writing:
+  Equivalent usage, file writing using Slim templates:
 
-     repo list --template=default.slim --output=tmp/aruba/index.html
-     repo list --template=default.slim >> tmp/aruba/index.html
+     basic_app list --template=default.slim --output=tmp/aruba/index.html
+     basic_app list --template=default.slim >> tmp/aruba/index.html
 
-  Example return just the first matching repo
+  Equivalent usage, file writing using ERB templates:
 
-      repo list --match=FIRST
+     basic_app list --template=default.erb --output=tmp/aruba/index.html
+     basic_app list --template=default.erb >> tmp/aruba/index.html
 
-  Example fail out if more than one matching repo
+  Example return just the first matching asset
 
-      repo list --match=ONE
+      basic_app list --match=FIRST
+
+  Example fail out if more than one matching asset
+
+      basic_app list --match=ONE
 
   Example disable regex filter matching
 
@@ -482,6 +487,69 @@ Scenario: List with invalid options in varying positions on the command line
         </body>
       </html>
       """
+
+
+  Scenario: Use built in ERB template instead of the default Slim template
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    When I run `basic_app list --template=default.erb  --type=app_asset --output=data/output.html --verbose`
+    Then the exit status should be 0
+    And the file "data/output.html" should contain:
+      """
+        <body>
+          <div class="container">
+            <div class="content">
+              <div class="page-header">
+                <h1>Assets Report</h1>
+              </div>
+              <h2>Assets</h2>
+              <table class="condensed-table bordered-table zebra-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>asset1</td>
+                  </tr>
+                  <tr>
+                    <td>asset2</td>
+                  </tr>
+                  <tr>
+                    <td>asset3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer>
+              <p>Copyright &copy; 2011 GearheadForHire, LLC</p>
+            </footer>
+          </div>
+        </body>
+      </html>
+      """
+
+  Scenario: Unsupported template file extension
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name         |
+      | asset1       |
+      | asset2       |
+      | asset3       |
+    And a file named "template.fOO" with:
+      """
+      this file was not overwritten
+      """
+    When I run `basic_app list --template=template.fOO  --type=app_asset --output=data/output.html --verbose`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      unsupported template type based on file extension .foo
+      """
+
 
   Scenario: Default action, no filter, --list==SHORT
     Given a file named "repo.conf" with:

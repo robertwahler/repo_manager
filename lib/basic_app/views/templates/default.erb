@@ -1,0 +1,40 @@
+<!DOCTYPE html> <html lang="en"> <head> <title>Default View</title>
+    <meta charset="utf-8" />
+    <meta content="basic_app" name="keywords" />
+    <meta content="BasicApp default template" name="description" />
+    <meta content="Robert Wahler" name="author" />
+    <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
+    <style type="text/css"><%= partial 'css/basic.css' %></style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="content">
+        <div class="page-header">
+          <h1>Assets Report</h1>
+        </div>
+<% unless items.empty? -%>
+        <h2>Assets</h2>
+        <table class="condensed-table bordered-table zebra-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+<% for item in items do -%>
+            <%= "<tr>" %>
+              <%= "<td>#{item.name}</td>" %>
+            <%= "</tr>" %>
+<% end -%>
+          </tbody>
+        </table>
+<% else -%>
+          <p>No Assets found.</p>
+<% end -%>
+      </div>
+      <footer>
+        <p>Copyright &copy; 2011 GearheadForHire, LLC</p>
+      </footer>
+    </div>
+  </body>
+</html>
