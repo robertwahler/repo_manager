@@ -8,6 +8,7 @@
 
 require 'pathname'
 require 'slim'
+require 'erb'
 require 'chronic'
 
 module BasicApp
@@ -65,7 +66,7 @@ module BasicApp
       @date = value
     end
 
-    # TODO: for ERB binding
+    # ERB binding
     def get_binding
       binding
     end
@@ -93,7 +94,19 @@ module BasicApp
     # TODO: render based on file ext
     def render
       raise "unable to find template file: #{template}" unless File.exists?(template)
-      Slim::Template.new(template, {:pretty => true}).render(self)
+
+      extension = File.extname(template)
+      extension = extension.downcase if extension
+
+      case extension
+        when '.erb'
+          contents = File.open(template, "rb") {|f| f.read}
+          ERB.new(contents, nil, '-').result(self.get_binding)
+        when '.slim'
+          Slim::Template.new(template, {:pretty => true}).render(self)
+        else
+          raise "unsupported template type based on file extension #{extension}"
+      end
     end
 
   private
