@@ -23,21 +23,21 @@ Feature: Listing repos
 
   Equivalent usage, file writing using Slim templates:
 
-     basic_app list --template=default.slim --output=tmp/aruba/index.html
-     basic_app list --template=default.slim >> tmp/aruba/index.html
+     repo list --template=default.slim --output=tmp/aruba/index.html
+     repo list --template=default.slim >> tmp/aruba/index.html
 
   Equivalent usage, file writing using ERB templates:
 
-     basic_app list --template=default.erb --output=tmp/aruba/index.html
-     basic_app list --template=default.erb >> tmp/aruba/index.html
+     repo list --template=default.erb --output=tmp/aruba/index.html
+     repo list --template=default.erb >> tmp/aruba/index.html
 
   Example return just the first matching asset
 
-      basic_app list --match=FIRST
+      repo list --match=FIRST
 
   Example fail out if more than one matching asset
 
-      basic_app list --match=ONE
+      repo list --match=ONE
 
   Example disable regex filter matching
 
@@ -495,7 +495,7 @@ Scenario: List with invalid options in varying positions on the command line
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list --template=default.erb  --type=app_asset --output=data/output.html --verbose`
+    When I run `repo list --template=default.erb  --output=data/output.html --verbose`
     Then the exit status should be 0
     And the file "data/output.html" should contain:
       """
@@ -543,7 +543,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
       this file was not overwritten
       """
-    When I run `basic_app list --template=template.fOO  --type=app_asset --output=data/output.html --verbose`
+    When I run `repo list --template=template.fOO  --output=data/output.html --verbose`
     Then the exit status should be 1
     And the output should contain:
       """
