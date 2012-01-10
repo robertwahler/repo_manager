@@ -18,10 +18,6 @@ module BasicApp
     # file.
     attr_accessor :name
 
-    # full path to asset configuration folder, the basename of the folder
-    # is usually the asset_name
-    attr_accessor :folder
-
     # subclass factory to create Assets
     #
     # Call with classname to create.  Pass in optional configuration folder
@@ -40,14 +36,14 @@ module BasicApp
     # @param [String] asset_name asset name or folder name, if folder, will load YAML config
     # @param [Hash] attributes ({}) initial attributes
     def initialize(asset_name, attributes={})
-      raise ArgumentError, "asset_name or folder required" unless (asset_name.is_a?(String) || asset_name.is_a?(Symbol))
+      raise ArgumentError, "asset_name or configuration folder required" unless (asset_name.is_a?(String) || asset_name.is_a?(Symbol))
 
       @asset_key = nil
-      @folder = asset_name.to_s
+      folder = asset_name.to_s
       @name = Pathname.new(folder).basename.to_s
 
       logger.debug "Asset name: #{name}"
-      logger.debug "Asset folder: #{folder}"
+      logger.debug "Asset configuration folder: #{folder}"
 
       # allow for lazy loading (TODO), don't assign empty attributes
       @attributes = attributes.dup unless attributes.empty?
