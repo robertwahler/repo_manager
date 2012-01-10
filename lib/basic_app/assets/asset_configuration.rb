@@ -48,7 +48,7 @@ module BasicApp
 
       file = File.join(folder, 'asset.conf')
       contents = YAML::load(File.open(file, "rb") {|f| f.read})
-      contents.symbolize_keys! if contents && contents.is_a?(Hash)
+      contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
 
       # if a global parent folder is defined, load it first
       parent = contents.delete(:parent) || parent
