@@ -100,7 +100,7 @@ module BasicApp
 
       case extension
         when '.erb'
-          contents = File.open(template, "rb") {|f| f.read}
+          contents = File.open(template, "r") {|f| f.read}
           ERB.new(contents, nil, '-').result(self.get_binding)
         when '.slim'
           Slim::Template.new(template, {:pretty => true}).render(self)
