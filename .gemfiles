@@ -66,6 +66,7 @@ lib/repoman/views.rb
 lib/repoman/views/app_view.rb
 lib/repoman/views/base_view.rb
 lib/repoman/views/templates/css/basic.css
+lib/repoman/views/templates/default.erb
 lib/repoman/views/templates/default.slim
 repoman.gemspec
 spec/aruba_helper.rb
