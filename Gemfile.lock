@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    repoman (0.5.0)
+    repoman (0.5.1)
       chronic (>= 0.6.5)
       git (= 1.2.5)
       logging (>= 1.6.1)

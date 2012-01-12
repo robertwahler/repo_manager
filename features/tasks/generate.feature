@@ -7,9 +7,7 @@ Feature: Thor generate tasks
   This is a Thor task to generate a YAML config file for a single repo.
   Repoman config files may contain multiple repositories.  This generator will
   not handle that situation.  Instead, 'thor repoman:generate:config' will
-  generate a config file for just one repository.  Using the repoman option
-  '--config config/*.yml' pattern, multiple repostories can be configured from
-  separate config files.
+  generate a config file for just one repository.
 
   Example command:
 
@@ -17,14 +15,12 @@ Feature: Thor generate tasks
       thor repoman:generate:config NAME --path=PATH
       thor repoman:generate:config NAME --path=PATH --remote=git@somewhere.com:repo_name.git
 
-  Example output (config/my_repo_name.yml):
+  Example output (config/repos/my_repo_name/asset.conf):
 
       ---
-      repos:
-        my_repo_name:
-          path: some/path/my_repo_name
-          remotes:
-            origin: //my_smb/server/repos/my_repo_name.git
+      path: some/path/my_repo_name
+      remotes:
+        origin: //my_smb/server/repos/my_repo_name.git
 
 
   Procedure:
@@ -41,11 +37,10 @@ Feature: Thor generate tasks
 
   Conventions:
 
-  * 'path' will be taken as the cwd unless specified
+  * 'path' will be taken as the CWD unless specified
   * 'name' has no convention and must be specified
   * 'FILE' will be constructed based on 'name' and the path taken from the
-    repo.config 'config' option.  If no config value, use the working folder
-    for the repo.config file itself.
+    repo.conf 'folders' option.
   * 'remote' will be constructed based on configuration[:defaults][:remote_dirname] and 'name'
 
   Background: Test repositories and a valid config file
@@ -68,21 +63,20 @@ Feature: Thor generate tasks
     Given a file named "repo.conf" with:
       """
       ---
-      repo_configuration_glob: repos/*.yml
       defaults:
         remote_dirname: ../remotes
+      folders:
+        repos  : config/repos
       """
     When I run `thor repoman:generate:config repo1 --path="repo1_path"`
     Then the output should contain:
       """
       Creating repoman configuration file
       """
-    And the file "repos/repo1.yml" should contain:
+    And the file "config/repos/repo1/asset.conf" should contain:
       """
       ---
-      repos:
-        repo1:
-          path: repo1_path
-          remotes:
-            origin: ../remotes/repo1.git
+      path: repo1_path
+      remotes:
+        origin: ../remotes/repo1.git
       """

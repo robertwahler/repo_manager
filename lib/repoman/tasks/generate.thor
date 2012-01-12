@@ -5,11 +5,10 @@ module Repoman
   module GenerateHelper
 
     def validate_options(name, options = {})
-      file = options[:file]
       path = options[:path]
       remote = options[:remote]
 
-      unless file && path && remote
+      unless path && remote
         say "reading repo config file..."
         repoman_options = {}
         repoman_options[:config] = options[:config]
@@ -17,17 +16,16 @@ module Repoman
         raise "unable to find repo config file" unless configuration[:configuration_filename]
       end
 
-      unless file
-        glob = configuration[:repo_configuration_glob]
-        puts glob
-        config_folder =  File.dirname(glob) if glob
-        unless config_folder
-          say "repo_configuration_glob key not specified or invalid in repo.conf, please set key or specify '--file=' on the command line"
-          exit 1
-        end
-        file = File.join(File.expand_path(config_folder), "#{name}.yml")
-        say file
+      raise "unable to find configuration key ':folders'" unless configuration[:folders]
+      raise "unable to find configuration key ':folders => :repos'" unless configuration[:folders][:repos]
+      folder = configuration[:folders][:repos]
+      unless folder
+        say "unable to find folder conf key ':folders => :repos', please set key"
+        exit 1
       end
+      puts folder
+      file = File.join(File.expand_path(folder), name, "asset.conf")
+      say file
 
       unless remote
         defaults = configuration[:defaults] || {}
@@ -131,7 +129,6 @@ module Repoman
     class_option :force, :type => :boolean, :desc => "Force overwrite of existing config file"
     class_option :config, :type => :string, :desc => "Repoman config file"
     class_option :path, :type => :string, :aliases => "-p", :desc => "Full path to working folder"
-    class_option :file, :type => :string, :desc => "Repo config file name", :banner => "filename"
     class_option :remote, :type => :string, :aliases => "-r", :desc => "Repo remote origin, i.e.  'git@host.git' or '//smb/path", :banner => "//smb/remote/path"
 
     desc "config REPO_NAME", "generate repoman config file for a single repo"
