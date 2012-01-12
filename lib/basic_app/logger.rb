@@ -12,7 +12,6 @@ module BasicApp
 
         # logging global default level
         Logging.logger.root.level = :warn
-        Logging.logger.root.level = :debug if options[:verbose]
 
         if config_filename && yaml_key && configuration.has_key?(yaml_key)
           Logging::Config::YamlConfigurator.load(config_filename, yaml_key.to_s)
@@ -22,6 +21,12 @@ module BasicApp
           format = format.merge(:color_scheme => 'default') if options[:color]
           Logging.appenders.stdout('stdout', :layout => Logging.layouts.pattern(format))
           Logging.logger.root.add_appenders('stdout')
+        end
+
+        # if verbose, all defined loggers are set to debug level
+        Logging.logger.root.level = :debug if options[:verbose]
+        Logging.appenders.each do |appender|
+          appender.level = :debug
         end
 
         # debug
