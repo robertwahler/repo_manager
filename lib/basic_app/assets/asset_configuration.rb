@@ -1,5 +1,6 @@
 require 'yaml'
 require 'pathname'
+require 'fileutils'
 
 module BasicApp
 
@@ -36,9 +37,25 @@ module BasicApp
       @asset = asset
     end
 
-    # save an asset to a configuration file
-    def save(ds=nil)
-      raise "not implemented"
+    # save specific attributes to an asset configuration file
+    #
+    # @raises
+    def save(attrs=nil)
+      raise "a Hash of attributes to save must be specified" unless attrs && attrs.is_a?(Hash)
+      raise "folder must be set prior to saving attributes" unless folder
+
+      # merge attributes to asset that contains parent attributes
+      @asset.attributes.merge!(attrs)
+
+      # load contents of folder and merge in attributes so that we don't save parent attributes
+      contents = {}
+      if File.exists?(folder)
+        contents = load_contents(folder)
+        raise "expected contents to be a hash" unless contents.is_a?(Hash)
+      end
+
+      contents = contents.merge!(attrs)
+      write_contents(folder, contents)
     end
 
     # load an asset from a configuration folder
@@ -88,6 +105,19 @@ module BasicApp
       contents = YAML::load(File.open(file, "rb") {|f| f.read})
       contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
       contents
+    end
+
+    # write raw contents to an asset_folder
+    def write_contents(asset_folder, contents)
+      contents.recursively_stringify_keys!
+
+      FileUtils.mkdir(asset_folder) unless File.exists?(asset_folder)
+      filename = File.join(asset_folder, 'asset.conf')
+
+      #TODO, use "wb" and write CRLF on Windows
+      File.open(filename, "w") do |f|
+        f.write(contents.to_yaml)
+      end
     end
 
   end
