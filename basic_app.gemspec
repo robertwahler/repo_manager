@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "basic_app"
 
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
-  s.add_dependency 'logging', '>= 1.6.1'
+  s.add_dependency 'logging', '>= 1.6.2'
   s.add_dependency 'slim', '>= 1.0.4'
   s.add_dependency "chronic", ">= 0.6.5"
 
