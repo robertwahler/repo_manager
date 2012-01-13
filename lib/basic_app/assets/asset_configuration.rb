@@ -38,7 +38,6 @@ module BasicApp
 
     # save an asset to a configuration file
     def save(ds=nil)
-      folder ||= ds
       raise "not implemented"
     end
 
@@ -46,9 +45,7 @@ module BasicApp
     def load(ds=nil)
       folder ||= ds
 
-      file = File.join(folder, 'asset.conf')
-      contents = YAML::load(File.open(file, "rb") {|f| f.read})
-      contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
+      contents = load_contents(folder)
 
       # if a global parent folder is defined, load it first
       parent = contents.delete(:parent) || parent
@@ -79,6 +76,18 @@ module BasicApp
       result.merge!(:parent => parent.folder) if parent
       result.merge!(:attributes => @asset.attributes)
       result
+    end
+
+    private
+
+    # load the raw contents from an asset_folder, ignore parents
+    #
+    # @return [Hash] or the raw text contents
+    def load_contents(asset_folder)
+      file = File.join(asset_folder, 'asset.conf')
+      contents = YAML::load(File.open(file, "rb") {|f| f.read})
+      contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
+      contents
     end
 
   end
