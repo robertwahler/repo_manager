@@ -60,7 +60,7 @@ module BasicApp
 
     # load an asset from a configuration folder
     def load(ds=nil)
-      folder ||= ds
+      @folder ||= ds
 
       contents = load_contents(folder)
 
