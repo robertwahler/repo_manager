@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'chronic'
 
 def expand_tabs(data, indent=8)
   data.gsub(/([^\t\n]*)\t/) {
@@ -101,5 +102,18 @@ Given /^the fixture "([^"]*)" is copied to "([^"]*)"$/ do |source, destination|
     source = File.join("../../spec/fixtures/", source)
     _mkdir(File.dirname(destination))
     FileUtils.cp(source, destination)
+  end
+end
+
+# | filename   | mtime | content |
+Given /^the folder "([^"]*)" with the following files:$/ do |folder, table|
+  create_dir(folder) unless File.exists?(File.join(current_dir, folder))
+  table.hashes.each do |hash|
+    filename = hash[:filename]
+    content = hash[:content]
+    filename = File.join(folder,filename)
+    mtime = Chronic.parse(hash[:mtime])
+    write_file(filename, content)
+    File.utime(mtime, mtime, fullpath(filename))
   end
 end
