@@ -116,7 +116,7 @@ module BasicApp
 
       #TODO, use "wb" and write CRLF on Windows
       File.open(filename, "w") do |f|
-        f.write(contents.to_yaml)
+        f.write(contents.to_conf)
       end
     end
 

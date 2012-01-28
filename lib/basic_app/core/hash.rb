@@ -1,9 +1,7 @@
 class Hash
 
-  # sorted yaml, require yaml first so our method will trump
-  # TODO: rename 'to_yaml' to 'to_conf' and spec it in basic_app so we don't have to do this
-  require 'yaml'
-  def to_yaml( opts = {} )
+  # sorted yaml suitable for configuration files
+  def to_conf( opts = {} )
     YAML::quick_emit( object_id, opts ) do |out|
       out.map( taguri, to_yaml_style ) do |map|
         sorted_keys = keys
@@ -46,7 +44,7 @@ class Hash
 
   def stringify_keys!
     self.replace(self.stringify_keys)
-end
+  end
 
   def stringify_keys
     inject({}) do |options, (key, value)|

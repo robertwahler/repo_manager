@@ -4,6 +4,7 @@ describe "Core" do
 
   before :each do
     @hash_symbols = {
+                      :zebras => true,
                       :options => {
                         :verbose => false,
                       },
@@ -13,6 +14,7 @@ describe "Core" do
                     }
 
     @hash_strings = {
+                      'zebras' => true,
                       'options' => {
                         'verbose' => false,
                       },
@@ -37,8 +39,12 @@ describe "Core" do
     end
 
     describe 'to_conf' do
-      it "should convert a hash to sorted YAML" do
-        pending "to_conf code"
+      it "should convert a hash of symbolized keys to sorted YAML" do
+        @hash_symbols.to_conf.should == "--- \n:options: \n  :verbose: false\n:repos: \n  :repo1: \n    :path: something\n:zebras: true\n"
+      end
+
+      it "should convert a hash of stringified keys to sorted YAML" do
+        @hash_strings.to_conf.should == "--- \noptions: \n  verbose: false\nrepos: \n  repo1: \n    path: something\nzebras: true\n"
       end
     end
 

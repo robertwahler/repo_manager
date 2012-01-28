@@ -11,7 +11,7 @@ Given /^the folder "([^"]*)" with the following asset configurations:$/ do |fold
     create_dir(File.join(folder, asset_name))
 
     filename = File.join(folder, asset_name, 'asset.conf')
-    write_file(filename, config.to_yaml)
+    write_file(filename, config.to_conf)
   end
 
 end

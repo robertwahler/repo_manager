@@ -225,7 +225,7 @@ module BasicApp
           result += item.name.green + ":\n"
           if item.respond_to?(:attributes)
             attributes = item.attributes.dup
-            result += attributes.recursively_stringify_keys!.to_yaml.gsub(/\s+$/, '') # strip trailing whitespace from YAML
+            result += attributes.recursively_stringify_keys!.to_conf.gsub(/\s+$/, '') # strip trailing whitespace from YAML
             result += "\n"
           end
         end
