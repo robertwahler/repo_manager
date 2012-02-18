@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
 
   # doc generation
   s.add_development_dependency "yard", ">= 0.7.2"
+  s.add_development_dependency "yard-cucumber", ">= 2.1.7"
   s.add_development_dependency "redcarpet", ">= 1.17.2"
 
   s.files        = gemfiles.split("\n")
