@@ -136,3 +136,16 @@ Feature: Configuration via YAML
       :color=>"ALWAYS"
       """
 
+  Scenario: Processing ERB
+    Given a file named "erb.conf" with:
+      """
+      ---
+      options:
+        color: <%= "ALWAYS" %>
+      """
+    When I run `basic_app action --verbose --config erb.conf`
+    Then the output should contain:
+      """
+      :color=>"ALWAYS"
+      """
+

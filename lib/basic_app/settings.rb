@@ -1,4 +1,5 @@
 require 'yaml'
+require 'erb'
 
 module BasicApp
 
@@ -26,7 +27,6 @@ module BasicApp
     # read options from YAML config
     def configure
 
-
       # config file default options
       configuration = {
                         :options => {
@@ -48,7 +48,7 @@ module BasicApp
 
       if config && File.exists?(config)
         # load options from the config file, overwriting hard-coded defaults
-        config_contents = YAML::load(File.open(config, "rb") {|f| f.read})
+        config_contents = YAML.load(ERB.new(File.open(config, "rb").read).result)
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
       else
         # user specified a config file?, no error if user did not specify config file
