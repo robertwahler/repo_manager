@@ -1,31 +1,41 @@
 require 'yaml'
 require 'erb'
+require 'fileutils'
+require 'basic_app/extensions/hash'
 
 module BasicApp
 
-  class Settings
+  # Access setting via symbolized keys or using accessor methods
+  #
+  # @example
+  #
+  #   settings = Settings.new(FileUtils.pwd, {:config => 'some/file.yml'})
+  #
+  #       verbose = settings.to_hash[:options] ? settings.to_hash[:options][:verbose] : false
+  #
+  #    equivalent to:
+  #
+  #       verbose = settings.options ? settings.options.verbose : false
+  #
+  # @return [Hash], for pure hash use 'to_hash' instead
+  class Settings < Hash
+    include BasicApp::Extensions::MethodReader
+    include BasicApp::Extensions::MethodWriter
 
-    def initialize(working_dir, options={})
-      @working_dir = working_dir
-      @options = options
-      @configuration = configure
-    end
+    def initialize(working_dir=nil, options={})
+      @working_dir = working_dir || FileUtils.pwd
+      @configuration = configure(options)
 
-    # entire configuration hash after processing all the individual YAML
-    # configuration files
-    def to_hash
-      @configuration
-    end
+      # call super without args
+      super *[]
 
-    # just the configuration 'options' hash
-    def options
-      @options
+      self.merge!(@configuration)
     end
 
   private
 
     # read options from YAML config
-    def configure
+    def configure(options)
 
       # config file default options
       configuration = {
@@ -36,7 +46,7 @@ module BasicApp
                       }
 
       # set default config if not given on command line
-      config = @options[:config]
+      config = options[:config]
       unless config
         config = [
                    File.join(@working_dir, "basic_app.conf"),
@@ -52,7 +62,7 @@ module BasicApp
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
       else
         # user specified a config file?, no error if user did not specify config file
-        raise "config file not found" if @options[:config]
+        raise "config file not found" if options[:config]
       end
 
       # store the original full config filename for later use
@@ -61,8 +71,7 @@ module BasicApp
       configuration.recursively_symbolize_keys!
 
       # the command line options override options read from the config file
-      @options = configuration[:options].merge!(@options)
-
+      configuration[:options].merge!(options)
       configuration
     end
 
