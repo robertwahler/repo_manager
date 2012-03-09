@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BasicApp::Settings, :focus => true  do
+describe BasicApp::Settings do
 
   before(:each) do
     @filename = 'config.conf'
