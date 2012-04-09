@@ -39,12 +39,23 @@ describe "Core" do
     end
 
     describe 'to_conf' do
-      it "should convert a hash of symbolized keys to sorted YAML" do
-        @hash_symbols.to_conf.should == "--- \n:options: \n  :verbose: false\n:repos: \n  :repo1: \n    :path: something\n:zebras: true\n"
-      end
 
-      it "should convert a hash of stringified keys to sorted YAML" do
-        @hash_strings.to_conf.should == "--- \noptions: \n  verbose: false\nrepos: \n  repo1: \n    path: something\nzebras: true\n"
+      if RUBY_VERSION =~ /^1.8/
+        it "should convert a hash of symbolized keys to sorted YAML" do
+          @hash_symbols.to_conf.should == "--- \n:options: \n  :verbose: false\n:repos: \n  :repo1: \n    :path: something\n:zebras: true\n"
+        end
+
+        it "should convert a hash of stringified keys to sorted YAML" do
+          @hash_strings.to_conf.should == "--- \noptions: \n  verbose: false\nrepos: \n  repo1: \n    path: something\nzebras: true\n"
+        end
+      else
+        it "should convert a hash of symbolized keys to insertion order YAML" do
+          @hash_symbols.to_conf.should == "---\n:zebras: true\n:options:\n  :verbose: false\n:repos:\n  :repo1:\n    :path: something\n"
+        end
+
+        it "should convert a hash of stringified keys to insertion order YAML" do
+          @hash_strings.to_conf.should == "---\nzebras: true\noptions:\n  verbose: false\nrepos:\n  repo1:\n    path: something\n"
+        end
       end
     end
 

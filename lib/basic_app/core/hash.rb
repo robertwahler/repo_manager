@@ -1,7 +1,13 @@
 class Hash
 
-  # sorted yaml suitable for configuration files
-  def to_conf( opts = {} )
+  # YAML suitable for configuration files
+  #
+  # returns sorted YAML if Ruby 1.8
+  # returns insertion ordered YAML on Ruby 1.9+
+  def to_conf
+    return to_yaml unless RUBY_VERSION =~ /^1.8/
+
+    opts = {}
     YAML::quick_emit( object_id, opts ) do |out|
       out.map( taguri, to_yaml_style ) do |map|
         sorted_keys = keys
