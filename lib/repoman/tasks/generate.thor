@@ -8,6 +8,7 @@ module Repoman
       path = options[:path]
       remote = options[:remote]
 
+      #TODO: this logic is broken, need configration hash outside of this block
       unless path && remote
         say "reading repo config file..."
         repoman_options = {}
