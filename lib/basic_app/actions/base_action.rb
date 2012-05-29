@@ -211,7 +211,7 @@ module BasicApp
     # Render items result to a string
     #
     # @return [String] suitable for displaying on STDOUT or writing to a file
-    def render(view_options={})
+    def render(view_options=configuration)
       logger.debug "base_action rendering"
       result = ""
       if template

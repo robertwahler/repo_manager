@@ -17,12 +17,14 @@ module BasicApp
   # using templates
   class BaseView
 
-    attr_accessor :options
-
-    def initialize(items, options={})
-      @options = options
+    def initialize(items, configuration={})
+      @configuration = configuration
       @items = items
       @template = File.expand_path('../templates/default.slim', __FILE__)
+    end
+
+    def configuration
+      @configuration
     end
 
     def items
@@ -45,7 +47,7 @@ module BasicApp
     end
 
     def title
-      @title || options[:title] || "Default Title"
+      @title || configuration[:title] || "Default Title"
     end
 
     def title=(value)
@@ -55,8 +57,8 @@ module BasicApp
     def date
       return @date if @date
 
-      if options[:date]
-        @date = Chronic.parse(options[:date])
+      if configuration[:date]
+        @date = Chronic.parse(configuration[:date])
         return @date if @date
       end
       @date = Date.today

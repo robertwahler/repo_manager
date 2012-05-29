@@ -72,7 +72,7 @@ module BasicApp
       end
     end
 
-    def render
+    def render(view_options=configuration)
       # templates override all other modes, if no mode specified, allow super to handle
       list_mode = options[:template] || options[:list]
       result = ""
@@ -82,7 +82,7 @@ module BasicApp
             result += "#{item.name.green}\n"
           end
         else
-          result = super
+          result = super(view_options)
       end
       result
     end
