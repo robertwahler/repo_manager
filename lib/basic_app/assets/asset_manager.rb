@@ -62,7 +62,7 @@ module BasicApp
         end
         logger.debug "asset glob pattern: #{pattern}"
         folders = Dir.glob(pattern)
-        warn "config user folder pattern did not match any folders: #{pattern}" if folders.empty?
+        logger.warn "config user folder pattern did not match any folders: #{pattern}" if folders.empty?
 
         folders.sort.each do |folder|
           folder_basename = Pathname.new(folder).basename.to_s

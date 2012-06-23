@@ -47,7 +47,7 @@ module BasicApp
 
       # set default config if not given on command line
       config = options[:config]
-      unless config
+      if config.nil?
         config = [
                    File.join(@working_dir, "basic_app.conf"),
                    File.join(@working_dir, ".basic_app.conf"),

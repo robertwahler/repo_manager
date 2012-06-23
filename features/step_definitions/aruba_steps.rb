@@ -43,8 +43,16 @@ Then /^its output should contain "([^"]*)"$/ do |expected|
   assert_partial_output(expected, output_from(@commands.last))
 end
 
+Then /^its output should not contain "([^"]*)"$/ do |expected|
+  assert_no_partial_output(expected, output_from(@commands.last))
+end
+
 Then /^its output should contain:$/ do |expected|
   assert_partial_output(expected, output_from(@commands.last))
+end
+
+Then /^its output should not contain:$/ do |expected|
+  assert_no_partial_output(expected, output_from(@commands.last))
 end
 
 # "the output should match" allows regex in the partial_output, if

@@ -45,6 +45,28 @@ Feature: Configuration via YAML
       config file not found
       """
 
+ Scenario: Ignoring the config file with the "--no-config" option
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color: true
+      """
+    When I run `basic_app action --verbose`
+    Then its output should contain:
+      """
+      :color=>true
+      """
+    When I run `basic_app list --verbose --no-config`
+    Then its output should contain:
+      """
+      :color=>"AUTO"
+      """
+    And its output should not contain:
+      """
+      :color=>true
+      """
+
  Scenario: Reading options from specified config file, ignoring the
     default config file
     Given a file named "basic_app.conf" with:
