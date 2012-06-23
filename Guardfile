@@ -1,13 +1,19 @@
+require 'rbconfig'
+WINDOWS = RbConfig::CONFIG['host_os'] =~ /msdos|mswin|win32|mingw/i unless defined?(WINDOWS)
+
+notification :off
+
 # @examples
 #
 #     guard --group specs
 #     guard --group features
 #
-group :specs do
+group :rspec do
   guard 'rspec',
         :all_after_pass => false,
         :all_on_start => false,
-        :cli => '--color --format nested --fail-fast',
+        #:cli => '--color --format nested --fail-fast',
+        :cli => '--color --format nested',
         :version => 2 do
 
     watch(%r{^spec/.+_spec\.rb$})
@@ -21,17 +27,24 @@ group :specs do
   end
 end
 
-group :features do
+group :cucumber do
+
+  opts =  []
+  opts << ["--color"]
+  opts << ["--format pretty"]
+  opts << ["--strict"]
+  opts << ["-r features"]
+  opts << ["--no-profile"]
+  #opts << ["--tags @focus"]
+  opts << ["--tags ~@wip"]
+  opts << ["--tags ~@windows"] unless WINDOWS
+  opts << ["--tags ~@posix"] if WINDOWS
+
   guard 'cucumber',
-        # focus on wip
-        #:cli => '--color --format pretty --profile wip',
-        # normal, ignore wip
-        :cli => '--color --format pretty --strict --tags ~wip',
+        :cli => opts.join(" "),
         :all_after_pass => false,
         :all_on_start => false do
 
     watch(%r{^features/.+\.feature$})
-    watch(%r{^features/support/.+$})                          { "features" }
-    watch(%r{^features/step_definitions/(.+)_steps\.rb$})     { |m| Dir[File.join("**/#{m[1]}.feature")][0] || "features" }
   end
 end

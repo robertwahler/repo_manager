@@ -5,6 +5,9 @@
 require 'bundler/setup'
 require 'bundler/gem_tasks'
 
+require 'rbconfig'
+WINDOWS = RbConfig::CONFIG['host_os'] =~ /msdos|mswin|win32|mingw/i unless defined?(WINDOWS)
+
 require 'rspec/core/rake_task'
 desc "Run RSpec"
 RSpec::Core::RakeTask.new do |spec|
@@ -13,7 +16,18 @@ end
 
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new do |t|
-  t.cucumber_opts = %w{}
+
+  opts =  []
+  opts <<  ["--color"]
+  opts << ["--format pretty"]
+  opts << ["--strict"]
+  opts << ["-r features"]
+  opts << ["--no-profile"]
+  opts << ["--tags ~@wip"]
+  opts << ["--tags ~@windows"] unless WINDOWS
+  opts << ["--tags ~@posix"] if WINDOWS
+
+  t.cucumber_opts = opts
 end
 
 desc "Run specs, both RSpec and Cucumber"
