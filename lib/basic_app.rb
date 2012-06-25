@@ -24,7 +24,7 @@ module BasicApp
   end
 
   # Platform constants
-  unless defined?(BasicGem::WINDOWS)
+  unless defined?(BasicApp::WINDOWS)
     WINDOWS = RbConfig::CONFIG['host_os'] =~ /mswin|mingw/i
     CYGWIN = RbConfig::CONFIG['host_os'] =~ /cygwin/i
   end
