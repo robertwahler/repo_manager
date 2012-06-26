@@ -39,36 +39,39 @@ module BasicApp
     # @return [OptionParser] for use by decendant actions
     def parse_options(parser_configuration = {})
       raise_on_invalid_option = parser_configuration.has_key?(:raise_on_invalid_option) ? parser_configuration[:raise_on_invalid_option] : true
-      logger.debug "base_action parsing args: #{args.inspect}, will raise on invalid: #{raise_on_invalid_option}"
+      parse_base_options = parser_configuration.has_key?(:parse_base_options) ? parser_configuration[:parse_base_options] : true
+      logger.debug "base_action parsing args: #{args.inspect}, raise_on_invalid_option: #{raise_on_invalid_option}, parse_base_options: #{parse_base_options}"
 
       option_parser = OptionParser.new do |opts|
         opts.banner = help + "\n\nAction options:"
 
-        opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
-          options[:template] = t.nil? ? "default.slim" : t
-          @template = options[:template]
-        end
+        if parse_base_options
+          opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
+            options[:template] = t.nil? ? "default.slim" : t
+            @template = options[:template]
+          end
 
-        opts.on("--output FILENAME", "Render output directly to a file") do |f|
-          options[:output] = f
-          @output = options[:output]
-        end
+          opts.on("--output FILENAME", "Render output directly to a file") do |f|
+            options[:output] = f
+            @output = options[:output]
+          end
 
-        opts.on("--force", "Overwrite file output without prompting") do |f|
-          options[:force] = f
-        end
+          opts.on("--force", "Overwrite file output without prompting") do |f|
+            options[:force] = f
+          end
 
-        opts.on("--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
-          options[:filter] = list
-        end
+          opts.on("--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
+            options[:filter] = list
+          end
 
-        # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
-        opts.on("--match [MODE]", "Asset filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
-          options[:match] = m || "ALL"
-          options[:match].upcase!
-          unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
-            puts "invalid match mode option: #{options[:match]}"
-            exit 1
+          # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
+          opts.on("--match [MODE]", "Asset filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
+            options[:match] = m || "ALL"
+            options[:match].upcase!
+            unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
+              puts "invalid match mode option: #{options[:match]}"
+              exit 1
+            end
           end
         end
 
@@ -124,8 +127,11 @@ module BasicApp
     end
 
     def execute
+      before_execute
       parse_options
-      process
+      @exit_code = process
+      after_execute
+      @exit_code
     end
 
     # handle "assets to items" transformations, if any, and write to output
@@ -136,8 +142,9 @@ module BasicApp
     # TODO: add exception handler and pass return values
     def write_to_output(content)
       if output
+        logger.debug "write_to_output called with output : #{output}"
         if overwrite_output?
-          logger.info "writing output to : #{output}"
+          logger.debug "writing output to : #{output}"
           File.open(output, 'wb') {|f| f.write(content) }
         else
           logger.info "existing file not overwritten.  To overwrite automatically, use the '--force' option."
@@ -288,6 +295,15 @@ module BasicApp
       end
 
       result
+    end
+
+    # callbacks
+    def before_execute
+      logger.debug "callback: before_execute"
+    end
+
+    def after_execute
+      logger.debug "callback: after_execute"
     end
 
   end

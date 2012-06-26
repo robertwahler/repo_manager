@@ -52,12 +52,15 @@ module BasicApp
                    File.join(@working_dir, "basic_app.conf"),
                    File.join(@working_dir, ".basic_app.conf"),
                    File.join(@working_dir, "config", "basic_app.conf"),
-                   File.expand_path(File.join("~", ".basic_app.conf"))
+                   File.expand_path(File.join("~", ".basic_app.conf")),
+                   File.expand_path(File.join("~", "basic_app", "basic_app.conf")),
+                   File.expand_path(File.join("~", ".basic_app", "basic_app.conf"))
                  ].detect { |filename| File.exists?(filename) }
       end
 
       if config && File.exists?(config)
         # load options from the config file, overwriting hard-coded defaults
+        logger.debug "reading configuration file: #{config}"
         config_contents = YAML.load(ERB.new(File.open(config, "rb").read).result)
         configuration.merge!(config_contents.symbolize_keys!) if config_contents && config_contents.is_a?(Hash)
       else

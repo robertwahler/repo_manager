@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'term-ansicolor', '>= 1.0.4'
   s.add_dependency 'logging', '>= 1.6.2'
   s.add_dependency 'slim', '>= 1.0.4'
+  s.add_dependency 'mustache', '>= 0.99.4'
   s.add_dependency "chronic", ">= 0.6.5"
 
   s.add_development_dependency "bundler", ">= 1.0.14"

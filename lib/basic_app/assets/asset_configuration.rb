@@ -1,4 +1,5 @@
 require 'yaml'
+require 'erb'
 require 'pathname'
 require 'fileutils'
 
@@ -33,11 +34,13 @@ module BasicApp
     attr_reader :asset
 
     def initialize(asset)
-      logger.debug "initializing new AssetConfiguration with asset class: #{asset.class.to_s}"
+      #logger.debug "initializing new AssetConfiguration with asset class: #{asset.class.to_s}"
       @asset = asset
     end
 
-    # save specific attributes to an asset configuration file
+    # Save specific attributes to an asset configuration file. Only the param
+    # 'attrs' and the current  contents of the config file are saved. Parent
+    # asset configurations are not saved.
     #
     # @raises
     def save(attrs=nil)
@@ -47,7 +50,8 @@ module BasicApp
       # merge attributes to asset that contains parent attributes
       @asset.attributes.merge!(attrs)
 
-      # load contents of folder and merge in attributes so that we don't save parent attributes
+      # load contents of the user folder and merge in attributes passed to save
+      # so that we don't save parent attributes
       contents = {}
       if File.exists?(folder)
         contents = load_contents(folder)
@@ -75,9 +79,14 @@ module BasicApp
 
         logger.debug "AssetConfiguration loading parent: #{parent_folder}"
         parent_configuration = BasicApp::AssetConfiguration.new(asset)
+
+        begin
         parent_configuration.load(parent_folder)
+        rescue
+          logger.warn "AssetConfiguration parent configuration load failed: #{parent_folder}"
       end
 
+      end
       # use part of the contents keyed to asset_key, allows
       # mutiple asset_types to share the same configuration file
       contents = contents[asset.asset_key].dup if (asset.asset_key && contents.has_key?(asset.asset_key))
@@ -99,12 +108,16 @@ module BasicApp
 
     # load the raw contents from an asset_folder, ignore parents
     #
-    # @return [Hash] or the raw text contents
+    # @return [Hash] of the raw text contents
     def load_contents(asset_folder)
       file = File.join(asset_folder, 'asset.conf')
-      contents = YAML::load(File.open(file, "rb") {|f| f.read})
+      if File.exists?(file)
+        contents = YAML.load(ERB.new(File.open(file, "rb").read).result(@asset.get_binding))
       contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
       contents
+      else
+        {}
+      end
     end
 
     # write raw contents to an asset_folder

@@ -6,6 +6,9 @@ Feature: Show help on actions
 
       basic_app help help
 
+ Background: Default empty configuration file
+    Given an empty file named "basic_app.conf"
+
  Scenario Outline: Valid action, help available
     When I run `basic_app help <action>`
     Then the exit status should be 0
@@ -18,6 +21,7 @@ Feature: Show help on actions
     | action  |
     | help    |
     | list    |
+    | task    |
 
   Scenario: Missing action
     When I run `basic_app help`

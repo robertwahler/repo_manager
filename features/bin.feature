@@ -4,6 +4,9 @@ Feature: Options via a command line interface (CLI)
   The application should accept options on the command line.  These options
   should override hard coded defaults
 
+ Background: Default empty configuration file
+    Given an empty file named "basic_app.conf"
+
   Scenario: Version info
     When I run `basic_app --version`
     Then the exit status should be 0

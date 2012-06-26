@@ -97,7 +97,7 @@ Feature: Asset configuration
       path: user_path
       """
 
-  Scenario: Parent configuration fills in missing items
+  Scenario: Parent configuration fills in missing items with ERB evaluation
     Given a file named "basic_app.conf" with:
       """
       ---
@@ -107,15 +107,19 @@ Feature: Asset configuration
         app_assets  : data/app_assets
       """
     And the folder "global/app_assets" with the following asset configurations:
-      | name         | path          |
-      | default      | set_by_parent |
+      | name         | path          | icon                      |
+      | default      | set_by_parent | based_on_<%= name %>.png |
     And the folder "data/app_assets" with the following asset configurations:
-      | name         | an_attribute  | parent                           | binary          |
-      | asset1       |               | ../../global/app_assets/default  | path_to/bin.exe |
+      | name         | parent                           | binary          |
+      | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
     When I run `basic_app list --verbose --type=app_asset`
     Then the output should contain:
       """
       path: set_by_parent
+      """
+    And the output should contain:
+      """
+      icon: based_on_asset1.png
       """
 
   Scenario: User configuration file overrides global configuration file
@@ -141,4 +145,23 @@ Feature: Asset configuration
     And the output should not contain:
       """
       path: set_by_parent
+      """
+
+  Scenario: Parent configuration missing
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color       : true
+      folders:
+        app_assets  : data/app_assets
+      """
+    And the folder "data/app_assets" with the following asset configurations:
+      | name         | parent                           | binary          |
+      | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
+    When I run `basic_app list --verbose --type=app_asset`
+    Then the exit status should be 0
+    Then the output should contain:
+      """
+      binary: path_to/bin.exe
       """

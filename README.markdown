@@ -97,7 +97,9 @@ Commit moves now so git will see them as renames
     find . -name *.rb -exec sed -i 's/basic_app/oct/' '{}' +
     find . -name *.feature -exec sed -i 's/basic_app/oct/' '{}' +
     sed -i 's/basic_app/oct/' Rakefile
+    sed -i 's/basic_app/oct/' Guardfile
     sed -i 's/basic_app/oct/' oct.gemspec
+
 
 Replace TODO's and update documentation
 ---------------------------------------
@@ -108,6 +110,7 @@ Replace TODO's and update documentation
 * Replace LICENSE
 * Replace VERSION
 * Modify .gemspec, add author information and replace the TODO's
+
 
 Create gemspec filename cache
 -------------------------
@@ -196,33 +199,13 @@ bundle exec rake -T
     rake test          # Run specs and cucumber
 
 
-Autotesting with Watchr
--------------------------
+Autotesting with Guard
+----------------------
 
-[Watchr](http://github.com/mynyml/watchr) provides a flexible alternative to Autotest.  A
-jump start script is provided in spec/watchr.rb.
-
-### Install watchr ###
-
-    gem install watchr
-
-### Run watchr ###
-
-    watchr spec/watchr.rb
-
-outputs a menu
-
-    Ctrl-\ for menu, Ctrl-C to quit
-
-Watchr will now watch the files defined in 'spec/watchr.rb' and run Rspec or Cucumber, as appropriate.
-The watchr script provides a simple menu.
-
-Ctrl-\
-
-    MENU: a = all , f = features  s = specs, l = last feature (none), q = quit
+    bundle exec guard
 
 
 Copyright
 ---------
 
-Copyright (c) 2010-2011 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
+Copyright (c) 2010-2012 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
