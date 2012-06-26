@@ -6,12 +6,13 @@ Given /^the folder "([^"]*)" with the following asset configurations:$/ do |fold
     config.merge!('path' => hash[:path]) if hash[:path]
     config.merge!('parent' => hash[:parent]) if hash[:parent]
     config.merge!('binary' => hash[:binary]) if hash[:binary]
+    config.merge!('icon' => hash[:icon]) if hash[:icon]
 
     asset_name = hash[:name]
     create_dir(File.join(folder, asset_name))
 
     filename = File.join(folder, asset_name, 'asset.conf')
-    write_file(filename, config.to_yaml)
+    write_file(filename, config.to_conf)
   end
 
 end

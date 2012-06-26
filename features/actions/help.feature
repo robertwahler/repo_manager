@@ -1,4 +1,4 @@
-Feature: Show help on pass-through command/action options
+Feature: Show help on actions
 
   The application should detail which Git command options are available as
   pass-through options.
@@ -11,6 +11,9 @@ Feature: Show help on pass-through command/action options
     repo help git
     repo help help
 
+ Background: Default empty configuration file
+    Given an empty file named "basic_app.conf"
+
  Scenario Outline: Valid action, help available
     When I run `repo help <action>`
     Then the exit status should be 0
@@ -21,10 +24,11 @@ Feature: Show help on pass-through command/action options
 
   Examples:
     | action  |
-    | git     |
     | help    |
-    | init    |
     | list    |
+    | task    |
+    | git     |
+    | init    |
     | path    |
     | status  |
 

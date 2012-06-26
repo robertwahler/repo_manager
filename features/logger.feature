@@ -49,7 +49,6 @@ Feature: Logging to console and log files
       logging:
         loggers:
           - name          : root
-            level         : debug
             appenders:
               - logfile
         appenders:
@@ -62,7 +61,38 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `repo help --verbose`
+    When I run `repo help`
+    Then the output should not contain:
+      """
+      DEBUG
+      """
+    And the file "temp.log" should contain:
+      """
+      DEBUG
+      """
+
+  Scenario: Overriding root level 'info' with '--verbose' to turn on 'debug' level
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color: true
+      logging:
+        loggers:
+          - name          : root
+            appenders:
+              - logfile
+        appenders:
+          - type          : File
+            name          : logfile
+            level         : info
+            truncate      : true
+            filename      : 'temp.log'
+            layout:
+              type        : Pattern
+              pattern     : '[%d] %l %c : %m\n'
+      """
+    When I run `basic_app help --verbose`
     Then the output should not contain:
       """
       DEBUG
@@ -80,7 +110,6 @@ Feature: Logging to console and log files
       logging:
         loggers:
           - name          : root
-            level         : debug
             appenders:
               - logfile
               - stdout
@@ -94,6 +123,43 @@ Feature: Logging to console and log files
               color_scheme: default
           - type          : File
             name          : logfile
+            level         : info
+            truncate      : true
+            filename      : 'temp.log'
+            layout:
+              type        : Pattern
+              pattern     : '[%d] %l %c : %m\n'
+      """
+    When I run `basic_app help`
+    Then the output should contain:
+      """
+      DEBUG
+      """
+    And the file "temp.log" should not contain:
+      """
+      DEBUG
+      """
+
+  Scenario: Stdout can be set to a different level than logfile
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      logging:
+        loggers:
+          - name          : root
+            appenders:
+              - logfile
+              - stdout
+        appenders:
+          - type          : Stdout
+            name          : stdout
+            level         : info
+            layout:
+              type        : Pattern
+              pattern     : '[%d] %l %c : %m\n'
+              color_scheme: default
+          - type          : File
+            name          : logfile
             level         : debug
             truncate      : true
             filename      : 'temp.log'
@@ -101,7 +167,44 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `repo help --verbose`
+    When I run `repo help`
+    Then the output should not contain:
+      """
+      DEBUG
+      """
+    And the file "temp.log" should contain:
+      """
+      DEBUG
+      """
+
+  Scenario: Override default STDOUT appender level with a config file for debug output
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      logging:
+        loggers:
+          - name          : root
+            appenders:
+              - logfile
+              - stdout
+        appenders:
+          - type          : Stdout
+            name          : stdout
+            level         : info
+            layout:
+              type        : Pattern
+              pattern     : '[%d] %l %c : %m\n'
+              color_scheme: default
+          - type          : File
+            name          : logfile
+            level         : info
+            truncate      : true
+            filename      : 'temp.log'
+            layout:
+              type        : Pattern
+              pattern     : '[%d] %l %c : %m\n'
+      """
+    When I run `basic_app help --verbose`
     Then the output should contain:
       """
       DEBUG

@@ -4,38 +4,26 @@ Feature: Configuration via YAML
   The application should process configuration options via YAML. These options
   should override hard coded defaults but not command line options.
 
-  Master configuration files are read from multiple locations in order of
-  priority.  Once a master configuration file is found, all other config files
-  are ignored.  Priority: ["./repo.conf", "./.repo.conf", "./config/repo.conf",
-  "~/.repo.conf"]
+  Config files are read from multiple locations in order of priority.  Once a
+  config file is found, all other config files are ignored.
 
-  All command line options can be read from the configuration file from the
-  "options:" block. The "options" block is optional.  The "repos" block
-  describes the repo names and attributes.  The "repos" block is optional as
-  well, see assets/configuration.feature for alternative "repos" configuration.
 
   Config file priority:
 
-      repo.conf
-      .repo.conf
-      config/repo.conf
-      ~/.repo.conf
+      basic_app.conf
+      .basic_app.conf
+      config/basic_app.conf
+      ~/.basic_app.conf
+      ~/basic_app/basic_app.conf
+      ~/.basic_app/basic_app.conf
 
-  The "repos" block can be specified in the master configuration file and/or in
-  separate YAML files.
 
-  Example master configuration file:
+  All command line options can be read from the config file from the "options:"
+  block. The "options" block is optional.
 
-      ---
-      options:
-        color: true
-      repos:
-        test1:
-          path: workspace/test_path_1
-          remotes:
-            origin: ../remotes/test1.git
-        test2:
-          path: /home/robert/repos/test_path_2
+  NOTE: All file system testing is done via the Aruba gem.  The home folder
+  config file is stubbed to prevent testing contamination in case it exists.
+
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
@@ -61,27 +49,39 @@ Feature: Configuration via YAML
       config file not found
       """
 
+ Scenario: Ignoring the config file with the "--no-config" option
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      options:
+        color: true
+      """
+    When I run `basic_app action --verbose`
+    Then its output should contain:
+      """
+      :color=>true
+      """
+    When I run `basic_app list --verbose --no-config`
+    Then its output should contain:
+      """
+      :color=>"AUTO"
+      """
+    And its output should not contain:
+      """
+      :color=>true
+      """
+
  Scenario: Reading options from specified config file, ignoring the
     default config file
     Given a file named "repo.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
       options:
         color: true
       """
     And a file named "repo_no_color.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
       options:
         color: false
       """
@@ -100,23 +100,13 @@ Feature: Configuration via YAML
     Given a file named "repo.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
-      options:
+     options:
         color: true
       """
     And a file named "repo_no_color.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
-      options:
+     options:
         color: false
       """
     When I run `repo path --verbose --config=repo_no_color.conf --color`
@@ -137,11 +127,6 @@ Feature: Configuration via YAML
     And a file named "repo_with_color.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
       options:
         color: true
       """
@@ -168,11 +153,6 @@ Feature: Configuration via YAML
     Given a file named "repo_with_always_color.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
       options:
         color: ALWAYS
       """
@@ -181,6 +161,21 @@ Feature: Configuration via YAML
       """
       :color=>"ALWAYS"
       """
+
+  Scenario: Processing ERB
+    Given a file named "erb.conf" with:
+      """
+      ---
+      options:
+        color: <%= "ALWAYS" %>
+      """
+    When I run `basic_app action --verbose --config erb.conf`
+    Then the output should contain:
+      """
+      :color=>"ALWAYS"
+      """
+
+
 
   Scenario: Reading default valid config files ordered by priority
     Given a file named "repo.conf" with:

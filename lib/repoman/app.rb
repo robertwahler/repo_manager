@@ -6,7 +6,7 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[help list path init status git]
+  AVAILABLE_ACTIONS = %w[help list task path init status git]
 
   # these commands don't need to have the 'git' arg precede them
   GIT_NATIVE_SUPPORT = %w[add config branch checkout commit diff fetch
@@ -26,6 +26,7 @@ module Repoman
       Repoman::Logger::Manager.new(config_filename, :logging, configuration)
 
       logger.debug "options: #{@options.inspect}"
+      logger.debug "argv: #{@argv.inspect}"
       logger.debug "base_dir: #{@options[:base_dir]}" if @options[:base_dir]
       logger.debug "config file: #{configuration[:configuration_filename]}" if configuration[:configuration_filename]
     end
@@ -41,6 +42,24 @@ module Repoman
           if GIT_NATIVE_SUPPORT.include?(action)
             args.unshift(action)
             action = 'git'
+          end
+
+          # special case: actionless tasks
+          action = 'task' if action.nil? && @options.include?(:tasks)
+
+          # special case: `basic_app sweep:screenshots` is an acceptable task action
+          if action && action.match(/[a-zA-Z]+:+/)
+            args.unshift(action)
+            action = 'task'
+          end
+
+          # special case: `basic_app help sweep:screenshots` is an acceptable task help action
+          if action == 'help' && args.any?
+            target = args[0]
+            if target.match(/[a-zA-Z]+:+/)
+              args.unshift(action)
+              action = 'task'
+            end
           end
 
           unless AVAILABLE_ACTIONS.include?(action)
@@ -74,7 +93,7 @@ module Repoman
         logger.debug "repo run system exit: #{e}, status code: #{e.status}"
         exit(e.status)
       rescue Exception => e
-        logger.fatal("repo fatal exception")
+        logger.fatal("repo fatal exception: #{e.message}")
         STDERR.puts("repo failed: #{e.message}".red)
         STDERR.puts("Command failed, use '--verbose' for backtrace.") unless @options[:verbose]
         STDERR.puts(e.backtrace.join("\n")) if @options[:verbose]

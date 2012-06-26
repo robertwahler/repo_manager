@@ -62,11 +62,11 @@ module Repoman
         end
         logger.debug "asset glob pattern: #{pattern}"
         folders = Dir.glob(pattern)
-        warn "config user folder pattern did not match any folders: #{pattern}" if folders.empty?
+        logger.debug "user assets folder is empty: #{pattern}" if folders.empty?
 
         folders.sort.each do |folder|
           folder_basename = Pathname.new(folder).basename.to_s
-          logger.debug "matching folder: #{folder} using basename: #{folder_basename}"
+          #logger.debug "matching folder: #{folder} using basename: #{folder_basename}"
           if filters.find {|filter| matches?(folder_basename, filter, asset_options)}
             logger.debug "match found for: #{folder_basename}"
             match_count += 1

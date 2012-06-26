@@ -46,6 +46,10 @@ options = {}
 optparser = OptionParser.new do |opts|
   opts.banner = help
 
+  opts.on("-T", "--tasks", "List tasks") do |t|
+    options[:tasks] = t
+  end
+
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     options[:verbose] = v
   end
@@ -59,7 +63,7 @@ optparser = OptionParser.new do |opts|
     end
   end
 
-  opts.on("--config FILE", "Load configuration options from FILE") do |file|
+  opts.on("--[no-]config FILE", "Load configuration options from FILE") do |file|
     options[:config] = file
   end
 
