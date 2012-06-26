@@ -81,12 +81,12 @@ module BasicApp
         parent_configuration = BasicApp::AssetConfiguration.new(asset)
 
         begin
-        parent_configuration.load(parent_folder)
+          parent_configuration.load(parent_folder)
         rescue
           logger.warn "AssetConfiguration parent configuration load failed: #{parent_folder}"
+        end
       end
 
-      end
       # use part of the contents keyed to asset_key, allows
       # mutiple asset_types to share the same configuration file
       contents = contents[asset.asset_key].dup if (asset.asset_key && contents.has_key?(asset.asset_key))
@@ -113,8 +113,8 @@ module BasicApp
       file = File.join(asset_folder, 'asset.conf')
       if File.exists?(file)
         contents = YAML.load(ERB.new(File.open(file, "rb").read).result(@asset.get_binding))
-      contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
-      contents
+        contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
+        contents
       else
         {}
       end
