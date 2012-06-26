@@ -1,15 +1,16 @@
 .gemfiles
 .gitattributes
 .gitignore
+.rspec
 .yardopts
 Gemfile
 Gemfile.lock
+Guardfile
 HISTORY.markdown
 LICENSE
 README.markdown
 Rakefile
 TODO.markdown
-Thorfile
 VERSION
 bin/repo
 cucumber.yml
@@ -19,6 +20,7 @@ features/actions/init.feature
 features/actions/list.feature
 features/actions/path.feature
 features/actions/status.feature
+features/actions/task.feature
 features/assets/configuration.feature
 features/bin.feature
 features/logger.feature
@@ -33,6 +35,7 @@ features/tasks/action.feature
 features/tasks/generate.feature
 lib/repoman.rb
 lib/repoman/actions.rb
+lib/repoman/actions/action_helper.rb
 lib/repoman/actions/app_action.rb
 lib/repoman/actions/base_action.rb
 lib/repoman/actions/git_action.rb
@@ -41,6 +44,7 @@ lib/repoman/actions/init_action.rb
 lib/repoman/actions/list_action.rb
 lib/repoman/actions/path_action.rb
 lib/repoman/actions/status_action.rb
+lib/repoman/actions/task_action.rb
 lib/repoman/app.rb
 lib/repoman/assets.rb
 lib/repoman/assets/app_asset.rb
@@ -52,6 +56,7 @@ lib/repoman/core.rb
 lib/repoman/core/array.rb
 lib/repoman/core/hash.rb
 lib/repoman/errors.rb
+lib/repoman/extensions/hash.rb
 lib/repoman/git.rb
 lib/repoman/git/lib.rb
 lib/repoman/git/status.rb
@@ -60,6 +65,7 @@ lib/repoman/settings.rb
 lib/repoman/tasks.rb
 lib/repoman/tasks/action.thor
 lib/repoman/tasks/generate.thor
+lib/repoman/tasks/task_manager.rb
 lib/repoman/tasks/templates/repo.erb
 lib/repoman/tasks/thor_helper.rb
 lib/repoman/views.rb
@@ -70,10 +76,11 @@ lib/repoman/views/templates/default.erb
 lib/repoman/views/templates/default.slim
 repoman.gemspec
 spec/aruba_helper.rb
-spec/basic_app/array_spec.rb
+spec/basic_app/assets/base_asset_spec.rb
+spec/basic_app/core_spec.rb
+spec/basic_app/settings_spec.rb
 spec/basic_gem/aruba_helper_spec.rb
 spec/basic_gem/basic_gem_spec.rb
 spec/basic_gem/gemspec_spec.rb
 spec/repoman/git_spec.rb
 spec/spec_helper.rb
-spec/watchr.rb
