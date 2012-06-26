@@ -1,7 +1,7 @@
 require 'pathname'
 require 'rbconfig'
 
-module BasicApp
+module Repoman
   module ActionHelper
 
     def shell_quote(string)

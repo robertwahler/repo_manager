@@ -56,7 +56,7 @@ module Repoman
 
       @asset_key = nil
       folder = asset_name.to_s
-      @name = BasicApp::BaseAsset.path_to_name(folder)
+      @name = Repoman::BaseAsset.path_to_name(folder)
 
       logger.debug "Asset name: #{name}"
       logger.debug "Asset configuration folder: #{folder}"

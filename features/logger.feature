@@ -72,7 +72,7 @@ Feature: Logging to console and log files
       """
 
   Scenario: Overriding root level 'info' with '--verbose' to turn on 'debug' level
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -92,7 +92,7 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `basic_app help --verbose`
+    When I run `repo help --verbose`
     Then the output should not contain:
       """
       DEBUG
@@ -130,7 +130,7 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `basic_app help`
+    When I run `repo help`
     Then the output should contain:
       """
       DEBUG
@@ -141,7 +141,7 @@ Feature: Logging to console and log files
       """
 
   Scenario: Stdout can be set to a different level than logfile
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       logging:
@@ -178,7 +178,7 @@ Feature: Logging to console and log files
       """
 
   Scenario: Override default STDOUT appender level with a config file for debug output
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       logging:
@@ -204,7 +204,7 @@ Feature: Logging to console and log files
               type        : Pattern
               pattern     : '[%d] %l %c : %m\n'
       """
-    When I run `basic_app help --verbose`
+    When I run `repo help --verbose`
     Then the output should contain:
       """
       DEBUG

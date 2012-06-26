@@ -1,49 +1,49 @@
 require 'optparse'
 
-module BasicApp
+module Repoman
 
   # @group CLI actions
   #
   # List assets to the screen or file with or without templates
   # using regular expression (regex) filtering.
   #
-  # @example Usage: basic_app list
+  # @example Usage: repo list
   #
-  #     basic_app list
-  #     basic_app list --list=NAME
-  #     basic_app list --type=asset_type
-  #     basic_app list --template ~/templates/myTemplate.slim
+  #     repo list
+  #     repo list --list=NAME
+  #     repo list --type=asset_type
+  #     repo list --template ~/templates/myTemplate.slim
   #
   # @example Asset regex filtering:
   #
-  #     basic_app list --filter=ass.t1,as.et2
+  #     repo list --filter=ass.t1,as.et2
   #
   # @example Equivalent asset filtering:
   #
-  #     basic_app list --filter=asset1,asset2
-  #     basic_app list --asset=asset1,asset2
-  #     basic_app list asset1 asset2
+  #     repo list --filter=asset1,asset2
+  #     repo list --asset=asset1,asset2
+  #     repo list asset1 asset2
   #
   # @example Equivalent usage, file writing:
   #
-  #    basic_app list --template=default.slim --output=tmp/aruba/index.html
-  #    basic_app list --template=default.slim >> tmp/aruba/index.html
+  #    repo list --template=default.slim --output=tmp/aruba/index.html
+  #    repo list --template=default.slim >> tmp/aruba/index.html
   #
   # @example return just the first matching asset
   #
-  #     basic_app list --match=FIRST
+  #     repo list --match=FIRST
   #
   # @example Fail out if more than one matching asset
   #
-  #     basic_app list --match=ONE
+  #     repo list --match=ONE
   #
   # @example Disable regex filter matching
   #
-  #     basic_app list --match=EXACT
+  #     repo list --match=EXACT
   #
   # @example Future usage (not implemented):
   #
-  #     basic_app list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
+  #     repo list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
   #
   # @return [Number] 0 if successful
   class ListAction < AppAction

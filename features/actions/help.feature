@@ -12,7 +12,7 @@ Feature: Show help on actions
     repo help help
 
  Background: Default empty configuration file
-    Given an empty file named "basic_app.conf"
+    Given an empty file named "repo.conf"
 
  Scenario Outline: Valid action, help available
     When I run `repo help <action>`

@@ -47,13 +47,13 @@ module Repoman
           # special case: actionless tasks
           action = 'task' if action.nil? && @options.include?(:tasks)
 
-          # special case: `basic_app sweep:screenshots` is an acceptable task action
+          # special case: `repo sweep:screenshots` is an acceptable task action
           if action && action.match(/[a-zA-Z]+:+/)
             args.unshift(action)
             action = 'task'
           end
 
-          # special case: `basic_app help sweep:screenshots` is an acceptable task help action
+          # special case: `repo help sweep:screenshots` is an acceptable task help action
           if action == 'help' && args.any?
             target = args[0]
             if target.match(/[a-zA-Z]+:+/)

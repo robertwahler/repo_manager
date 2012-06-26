@@ -80,7 +80,7 @@ Feature: Asset configuration
       path: user_path
       """
 
- 
+
   Scenario: Assets attributes are specified directly in the config file,
     attributes key is by convention, the name of the asset class
     Given a file named "repo.conf" with:
@@ -99,7 +99,7 @@ Feature: Asset configuration
       """
 
   Scenario: Parent configuration fills in missing items with ERB evaluation
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -113,7 +113,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | binary          |
       | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `repo list --verbose --type=app_asset`
     Then the output should contain:
       """
       path: set_by_parent
@@ -149,7 +149,7 @@ Feature: Asset configuration
       """
 
   Scenario: Parent configuration missing
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -160,7 +160,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | binary          |
       | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `repo list --verbose --type=app_asset`
     Then the exit status should be 0
     Then the output should contain:
       """

@@ -78,7 +78,7 @@ module Repoman
         end
 
         logger.debug "AssetConfiguration loading parent: #{parent_folder}"
-        parent_configuration = BasicApp::AssetConfiguration.new(asset)
+        parent_configuration = Repoman::AssetConfiguration.new(asset)
 
         begin
           parent_configuration.load(parent_folder)

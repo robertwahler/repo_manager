@@ -10,12 +10,12 @@ Feature: Configuration via YAML
 
   Config file priority:
 
-      basic_app.conf
-      .basic_app.conf
-      config/basic_app.conf
-      ~/.basic_app.conf
-      ~/basic_app/basic_app.conf
-      ~/.basic_app/basic_app.conf
+      ./repo.conf
+      ./.repo.conf
+      ./config/repo.conf
+      ~/.repo.conf
+      ~/repoman/repo.conf
+      ~/.repoman/repo.conf
 
 
   All command line options can be read from the config file from the "options:"
@@ -50,18 +50,18 @@ Feature: Configuration via YAML
       """
 
  Scenario: Ignoring the config file with the "--no-config" option
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
         color: true
       """
-    When I run `basic_app action --verbose`
+    When I run `repo action --verbose`
     Then its output should contain:
       """
       :color=>true
       """
-    When I run `basic_app list --verbose --no-config`
+    When I run `repo list --verbose --no-config`
     Then its output should contain:
       """
       :color=>"AUTO"
@@ -169,7 +169,7 @@ Feature: Configuration via YAML
       options:
         color: <%= "ALWAYS" %>
       """
-    When I run `basic_app action --verbose --config erb.conf`
+    When I run `repo action --verbose --config erb.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"

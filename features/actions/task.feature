@@ -6,29 +6,29 @@ Feature: Invoke external tasks, normally Thor tasks.
 
   Examples
 
-      basic_app task test:init /to/some/folder
+      repo task test:init /to/some/folder
 
   Task action is not required
 
-      basic_app test:init /to/some/folder
+      repo test:init /to/some/folder
 
   Add user tasks by specifying folders.tasks in the master config file
   and add Thor tasks.  See background scenario.
 
   Background: A master configuration file
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
         color       : true
       folders:
-        app_assets       : basic_app/apps
-        tasks            : basic_app/tasks
+        app_assets       : repoman/apps
+        tasks            : repoman/tasks
       """
     And an empty file named "output/.gitignore"
-    And a file named "basic_app/tasks/test.rb" with:
+    And a file named "repoman/tasks/test.rb" with:
       """
-      module BasicApp
+      module Repoman
         class Test < Thor
           namespace :test
 
@@ -41,9 +41,9 @@ Feature: Invoke external tasks, normally Thor tasks.
         end
       end
       """
-    And a file named "basic_app/tasks/test.thor" with:
+    And a file named "repoman/tasks/test.thor" with:
       """
-      module BasicApp
+      module Repoman
         class TestB < Thor
 
           desc "hello", "a test hello task"
@@ -57,7 +57,7 @@ Feature: Invoke external tasks, normally Thor tasks.
       """
 
   Scenario: Listings available tasks from gem and user task locations
-    When I run `basic_app task -T --verbose`
+    When I run `repo task -T --verbose`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -65,45 +65,45 @@ Feature: Invoke external tasks, normally Thor tasks.
       """
     And the output should contain:
       """
-      basic_app test:init
+      repo test:init
       """
     And the output should contain:
       """
-      basic_app basic_app:test_b:hello
+      repo repoman:test_b:hello
       """
 
   Scenario: Listings available tasks without the 'task' action
-    When I run `basic_app -T`
+    When I run `repo -T`
     Then the exit status should be 0
     And the output should contain:
       """
-      basic_app test:init
+      repo test:init
       """
 
   Scenario: Show help for a given task
-    When I run `basic_app task help test:init`
+    When I run `repo task help test:init`
     Then the exit status should be 0
     Then the output should contain:
       """
       Usage:
-        basic_app test:init
+        repo test:init
 
       a test init task
       """
 
   Scenario: Show help for a given task without the 'task' action
-    When I run `basic_app help test:init`
+    When I run `repo help test:init`
     Then the exit status should be 0
     Then the output should contain:
       """
       Usage:
-        basic_app test:init
+        repo test:init
 
       a test init task
       """
 
-  Scenario: Successful task run without the 'basic_app:' namespace
-    When I run `basic_app task test:init my_path`
+  Scenario: Successful task run without the 'repoman:' namespace
+    When I run `repo task test:init my_path`
     Then the exit status should be 0
     Then the output should contain:
       """
@@ -111,15 +111,15 @@ Feature: Invoke external tasks, normally Thor tasks.
       """
 
   Scenario: Successful task run without the 'task' action
-    When I run `basic_app test:init my_path`
+    When I run `repo test:init my_path`
     Then the exit status should be 0
     Then the output should contain:
       """
       my_path
       """
 
-  Scenario: Successful task run with the 'basic_app:' namespace
-    When I run `basic_app task basic_app:test_b:hello my_message`
+  Scenario: Successful task run with the 'repoman:' namespace
+    When I run `repo task repoman:test_b:hello my_message`
     Then the exit status should be 0
     Then the output should contain:
       """

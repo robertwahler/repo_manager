@@ -1,30 +1,30 @@
-module BasicApp
+module Repoman
 
   # @group CLI actions
   #
   # Invoke external tasks, normally Thor tasks
   #
-  # @example Usage: basic_app task TASK [args]
+  # @example Usage: repo task TASK [args]
   #
-  #      basic_app task basic_app:sweep:screenshots /to/some/folder
-  #      basic_app basic_app:sweep:screenshots /to/some/folder
+  #      repo task repoman:sweep:screenshots /to/some/folder
+  #      repo repoman:sweep:screenshots /to/some/folder
   #
   # @example General task help:
   #
-  #      basic_app help task
+  #      repo help task
   #
   # @example Help for specific task
   #
-  #      basic_app task help basic_app:sweep:screenshots
-  #      basic_app help basic_app:sweep:screenshots
+  #      repo task help repoman:sweep:screenshots
+  #      repo help repoman:sweep:screenshots
   #
   # @example Display a list of tasks
   #
-  #      basic_app task -T
-  #      basic_app  -T
+  #      repo task -T
+  #      repo  -T
   #
-  #      basic_app task --tasks
-  #      basic_app --tasks
+  #      repo task --tasks
+  #      repo --tasks
   #
   # @return [Number] exit code from task
   class TaskAction < AppAction
@@ -43,8 +43,8 @@ module BasicApp
     def process
       # Thor actions can include toxic side effects,
       # keep the namespace clean until needed
-      require 'basic_app/tasks/task_manager'
-      task_manager = BasicApp::TaskManager.new(configuration)
+      require 'repoman/tasks/task_manager'
+      task_manager = Repoman::TaskManager.new(configuration)
 
       if options[:tasks]
         task_manager.list_tasks

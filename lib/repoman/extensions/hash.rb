@@ -3,7 +3,7 @@
 # It is modified to always convert new attributes to symbols and
 # return nil if missing attribute so it works more like OpenStruct but
 # still retains Hash as super
-module BasicApp
+module Repoman
   module Extensions
 
     # MethodReader allows you to access keys of the hash
@@ -14,7 +14,7 @@ module BasicApp
     # @example
     #
     # class User < Hash
-    #   include BasicApp::Extensions::MethodReader
+    #   include Repoman::Extensions::MethodReader
     # end
     #
     # user = User.new
@@ -55,7 +55,7 @@ module BasicApp
     # @example
     #
     #     class MyHash < Hash
-    #       include BasicApp::Extensions::MethodWriter
+    #       include Repoman::Extensions::MethodWriter
     #     end
     #
     #     h = MyHash.new

@@ -1,7 +1,7 @@
 require 'yaml'
 require 'erb'
 require 'fileutils'
-require 'basic_app/extensions/hash'
+require 'repoman/extensions/hash'
 
 module Repoman
 
@@ -19,8 +19,8 @@ module Repoman
   #
   # @return [Hash], for pure hash use 'to_hash' instead
   class Settings < Hash
-    include BasicApp::Extensions::MethodReader
-    include BasicApp::Extensions::MethodWriter
+    include Repoman::Extensions::MethodReader
+    include Repoman::Extensions::MethodWriter
 
     def initialize(working_dir=nil, options={})
       @working_dir = working_dir || FileUtils.pwd
@@ -53,12 +53,12 @@ module Repoman
       config = options[:config]
       if config.nil?
         config = [
-                   File.join(@working_dir, "basic_app.conf"),
-                   File.join(@working_dir, ".basic_app.conf"),
-                   File.join(@working_dir, "config", "basic_app.conf"),
-                   File.expand_path(File.join("~", ".basic_app.conf")),
-                   File.expand_path(File.join("~", "basic_app", "basic_app.conf")),
-                   File.expand_path(File.join("~", ".basic_app", "basic_app.conf"))
+                   File.join(@working_dir, "repo.conf"),
+                   File.join(@working_dir, ".repo.conf"),
+                   File.join(@working_dir, "config", "repo.conf"),
+                   File.expand_path(File.join("~", ".repo.conf")),
+                   File.expand_path(File.join("~", "repoman", "repo.conf")),
+                   File.expand_path(File.join("~", ".repoman", "repo.conf"))
                  ].detect { |filename| File.exists?(filename) }
       end
 

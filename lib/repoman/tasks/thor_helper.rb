@@ -1,23 +1,23 @@
 require 'pathname'
 require 'rbconfig'
-require 'basic_app'
-require 'basic_app/actions/action_helper'
+require 'repoman'
+require 'repoman/actions/action_helper'
 
-module BasicApp
+module Repoman
   module ThorHelper
-    include ::BasicApp::ActionHelper
+    include ::Repoman::ActionHelper
 
-    # main basic_app configuration setttings file
+    # main repoman configuration setttings file
     def configuration(configuration_file=nil)
       return @configuration if @configuration
-      logger.debug "getting basic_app configuration"
+      logger.debug "getting repoman configuration"
       app_options = {}
       app_options[:config] = configuration_file || options[:config]
-      @configuration = ::BasicApp::Settings.new(nil, app_options)
+      @configuration = ::Repoman::Settings.new(nil, app_options)
     end
 
     def configuration=(value={})
-      logger.debug "setting basic_app configuration"
+      logger.debug "setting repoman configuration"
       @configuration = value.dup
     end
 

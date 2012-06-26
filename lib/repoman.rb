@@ -27,7 +27,7 @@ module Repoman
   end
 
   # Platform constants
-  unless defined?(BasicApp::WINDOWS)
+  unless defined?(Repoman::WINDOWS)
     WINDOWS = RbConfig::CONFIG['host_os'] =~ /mswin|mingw/i
     CYGWIN = RbConfig::CONFIG['host_os'] =~ /cygwin/i
   end

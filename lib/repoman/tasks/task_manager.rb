@@ -3,7 +3,7 @@ require 'thor/core_ext/file_binary_read'
 require 'thor/util'
 
 # embed Thor engine to allow extendable tasks
-module BasicApp
+module Repoman
   class TaskManager
 
     attr_accessor :configuration
@@ -17,11 +17,11 @@ module BasicApp
     # @examples:
     #
     #     find_by_namespace(sweep:screenshots)
-    #     find_by_namespace(basic_app:sweep:screenshots)
+    #     find_by_namespace(repoman:sweep:screenshots)
     #
     #     returns:
     #
-    #         BasicApp::Sweep, screenshots
+    #         Repoman::Sweep, screenshots
     #
     # @return [Class, String] the Thor class and the task
     def find_by_namespace(name)
@@ -66,9 +66,9 @@ module BasicApp
       result
     end
 
-    # load all the tasks in this gem plus the user's own basic_app task folder
+    # load all the tasks in this gem plus the user's own repoman task folder
     #
-    # NOTE: doesn't load any default tasks or non-BasicApp tasks
+    # NOTE: doesn't load any default tasks or non-Repoman tasks
     def load_tasks
       return if @loaded
 
@@ -149,7 +149,7 @@ module BasicApp
       end
       list.sort!{ |a,b| a[0] <=> b[0] }
 
-      title = "basic_app tasks"
+      title = "repoman tasks"
       shell.say shell.set_color(title, :blue, bold=true)
       shell.say "-" * title.size
       shell.print_table(list, :ident => 2, :truncate => true)
