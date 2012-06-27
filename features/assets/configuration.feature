@@ -148,6 +148,7 @@ Feature: Asset configuration
       path: set_by_parent
       """
 
+  @focus
   Scenario: Parent configuration missing
     Given a file named "repo.conf" with:
       """
@@ -155,12 +156,12 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        repos       : data/app_assets
       """
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | binary          |
       | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `repo list --verbose --type=app_asset`
+    When I run `repo list --verbose`
     Then the exit status should be 0
     Then the output should contain:
       """

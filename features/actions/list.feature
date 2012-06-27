@@ -550,7 +550,6 @@ Scenario: List with invalid options in varying positions on the command line
       unsupported template type based on file extension .foo
       """
 
-
   Scenario: Default action, no filter, --list==SHORT
     Given a file named "repo.conf" with:
       """

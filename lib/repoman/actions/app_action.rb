@@ -21,6 +21,7 @@ module Repoman
       :repo_asset
     end
 
+    # override asset_type for legacy, allows "repos:" instead of "repo_assets"
     def asset_key
       :repos
     end

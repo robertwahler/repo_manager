@@ -45,6 +45,13 @@ module Repoman
   #
   #     repo list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
   #
+  # @example Repo versions of Bash's pushd and popd
+  #
+  #     function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
+  #     alias rpopd="popd"
+  #
+  #     rcd my_repo_name
+  #
   # @return [Number] 0 if successful
   class ListAction < AppAction
 
@@ -80,6 +87,15 @@ module Repoman
         when 'NAME'
           items.each do |item|
             result += "#{item.name.green}\n"
+          end
+        when 'SHORT'
+          items.each do |item|
+            result += item.name.green
+            result += ": #{item.path}\n"
+          end
+        when 'PATH'
+          items.each do |item|
+            result += "#{item.path}\n"
           end
         else
           result = super(view_options)
