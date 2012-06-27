@@ -123,12 +123,12 @@ module Repoman
   #   end
   #
   class Generate < Thor
+    namespace :generate
     include Thor::Actions
     include Repoman::ThorHelper
     include Repoman::GenerateHelper
 
     class_option :force, :type => :boolean, :desc => "Force overwrite of existing config file"
-    class_option :config, :type => :string, :desc => "Repoman config file"
     class_option :path, :type => :string, :aliases => "-p", :desc => "Full path to working folder"
     class_option :remote, :type => :string, :aliases => "-r", :desc => "Repo remote origin, i.e.  'git@host.git' or '//smb/path", :banner => "//smb/remote/path"
 

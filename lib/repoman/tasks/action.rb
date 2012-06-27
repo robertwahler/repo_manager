@@ -1,6 +1,7 @@
 # @see features/tasks/action.feature
 module Repoman
   class Action < Thor
+    namespace :action
     include Thor::Actions
     include Repoman::ThorHelper
 
@@ -9,6 +10,7 @@ module Repoman
     method_option :repos, :type => :string, :desc => "Restrict update to comma delimited list of repo names", :banner => "repo1,repo2"
     method_option :message, :type => :string, :desc => "Override 'automatic commit' message"
     method_option 'no-push', :type => :boolean, :default => false, :desc => "Force overwrite of existing config file"
+
     desc "update", "run repo add -A, repo commit, and repo push on all modified repos"
     def update
 
