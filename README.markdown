@@ -83,9 +83,7 @@ The following gems are required
 * Bundler for dependency management <http://github.com/carlhuda/bundler>
 * Rspec for unit testing <http://github.com/dchelimsky/rspec>
 * Cucumber for functional testing <http://github.com/aslakhellesoy/cucumber>
-* Aruba for CLI testing <http://github.com/aslakhellesoy/aruba>
 * YARD for documentation generation <http://github.com/lsegal/yard>
-* Kramdown for documentation markup processing <https://github.com/gettalong/kramdown>
 
 
 ## Rake tasks ##
@@ -117,31 +115,11 @@ colored output on windows
 
     gem install win32console
 
-## Autotesting with Watchr ##
+Autotesting with Guard
+----------------------
 
-[Watchr](http://github.com/mynyml/watchr) provides a flexible alternative to Autotest.  A
-jump start script is provided in spec/watchr.rb.
-
-### Install watchr
-
-    gem install watchr
-
-### Run watchr
-
-    watchr spec/watchr.rb
-
-outputs a menu
-
-    Ctrl-\ for menu, Ctrl-C to quit
-
-Watchr will now watch the files defined in 'spec/watchr.rb' and run Rspec or Cucumber, as appropriate.
-The watchr script provides a simple menu.
-
-Ctrl-\
-
-    MENU: a = all , f = features  s = specs, l = last feature (none), q = quit
-
+    bundle exec guard
 
 ## Copyright ##
 
-Copyright (c) 2011 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
+Copyright (c) 2012 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
