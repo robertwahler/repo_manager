@@ -1,7 +1,23 @@
 @announce
-Feature: Thor action tasks
+Feature: Automatically commit and update multiple repos
 
-  Run repo add -A, repo commit, and repo push on all dirty repos via Thor
+  This task will run:
+
+      repo add -A, repo commit, and repo push on all dirty repos
+
+  Examples
+
+    Interactive
+
+      repo action:update
+
+    Non-interactive
+
+      repo action:update --force
+
+    Filter repos
+
+      repo action:update --repos=repo1,repo2
 
   Background: Test repositories and a valid config file
     Given a repo in folder "test_path_1" with the following:
@@ -23,7 +39,7 @@ Feature: Thor action tasks
 
 
   Scenario: No uncommitted changes
-    When I run `thor repoman:action:update`
+    When I run `repo action:update`
     Then the output should contain:
       """
       no changed repos
@@ -40,7 +56,7 @@ Feature: Thor action tasks
     And a repo in folder "my_clean_repo" with the following:
       | filename         | status | content  |
       | .gitignore       | C      | tmp/*    |
-    When I run `thor repoman:action:update --force --repos=my_clean_repo`
+    When I run `repo action:update --force --repos=my_clean_repo`
     Then the output should contain:
       """
       no changed repos
@@ -56,7 +72,7 @@ Feature: Thor action tasks
       | test             | ?      | test     |
     And the repo in folder "test_path_1" has a remote named "origin" in folder "test_path_1.remote.git"
     And the repo in folder "test_path_2" has a remote named "origin" in folder "test_path_2.remote.git"
-    When I run `thor repoman:action:update --force --message="my custom commit message"`
+    When I run `repo action:update --force --message="my custom commit message"`
     Then the output should contain:
       """
       updating test1,test2
@@ -93,7 +109,7 @@ Feature: Thor action tasks
       | .gitignore       | M      | tmp/*    |
       | test             | ?      | test     |
     And the repo in folder "test_path_2" has a remote named "origin" in folder "test_path_2.remote.git"
-    When I run `thor repoman:action:update` interactively
+    When I run `repo action:update` interactively
     And I type "y"
     Then the output should contain:
       """
