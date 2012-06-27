@@ -48,11 +48,11 @@ group :cucumber do
     watch(%r{^features/.+\.feature$})
 
     # actions
-    watch(%r{^lib/basic_app/actions/(.+)_action.rb$})         { |m| "features/actions/#{m[1]}.feature" }
+    watch(%r{^lib/repoman/actions/(.+)_action.rb$})         { |m| "features/actions/#{m[1]}.feature" }
 
     # tasks
-    watch(%r{^lib/basic_app/tasks/(.+)/(.+).rb$})             { |m| "features/tasks/#{m[1]}/#{m[2]}.feature" }
-    watch(%r{^lib/basic_app/tasks/task_manager.rb$})          { "features/actions/ph.feature" }
+    watch(%r{^lib/repoman/tasks/(.+)/(.+).rb$})             { |m| "features/tasks/#{m[1]}/#{m[2]}.feature" }
+    watch(%r{^lib/repoman/tasks/task_manager.rb$})          { "features/actions/ph.feature" }
 
   end
 end
