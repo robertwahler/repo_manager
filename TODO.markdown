@@ -1,11 +1,6 @@
 TODO
 ====
 
-* verify 'git pull -filter=dredmor' throws error.  Note the bad switch '-filter'
-* YAML config files should allow ERB that evaluates keys from the master
-  config file.
-* raise an error if no repos match. ie '--repos/--filters' has an pattern that
-  doesn't match any configured repository
 * remove git gem and duplicate needed method.  The use of ENV[] will break on
   win32 and ruby 1.9.3
 * add replaceable params as params: in master config file.  These  can be used
@@ -25,6 +20,5 @@ TODO
 * verify relative and absolute paths both work with all config file locations
 * status command should have option to show last commit information
 * native git commands need to preserve ANSI escape codes for coloring
-* add JSON output for machine parsing, think "--porcelain" commands, this can be done with ERB templates
 * add man page via markdown and ronn.  Change 'help' action to call man
   page if man available.

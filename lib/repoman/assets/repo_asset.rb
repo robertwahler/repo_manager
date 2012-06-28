@@ -25,14 +25,6 @@ module Repoman
       attributes[:path] = value
     end
 
-    # TODO: base_dir is obsolete, remove getter and  setter, use configuration file location
-    def base_dir
-      attributes[:base_dir]
-    end
-    def base_dir=(value)
-      attributes[:base_dir] = value
-    end
-
     def status
       @status ||= Repoman::Status.new(scm)
     end
@@ -49,7 +41,7 @@ module Repoman
       if Pathname.new(path).absolute?
         path
       else
-        File.expand_path(path, @base_dir)
+        File.expand_path(path)
       end
     end
 
