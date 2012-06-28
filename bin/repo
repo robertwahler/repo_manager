@@ -67,7 +67,7 @@ optparser = OptionParser.new do |opts|
     options[:config] = file
   end
 
-  opts.on("--version", "Display current version") do
+  opts.on("--version", "Display current version and exit") do
     puts "repo, version " + Repoman.version
     exit 0
   end

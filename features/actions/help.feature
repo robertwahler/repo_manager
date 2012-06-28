@@ -22,6 +22,10 @@ Feature: Show help on actions
       """
       Usage: repo.* <action>
       """
+    And the last output should match:
+      """
+      Options:
+      """
 
   Examples:
     | action  |
@@ -47,13 +51,4 @@ Feature: Show help on actions
     And the output should contain:
       """
       invalid help action
-      """
-
-  @announce
-  Scenario: Showing option switches
-    When I run `basic_app help list`
-    Then the exit status should be 0
-    And the output should contain:
-      """
-      Options:
       """
