@@ -63,8 +63,8 @@ lib/repoman/git/status.rb
 lib/repoman/logger.rb
 lib/repoman/settings.rb
 lib/repoman/tasks.rb
-lib/repoman/tasks/action.thor
-lib/repoman/tasks/generate.thor
+lib/repoman/tasks/action.rb
+lib/repoman/tasks/generate.rb
 lib/repoman/tasks/task_manager.rb
 lib/repoman/tasks/templates/repo.erb
 lib/repoman/tasks/thor_helper.rb
