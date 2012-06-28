@@ -45,14 +45,12 @@ Feature: Show help on actions
       invalid help action
       """
 
-  Scenario: Showing both 'General options' and 'Action options'
+  @announce
+  Scenario: Showing option switches
     When I run `basic_app help list`
     Then the exit status should be 0
     And the output should contain:
       """
-      General options:
-      """
-    And the output should contain:
-      """
-      Action options:
+      Options:
+          -T, --tasks
       """
