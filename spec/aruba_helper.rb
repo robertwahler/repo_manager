@@ -4,13 +4,13 @@ module Aruba
     # @return full path to files in the aruba tmp folder
     def fullpath(filename)
       path = File.expand_path(File.join(current_dir, filename))
-      if path.match(/^\/cygdrive/)
-        # match /cygdrive/c/path/to and return c:\\path\\to
-        path = `cygpath -w #{path}`.chomp
-      elsif path.match(/.\:/)
-        # match c:/path/to and return c:\\path\\to
-        path = path.gsub(/\//, '\\')
-      end
+      #if path.match(/^\/cygdrive/)
+      #  # match /cygdrive/c/path/to and return c:\\path\\to
+      #  path = `cygpath -w #{path}`.chomp
+      #elsif path.match(/.\:/)
+      #  # match c:/path/to and return c:\\path\\to
+      #  path = path.gsub(/\//, '\\')
+      #end
       path
     end
 
