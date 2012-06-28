@@ -13,9 +13,13 @@ module BasicApp
 
   class BaseAsset
 
-    # asset name is tied to the name of the configuration folder (datastore),
-    # if the folder exists.  The name may also be a hash key from a YAML config
-    # file.
+    # The asset name is loosely tied to the name of the configuration folder (datastore).
+    # The name may also be a hash key from a YAML config file.
+    #
+    # The name should be a valid ruby variable name, in turn, a valid folder name, but this
+    # is not enforced.
+    #
+    # @see self.path_to_name
     attr_accessor :name
 
     # subclass factory to create Assets
@@ -45,18 +49,17 @@ module BasicApp
       basename.gsub(/[_]+/,'_')
     end
 
-    # @param [String] asset_name asset name or folder name, if folder, will load YAML config
+    # @param [String/Symbol] asset name or folder, if folder exists, will load YAML config
     # @param [Hash] attributes ({}) initial attributes
-    def initialize(asset_name=nil, attributes={})
+    def initialize(asset_name_or_folder=nil, attributes={})
       # allow for lazy loading (TODO), don't assign empty attributes
       @attributes = attributes.dup unless attributes.empty?
 
-      #raise ArgumentError, "asset_name or configuration folder required" unless (asset_name.is_a?(String) || asset_name.is_a?(Symbol))
-      return unless asset_name
+      return unless asset_name_or_folder
 
       @asset_key = nil
-      folder = asset_name.to_s
-      @name = BasicApp::BaseAsset.path_to_name(folder)
+      folder = asset_name_or_folder.to_s
+      @name = File.basename(folder)
 
       logger.debug "Asset name: #{name}"
       logger.debug "Asset configuration folder: #{folder}"
