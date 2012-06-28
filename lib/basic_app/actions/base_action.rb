@@ -27,6 +27,9 @@ module BasicApp
     # filename to write output
     attr_accessor :output
 
+    # bin wrapper option parser object
+    attr_accessor :optparser
+
     def initialize(args=[], configuration={})
       @configuration = configuration
       @options = configuration[:options] || {}
@@ -261,10 +264,10 @@ module BasicApp
       # strip surrounding whitespace
       result.strip
 
-      if configuration[:general_options_summary]
+      if optparser
         result += "\n"
         result += "General options:\n"
-        result += configuration[:general_options_summary].to_s
+        result += optparser.summarize.to_s
       end
 
       result

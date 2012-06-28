@@ -89,7 +89,6 @@ color = settings.options[:color]
 
 # add summary of general options for use by action help commands
 configuration = settings.to_hash
-configuration[:general_options_summary] = optparser.summarize
 
 if STDOUT.isatty || (color == 'ALWAYS')
   Term::ANSIColor::coloring = color
@@ -109,4 +108,6 @@ else
   Term::ANSIColor::coloring = false
 end
 
-BasicApp::App.new(argv, configuration).execute
+app = BasicApp::App.new(argv, configuration)
+app.optparser = optparser
+app.execute

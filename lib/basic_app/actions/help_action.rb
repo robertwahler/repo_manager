@@ -49,7 +49,9 @@ module BasicApp
       end
 
       klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
-      result = klass.new(['--help'], configuration).execute
+      app_action = klass.new(['--help'], configuration)
+      app_action.optparser = self.optparser
+      result = app_action.execute
 
       exit(0)
     end
