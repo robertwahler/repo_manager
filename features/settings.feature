@@ -17,7 +17,6 @@ Feature: Configuration via YAML
       ~/repoman/repo.conf
       ~/.repoman/repo.conf
 
-
   All command line options can be read from the config file from the "options:"
   block. The "options" block is optional.
 

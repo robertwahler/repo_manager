@@ -16,6 +16,9 @@ module Repoman
 
   class App
 
+    # bin wrapper option parser object
+    attr_accessor :option_parser
+
     def initialize(argv=[], configuration={})
       @configuration = configuration
       @options = configuration[:options] || {}
@@ -73,7 +76,9 @@ module Repoman
           end
           logger.debug "execute action: #{action} #{args.join(' ')}"
           klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
-          result = klass.new(args, @configuration).execute
+          app_action = klass.new(args, @configuration)
+          app_action.option_parser = self.option_parser
+          result = app_action.execute
         else
           #
           # default action if action_argument_required? is false

@@ -11,7 +11,7 @@ module Repoman
     def initialize(configuration=nil)
       @configuration = configuration.dup
       options = @configuration[:options]
-      color = options ? options[:color] : true
+      self.color = options ? options[:color] : true
     end
 
     # @examples:
@@ -111,7 +111,12 @@ module Repoman
       end
     end
 
+    def color
+      @color
+    end
+
     def color=(value)
+      @color = value
       if value
         ::Thor::Base.shell = Thor::Shell::Color
       else
@@ -120,7 +125,9 @@ module Repoman
     end
 
     def shell
-      @shell ||= Thor::Base.shell.new
+      return @shell if @shell
+
+      @shell = @color ? ::Thor::Shell::Color.new : ::Thor::Shell::Basic.new
     end
 
     # display help for the given task

@@ -1,15 +1,16 @@
 Feature: Show help on actions
 
-  The application should detail which Git command options are available as
-  pass-through options.
-
-  Show help test to STDOUT for a given action.
+  Show action specific help to STDOUT for a given action
 
   Example usage:
 
-    repo help init
-    repo help git
-    repo help help
+      repo help list
+      repo help task
+      repo help help
+
+  Notes
+
+  * abbreviated help general app help is available via the --help option
 
  Background: Default empty configuration file
     Given an empty file named "repo.conf"
@@ -46,4 +47,13 @@ Feature: Show help on actions
     And the output should contain:
       """
       invalid help action
+      """
+
+  @announce
+  Scenario: Showing option switches
+    When I run `basic_app help list`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      Options:
       """

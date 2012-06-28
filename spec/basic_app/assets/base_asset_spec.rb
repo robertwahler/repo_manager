@@ -8,8 +8,8 @@ describe Repoman::BaseAsset  do
       Repoman::BaseAsset.path_to_name("/path/to a/hello  world ").should == "hello_world"
     end
 
-    it "should strip special chars # @ % * ' ! + ." do
-      Repoman::BaseAsset.path_to_name("/path/to a/.he@@llo' !w+orld'").should == "hello_world"
+    it "should strip special chars # @ % * ' ! + . -" do
+      Repoman::BaseAsset.path_to_name("/path/to a/.he@@llo' !w+orl-d'").should == "hello_world"
     end
 
     it "should replace '&' with '_and_'" do

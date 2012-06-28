@@ -49,7 +49,9 @@ module Repoman
       end
 
       klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
-      result = klass.new(['--help'], configuration).execute
+      app_action = klass.new(['--help'], configuration)
+      app_action.option_parser = self.option_parser
+      result = app_action.execute
 
       exit(0)
     end

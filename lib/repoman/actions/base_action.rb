@@ -27,6 +27,9 @@ module Repoman
     # filename to write output
     attr_accessor :output
 
+    # bin wrapper option parser object
+    attr_accessor :option_parser
+
     def initialize(args=[], configuration={})
       @configuration = configuration
       @options = configuration[:options] || {}
@@ -42,42 +45,42 @@ module Repoman
       parse_base_options = parser_configuration.has_key?(:parse_base_options) ? parser_configuration[:parse_base_options] : true
       logger.debug "base_action parsing args: #{args.inspect}, raise_on_invalid_option: #{raise_on_invalid_option}, parse_base_options: #{parse_base_options}"
 
-      option_parser = OptionParser.new do |opts|
-        opts.banner = help + "\n\nAction options:"
+      option_parser ||= OptionParser.new
 
-        if parse_base_options
-          opts.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
-            options[:template] = t.nil? ? "default.slim" : t
-            @template = options[:template]
-          end
+      option_parser.banner = help + "\n\nOptions:"
 
-          opts.on("--output FILENAME", "Render output directly to a file") do |f|
-            options[:output] = f
-            @output = options[:output]
-          end
-
-          opts.on("--force", "Overwrite file output without prompting") do |f|
-            options[:force] = f
-          end
-
-          opts.on("-r", "--repos a1,a2,a3", "--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
-            options[:filter] = list
-          end
-
-          # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
-          opts.on("--match [MODE]", "Repo filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
-            options[:match] = m || "ALL"
-            options[:match].upcase!
-            unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
-              puts "invalid match mode option: #{options[:match]}"
-              exit 1
-            end
-          end
+      if parse_base_options
+        option_parser.on("--template [NAME]", "Use a template to render output. (default=default.slim)") do |t|
+          options[:template] = t.nil? ? "default.slim" : t
+          @template = options[:template]
         end
 
-        # allow decendants to add options
-        yield opts if block_given?
+        option_parser.on("--output FILENAME", "Render output directly to a file") do |f|
+          options[:output] = f
+          @output = options[:output]
+        end
+
+        option_parser.on("--force", "Overwrite file output without prompting") do |f|
+          options[:force] = f
+        end
+
+        option_parser.on("-r", "--repos a1,a2,a3", "--asset a1,a2,a3", "--filter a1,a2,a3", Array, "List of regex asset name filters") do |list|
+          options[:filter] = list
+        end
+
+        # NOTE: OptionParser will add short options, there is no way to stop '-m' from being the same as '--match'
+        option_parser.on("--match [MODE]", "Asset filter match mode.  MODE=ALL (default), FIRST, EXACT, or ONE (fails if more than 1 match)") do |m|
+          options[:match] = m || "ALL"
+          options[:match].upcase!
+          unless ["ALL", "FIRST", "EXACT", "ONE"].include?(options[:match])
+            puts "invalid match mode option: #{options[:match]}"
+            exit 1
+          end
+        end
       end
+
+      # allow decendants to add options
+      yield option_parser if block_given?
 
       # reprocess args for known options, see binary wrapper for first pass
       # (first pass doesn't know about action specific options), find all
@@ -260,14 +263,6 @@ module Repoman
 
       # strip surrounding whitespace
       result.strip
-
-      if configuration[:general_options_summary]
-        result += "\n"
-        result += "General options:\n"
-        result += configuration[:general_options_summary].to_s
-      end
-
-      result
     end
 
     # @return [Boolean] true if output doesn't exist or it is OK to overwrite
