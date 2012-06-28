@@ -11,7 +11,7 @@ module BasicApp
   class App
 
     # bin wrapper option parser object
-    attr_accessor :optparser
+    attr_accessor :option_parser
 
     def initialize(argv=[], configuration={})
       @configuration = configuration
@@ -65,7 +65,7 @@ module BasicApp
           logger.debug "execute action: #{action} #{args.join(' ')}"
           klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
           app_action = klass.new(args, @configuration)
-          app_action.optparser = self.optparser
+          app_action.option_parser = self.option_parser
           result = app_action.execute
         else
           #

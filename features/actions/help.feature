@@ -52,5 +52,4 @@ Feature: Show help on actions
     And the output should contain:
       """
       Options:
-          -T, --tasks
       """

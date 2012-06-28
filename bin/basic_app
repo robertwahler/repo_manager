@@ -109,5 +109,5 @@ else
 end
 
 app = BasicApp::App.new(argv, configuration)
-app.optparser = optparser
+app.option_parser = optparser
 app.execute

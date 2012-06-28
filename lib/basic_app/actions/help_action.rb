@@ -50,7 +50,7 @@ module BasicApp
 
       klass = Object.const_get('BasicApp').const_get("#{action.capitalize}Action")
       app_action = klass.new(['--help'], configuration)
-      app_action.optparser = self.optparser
+      app_action.option_parser = self.option_parser
       result = app_action.execute
 
       exit(0)
