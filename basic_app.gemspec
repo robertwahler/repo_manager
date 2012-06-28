@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'slim', '>= 1.0.4'
   s.add_dependency 'mustache', '>= 0.99.4'
   s.add_dependency "chronic", ">= 0.6.5"
+  s.add_dependency "thor", "~> 0.15.0"
 
   s.add_development_dependency "bundler", ">= 1.0.14"
   s.add_development_dependency "rspec", ">= 2.6.0"
