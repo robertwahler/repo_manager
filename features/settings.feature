@@ -9,13 +9,12 @@ Feature: Configuration via YAML
 
   Config file priority:
 
-      basic_app.conf
-      .basic_app.conf
-      config/basic_app.conf
+      ./basic_app.conf
+      ./.basic_app.conf
+      ./config/basic_app.conf
       ~/.basic_app.conf
       ~/basic_app/basic_app.conf
       ~/.basic_app/basic_app.conf
-
 
   All command line options can be read from the config file from the "options:"
   block. The "options" block is optional.
