@@ -18,19 +18,7 @@ module BasicApp
   # @example Usage: basic_app help [action]
   class HelpAction < AppAction
 
-    def execute
-
-      OptionParser.new do |opts|
-        opts.banner = help
-        begin
-          opts.parse!(args)
-        rescue OptionParser::InvalidOption => e
-          puts "option error: #{e}"
-          puts opts
-          exit 1
-        end
-      end
-
+    def process
       action = args.shift
 
       unless action

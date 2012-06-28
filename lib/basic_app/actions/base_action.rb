@@ -45,7 +45,7 @@ module BasicApp
       parse_base_options = parser_configuration.has_key?(:parse_base_options) ? parser_configuration[:parse_base_options] : true
       logger.debug "base_action parsing args: #{args.inspect}, raise_on_invalid_option: #{raise_on_invalid_option}, parse_base_options: #{parse_base_options}"
 
-      option_parser ||= OptionParser.new
+      @option_parser ||= OptionParser.new
 
       option_parser.banner = help + "\n\nOptions:"
 

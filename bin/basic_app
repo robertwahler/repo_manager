@@ -46,7 +46,7 @@ optparser = OptionParser.new do |opts|
     options[:config] = file
   end
 
-  opts.on("--version", "Display current version") do
+  opts.on("--version", "Display current version and exit") do
     puts "basic_app, version " + BasicApp.version
     exit 0
   end
