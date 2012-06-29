@@ -32,8 +32,8 @@ features/step_definitions/asset_steps.rb
 features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
-features/tasks/action.feature
-features/tasks/generate.feature
+features/tasks/action/update.feature
+features/tasks/generate/config.feature
 lib/repoman.rb
 lib/repoman/actions.rb
 lib/repoman/actions/action_helper.rb
@@ -64,10 +64,10 @@ lib/repoman/git/status.rb
 lib/repoman/logger.rb
 lib/repoman/settings.rb
 lib/repoman/tasks.rb
-lib/repoman/tasks/action.rb
-lib/repoman/tasks/generate.rb
+lib/repoman/tasks/action/update.rb
+lib/repoman/tasks/generate/config.rb
+lib/repoman/tasks/generate/templates/repo.erb
 lib/repoman/tasks/task_manager.rb
-lib/repoman/tasks/templates/repo.erb
 lib/repoman/tasks/thor_helper.rb
 lib/repoman/views.rb
 lib/repoman/views/app_view.rb
