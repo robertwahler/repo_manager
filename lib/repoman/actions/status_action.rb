@@ -53,8 +53,6 @@ module Repoman
       output = ""
 
       repos.each do |repo|
-        output = ""
-
         # M ? A D I X
         begin
           st = repo.status.bitfield
@@ -135,9 +133,10 @@ module Repoman
             end
         end
         write_to_output(output)
+        output = ""
       end
 
-      output += "\n" if need_lf
+      output = "\n" if need_lf
 
       # summary
       output += "no modified repositories, all working folders are clean\n" if (count_unmodified == repos.size)

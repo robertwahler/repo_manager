@@ -81,6 +81,11 @@ Feature: Listing repo path information
       """
       I       bad_repo: not_a_repo [not a valid repo]
       """
+    And the normalized output should not contain:
+      """
+      I       bad_repo: not_a_repo [not a valid repo]
+      I       bad_repo: not_a_repo [not a valid repo]
+      """
 
   Scenario: Missing repo folder
     Given a file named "repo.conf" with:
@@ -94,6 +99,11 @@ Feature: Listing repo path information
     Then the exit status should be 1
     And the normalized output should contain:
       """
+      X       bad_repo: not_a_repo [no such path]
+      """
+    And the normalized output should not contain:
+      """
+      X       bad_repo: not_a_repo [no such path]
       X       bad_repo: not_a_repo [no such path]
       """
 
