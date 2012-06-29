@@ -26,14 +26,14 @@ Feature: Configuration via YAML
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
-    When I run `repo path --verbose --config=config.conf`
+    When I run `basic_app list --verbose --config config.conf`
     Then the output should contain:
       """
       config file: config.conf
       """
 
   Scenario: Specified config file option but not given on command line
-    When I run `repo path --verbose --config`
+    When I run `basic_app list --verbose --config`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -55,7 +55,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `repo action --verbose`
+    When I run `basic_app list --verbose`
     Then its output should contain:
       """
       :color=>true
@@ -84,7 +84,7 @@ Feature: Configuration via YAML
       options:
         color: false
       """
-    When I run `repo path --verbose --config=repo_no_color.conf`
+    When I run `basic_app list --verbose --config no_color.conf`
     Then the output should contain:
       """
       :color=>false
@@ -108,7 +108,7 @@ Feature: Configuration via YAML
      options:
         color: false
       """
-    When I run `repo path --verbose --config=repo_no_color.conf --color`
+    When I run `basic_app list --verbose --config no_color.conf --color`
     Then the output should contain:
       """
       :color=>"AUTO"
@@ -129,7 +129,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `repo path --verbose --config=repo_with_color.conf --no-color`
+    When I run `basic_app list --verbose --config with_color.conf --no-color`
     Then the output should contain:
       """
       :color=>false
@@ -142,7 +142,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `repo path --verbose --config with_color.conf --no-coloring`
+    When I run `basic_app list --verbose --config with_color.conf --no-coloring`
     Then the output should contain:
       """
       :color=>false
@@ -155,7 +155,7 @@ Feature: Configuration via YAML
       options:
         color: ALWAYS
       """
-    When I run `repo path --verbose --config=repo_with_always_color.conf`
+    When I run `basic_app list --verbose --config with_always_color.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"
@@ -168,8 +168,71 @@ Feature: Configuration via YAML
       options:
         color: <%= "ALWAYS" %>
       """
-    When I run `repo action --verbose --config erb.conf`
+    When I run `basic_app list --verbose --config erb.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"
+      """
+
+  Scenario: Reading default valid config files ordered by priority
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      user_var: user1
+      """
+    And a file named ".basic_app.conf" with:
+      """
+      ---
+      user_var: user2
+      """
+    And a file named "config/basic_app.conf" with:
+      """
+      ---
+      user_var: user3
+      """
+    When I run `basic_app list list=NAME --verbose`
+    Then the output should contain:
+      """
+      :user_var=>"user1"
+      """
+    And the output should not contain:
+      """
+      :user_var=>"user2"
+      """
+    And the output should not contain:
+      """
+      :user_var=>"user3"
+      """
+
+  Scenario: Reading default config file '.basic_app.conf'
+    Given a file named ".basic_app.conf" with:
+      """
+      ---
+      user_var: user2
+      """
+    And a file named "config/basic_app.conf" with:
+      """
+      ---
+      user_var: user3
+      """
+    When I run `basic_app list list=NAME --verbose`
+    Then the output should contain:
+      """
+      :user_var=>"user2"
+      """
+    And the output should not contain:
+      """
+      :user_var=>"user3"
+      """
+
+  Scenario: Reading default config file 'config/basic_app.conf
+    Given a file named "config/basic_app.conf" with:
+      """
+      ---
+      user_var: user3
+      """
+    When I run `basic_app list list=NAME --verbose`
+    Then the output should contain:
+      """
+      :user_var=>"user3"
       """

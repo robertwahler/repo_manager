@@ -9,11 +9,14 @@ Feature: Asset configuration
   For each asset in the data folder, initialize an array of assets by passing
   in the user asset config filename and a hash of options
 
-  Example general settings config.conf
+  Example general settings basic_app.conf
 
       ---
       options:
         color  : true
+      user:
+        my_str : "user defined string"
+        my_int : 12345
       folders:
         global : global
         user   : data
@@ -80,8 +83,7 @@ Feature: Asset configuration
       path: user_path
       """
 
-
-  Scenario: Assets attributes are specified directly in the config file,
+  Scenario: Asset attributes are specified directly in the config file,
     attributes key is by convention, the name of the asset class
     Given a file named "repo.conf" with:
       """
@@ -109,7 +111,7 @@ Feature: Asset configuration
       """
     And the folder "global/app_assets" with the following asset configurations:
       | name         | path          | icon                      |
-      | default      | set_by_parent | based_on_<%= name %>.png |
+      | default      | set_by_parent | based_on_<%= name %>.png  |
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | binary          |
       | asset1       | ../../global/app_assets/default  | path_to/bin.exe |

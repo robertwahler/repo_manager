@@ -28,7 +28,7 @@ module Repoman
       config_filename = configuration[:configuration_filename]
       Repoman::Logger::Manager.new(config_filename, :logging, configuration)
 
-      logger.debug "options: #{@options.inspect}"
+      logger.debug "configuration: #{@configuration.inspect}"
       logger.debug "argv: #{@argv.inspect}"
       logger.debug "config file: #{configuration[:configuration_filename]}" if configuration[:configuration_filename]
     end

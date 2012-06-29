@@ -6,12 +6,96 @@
 # See http://github.com/robertwahler
 ####################################################
 require 'mustache'
+require 'pathname'
 
 require 'repoman/assets/asset_configuration'
 
 module Repoman
 
   class BaseAsset
+
+    #
+    # --- Asset attributes START here ---
+    #
+
+    # Asset defined path
+    #
+    # NOTE: This is not the path to the asset configuration file. If not an
+    # absolute path, then it is relative to the current working directory
+    #
+    # @example Full paths
+    #
+    #     path: /home/robert/photos/photo1.jpg
+    #
+    #     path: /home/robert/app/appfolder
+    #
+    # @example Home folder '~' paths are expanded automatically
+    #
+    #     path: ~/photos/photo1.jpg  -> /home/robert/photos/photo1.jpg
+    #
+    # @example Relative paths are expanded automatically relative to the CWD
+    #
+    #     path: photos/photo1.jpg  -> /home/robert/photos/photo1.jpg
+    #
+    # @example Mustache templates are supported
+    #
+    #     path: /home/robert/{{name}}/appfolder -> /home/robert/app1/appfolder
+    #
+    # @example Mustache braces that come at the start must be quoted
+    #
+    #     path: "{{name}}/appfolder" -> /home/robert/app1/appfolder
+    #
+    # @return [String] an absolute path
+    def path
+      return @path if @path
+
+      path = render(attributes[:path])
+      if (path && !Pathname.new(path).absolute?)
+        # expand path if starts with '~'
+        path = File.expand_path(path) if path.match(/^~/)
+        # paths can be relative to cwd
+        path = File.join(File.expand_path(FileUtils.pwd), path) if (!Pathname.new(path).absolute?)
+      end
+      @path = path
+    end
+    def path=(value)
+      @path = nil
+      attributes[:path] = value
+    end
+
+    # Description (short)
+    #
+    # @return [String]
+    def description
+      render(attributes[:description])
+    end
+    def description=(value)
+      attributes[:description] = value
+    end
+
+    # Notes (user)
+    #
+    # @return [String]
+    def notes
+      render(attributes[:notes])
+    end
+    def notes=(value)
+      attributes[:notes] = value
+    end
+
+    # Classification tags, an array of strings
+    #
+    # @return [Array] of tag strings
+    def tags
+      attributes[:tags] || []
+    end
+    def tags=(value)
+      attributes[:tags] = value
+    end
+
+    #
+    # --- Asset attributes END here ---
+    #
 
     # The asset name is loosely tied to the name of the configuration folder (datastore).
     # The name may also be a hash key from a YAML config file.
