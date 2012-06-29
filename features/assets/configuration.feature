@@ -9,7 +9,7 @@ Feature: Asset configuration
   For each asset in the data folder, initialize an array of assets by passing
   in the user asset config filename and a hash of options
 
-  Example general settings basic_app.conf
+  Example general settings repo.conf
 
       ---
       options:

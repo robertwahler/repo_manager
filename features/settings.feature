@@ -26,14 +26,14 @@ Feature: Configuration via YAML
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
-    When I run `basic_app list --verbose --config config.conf`
+    When I run `repo list --verbose --config config.conf`
     Then the output should contain:
       """
       config file: config.conf
       """
 
   Scenario: Specified config file option but not given on command line
-    When I run `basic_app list --verbose --config`
+    When I run `repo list --verbose --config`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -55,7 +55,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `basic_app list --verbose`
+    When I run `repo list --verbose`
     Then its output should contain:
       """
       :color=>true
@@ -78,13 +78,13 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    And a file named "repo_no_color.conf" with:
+    And a file named "no_color.conf" with:
       """
       ---
       options:
         color: false
       """
-    When I run `basic_app list --verbose --config no_color.conf`
+    When I run `repo list --verbose --config no_color.conf`
     Then the output should contain:
       """
       :color=>false
@@ -102,13 +102,13 @@ Feature: Configuration via YAML
      options:
         color: true
       """
-    And a file named "repo_no_color.conf" with:
+    And a file named "no_color.conf" with:
       """
       ---
      options:
         color: false
       """
-    When I run `basic_app list --verbose --config no_color.conf --color`
+    When I run `repo list --verbose --config no_color.conf --color`
     Then the output should contain:
       """
       :color=>"AUTO"
@@ -123,13 +123,13 @@ Feature: Configuration via YAML
       """
 
  Scenario: Reading options from config file with negative override on command line
-    And a file named "repo_with_color.conf" with:
+    And a file named "with_color.conf" with:
       """
       ---
       options:
         color: true
       """
-    When I run `basic_app list --verbose --config with_color.conf --no-color`
+    When I run `repo list --verbose --config with_color.conf --no-color`
     Then the output should contain:
       """
       :color=>false
@@ -142,20 +142,20 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `basic_app list --verbose --config with_color.conf --no-coloring`
+    When I run `repo list --verbose --config with_color.conf --no-coloring`
     Then the output should contain:
       """
       :color=>false
       """
 
   Scenario: Reading text options from config file
-    Given a file named "repo_with_always_color.conf" with:
+    Given a file named "with_always_color.conf" with:
       """
       ---
       options:
         color: ALWAYS
       """
-    When I run `basic_app list --verbose --config with_always_color.conf`
+    When I run `repo list --verbose --config with_always_color.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"
@@ -168,29 +168,29 @@ Feature: Configuration via YAML
       options:
         color: <%= "ALWAYS" %>
       """
-    When I run `basic_app list --verbose --config erb.conf`
+    When I run `repo list --verbose --config erb.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"
       """
 
   Scenario: Reading default valid config files ordered by priority
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       user_var: user1
       """
-    And a file named ".basic_app.conf" with:
+    And a file named ".repo.conf" with:
       """
       ---
       user_var: user2
       """
-    And a file named "config/basic_app.conf" with:
+    And a file named "config/repo.conf" with:
       """
       ---
       user_var: user3
       """
-    When I run `basic_app list list=NAME --verbose`
+    When I run `repo list list=NAME --verbose`
     Then the output should contain:
       """
       :user_var=>"user1"
@@ -204,18 +204,18 @@ Feature: Configuration via YAML
       :user_var=>"user3"
       """
 
-  Scenario: Reading default config file '.basic_app.conf'
-    Given a file named ".basic_app.conf" with:
+  Scenario: Reading default config file '.repo.conf'
+    Given a file named ".repo.conf" with:
       """
       ---
       user_var: user2
       """
-    And a file named "config/basic_app.conf" with:
+    And a file named "config/repo.conf" with:
       """
       ---
       user_var: user3
       """
-    When I run `basic_app list list=NAME --verbose`
+    When I run `repo list list=NAME --verbose`
     Then the output should contain:
       """
       :user_var=>"user2"
@@ -225,13 +225,13 @@ Feature: Configuration via YAML
       :user_var=>"user3"
       """
 
-  Scenario: Reading default config file 'config/basic_app.conf
-    Given a file named "config/basic_app.conf" with:
+  Scenario: Reading default config file 'config/repo.conf
+    Given a file named "config/repo.conf" with:
       """
       ---
       user_var: user3
       """
-    When I run `basic_app list list=NAME --verbose`
+    When I run `repo list list=NAME --verbose`
     Then the output should contain:
       """
       :user_var=>"user3"

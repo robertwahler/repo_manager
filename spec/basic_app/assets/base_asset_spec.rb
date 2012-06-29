@@ -42,7 +42,7 @@ describe Repoman::BaseAsset  do
   describe 'attributes' do
 
     before :each do
-      @asset = BasicApp::BaseAsset.new
+      @asset = Repoman::BaseAsset.new
       @asset.name = "test_asset"
     end
 

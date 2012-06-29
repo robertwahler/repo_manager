@@ -5,7 +5,7 @@ Feature: Asset template rendering
   template, the raw attribute will be shown.
 
   Scenario: Specify assets folder explicity
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       folders:
@@ -24,13 +24,13 @@ Feature: Asset template rendering
       ---
       path: folder/{{name}}/another_folder
       """
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `repo list --verbose --type=app_asset`
     Then the exit status should be 0
     And its output should contain:
       """
       path: folder/{{name}}/another_folder
       """
-    When I run `basic_app list --template=test.erb  --type=app_asset --verbose`
+    When I run `repo list --template=test.erb  --type=app_asset --verbose`
     Then the exit status should be 0
     And its output should not contain:
       """

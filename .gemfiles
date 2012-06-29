@@ -22,6 +22,7 @@ features/actions/path.feature
 features/actions/status.feature
 features/actions/task.feature
 features/assets/configuration.feature
+features/assets/rendering.feature
 features/bin.feature
 features/logger.feature
 features/settings.feature
