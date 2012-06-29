@@ -25,14 +25,14 @@ Feature: Configuration via YAML
 
   Scenario: Specified config file exists
     Given an empty file named "config.conf"
-    When I run `basic_app action --verbose --config config.conf`
+    When I run `basic_app list --verbose --config config.conf`
     Then the output should contain:
       """
       config file: config.conf
       """
 
   Scenario: Specified config file option but not given on command line
-    When I run `basic_app action --verbose --config`
+    When I run `basic_app list --verbose --config`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -54,7 +54,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `basic_app action --verbose`
+    When I run `basic_app list --verbose`
     Then its output should contain:
       """
       :color=>true
@@ -83,7 +83,7 @@ Feature: Configuration via YAML
       options:
         color: false
       """
-    When I run `basic_app action --verbose --config no_color.conf`
+    When I run `basic_app list --verbose --config no_color.conf`
     Then the output should contain:
       """
       :color=>false
@@ -107,7 +107,7 @@ Feature: Configuration via YAML
       options:
         color: false
       """
-    When I run `basic_app action --verbose --config no_color.conf --color`
+    When I run `basic_app list --verbose --config no_color.conf --color`
     Then the output should contain:
       """
       :color=>"AUTO"
@@ -128,7 +128,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `basic_app action --verbose --config with_color.conf --no-color`
+    When I run `basic_app list --verbose --config with_color.conf --no-color`
     Then the output should contain:
       """
       :color=>false
@@ -141,7 +141,7 @@ Feature: Configuration via YAML
       options:
         color: true
       """
-    When I run `basic_app action --verbose --config with_color.conf --no-coloring`
+    When I run `basic_app list --verbose --config with_color.conf --no-coloring`
     Then the output should contain:
       """
       :color=>false
@@ -154,7 +154,7 @@ Feature: Configuration via YAML
       options:
         color: ALWAYS
       """
-    When I run `basic_app action --verbose --config with_always_color.conf`
+    When I run `basic_app list --verbose --config with_always_color.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"
@@ -167,7 +167,7 @@ Feature: Configuration via YAML
       options:
         color: <%= "ALWAYS" %>
       """
-    When I run `basic_app action --verbose --config erb.conf`
+    When I run `basic_app list --verbose --config erb.conf`
     Then the output should contain:
       """
       :color=>"ALWAYS"
