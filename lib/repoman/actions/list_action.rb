@@ -45,6 +45,12 @@ module Repoman
   #
   #     repo list --tags=adventure,favorites --group_by=tags --sort=ACQUIRED
   #
+  # @example Create a Bash 'alias' named 'rcd' to chdir to the folder of the repo
+  #
+  #     function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
+  #
+  #     rcd my_repo_name
+  #
   # @example Repo versions of Bash's pushd and popd
   #
   #     function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
