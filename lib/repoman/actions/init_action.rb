@@ -47,17 +47,17 @@ module Repoman
             git_output = ''
             begin
               git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
-              git_output = git.native('init')
+              git_output = git.native('init') + "\n"
               if repo.attributes.include?(:remotes)
                 repo.attributes[:remotes].each do |key, value|
-                  git_output += git.native('remote', ['add', key.to_s, value.to_s])
+                  git_output += git.native('remote', ['add', key.to_s, value.to_s]) + "\n"
                 end
               end
             rescue Git::CommandFailed => e
               result |= e.exitstatus
               git_output = e.error
             end
-            output += git_output
+            output += git_output + "\n"
         end
       end
 
