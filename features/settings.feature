@@ -173,3 +173,65 @@ Feature: Configuration via YAML
       :color=>"ALWAYS"
       """
 
+  Scenario: Reading default valid config files ordered by priority
+    Given a file named "basic_app.conf" with:
+      """
+      ---
+      user_var: user1
+      """
+    And a file named ".basic_app.conf" with:
+      """
+      ---
+      user_var: user2
+      """
+    And a file named "config/basic_app.conf" with:
+      """
+      ---
+      user_var: user3
+      """
+    When I run `basic_app list list=NAME --verbose`
+    Then the output should contain:
+      """
+      :user_var=>"user1"
+      """
+    And the output should not contain:
+      """
+      :user_var=>"user2"
+      """
+    And the output should not contain:
+      """
+      :user_var=>"user3"
+      """
+
+  Scenario: Reading default config file '.basic_app.conf'
+    Given a file named ".basic_app.conf" with:
+      """
+      ---
+      user_var: user2
+      """
+    And a file named "config/basic_app.conf" with:
+      """
+      ---
+      user_var: user3
+      """
+    When I run `basic_app list list=NAME --verbose`
+    Then the output should contain:
+      """
+      :user_var=>"user2"
+      """
+    And the output should not contain:
+      """
+      :user_var=>"user3"
+      """
+
+  Scenario: Reading default config file 'config/basic_app.conf
+    Given a file named "config/basic_app.conf" with:
+      """
+      ---
+      user_var: user3
+      """
+    When I run `basic_app list list=NAME --verbose`
+    Then the output should contain:
+      """
+      :user_var=>"user3"
+      """
