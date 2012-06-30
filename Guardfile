@@ -1,7 +1,7 @@
 require 'rbconfig'
 WINDOWS = RbConfig::CONFIG['host_os'] =~ /msdos|mswin|win32|mingw/i unless defined?(WINDOWS)
 
-notification :off
+notification :on
 
 # @examples
 #
