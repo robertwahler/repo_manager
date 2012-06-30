@@ -1,4 +1,5 @@
 module Repoman
+require 'repoman/actions/action_helper'
 
   # @group CLI actions
   #
@@ -17,6 +18,7 @@ module Repoman
   #
   # @return [Number] pass through of 'git init' result code
   class InitAction < AppAction
+    include Repoman::ActionHelper
 
     def process
 
@@ -39,14 +41,14 @@ module Repoman
         case st
           when (Status::NOPATH)
             output += repo.name.red
-            output += ": #{repo.path}"
+            output += ": #{relative_path(repo.path)}"
             output += " [no such path]\n"
           else
             output += repo.name.green
-            output += ": #{repo.path}\n"
+            output += ": #{relative_path(repo.path)}\n"
             git_output = ''
             begin
-              git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
+              git = Git::Lib.new(:working_directory => repo.path, :repository => File.join(repo.path, '.git'))
               git_output = git.native('init') + "\n"
               if repo.attributes.include?(:remotes)
                 repo.attributes[:remotes].each do |key, value|

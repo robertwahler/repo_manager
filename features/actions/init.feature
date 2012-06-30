@@ -72,12 +72,12 @@ Feature: Initializing a repo
     Then the exit status should be 1
     And the output should contain:
       """
-      test1: test_path_1
+      test1: ./test_path_1
       Initialized empty Git repository
       """
     And the output should contain:
       """
-      test2: test_path_2 [no such path]
+      test2: ./test_path_2 [no such path]
       """
     And the following files should exist:
       | test_path_1/.git/config |
@@ -89,8 +89,8 @@ Feature: Initializing a repo
     Then the exit status should be 1
     And the output should contain:
       """
-      test1: test_path_1 [no such path]
-      test2: test_path_2 [no such path]
+      test1: ./test_path_1 [no such path]
+      test2: ./test_path_2 [no such path]
       """
     And the following files should not exist:
       | test_path_1/.git/config |
@@ -107,12 +107,12 @@ Feature: Initializing a repo
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test_path_1
+      test1: ./test_path_1
       Reinitialized existing Git repository
       """
     And the output should contain:
       """
-      test2: test_path_2
+      test2: ./test_path_2
       Reinitialized existing Git repository
       """
 

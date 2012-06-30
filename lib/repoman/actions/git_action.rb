@@ -1,4 +1,5 @@
 require 'optparse'
+require 'repoman/actions/action_helper'
 
 module Repoman
 
@@ -17,6 +18,7 @@ module Repoman
   #
   # @return [Numeric] pass through of 'git' result code
   class GitAction < AppAction
+    include Repoman::ActionHelper
 
     # allow pass through of unknown options
     def parse_options(parser_configuration = {:raise_on_invalid_option => false})
@@ -69,12 +71,12 @@ module Repoman
         case st
           when (Status::NOPATH)
             output += repo.name.red
-            output += ": #{repo.path}"
+            output += ": #{relative_path(repo.path)}"
             output += " [no such path]\n"
           else
             git_output = ''
             begin
-              git = Git::Lib.new(:working_directory => repo.fullpath, :repository => File.join(repo.fullpath, '.git'))
+              git = Git::Lib.new(:working_directory => repo.path, :repository => File.join(repo.path, '.git'))
               git_output = git.native(command, args)
               result |= $?.exitstatus unless ($?.exitstatus == 0)
             rescue Git::CommandFailed => e

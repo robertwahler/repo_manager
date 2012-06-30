@@ -1,5 +1,3 @@
-require 'pathname'
-
 module Repoman
 
   # wrapper class for a source code repository configuration
@@ -15,16 +13,6 @@ module Repoman
       :repo
     end
 
-    # path to working folder
-    def path
-      p = attributes[:path] || attributes[:name]
-      raise ArgumentError("path must be specified or included in attributes hash") unless p
-      p
-    end
-    def path=(value)
-      attributes[:path] = value
-    end
-
     def status
       @status ||= Repoman::Status.new(scm)
     end
@@ -32,17 +20,9 @@ module Repoman
     # version control system wrapper
     def scm
       return @scm if @scm
-      raise NoSuchPathError unless File.exists?(fullpath)
-      raise InvalidRepositoryError unless File.exists?(File.join(fullpath, '.git'))
-      @scm = Git.open(fullpath)
-    end
-
-    def fullpath
-      if Pathname.new(path).absolute?
-        path
-      else
-        File.expand_path(path)
-      end
+      raise NoSuchPathError unless File.exists?(path)
+      raise InvalidRepositoryError unless File.exists?(File.join(path, '.git'))
+      @scm = Git.open(path)
     end
 
   end

@@ -207,7 +207,7 @@ Feature: Running an arbitrary git command
     Then the exit status should be 2
     And the normalized output should contain:
       """
-      I       bad_repo: not_a_repo [not a valid repo]
+      I       bad_repo: ./not_a_repo [not a valid repo]
               test1
       """
 
@@ -228,7 +228,7 @@ Feature: Running an arbitrary git command
     Then the exit status should be 0
     And the output should contain exactly:
       """
-      bad_repo: bad_repo_path [no such path]
+      bad_repo: ./bad_repo_path [no such path]
 
       """
     When I run `repo status --filter=bad_repo --unmodified DOTS --no-verbose`

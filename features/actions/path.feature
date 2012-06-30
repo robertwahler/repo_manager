@@ -69,28 +69,28 @@ Feature: Listing repo path information
   Scenario: Show path using 'path' as alias for 'list --list=path'
     When I run `repo path`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Show path using list action directly
     When I run `repo list --list=path`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Show path only using liberal regex filter
     When I run `repo list --list=path --filter=test --no-verbose`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Show path only using with restrictive regex filter
@@ -122,17 +122,17 @@ Feature: Listing repo path information
       """
     When I run `repo list --list=path --filter=test1 --no-verbose --match=EXACT`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
+      .+/test_path_1$
       """
 
   Scenario: Show path only using with character placeholder regex filter
     When I run `repo list --list=path --filter=t.st1 --no-verbose`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
+      .+/test_path_1$
       """
     And the output should not contain:
       """
@@ -142,18 +142,18 @@ Feature: Listing repo path information
   Scenario: Show path only using --match mode=ALL
     When I run `repo list --list=path --filter=test --match ALL`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Show path only using --match mode=FIRST
     When I run `repo list --list=path --filter=test --match=FIRST --no-verbose`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
+      .+/test_path_1$
       """
     And the output should not contain:
       """
@@ -168,27 +168,27 @@ Feature: Listing repo path information
     each filter separately. Switch style: --filter
     When I run `repo list --list=path --filter=test1,t...2,t...3`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Show path only using multiple delimited filters. Regex allowed on
     each filter separately. Switch style: --repos
     When I run `repo list --list=path --repos=test1,t...2,t...3`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Show path only using multiple args instead of filter switch
     When I run `repo list --list=path test1 t...2 t...3`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """

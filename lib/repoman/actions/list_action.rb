@@ -1,4 +1,5 @@
 require 'optparse'
+require 'repoman/actions/action_helper'
 
 module Repoman
 
@@ -60,6 +61,7 @@ module Repoman
   #
   # @return [Number] 0 if successful
   class ListAction < AppAction
+    include Repoman::ActionHelper
 
     # Add action specific options
     def parse_options
@@ -97,7 +99,7 @@ module Repoman
         when 'SHORT'
           items.each do |item|
             result += item.name.green
-            result += ": #{item.path}\n"
+            result += ": #{relative_path(item.path)}\n"
           end
         when 'PATH'
           items.each do |item|

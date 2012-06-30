@@ -1,4 +1,5 @@
 require 'optparse'
+require 'repoman/actions/action_helper'
 
 module Repoman
 
@@ -27,6 +28,7 @@ module Repoman
   #
   # @see Status bitfield return values
   class StatusAction < AppAction
+    include Repoman::ActionHelper
 
     # Add action specific options
     def parse_options
@@ -82,13 +84,13 @@ module Repoman
 
           when Status::NOPATH
             output += "\n" if need_lf
-            output += "X\t#{repo.name}: #{repo.path}"
+            output += "X\t#{repo.name}: #{relative_path(repo.path)}"
             output += " [no such path]".red + "\n"
             need_lf = false
 
           when Status::INVALID
             output += "\n" if need_lf
-            output += "I\t#{repo.name}: #{repo.path}"
+            output += "I\t#{repo.name}: #{relative_path(repo.path)}"
             output += " [not a valid repo]".red + "\n"
             need_lf = false
 

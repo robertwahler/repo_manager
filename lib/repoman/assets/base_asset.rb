@@ -49,7 +49,8 @@ module Repoman
     def path
       return @path if @path
 
-      path = render(attributes[:path])
+      path = attributes[:path] || attributes[:name]
+      path = render(path)
       if (path && !Pathname.new(path).absolute?)
         # expand path if starts with '~'
         path = File.expand_path(path) if path.match(/^~/)

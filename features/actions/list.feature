@@ -564,8 +564,8 @@ Scenario: List with invalid options in varying positions on the command line
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test_path_1
-      test2: test_path_2
+      test1: ./test_path_1
+      test2: ./test_path_2
       """
 
   Scenario: Default action, no filter, --list=NAME
@@ -598,10 +598,10 @@ Scenario: List with invalid options in varying positions on the command line
       """
     When I run `repo list --list=PATH`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-      test_path_1
-      test_path_2
+      .+/test_path_1$
+      .+/test_path_2$
       """
 
   Scenario: Missing path defaults to repo name
@@ -617,8 +617,8 @@ Scenario: List with invalid options in varying positions on the command line
     Then the exit status should be 0
     And the output should contain:
       """
-      test1: test1
-      test2: test2
+      test1: ./test1
+      test2: ./test2
       """
 
   Scenario: Missing repos is still valid
@@ -646,7 +646,7 @@ Scenario: List with invalid options in varying positions on the command line
     Then the exit status should be 0
     And the output should contain exactly:
       """
-      test1: test1
+      test1: ./test1
 
       """
 
@@ -665,7 +665,7 @@ Scenario: List with invalid options in varying positions on the command line
     When I run `repo list test1 --list=SHORT --no-verbose`
     Then the output should contain exactly:
       """
-      test1: test1
+      test1: ./test1
 
       """
 
