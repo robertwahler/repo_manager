@@ -13,10 +13,13 @@ Feature: Asset template rendering
       """
     Given a file named "test.erb" with:
       """
+      <% require 'basic_app/actions/action_helper' -%>
+      <% extend BasicApp::ActionHelper -%>
+
       <% for item in items do -%>
       <%= item.name %>:
       ---
-      path: <%= item.path %>
+      path: <%= relative_path(item.path) %>
       <% end -%>
       """
     And a file named "app_assets/asset1/asset.conf" with:
@@ -24,19 +27,19 @@ Feature: Asset template rendering
       ---
       path: folder/{{name}}/another_folder
       """
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `basic_app list --type=app_asset`
     Then the exit status should be 0
     And its output should contain:
       """
       path: folder/{{name}}/another_folder
       """
-    When I run `basic_app list --template=test.erb  --type=app_asset --verbose`
+    When I run `basic_app list --template=test.erb --type=app_asset`
     Then the exit status should be 0
     And its output should not contain:
       """
       path: folder/{{name}}/another_folder
       """
-    And the last output should match:
+    And its output should contain:
       """
-      path: \/.*\/asset1\/another_folder
+      path: ./folder/asset1/another_folder
       """
