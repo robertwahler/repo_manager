@@ -20,6 +20,8 @@ module Repoman
 
     # Asset defined path
     #
+    # Defaults to asset name when the path attribute is blank
+    #
     # NOTE: This is not the path to the asset configuration file. If not an
     # absolute path, then it is relative to the current working directory
     #
@@ -49,7 +51,7 @@ module Repoman
     def path
       return @path if @path
 
-      path = attributes[:path] || attributes[:name]
+      path = attributes[:path] || name
       path = render(path)
       if (path && !Pathname.new(path).absolute?)
         # expand path if starts with '~'
