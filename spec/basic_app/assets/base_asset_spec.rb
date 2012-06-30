@@ -78,7 +78,14 @@ describe BasicApp::BaseAsset  do
 
     describe 'path' do
 
-      it "should be nil unless set" do
+      it "defaults to asset name when the path attribute is blank" do
+        @asset.name = "asset_name"
+        @asset.attributes[:path].should be_nil
+        @asset.path.should match(/^\/.*\/asset_name$/)
+      end
+
+      it "should be nil unless path or name is set" do
+        @asset.name = nil
         @asset.attributes[:path].should be_nil
         @asset.path.should be_nil
       end

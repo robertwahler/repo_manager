@@ -20,6 +20,8 @@ module BasicApp
 
     # Asset defined path
     #
+    # Defaults to asset name when the path attribute is blank
+    #
     # NOTE: This is not the path to the asset configuration file. If not an
     # absolute path, then it is relative to the current working directory
     #
@@ -49,7 +51,8 @@ module BasicApp
     def path
       return @path if @path
 
-      path = render(attributes[:path])
+      path = attributes[:path] || name
+      path = render(path)
       if (path && !Pathname.new(path).absolute?)
         # expand path if starts with '~'
         path = File.expand_path(path) if path.match(/^~/)
