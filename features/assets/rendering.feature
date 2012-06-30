@@ -13,8 +13,8 @@ Feature: Asset template rendering
       """
     Given a file named "test.erb" with:
       """
-      <% require 'basic_app/actions/action_helper' -%>
-      <% extend BasicApp::ActionHelper -%>
+      <% require 'repoman/actions/action_helper' -%>
+      <% extend Repoman::ActionHelper -%>
 
       <% for item in items do -%>
       <%= item.name %>:
