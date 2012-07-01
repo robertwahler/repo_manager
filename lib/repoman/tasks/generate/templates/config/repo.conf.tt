@@ -1,0 +1,48 @@
+---
+# default CLI options
+options:
+  color: true
+  verbose: false
+
+folders:
+
+  # main repo configuration files
+  repo  : <%= "#{@path}/assets" %>
+
+  #
+  # repo user tasks, file extentions can be '.rb' or '.thor'
+  #
+  # @examples:
+  #
+  #     linux:
+  #
+  #         ~/.repoman/tasks
+  #
+  #     win32
+  #
+  #         c:/dat/condenser/tasks
+  #
+  tasks        : <%= "#{@path}/tasks" %>
+
+logging:
+  loggers:
+    - name          : root
+      appenders:
+        - logfile
+        - stdout
+  appenders:
+    - type          : Stdout
+      name          : stdout
+      level         : info
+      layout:
+        type        : Pattern
+        pattern     : '%l %c : %m\n'
+        color_scheme: default
+    - type          : File
+      name          : logfile
+      level         : debug
+      truncate      : true
+      filename      : '<%= "#{@path}/repo.log" %>'
+      layout:
+        type        : Pattern
+        pattern     : '[%d] %l %c : %m\n'

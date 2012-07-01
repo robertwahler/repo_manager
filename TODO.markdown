@@ -1,6 +1,7 @@
 TODO
 ====
 
+* add generate:init task to create an initial configuration folder
 * remove git gem and duplicate needed method.  The use of ENV[] will break on
   win32 and ruby 1.9.3
 * add replaceable params as params: in master config file.  These  can be used
@@ -17,7 +18,6 @@ TODO
   well provide completion for commands and options too.
 * status should show summary at the end
 * add feature tests for all combinations of XY result codes from 'git status --porcelain'
-* verify relative and absolute paths both work with all config file locations
 * status command should have option to show last commit information
 * native git commands need to preserve ANSI escape codes for coloring
 * add man page via markdown and ronn.  Change 'help' action to call man

@@ -56,7 +56,7 @@ module Repoman
       @path = options[:path]
       @remote = options[:remote]
 
-      template_name = "templates/repo.erb"
+      template_name = "templates/config/repo.erb"
 
       file = options[:file]
       FileUtils.rm(file) if options[:force] && File.exist?(file)
