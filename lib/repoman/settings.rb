@@ -53,14 +53,14 @@ module Repoman
       config = options[:config]
       if config.nil?
         config = [
-                   File.join(@working_dir, "basic_app.conf"),
-                   File.join(@working_dir, ".basic_app.conf"),
-                   File.join(@working_dir, "basic_app", "basic_app.conf"),
-                   File.join(@working_dir, ".basic_app", "basic_app.conf"),
-                   File.expand_path(File.join("~", ".basic_app.conf")),
-                   File.expand_path(File.join("~", "basic_app.conf")),
-                   File.expand_path(File.join("~", "basic_app", "basic_app.conf")),
-                   File.expand_path(File.join("~", ".basic_app", "basic_app.conf"))
+                   File.join(@working_dir, "repo.conf"),
+                   File.join(@working_dir, ".repo.conf"),
+                   File.join(@working_dir, "repoman", "repo.conf"),
+                   File.join(@working_dir, ".repoman", "repo.conf"),
+                   File.expand_path(File.join("~", ".repo.conf")),
+                   File.expand_path(File.join("~", "repo.conf")),
+                   File.expand_path(File.join("~", "repoman", "repo.conf")),
+                   File.expand_path(File.join("~", ".repoman", "repo.conf"))
                  ].detect { |filename| File.exists?(filename) }
       end
 

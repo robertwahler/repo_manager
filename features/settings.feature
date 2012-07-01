@@ -10,14 +10,14 @@ Feature: Configuration via YAML
 
   Config file priority:
 
-      ./basic_app.conf
-      ./.basic_app.conf
-      ./basic_app/basic_app.conf
-      ./.basic_app/basic_app.conf
-      ~/.basic_app.conf
-      ~/basic_app.conf
-      ~/basic_app/basic_app.conf
-      ~/.basic_app/basic_app.conf
+      ./repo.conf
+      ./.repo.conf
+      ./repoman/repo.conf
+      ./.repoman/repo.conf
+      ~/.repo.conf
+      ~/repo.conf
+      ~/repoman/repo.conf
+      ~/.repoman/repo.conf
 
   All command line options can be read from the config file from the "options:"
   block. The "options" block is optional.
@@ -187,11 +187,7 @@ Feature: Configuration via YAML
       ---
       user_var: user2
       """
-<<<<<<< HEAD
-    And a file named "config/repo.conf" with:
-=======
-    And a file named "basic_app/basic_app.conf" with:
->>>>>>> cd8a85216a9f50bb5186908a422d80fe3bad1258
+    And a file named "repoman/repo.conf" with:
       """
       ---
       user_var: user3
@@ -216,7 +212,7 @@ Feature: Configuration via YAML
       ---
       user_var: user2
       """
-    And a file named "basic_app/basic_app.conf" with:
+    And a file named "repoman/repo.conf" with:
       """
       ---
       user_var: user3
@@ -231,8 +227,8 @@ Feature: Configuration via YAML
       :user_var=>"user3"
       """
 
-  Scenario: Reading default config file 'basic_app/basic_app.conf
-    Given a file named "basic_app/basic_app.conf" with:
+  Scenario: Reading default config file 'repoman/repo.conf
+    Given a file named "repoman/repo.conf" with:
       """
       ---
       user_var: user3
