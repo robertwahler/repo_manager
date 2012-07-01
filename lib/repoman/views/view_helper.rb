@@ -1,28 +1,28 @@
-module BasicApp
+module Repoman
 
   module ViewHelper
 
     # path_to returns absolute installed path to various folders packaged with
-    # the BasicApp gem
+    # the Repoman gem
     #
     # @example manually require and include before use
     #
-    #     require 'basic_app/views/view_helper'
-    #     include BasicApp::ViewHelper
+    #     require 'repoman/views/view_helper'
+    #     include Repoman::ViewHelper
     #
-    # @example default to basic_app root
+    # @example default to repoman root
     #
     #     path_to("views/templates/bla.rb")
     #
-    # @example basic_app root
+    # @example repoman root
     #
-    #     path_to(:basic_app, "views/templates/bla.rb")
+    #     path_to(:repoman, "views/templates/bla.rb")
     #
     # @example :bootstrap
     #
     #     path_to(:bootstrap, "bootstrap/css/bootstrap.css")
     #
-    # @param [Symbol] (:basic_app) which gem folder should be root
+    # @param [Symbol] (:repoman) which gem folder should be root
     # @param [String] path to file asset parented in the given folder
     #
     # @return [String] absolute path to asset
@@ -30,7 +30,7 @@ module BasicApp
 
       case
         when args.length == 1
-          base_path = :basic_app
+          base_path = :repoman
           asset = args
         when args.length == 2
           base_path, asset = *args
@@ -41,7 +41,7 @@ module BasicApp
       end
 
       case base_path
-        when :basic_app
+        when :repoman
           root = File.expand_path('../../../../', __FILE__)
         else
           raise "unknown base_path"
