@@ -21,7 +21,6 @@ module BasicApp
     #
     # @return [Array] of Asset
     def assets(asset_options={})
-
       # type of asset to create, used to guess attributes_key and asset_folder name
       type = asset_options[:type] || :app_asset
 
@@ -56,7 +55,9 @@ module BasicApp
 
         # asset folder can be relative to main config file
         unless Pathname.new(pattern).absolute?
-          raise "assets_folder not absolute path and base_folder not specified" unless asset_options[:base_folder]
+          # base_folder is determined from the configuration file
+          # location, if it is not set, then the configuration file wasn't not found
+          raise "configuration file not found" unless asset_options[:base_folder]
           base_folder = asset_options[:base_folder]
           pattern = File.expand_path(File.join(base_folder, pattern))
         end
