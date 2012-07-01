@@ -75,6 +75,10 @@ module Repoman
           end
         end
 
+        opts.on("--short", "List summary status only, alias for '--list=SHORT'") do |s|
+          options[:list] = 'SHORT'
+        end
+
         # Most decendants of BaseAction will only handle one type of asset, the
         # list action is unique in that you can specify the type of asset to list
         opts.on("--type ASSET_TYPE", "Asset type to list:  app_asset (default)") do |t|
