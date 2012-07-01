@@ -27,6 +27,9 @@ module BasicApp
     # filename to write output
     attr_accessor :output
 
+    # numeric exit code set from return of process method
+    attr_reader :exit_code
+
     # bin wrapper option parser object
     attr_accessor :option_parser
 
