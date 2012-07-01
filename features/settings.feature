@@ -11,8 +11,10 @@ Feature: Configuration via YAML
 
       ./basic_app.conf
       ./.basic_app.conf
-      ./config/basic_app.conf
+      ./basic_app/basic_app.conf
+      ./.basic_app/basic_app.conf
       ~/.basic_app.conf
+      ~/basic_app.conf
       ~/basic_app/basic_app.conf
       ~/.basic_app/basic_app.conf
 
@@ -184,7 +186,7 @@ Feature: Configuration via YAML
       ---
       user_var: user2
       """
-    And a file named "config/basic_app.conf" with:
+    And a file named "basic_app/basic_app.conf" with:
       """
       ---
       user_var: user3
@@ -209,7 +211,7 @@ Feature: Configuration via YAML
       ---
       user_var: user2
       """
-    And a file named "config/basic_app.conf" with:
+    And a file named "basic_app/basic_app.conf" with:
       """
       ---
       user_var: user3
@@ -224,8 +226,8 @@ Feature: Configuration via YAML
       :user_var=>"user3"
       """
 
-  Scenario: Reading default config file 'config/basic_app.conf
-    Given a file named "config/basic_app.conf" with:
+  Scenario: Reading default config file 'basic_app/basic_app.conf
+    Given a file named "basic_app/basic_app.conf" with:
       """
       ---
       user_var: user3

@@ -51,8 +51,10 @@ module BasicApp
         config = [
                    File.join(@working_dir, "basic_app.conf"),
                    File.join(@working_dir, ".basic_app.conf"),
-                   File.join(@working_dir, "config", "basic_app.conf"),
+                   File.join(@working_dir, "basic_app", "basic_app.conf"),
+                   File.join(@working_dir, ".basic_app", "basic_app.conf"),
                    File.expand_path(File.join("~", ".basic_app.conf")),
+                   File.expand_path(File.join("~", "basic_app.conf")),
                    File.expand_path(File.join("~", "basic_app", "basic_app.conf")),
                    File.expand_path(File.join("~", ".basic_app", "basic_app.conf"))
                  ].detect { |filename| File.exists?(filename) }
