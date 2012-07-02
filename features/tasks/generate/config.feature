@@ -1,62 +1,76 @@
 @announce
-Feature: Thor generate tasks
+Feature: Task to generate asset configurations
 
-  As a repoman user, I want to generate config files using automatically so that I don't
-  have to do it by hand.
+  Generate config files automatically by searching each top level folder
+  contained in the given command line FOLDER.  If a '.git' folder exists,
+  then that top level folder will be used to generate a new config file.
 
-  This is a task to generate a YAML config file for a single repo.  Repoman
-  config files may contain multiple repositories.  This generator will not
-  handle that situation.  Instead, 'repo generate:config' will generate a
-  config file for just one repository.
+  Help:
 
-  Example command:
+      repo help generate:config
 
-      repo generate:config NAME
-      repo generate:config NAME --path=PATH
-      repo generate:config NAME --path=PATH --remote=git@somewhere.com:repo_name.git
+  Usage:
 
-  Example output (config/repos/my_repo_name/asset.conf):
+    repo generate:config FOLDER
+
+  Options:
+    -r, [--refresh]               # Refresh existing blank attributes
+    -f, [--filter=one two three]  # List of regex folder name filters
+
+  Runtime options:
+    -s, [--skip]     # Skip files that already exist
+    -q, [--quiet]    # Suppress status output
+    -p, [--pretend]  # Run but do not make any changes
+    -f, [--force]    # Overwrite files that already exist
+
+  Examples
+
+    cond generate:config c:/users/robert/documents/
+    cond generate:config ~/workspace/delphi
+    cond generate:config ~/workspace --filter guard-*,repoman-*
+
+  General Notes:
+
+    * task is not recursive and only looks for .git folder in direct children of the top level folder
+    * task will skip existing asset names and existing asset paths unless using the '--refresh' switch
+    * add '.condenser' file to application path to have Condenser always skip this application
+
+  Example output (~/repoman/assets/asset.conf):
 
       ---
       path: some/path/my_repo_name
-      remotes:
-        origin: //my_smb/server/repos/my_repo_name.git
 
-  Defaults
-
-  * 'path' will be taken as the CWD unless specified
-  * 'name' has no default and must be specified
-  * 'FILE' will be constructed based on 'name' and the path taken from the
-    repo.conf 'folders' option.
-  * 'remote' will be constructed based on configuration[:defaults][:remote_dirname] and 'name'
 
   Background: Test repositories and a valid config file
-    Given a repo in folder "repo1_path" with the following:
+    Given a repo in folder "workspace/repo1_path" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
-    And a repo in folder "repo2_path" with the following:
+    And a repo in folder "workspace/repo2_path" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
+    And a directory named "workspace/not_a_repo"
+    And a directory named "assets"
 
 
-  Scenario: Specify path on the command line
+  Scenario: Point at a top level folder that contains two repos and on non repo folder
     Given a file named "repo.conf" with:
       """
       ---
-      defaults:
-        remote_dirname: ../remotes
       folders:
-        repos  : config/repos
+        repos  : assets
       """
-    When I run `repo generate:config repo1 --path="repo1_path"`
-    Then the output should contain:
+    When I run `repo generate:config workspace` interactively
+    When I type "y"
+    Then the exit status should be 0
+    And the output should contain:
       """
-      Creating repoman configuration file
+      Found 2 assets
       """
-    And the file "config/repos/repo1/asset.conf" should contain:
+    And the file "assets/repo1_path/asset.conf" should match:
       """
-      ---
-      path: repo1_path
-      remotes:
-        origin: ../remotes/repo1.git
+      path: .*/workspace/repo1_path
+      """
+    And the file "assets/repo2_path/asset.conf" should match:
+      """
+      path: .*/workspace/repo2_path
       """

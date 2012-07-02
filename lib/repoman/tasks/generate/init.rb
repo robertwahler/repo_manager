@@ -4,8 +4,8 @@ require 'repoman/views/view_helper'
 module Repoman
   class Generate < Thor
     namespace :generate
-    include ::Repoman::ViewHelper
     include Repoman::ThorHelper
+    include ::Repoman::ViewHelper
 
     desc "init PATH", "create the initial configuration file and folder structure"
     def init(path)
