@@ -33,7 +33,6 @@ Feature: Show help on actions
     | list    |
     | task    |
     | git     |
-    | init    |
     | path    |
     | status  |
 

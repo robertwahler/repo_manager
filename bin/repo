@@ -19,7 +19,7 @@ help += <<HELP
 
 Use 'repo help' for help on actions.
 
-  repo help init
+  repo help task
   repo help git
 
 Examples:
@@ -34,6 +34,11 @@ Examples:
   repo --verbose --no-color config core.autocrlf true filter=my.*
   repo --verbose --no-color git config --list
   repo --verbose --no-color config --list
+
+Most Git commands can be passed directly, these are equivalent
+
+  repo add .
+  repo git add .
 
 General options:
 (use 'repo help action' for action options)

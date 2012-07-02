@@ -6,13 +6,13 @@ end
 
 module Repoman
 
-  AVAILABLE_ACTIONS = %w[help list task path init status git]
+  AVAILABLE_ACTIONS = %w[help list task path status git]
 
   # these commands don't need to have the 'git' arg precede them
   GIT_NATIVE_SUPPORT = %w[add config branch checkout commit diff fetch
                           grep log merge mv pull push rm show tag
                           gc remote ls-files cat-file diff-files
-                          diff-index]
+                          diff-index init]
 
   class App
 
