@@ -8,7 +8,7 @@ end
 
 describe BasicApp::ActionHelper  do
 
-  describe 'relative_path' do
+  describe 'relative_path', :posix => true do
 
     it "should return relative path given an absolute path" do
       thing = Thing.new
@@ -17,16 +17,26 @@ describe BasicApp::ActionHelper  do
       thing.relative_path('/home/robert/photos').should == '../../photos'
     end
 
-    it "should return relative path given an absolute path", :windows => true do
+    it "should return relative path given a relative path" do
       thing = Thing.new
-      FileUtils.stub!('pwd').and_return 'c:/home/workspace/basic_app'
+      FileUtils.stub!('pwd').and_return '/home/someuser/basic_app'
+      thing.relative_path('cats/dogs').should == './cats/dogs'
+    end
+
+  end
+
+  describe 'relative_path', :windows => true do
+
+    it "should return relative path given an absolute path" do
+      thing = Thing.new
+      FileUtils.stub!('pwd').and_return 'c:/home/robert/workspace/basic_app'
       thing.relative_path('c:/home/robert/workspace/basic_app/photos').should == './photos'
-      thing.relative_path('c:/home/workspace/robert/photos').should == '../../photos'
+      thing.relative_path('c:/home/robert/photos').should == '../../photos'
     end
 
     it "should return relative path given a relative path" do
       thing = Thing.new
-      FileUtils.stub!('pwd').and_return '/home/robert/workspace/basic_app'
+      FileUtils.stub!('pwd').and_return 'c:/home/someuser/basic_app'
       thing.relative_path('cats/dogs').should == './cats/dogs'
     end
 

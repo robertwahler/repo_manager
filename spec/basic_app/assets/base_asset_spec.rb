@@ -81,7 +81,7 @@ describe BasicApp::BaseAsset  do
       it "defaults to asset name when the path attribute is blank" do
         @asset.name = "asset_name"
         @asset.attributes[:path].should be_nil
-        @asset.path.should match(/^\/.*\/asset_name$/)
+        @asset.path.should match(/^.*\/asset_name$/)
       end
 
       it "should be nil unless path or name is set" do
@@ -93,8 +93,8 @@ describe BasicApp::BaseAsset  do
       it "should expand '~'" do
         @asset.path = "~/test/here"
         @asset.attributes[:path].should == "~/test/here"
-        @asset.path.should_not match(/^#{File.expand_path(FileUtils.pwd)}\/test\/here$/)
-        @asset.path.should match(/^\/.*\/test\/here$/)
+        @asset.path.should_not == "~/test/here"
+        @asset.path.should match(/.*\/test\/here$/)
       end
 
       it "should expand relative paths" do
