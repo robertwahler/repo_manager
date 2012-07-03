@@ -16,7 +16,6 @@ bin/repo
 cucumber.yml
 features/actions/git.feature
 features/actions/help.feature
-features/actions/init.feature
 features/actions/list.feature
 features/actions/path.feature
 features/actions/status.feature
@@ -34,6 +33,7 @@ features/support/aruba.rb
 features/support/env.rb
 features/tasks/action/update.feature
 features/tasks/generate/config.feature
+features/tasks/generate/init.feature
 lib/repoman.rb
 lib/repoman/actions.rb
 lib/repoman/actions/action_helper.rb
@@ -41,7 +41,6 @@ lib/repoman/actions/app_action.rb
 lib/repoman/actions/base_action.rb
 lib/repoman/actions/git_action.rb
 lib/repoman/actions/help_action.rb
-lib/repoman/actions/init_action.rb
 lib/repoman/actions/list_action.rb
 lib/repoman/actions/path_action.rb
 lib/repoman/actions/status_action.rb
@@ -66,7 +65,13 @@ lib/repoman/settings.rb
 lib/repoman/tasks.rb
 lib/repoman/tasks/action/update.rb
 lib/repoman/tasks/generate/config.rb
-lib/repoman/tasks/generate/templates/repo.erb
+lib/repoman/tasks/generate/init.rb
+lib/repoman/tasks/generate/templates/config/repo.conf.tt
+lib/repoman/tasks/generate/templates/config/repo.erb
+lib/repoman/tasks/generate/templates/init/.gitignore
+lib/repoman/tasks/generate/templates/init/assets/.gitignore
+lib/repoman/tasks/generate/templates/init/global/default/asset.conf
+lib/repoman/tasks/generate/templates/init/tasks/.gitignore
 lib/repoman/tasks/task_manager.rb
 lib/repoman/tasks/thor_helper.rb
 lib/repoman/views.rb
@@ -75,11 +80,14 @@ lib/repoman/views/base_view.rb
 lib/repoman/views/templates/css/basic.css
 lib/repoman/views/templates/default.erb
 lib/repoman/views/templates/default.slim
+lib/repoman/views/view_helper.rb
 repoman.gemspec
 spec/aruba_helper.rb
+spec/basic_app/actions/action_helper_spec.rb
 spec/basic_app/assets/base_asset_spec.rb
 spec/basic_app/core_spec.rb
 spec/basic_app/settings_spec.rb
+spec/basic_app/views/view_helper_spec.rb
 spec/basic_gem/aruba_helper_spec.rb
 spec/basic_gem/basic_gem_spec.rb
 spec/basic_gem/gemspec_spec.rb
