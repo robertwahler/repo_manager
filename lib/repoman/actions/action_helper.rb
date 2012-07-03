@@ -20,7 +20,7 @@ module Repoman
 
     # @return[String] the relative path from the CWD
     def relative_path(path)
-      path = Pathname.new(File.expand_path(path)).relative_path_from(Pathname.new(FileUtils.pwd))
+      path = Pathname.new(File.expand_path(path, FileUtils.pwd)).relative_path_from(Pathname.new(FileUtils.pwd))
       path = "./#{path}" unless path.absolute? || path.to_s.match(/^\./)
       path.to_s
     end
