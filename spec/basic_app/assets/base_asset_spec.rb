@@ -39,7 +39,7 @@ describe BasicApp::BaseAsset  do
     end
   end
 
-  describe 'attributes' do
+  describe 'common attributes' do
 
     before :each do
       @asset = BasicApp::BaseAsset.new
@@ -121,5 +121,80 @@ describe BasicApp::BaseAsset  do
     end
 
   end
+
+  describe 'user defined attributes' do
+
+    context "when not defined" do
+
+      it "should raise 'NoMethodError' when accessing" do
+        asset = BasicApp::BaseAsset.new("test_asset")
+        defined?(asset.undefined_attribute).should be_false
+        lambda {asset.undefined_attribute.should be_nil}.should raise_error  NoMethodError
+        lambda {asset.undefined_attribute = 1}.should raise_error  NoMethodError
+      end
+
+      it "should not set that attributes hash" do
+        asset = BasicApp::BaseAsset.new "test_asset"
+        defined?(asset.undefined_attribute).should be_false
+        lambda {asset.undefined_attribute = 1}.should raise_error  NoMethodError
+        asset.attributes[:undefined_attribute].should be_nil
+      end
+
+    end
+
+    context "when creating" do
+
+      class MyAsset < BasicApp::BaseAsset
+        def my_attribute
+          @my_attribute
+        end
+        def my_attribute=(value)
+          @my_attribute = value.to_i * 2
+        end
+      end
+
+      it "should not overwrite existing attributes" do
+        attributes = {:user_attributes => [:my_attribute]}
+
+        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+        asset.my_attribute = 2
+        asset.my_attribute.should == "2"
+
+        my_asset = MyAsset.new("test_asset", attributes)
+        my_asset.my_attribute = 2
+        my_asset.my_attribute.should == 4
+      end
+
+    end
+
+    context "when defined" do
+
+      it "should create read accessors" do
+        attributes = {:user_attributes => [:undefined_attribute]}
+        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+
+        defined?(asset.undefined_attribute).should be_true
+        lambda {asset.undefined_attribute.should be_nil}.should_not raise_error  NoMethodError
+      end
+
+      it "should create write accessors" do
+        attributes = {:user_attributes => [:undefined_attribute]}
+        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+
+        lambda {asset.undefined_attribute = "1"}.should_not raise_error  NoMethodError
+      end
+
+      it "should set the attributes hash" do
+        attributes = {:user_attributes => [:undefined_attribute]}
+        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+
+        asset.undefined_attribute = "1"
+        asset.attributes[:undefined_attribute].should == "1"
+      end
+
+    end
+
+  end
+
 end
 

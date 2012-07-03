@@ -142,6 +142,9 @@ module BasicApp
       # allow for lazy loading (TODO), don't assign empty attributes
       @attributes = attributes.dup unless attributes.empty?
 
+      # create user_attribute methods
+      create_user_defined_attributes
+
       return unless asset_name_or_folder
 
       @asset_key = nil
@@ -194,6 +197,44 @@ module BasicApp
 
       Mustache.render(template, self)
     end
+
+    def create_user_defined_attributes
+      attrs = attributes[:user_attributes]
+      return unless attrs
+      raise "Expected 'user_attributes' to be an array" unless attrs.is_a? Array
+
+      # Define each of the attributes
+      attrs.each do |attr|
+        create_accessor(attr)
+      end
+
+    end
+
+    private
+
+    def create_accessor(attr)
+      create_reader(attr)
+      create_writer(attr)
+    end
+
+    def create_reader(attr)
+      method = "#{attr}".to_sym
+      return if self.respond_to? method
+
+      self.class.send(:define_method, method) do
+        render(attributes[method])
+      end
+    end
+
+    def create_writer(attr)
+      method = "#{attr}=".to_sym
+      return if self.respond_to? method
+
+      self.class.send(:define_method, method) do |value|
+        attributes[attr] = value
+      end
+    end
+
 
   end
 end

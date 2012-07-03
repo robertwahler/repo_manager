@@ -95,6 +95,8 @@ module BasicApp
       # and adding new attributes doesn't require code changes. Note
       # that the 'parent' setting is not merged to attributes
       @asset.attributes.merge!(contents)
+      @asset.create_user_defined_attributes
+      @asset
     end
 
     def to_hash
