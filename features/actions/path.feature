@@ -59,12 +59,13 @@ Feature: Listing repo path information
     Given a file named "repo.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
+      folders:
+        repos  : app_assets
       """
+    And the folder "app_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
 
   Scenario: Show path using 'path' as alias for 'list --list=path'
     When I run `repo path`

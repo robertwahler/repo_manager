@@ -67,13 +67,9 @@ Feature: Listing repo path information
       """
 
   Scenario: Invalid repo
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        bad_repo:
-          path: not_a_repo
-      """
+    Given the folder "config/repos" with the following asset configurations:
+      | name    | path         |
+      | bad_repo| not_a_repo   |
     And a directory named "not_a_repo"
     When I run `repo status test1 test2 bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 2
@@ -88,13 +84,9 @@ Feature: Listing repo path information
       """
 
   Scenario: Missing repo folder
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        bad_repo:
-          path: not_a_repo
-      """
+    Given the folder "config/repos" with the following asset configurations:
+      | name    | path         |
+      | bad_repo| not_a_repo   |
     When I run `repo status --filter=bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 1
     And the normalized output should contain:
@@ -228,18 +220,19 @@ Feature: Listing repo path information
       """
 
   Scenario: Folders with spaces in path
+    Given a file named "repo1.conf" with:
+      """
+      ---
+      folders:
+        repos  : repo1_assets
+      """
     Given a repo in folder "test 1/test path 1" with the following:
       | filename         | status | content  |
       | .gitignore       | CM     | tmp/*    |
-    And a file named "repo1.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
-      """
+    And the folder "repo1_assets" with the following asset configurations:
+      | name       | path                 |
+      | test1      | test 1/test path 1   |
+      | test2      | test_path_2          |
     When I run `repo status --unmodified=DOTS --config=repo1.conf`
     Then the exit status should be 4
     And the normalized output should contain:

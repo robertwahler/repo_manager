@@ -551,15 +551,10 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Default action, no filter, --list==SHORT
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-      """
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
     When I run `repo list --list=SHORT --verbose`
     Then the exit status should be 0
     And the output should contain:
@@ -569,15 +564,10 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Default action, no filter, --list=NAME
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-      """
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
     When I run `repo list --list=NAME`
     Then the exit status should be 0
     And the output should contain:
@@ -587,15 +577,10 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Default action, no filter, --list=PATH
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-      """
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
     When I run `repo list --list=PATH`
     Then the exit status should be 0
     And the output should match:
@@ -605,14 +590,10 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Missing path defaults to repo name
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-        test2:
-          path: test2
-      """
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name       |
+      | test1      |
+      | test2      |
     When I run `repo list --list=SHORT`
     Then the exit status should be 0
     And the output should contain:
@@ -625,23 +606,15 @@ Scenario: List with invalid options in varying positions on the command line
     Given a file named "repo.conf" with:
       """
       ---
-      repos:
       """
     When I run `repo list --list=SHORT`
     Then the exit status should be 0
 
-  Scenario: Remotes short format with --filter repo
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test1
-          remotes:
-            origin: ./remotes/test1.git
-        test2:
-          path: test2
-      """
+  Scenario: Short format with --filter repo
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name       |
+      | test1      |
+      | test2      |
     When I run `repo list --filter=test1 --list=SHORT --no-verbose`
     Then the exit status should be 0
     And the output should contain exactly:
@@ -650,49 +623,14 @@ Scenario: List with invalid options in varying positions on the command line
 
       """
 
-  Scenario: Remotes short format with arg repo
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test1
-          remotes:
-            origin: ./remotes/test1.git
-        test2:
-          path: test2
-      """
+  Scenario: Short format with arg repo
+    Given the folder "data/app_assets" with the following asset configurations:
+      | name       |
+      | test1      |
+      | test2      |
     When I run `repo list test1 --list=SHORT --no-verbose`
     Then the output should contain exactly:
       """
       test1: ./test1
 
-      """
-
-  Scenario: Remotes long format
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test1
-          remotes:
-            origin: ./remotes/test1.git
-        test2:
-          path: test2
-      """
-    When I run `repo list`
-    And the output should contain:
-      """
-      test1:
-      ---
-      name: test1
-      path: test1
-      remotes:
-        origin: ./remotes/test1.git
-
-      test2:
-      ---
-      name: test2
-      path: test2
       """

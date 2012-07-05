@@ -18,18 +18,7 @@ Feature: Asset configuration
         my_str : "user defined string"
         my_int : 12345
       folders:
-        global : global
         user   : data
-
-  Example global/assets/asset1/asset.conf:
-
-      ---
-      path:     workspace/test_path_1
-      repos:
-        save1:
-          path: some/other/path
-        config1:
-          path: some/new/path
 
   Example with parent: config/data/assets/asset1/asset.conf:
 

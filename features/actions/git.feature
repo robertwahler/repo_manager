@@ -49,21 +49,22 @@ Feature: Running an arbitrary git command
       repo git log -1 --pretty=format:"%h committed %cr"
 
   Background: A valid config file
-    Given a repo in folder "test_path_1" with the following:
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        repos  : repo_assets
+      """
+    And a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
     And a repo in folder "test_path_2" with the following:
       | filename         | status | content  |
       | .gitignore       | C      |          |
-    And a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-      """
+    And the folder "repo_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
 
   Scenario: Missing all run arguments
     When I run `repo git`
@@ -170,17 +171,11 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run native git status command on an invalid repo
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-        bad_repo:
-          path: not_a_repo
-      """
+    Given the folder "repo_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
+      | bad_repo   | not_a_repo    |
     And a directory named "not_a_repo"
     When I run `repo git status --porcelain --repos=test1,test2,bad_repo`
     Then the exit status should be 128
@@ -191,17 +186,11 @@ Feature: Running an arbitrary git command
       """
 
   Scenario: Run Repoman status command on an invalid repo
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-        bad_repo:
-          path: not_a_repo
-      """
+    Given the folder "repo_assets" with the following asset configurations:
+      | name       | path          |
+      | test1      | test_path_1   |
+      | test2      | test_path_2   |
+      | bad_repo   | not_a_repo    |
     And a directory named "not_a_repo"
     When I run `repo status --repos=test1,bad_repo --unmodified=SHOW --no-verbose`
     Then the exit status should be 2
@@ -213,17 +202,9 @@ Feature: Running an arbitrary git command
 
   Scenario: Native and repoman status command missing repo folder has different
     exit status values
-    Given a file named "repo.conf" with:
-      """
-      ---
-      repos:
-        test1:
-          path: test_path_1
-        test2:
-          path: test_path_2
-        bad_repo:
-          path: bad_repo_path
-      """
+    Given the folder "repo_assets" with the following asset configurations:
+      | name       | path          |
+      | bad_repo   | bad_repo_path |
     When I run `repo git status --filter=bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 0
     And the output should contain exactly:
