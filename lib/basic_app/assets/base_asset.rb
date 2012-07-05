@@ -72,17 +72,12 @@ module BasicApp
     # Description (short)
     #
     # @return [String]
-    def description
-      render(attributes[:description])
-    end
-    def description=(value)
-      attributes[:description] = value
-    end
+    create_accessors :description
 
     # Notes (user)
     #
     # @return [String]
-    create_accessors [:notes]
+    create_accessors :notes
 
     # Classification tags, an array of strings
     #
@@ -193,7 +188,6 @@ module BasicApp
     def render(template)
       return nil unless template
 
-      # TODO: merge raw attributes and self.to_s to avoid needing to define user attributes
       Mustache.render(template, self)
     end
 

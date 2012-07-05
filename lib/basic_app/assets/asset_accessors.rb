@@ -6,12 +6,12 @@ module BasicApp
     # NOTE: This is similar to using method_missing with a whitelist
     #
     # @return [void]
-    def create_accessors(attrs)
+    def create_accessors(*attrs)
       return unless attrs
       raise ArgumentError, "Expected 'user_attributes' to be an array" unless attrs.is_a? Array
 
       # Define each of the attributes
-      attrs.each do |attr|
+      attrs.flatten.each do |attr|
         create_accessor(attr)
       end
     end
@@ -22,6 +22,8 @@ module BasicApp
     end
 
     def create_reader(attr)
+      return unless attr
+
       method = "#{attr}".to_sym
 
       if self.kind_of? BasicApp::BaseAsset
@@ -40,6 +42,8 @@ module BasicApp
     end
 
     def create_writer(attr)
+      return unless attr
+
       method = "#{attr}=".to_sym
 
       if self.kind_of? BasicApp::BaseAsset
