@@ -124,7 +124,7 @@ describe BasicApp::BaseAsset  do
 
   describe 'user defined attributes' do
 
-    context "when not defined" do
+    context "when not explicitly defined" do
 
       it "should raise 'NoMethodError' when accessing" do
         asset = BasicApp::BaseAsset.new("test_asset")
@@ -140,9 +140,19 @@ describe BasicApp::BaseAsset  do
         asset.attributes[:undefined_attribute].should be_nil
       end
 
+      context "when a value exists in the main attributes hash" do
+        it "should not raise 'NoMethodError' when accessing" do
+          asset = BasicApp::BaseAsset.new("test_asset", {:undefined_attribute => "foo bar"})
+          defined?(asset.undefined_attribute).should be_false
+          lambda {asset.undefined_attribute.should be_nil}.should_not raise_error  NoMethodError
+          lambda {asset.undefined_attribute = 1}.should raise_error  NoMethodError
+          asset.undefined_attribute.should == "foo bar"
+        end
+      end
+
     end
 
-    context "when creating" do
+    context "when explicitly creating" do
 
       class MyAsset < BasicApp::BaseAsset
         def my_attribute
@@ -167,7 +177,7 @@ describe BasicApp::BaseAsset  do
 
     end
 
-    context "when defined" do
+    context "when explicitly defined" do
 
       it "should create read accessors" do
         attributes = {:user_attributes => [:undefined_attribute]}

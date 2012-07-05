@@ -214,6 +214,19 @@ module BasicApp
 
     end
 
+    # support for Mustache rendering of ad hoc user defined variables
+    # if the key exists in the hash, use if for a lookup
+    def method_missing(name, *args, &block)
+      return attributes[name.to_sym] if attributes.include?(name.to_sym)
+      return super
+    end
+
+    # method_missing support
+    def respond_to?(name)
+      return true if attributes.include?(name.to_sym)
+      super
+    end
+
     private
 
     def create_accessor(attr)
