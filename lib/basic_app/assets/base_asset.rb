@@ -9,10 +9,13 @@ require 'mustache'
 require 'pathname'
 
 require 'basic_app/assets/asset_configuration'
+require 'basic_app/assets/asset_accessors'
 
 module BasicApp
 
   class BaseAsset
+    include BasicApp::AssetAccessors
+    extend BasicApp::AssetAccessors
 
     #
     # --- Asset attributes START here ---
@@ -79,12 +82,7 @@ module BasicApp
     # Notes (user)
     #
     # @return [String]
-    def notes
-      render(attributes[:notes])
-    end
-    def notes=(value)
-      attributes[:notes] = value
-    end
+    create_accessors [:notes]
 
     # Classification tags, an array of strings
     #
@@ -199,21 +197,6 @@ module BasicApp
       Mustache.render(template, self)
     end
 
-    # Given an array, create accessors
-    # NOTE: This is similar to using method_missing with a whitelist
-    #
-    # @return [void]
-    def create_accessors(attrs)
-      return unless attrs
-      raise ArgumentError, "Expected 'user_attributes' to be an array" unless attrs.is_a? Array
-
-      # Define each of the attributes
-      attrs.each do |attr|
-        create_accessor(attr)
-      end
-
-    end
-
     # support for Mustache rendering of ad hoc user defined variables
     # if the key exists in the hash, use if for a lookup
     def method_missing(name, *args, &block)
@@ -226,32 +209,6 @@ module BasicApp
       return true if attributes.include?(name.to_sym)
       super
     end
-
-    private
-
-    def create_accessor(attr)
-      create_reader(attr)
-      create_writer(attr)
-    end
-
-    def create_reader(attr)
-      method = "#{attr}".to_sym
-      return if self.respond_to? method
-
-      self.class.send(:define_method, method) do
-        render(attributes[method])
-      end
-    end
-
-    def create_writer(attr)
-      method = "#{attr}=".to_sym
-      return if self.respond_to? method
-
-      self.class.send(:define_method, method) do |value|
-        attributes[attr] = value
-      end
-    end
-
 
   end
 end
