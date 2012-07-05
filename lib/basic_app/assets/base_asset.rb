@@ -191,14 +191,18 @@ module BasicApp
       binding
     end
 
-    # @return [String/nil] with mustache {{}} replaced or an nil if template is nil
+    # @return [String/nil] with mustache tags {{}}, {{{}}} replaced or nil if template is nil
     def render(template)
       return nil unless template
 
+      # TODO: merge raw attributes and self.to_s to avoid needing to define user attributes
       Mustache.render(template, self)
     end
 
-    # given an array, create accessors
+    # Given an array, create accessors
+    # NOTE: This is similar to using method_missing with a whitelist
+    #
+    # @return [void]
     def create_accessors(attrs)
       return unless attrs
       raise ArgumentError, "Expected 'user_attributes' to be an array" unless attrs.is_a? Array
