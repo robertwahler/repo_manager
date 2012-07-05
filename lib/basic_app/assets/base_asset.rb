@@ -143,7 +143,7 @@ module BasicApp
       @attributes = attributes.dup unless attributes.empty?
 
       # create user_attribute methods
-      create_user_defined_attributes
+      create_accessors(@attributes[:user_attributes]) if @attributes && @attributes[:user_attributes]
 
       return unless asset_name_or_folder
 
@@ -198,10 +198,10 @@ module BasicApp
       Mustache.render(template, self)
     end
 
-    def create_user_defined_attributes
-      attrs = attributes[:user_attributes]
+    # given an array, create accessors
+    def create_accessors(attrs)
       return unless attrs
-      raise "Expected 'user_attributes' to be an array" unless attrs.is_a? Array
+      raise ArgumentError, "Expected 'user_attributes' to be an array" unless attrs.is_a? Array
 
       # Define each of the attributes
       attrs.each do |attr|
