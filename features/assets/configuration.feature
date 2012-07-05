@@ -72,23 +72,6 @@ Feature: Asset configuration
       path: user_path
       """
 
-  Scenario: Asset attributes are specified directly in the config file,
-    attributes key is by convention, the name of the asset class
-    Given a file named "basic_app.conf" with:
-      """
-      ---
-      options:
-        color       : true
-      app_assets:
-        asset1:
-          path: user_path
-      """
-    When I run `basic_app list --verbose --type=app_asset`
-    Then the output should contain:
-      """
-      path: user_path
-      """
-
   Scenario: Parent configuration fills in missing items with ERB evaluation
     Given a file named "basic_app.conf" with:
       """

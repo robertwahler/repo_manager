@@ -140,7 +140,6 @@ module BasicApp
 
       return unless asset_name_or_folder
 
-      @asset_key = nil
       folder = asset_name_or_folder.to_s
       @name = File.basename(folder)
 
@@ -151,16 +150,6 @@ module BasicApp
         logger.debug "initializing new asset with folder: #{folder}"
         configuration.load(folder)
       end
-    end
-
-    # The asset_key, if defined, will be used as key to asset attributes when
-    # loading from YAML, if not defined, the entire YAML file will load.
-    #
-    # Override in decendants.
-    #
-    # @ return [Symbol] or nil
-    def asset_key
-      nil
     end
 
     def configuration
