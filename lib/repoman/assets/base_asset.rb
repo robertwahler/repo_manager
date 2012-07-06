@@ -14,8 +14,8 @@ require 'repoman/assets/asset_accessors'
 module Repoman
 
   class BaseAsset
-    include BasicApp::AssetAccessors
-    extend BasicApp::AssetAccessors
+    include Repoman::AssetAccessors
+    extend Repoman::AssetAccessors
 
     #
     # --- Asset attributes START here ---

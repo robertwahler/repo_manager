@@ -127,14 +127,14 @@ describe Repoman::BaseAsset  do
     context "when not explicitly defined" do
 
       it "should raise 'NoMethodError' when accessing" do
-        asset = BasicApp::BaseAsset.new("test_asset")
+        asset = Repoman::BaseAsset.new("test_asset")
         defined?(asset.undefined_attribute).should be_false
         lambda {asset.undefined_attribute.should be_nil}.should raise_error  NoMethodError
         lambda {asset.undefined_attribute = 1}.should raise_error  NoMethodError
       end
 
       it "should not set that attributes hash" do
-        asset = BasicApp::BaseAsset.new "test_asset"
+        asset = Repoman::BaseAsset.new "test_asset"
         defined?(asset.undefined_attribute).should be_false
         lambda {asset.undefined_attribute = 1}.should raise_error  NoMethodError
         asset.attributes[:undefined_attribute].should be_nil
@@ -142,7 +142,7 @@ describe Repoman::BaseAsset  do
 
       context "when a value exists in the main attributes hash" do
         it "should not raise 'NoMethodError' when accessing" do
-          asset = BasicApp::BaseAsset.new("test_asset", {:undefined_attribute => "foo bar"})
+          asset = Repoman::BaseAsset.new("test_asset", {:undefined_attribute => "foo bar"})
           defined?(asset.undefined_attribute).should be_false
           lambda {asset.undefined_attribute.should be_nil}.should_not raise_error  NoMethodError
           lambda {asset.undefined_attribute = 1}.should raise_error  NoMethodError
@@ -154,7 +154,7 @@ describe Repoman::BaseAsset  do
 
     context "when explicitly creating" do
 
-      class MyAsset < BasicApp::BaseAsset
+      class MyAsset < Repoman::BaseAsset
         def my_attribute
           @my_attribute
         end
@@ -166,7 +166,7 @@ describe Repoman::BaseAsset  do
       it "should not overwrite existing attributes" do
         attributes = {:user_attributes => [:my_attribute]}
 
-        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+        asset = Repoman::BaseAsset.new("test_asset", attributes)
         asset.my_attribute = 2
         asset.my_attribute.should == "2"
 
@@ -181,7 +181,7 @@ describe Repoman::BaseAsset  do
 
       it "should create read accessors" do
         attributes = {:user_attributes => [:undefined_attribute]}
-        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+        asset = Repoman::BaseAsset.new("test_asset", attributes)
 
         defined?(asset.undefined_attribute).should be_true
         lambda {asset.undefined_attribute.should be_nil}.should_not raise_error  NoMethodError
@@ -189,14 +189,14 @@ describe Repoman::BaseAsset  do
 
       it "should create write accessors" do
         attributes = {:user_attributes => [:undefined_attribute]}
-        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+        asset = Repoman::BaseAsset.new("test_asset", attributes)
 
         lambda {asset.undefined_attribute = "1"}.should_not raise_error  NoMethodError
       end
 
       it "should set the attributes hash" do
         attributes = {:user_attributes => [:undefined_attribute]}
-        asset = BasicApp::BaseAsset.new("test_asset", attributes)
+        asset = Repoman::BaseAsset.new("test_asset", attributes)
 
         asset.undefined_attribute = "1"
         asset.attributes[:undefined_attribute].should == "1"

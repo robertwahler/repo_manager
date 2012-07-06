@@ -40,14 +40,14 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        repos  : data/app_assets
+        app_assets  : data/app_assets
       """
     And a file named "data/app_assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
       """
-    When I run `repo list`
+    When I run `repo list --verbose`
     Then the output should contain:
       """
       path: user_path

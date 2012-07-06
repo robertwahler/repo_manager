@@ -1,4 +1,4 @@
-module BasicApp
+module Repoman
 
   module AssetAccessors
 
@@ -26,7 +26,7 @@ module BasicApp
 
       method = "#{attr}".to_sym
 
-      if self.kind_of? BasicApp::BaseAsset
+      if self.kind_of? Repoman::BaseAsset
         return if self.respond_to? method
 
         self.class.send(:define_method, method) do
@@ -46,7 +46,7 @@ module BasicApp
 
       method = "#{attr}=".to_sym
 
-      if self.kind_of? BasicApp::BaseAsset
+      if self.kind_of? Repoman::BaseAsset
         return if self.respond_to? method
 
         self.class.send(:define_method, method) do |value|

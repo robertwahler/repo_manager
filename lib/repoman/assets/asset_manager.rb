@@ -17,7 +17,7 @@ module Repoman
     #
     # @return [Array] of Asset
     def assets(asset_options={})
-      #logger.debug "asset_options: #{asset_options.inspect}"
+      logger.debug "asset_options: #{asset_options.inspect}"
       # type of asset to create, used to guess the asset_folder name
       type = asset_options[:type] || :app_asset
 
@@ -42,13 +42,12 @@ module Repoman
       folders = Dir.glob(pattern)
       logger.debug "user assets folder is empty: #{pattern}" if folders.empty?
 
-<<<<<<< HEAD
-        folders.sort.each do |folder|
-          folder_basename = Pathname.new(folder).basename.to_s
-          #logger.debug "matching folder: #{folder} using basename: #{folder_basename}"
-          if filters.find {|filter| matches?(folder_basename, filter, asset_options)}
-            logger.debug "match found for: #{folder_basename}"
-            match_count += 1
+      folders.sort.each do |folder|
+        folder_basename = Pathname.new(folder).basename.to_s
+        #logger.debug "matching folder: #{folder} using basename: #{folder_basename}"
+        if filters.find {|filter| matches?(folder_basename, filter, asset_options)}
+          logger.debug "match found for: #{folder_basename}"
+          match_count += 1
           asset = Repoman::AppAsset.create(type, folder, {})
           assets << asset
           break if ((asset_options[:match] == 'FIRST') || (asset_options[:match] == 'EXACT'))

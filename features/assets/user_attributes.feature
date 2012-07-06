@@ -24,7 +24,7 @@ Feature: Create user defined attributes
       path: folder/{{my_folder}}/another_folder
 
   Background: Master config file and ERB template
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       folders:
@@ -32,8 +32,8 @@ Feature: Create user defined attributes
       """
     And a file named "test.erb" with:
       """
-      <% require 'basic_app/actions/action_helper' -%>
-      <% extend BasicApp::ActionHelper -%>
+      <% require 'repoman/actions/action_helper' -%>
+      <% extend Repoman::ActionHelper -%>
 
       <% for item in items do -%>
       <%= item.name %>:
@@ -56,13 +56,13 @@ Feature: Create user defined attributes
       my_folder: folder name
       path: folder/{{my_folder}}/another_folder
       """
-    When I run `basic_app list --type=app_asset --verbose`
+    When I run `repo list --type=app_asset --verbose`
     Then the exit status should be 0
     And its output should contain:
       """
       path: folder/{{my_folder}}/another_folder
       """
-    When I run `basic_app list --template=test.erb --type=app_asset --verbose`
+    When I run `repo list --template=test.erb --type=app_asset --verbose`
     Then the exit status should be 0
     And its output should not contain:
       """
@@ -80,13 +80,13 @@ Feature: Create user defined attributes
       my_folder: folder name
       path: folder/{{my_folder}}/another_folder
       """
-    When I run `basic_app list --type=app_asset --verbose`
+    When I run `repo list --type=app_asset --verbose`
     Then the exit status should be 0
     And its output should contain:
       """
       path: folder/{{my_folder}}/another_folder
       """
-    When I run `basic_app list --template=test.erb --type=app_asset --verbose`
+    When I run `repo list --template=test.erb --type=app_asset --verbose`
     Then the exit status should be 0
     And its output should not contain:
       """
