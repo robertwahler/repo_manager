@@ -82,8 +82,8 @@ module BasicApp
 
         begin
           parent_configuration.load(parent_folder)
-        rescue
-          logger.warn "AssetConfiguration parent configuration load failed: #{parent_folder}"
+        rescue Exception => e
+          logger.warn "AssetConfiguration parent configuration load failed on: '#{parent_folder}' with: '#{e.message}'"
         end
       end
 
@@ -111,8 +111,11 @@ module BasicApp
       file = File.join(asset_folder, 'asset.conf')
       if File.exists?(file)
         contents = YAML.load(ERB.new(File.open(file, "rb").read).result(@asset.get_binding))
-        contents.recursively_symbolize_keys! if contents && contents.is_a?(Hash)
-        contents
+        if contents && contents.is_a?(Hash)
+          contents.recursively_symbolize_keys!
+        else
+          {}
+        end
       else
         {}
       end

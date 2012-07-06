@@ -71,12 +71,20 @@ end
 # you don't need regex, use "the output should contain" instead since
 # that way, you don't have to escape regex characters that
 # appear naturally in the output
-Then /^the last output should match \/([^\/]*)\/$/ do |expected|
+Then /^its output should match \/([^\/]*)\/$/ do |expected|
   assert_matching_output(expected, output_from(@commands.last))
 end
 
-Then /^the last output should match:$/ do |expected|
+Then /^its output should not match \/([^\/]*)\/$/ do |expected|
+  output_from(@commands.last).should_not =~ /#{expected}/
+end
+
+Then /^its output should match:$/ do |expected|
   assert_matching_output(expected, output_from(@commands.last))
+end
+
+Then /^its output should not match:$/ do |expected|
+  output_from(@commands.last).should_not =~ /#{expected}/
 end
 
 Then /^the normalized output should contain:$/ do |partial_output|

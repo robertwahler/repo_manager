@@ -18,11 +18,11 @@ Feature: Show help on actions
  Scenario Outline: Valid action, help available
     When I run `basic_app help <action>`
     Then the exit status should be 0
-    And the last output should match:
+    And its output should match:
       """
       Usage: basic_app.* <action>
       """
-    And the last output should match:
+    And its output should match:
       """
       Options:
       """
