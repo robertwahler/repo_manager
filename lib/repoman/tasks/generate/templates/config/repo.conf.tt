@@ -1,8 +1,12 @@
 ---
 # default CLI options
 options:
-  color: true
-  verbose: false
+  color      : AUTO
+  verbose    : false
+  short      : false
+  unmodified : HIDE
+  match      : ALL
+  list       : ALL
 
 folders:
 
