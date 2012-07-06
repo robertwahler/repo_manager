@@ -5,7 +5,7 @@ Feature: Asset template rendering
   template, the raw attribute will be shown.
 
  Background: Empty configuration file so that we don't read global config locations
-   Given an empty file named "basic_app.conf"
+   Given an empty file named "repo.conf"
 
   Scenario: Render templates to STDOUT
     Given a file named "test.erb" with:

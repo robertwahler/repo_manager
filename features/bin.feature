@@ -5,7 +5,7 @@ Feature: Options via a command line interface (CLI)
   should override hard coded defaults
 
  Background: Empty configuration file so that we don't read global config locations
-   Given an empty file named "basic_app.conf"
+   Given an empty file named "repo.conf"
 
   Scenario: Version info
     When I run `repo --version`

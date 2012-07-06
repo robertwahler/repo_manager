@@ -22,8 +22,8 @@ Feature: Invoke external tasks, normally Thor tasks.
       options:
         color       : true
       folders:
-        assets           : basic_app/apps
-        tasks            : basic_app/tasks
+        assets           : repoman/assets
+        tasks            : repoman/tasks
       """
     And an empty file named "output/.gitignore"
     And a file named "repoman/tasks/test.rb" with:

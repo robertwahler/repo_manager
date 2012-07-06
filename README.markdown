@@ -102,6 +102,8 @@ bundle exec rake -T
 
 ## Development Environment ##
 
+Repoman was originally cloned from [Basic App](http://github.com/robertwahler/BasicApp).
+
 all systems
 
     cd ~/workspace

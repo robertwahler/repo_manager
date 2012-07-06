@@ -58,7 +58,7 @@ Feature: Listing repos
       """
 
   Scenario: Invalid asset type
-    When I run `basic_app list --type=invalid_asset_type`
+    When I run `repo list --type=invalid_asset_type`
     Then the exit status should be 1
     And the output should contain:
       """
@@ -234,7 +234,7 @@ Scenario: List with invalid options in varying positions on the command line
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `basic_app list assets --list=NAME --type=app_asset`
+    When I run `repo list assets --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -256,8 +256,8 @@ Scenario: List with invalid options in varying positions on the command line
         <head>
           <title>Default View</title>
           <meta charset="utf-8" />
-          <meta content="basic_app" name="keywords" />
-          <meta content="BasicApp default template" name="description" />
+          <meta content="repo" name="keywords" />
+          <meta content="Repoman default template" name="description" />
           <meta content="Robert Wahler" name="author" />
           <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
           <style type="text/css">html, body {
@@ -337,8 +337,8 @@ Scenario: List with invalid options in varying positions on the command line
         <head>
           <title>Default View</title>
           <meta charset="utf-8" />
-          <meta content="basic_app" name="keywords" />
-          <meta content="BasicApp default template" name="description" />
+          <meta content="repo" name="keywords" />
+          <meta content="Repoman default template" name="description" />
           <meta content="Robert Wahler" name="author" />
           <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
           <style type="text/css">html, body {
