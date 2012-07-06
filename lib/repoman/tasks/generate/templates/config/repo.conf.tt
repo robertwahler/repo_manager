@@ -7,7 +7,7 @@ options:
 folders:
 
   # main repo configuration files
-  repo  : <%= "#{@path}/assets" %>
+  assets  : <%= "#{@path}/assets" %>
 
   #
   # repo user tasks, file extentions can be '.rb' or '.thor'
