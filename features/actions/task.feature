@@ -22,7 +22,7 @@ Feature: Invoke external tasks, normally Thor tasks.
       options:
         color       : true
       folders:
-        app_assets       : basic_app/apps
+        assets           : basic_app/apps
         tasks            : basic_app/tasks
       """
     And an empty file named "output/.gitignore"

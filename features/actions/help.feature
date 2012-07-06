@@ -12,8 +12,8 @@ Feature: Show help on actions
 
   * abbreviated help general app help is available via the --help option
 
- Background: Default empty configuration file
-    Given an empty file named "basic_app.conf"
+ Background: Empty configuration file so that we don't read global config locations
+   Given an empty file named "basic_app.conf"
 
  Scenario Outline: Valid action, help available
     When I run `basic_app help <action>`

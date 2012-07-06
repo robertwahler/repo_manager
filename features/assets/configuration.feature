@@ -18,7 +18,7 @@ Feature: Asset configuration
         my_str : "user defined string"
         my_int : 12345
       folders:
-        user   : data
+        assets : data
 
   Example with parent: config/data/assets/asset1/asset.conf:
 
@@ -40,7 +40,7 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        assets      : data/app_assets
       """
     And a file named "data/app_assets/asset1/asset.conf" with:
       """
@@ -61,7 +61,7 @@ Feature: Asset configuration
       options:
         color       : true
       """
-    And a file named "app_assets/asset1/asset.conf" with:
+    And a file named "assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
@@ -79,7 +79,7 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        assets      : data/app_assets
       """
     And the folder "global/app_assets" with the following asset configurations:
       | name         | path          | icon                      |
@@ -104,7 +104,7 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        assets      : data/app_assets
       """
     And the folder "global/app_assets" with the following asset configurations:
       | name         | path          |
@@ -129,7 +129,7 @@ Feature: Asset configuration
       options:
         color       : true
       folders:
-        app_assets  : data/app_assets
+        assets      : data/app_assets
       """
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | binary          |

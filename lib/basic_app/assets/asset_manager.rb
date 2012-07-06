@@ -17,7 +17,7 @@ module BasicApp
     #
     # @return [Array] of Asset
     def assets(asset_options={})
-      #logger.debug "asset_options: #{asset_options.inspect}"
+      logger.debug "asset_options: #{asset_options.inspect}"
       # type of asset to create, used to guess the asset_folder name
       type = asset_options[:type] || :app_asset
 
@@ -26,7 +26,7 @@ module BasicApp
       match_count = 0
       logger.debug "generating assets array with filter array: #{filters.join(',')}"
 
-      assets_folder = asset_options[:assets_folder] || "#{type.to_s}s"
+      assets_folder = asset_options[:assets_folder] || "assets"
       pattern = File.join(assets_folder, '*/')
       logger.debug "reading from asset type: '#{type}' from assets_folder:'#{assets_folder}' "
 

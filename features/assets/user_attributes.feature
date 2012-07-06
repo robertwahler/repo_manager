@@ -28,7 +28,7 @@ Feature: Create user defined attributes
       """
       ---
       folders:
-        app_assets  : app_assets
+        assets      : assets
       """
     And a file named "test.erb" with:
       """
@@ -43,16 +43,16 @@ Feature: Create user defined attributes
       """
 
   Scenario: Using user attributes with pre-defined read/write accessors
-    Given a file named "global/app_assets/default/asset.conf" with:
+    Given a file named "global/assets/default/asset.conf" with:
       """
       ---
       user_attributes:
       - my_folder
       """
-    And a file named "app_assets/asset1/asset.conf" with:
+    And a file named "assets/asset1/asset.conf" with:
       """
       ---
-      parent: ../global/app_assets/default
+      parent: ../global/assets/default
       my_folder: folder name
       path: folder/{{my_folder}}/another_folder
       """
@@ -74,7 +74,7 @@ Feature: Create user defined attributes
       """
 
   Scenario: Using user attributes with ad hoc template variable expansion
-    Given a file named "app_assets/asset1/asset.conf" with:
+    Given a file named "assets/asset1/asset.conf" with:
       """
       ---
       my_folder: folder name

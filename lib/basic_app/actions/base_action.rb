@@ -170,10 +170,8 @@ module BasicApp
       @assets = AssetManager.new.assets(asset_options)
     end
 
-    # used by
-    #   * asset factory to create assets
-    #   * asset configuration to build attributes_key
-    #   * asset configuration to determine the default asset configuration file name
+    # Used by asset factory to create assets.  Override in app_action.rb or a
+    # descendant to set the class to be instantiated by by the AssetManager.
     #
     # @return [Symbol] asset type
     def asset_type
@@ -193,11 +191,10 @@ module BasicApp
 
       # asset type to create
       type = result[:type] || asset_type
-      asset_folder_key = "#{type.to_s}s".to_sym
       result = result.merge(:type => type)
 
       # optional key: :assets_folder, absolute path or relative to config file if :base_folder is specified
-      result = result.merge(:assets_folder => configuration[:folders][asset_folder_key]) if configuration[:folders]
+      result = result.merge(:assets_folder => configuration[:folders][:assets]) if configuration[:folders]
 
       # optional key: :base_folder is the folder that contains the main config file
       result = result.merge(:base_folder => File.dirname(configuration[:configuration_filename])) if configuration[:configuration_filename]
