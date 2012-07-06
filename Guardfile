@@ -50,6 +50,11 @@ group :cucumber do
     # actions
     watch(%r{^lib/repoman/actions/(.+)_action.rb$})         { |m| "features/actions/#{m[1]}.feature" }
 
+    # assets
+    watch(%r{^lib/basic_app/assets/.+_asset.rb$})             { |m| "features/assets/configuration.feature features/assets/rendering.feature" }
+    watch(%r{^lib/basic_app/assets/asset_configuration.rb$})  { |m| "features/assets/configuration.feature" }
+    watch(%r{^lib/basic_app/assets/asset_accessors.rb$})      { |m| "features/assets/user_attributes.feature" }
+
     # tasks
     watch(%r{^lib/repoman/tasks/(.+)/(.+).rb$})             { |m| "features/tasks/#{m[1]}/#{m[2]}.feature" }
     watch(%r{^lib/repoman/tasks/task_manager.rb$})          { "features/actions/ph.feature" }

@@ -18,11 +18,11 @@ Feature: Show help on actions
  Scenario Outline: Valid action, help available
     When I run `repo help <action>`
     Then the exit status should be 0
-    And the last output should match:
+    And its output should match:
       """
       Usage: repo.* <action>
       """
-    And the last output should match:
+    And its output should match:
       """
       Options:
       """
