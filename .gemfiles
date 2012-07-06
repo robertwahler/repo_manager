@@ -22,6 +22,7 @@ features/actions/status.feature
 features/actions/task.feature
 features/assets/configuration.feature
 features/assets/rendering.feature
+features/assets/user_attributes.feature
 features/bin.feature
 features/logger.feature
 features/settings.feature
@@ -48,6 +49,7 @@ lib/repoman/actions/task_action.rb
 lib/repoman/app.rb
 lib/repoman/assets.rb
 lib/repoman/assets/app_asset.rb
+lib/repoman/assets/asset_accessors.rb
 lib/repoman/assets/asset_configuration.rb
 lib/repoman/assets/asset_manager.rb
 lib/repoman/assets/base_asset.rb
@@ -67,7 +69,6 @@ lib/repoman/tasks/action/update.rb
 lib/repoman/tasks/generate/config.rb
 lib/repoman/tasks/generate/init.rb
 lib/repoman/tasks/generate/templates/config/repo.conf.tt
-lib/repoman/tasks/generate/templates/config/repo.erb
 lib/repoman/tasks/generate/templates/init/.gitignore
 lib/repoman/tasks/generate/templates/init/assets/.gitignore
 lib/repoman/tasks/generate/templates/init/global/default/asset.conf
