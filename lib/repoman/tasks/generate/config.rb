@@ -9,11 +9,11 @@ module Repoman
 
     def asset_name_to_config_file(name=nil)
       raise "unable to find configuration key ':folders'" unless configuration[:folders]
-      raise "unable to find configuration key ':folders => :repos'" unless configuration[:folders][:repos]
+      raise "unable to find configuration key ':folders => :assets'" unless configuration[:folders][:assets]
 
-      folder = configuration.folders[:repos]
+      folder = configuration.folders[:assets]
       unless folder
-        say "unable to find folder conf key ':folders => :repos', please set key"
+        say "unable to find folder conf key ':folders => :assets', please set key"
         exit 1
       end
 
@@ -160,11 +160,10 @@ module Repoman
     def existing_assets
       return @existing_assets if @existing_assets
       asset_options = {}
-      asset_options.merge!(:asset_key => :repos)
-      asset_options.merge!(:assets_folder => configuration[:folders][:repos]) if configuration[:folders]
+      asset_options.merge!(:assets_folder => configuration[:folders][:assets]) if configuration[:folders]
       asset_options.merge!(:base_folder => File.dirname(configuration[:configuration_filename])) if configuration[:configuration_filename]
 
-      @existing_assets = ::Repoman::AssetManager.new(configuration).assets(asset_options)
+      @existing_assets = ::Repoman::AssetManager.new.assets(asset_options)
     end
 
   end

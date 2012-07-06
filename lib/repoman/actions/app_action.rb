@@ -11,6 +11,14 @@ module Repoman
   # application implementation.  Put application specific code here.
   class AppAction < BaseAction
 
+    # Used by asset factory to create assets.  Override in app_action.rb or a
+    # descendant to set the class to be instantiated by by the AssetManager.
+    #
+    # @return [Symbol] asset type
+    def asset_type
+      :repo_asset
+    end
+
     # alias for items/assets
     #
     # @return [Array] of repos

@@ -539,7 +539,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Default action, no filter, --list==SHORT
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name       | path          |
       | test1      | test_path_1   |
       | test2      | test_path_2   |
@@ -552,7 +552,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Default action, no filter, --list=NAME
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name       | path          |
       | test1      | test_path_1   |
       | test2      | test_path_2   |
@@ -565,7 +565,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Default action, no filter, --list=PATH
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name       | path          |
       | test1      | test_path_1   |
       | test2      | test_path_2   |
@@ -578,7 +578,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Missing path defaults to repo name
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name       |
       | test1      |
       | test2      |
@@ -599,7 +599,7 @@ Scenario: List with invalid options in varying positions on the command line
     Then the exit status should be 0
 
   Scenario: Short format with --filter repo
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name       |
       | test1      |
       | test2      |
@@ -612,7 +612,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Short format with arg repo
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name       |
       | test1      |
       | test2      |

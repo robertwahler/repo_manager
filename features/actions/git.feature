@@ -53,7 +53,7 @@ Feature: Running an arbitrary git command
       """
       ---
       folders:
-        repos  : repo_assets
+        assets : repo_assets
       """
     And a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
@@ -215,20 +215,20 @@ Feature: Running an arbitrary git command
     When I run `repo status --filter=bad_repo --unmodified DOTS --no-verbose`
     Then the exit status should be 1
 
-
   Scenario: Folders with spaces in path
-    Given a repo in folder "test 1/test path 1" with the following:
-      | filename         | status | content   |
-      | testfile 1.txt   | CM     | something |
-    And a file named "repo1.conf" with:
+    Given a file named "repo1.conf" with:
       """
       ---
-      repos:
-        test1:
-          path: test 1/test path 1
-        test2:
-          path: test_path_2
+      folders:
+        assets : assets1
       """
+    And a repo in folder "test 1/test path 1" with the following:
+      | filename         | status | content   |
+      | testfile 1.txt   | CM     | something |
+    And the folder "assets1" with the following asset configurations:
+      | name       | path                 |
+      | test1      | test 1/test path 1   |
+      | test2      | test_path_2          |
     When I run `repo git ls-files --config=repo1.conf`
     Then the exit status should be 0
     And the output should contain:

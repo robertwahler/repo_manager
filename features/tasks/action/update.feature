@@ -30,7 +30,7 @@ Feature: Automatically commit and update multiple repos
       """
       ---
       folders:
-        repos  : repo/asset/configuration/files
+        assets : repo/asset/configuration/files
       """
     And the folder "repo/asset/configuration/files" with the following asset configurations:
       | name    | path         |

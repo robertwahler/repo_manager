@@ -57,7 +57,7 @@ Feature: Task to generate asset configurations
       """
       ---
       folders:
-        repos  : assets
+        assets : assets
       """
     When I run `repo generate:config workspace` interactively
     When I type "y"
