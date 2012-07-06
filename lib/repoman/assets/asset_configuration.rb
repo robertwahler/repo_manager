@@ -87,14 +87,12 @@ module Repoman
         end
       end
 
-      # use part of the contents keyed to asset_key, allows
-      # mutiple asset_types to share the same configuration file
-      contents = contents[asset.asset_key].dup if (asset.asset_key && contents.has_key?(asset.asset_key))
-
       # Load all attributes as hash 'attributes' so that merging
       # and adding new attributes doesn't require code changes. Note
       # that the 'parent' setting is not merged to attributes
       @asset.attributes.merge!(contents)
+      @asset.create_accessors(@asset.attributes[:user_attributes])
+      @asset
     end
 
     def to_hash

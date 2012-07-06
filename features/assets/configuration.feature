@@ -72,23 +72,6 @@ Feature: Asset configuration
       path: user_path
       """
 
-  Scenario: Asset attributes are specified directly in the config file,
-    attributes key is by convention, the name of the asset class
-    Given a file named "repo.conf" with:
-      """
-      ---
-      options:
-        color       : true
-      repos:
-        asset1:
-          path: user_path
-      """
-    When I run `repo list`
-    Then the output should contain:
-      """
-      path: user_path
-      """
-
   Scenario: Parent configuration fills in missing items with ERB evaluation
     Given a file named "repo.conf" with:
       """
@@ -139,7 +122,6 @@ Feature: Asset configuration
       path: set_by_parent
       """
 
-  @focus
   Scenario: Parent configuration missing
     Given a file named "repo.conf" with:
       """

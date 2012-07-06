@@ -9,10 +9,13 @@ require 'mustache'
 require 'pathname'
 
 require 'repoman/assets/asset_configuration'
+require 'repoman/assets/asset_accessors'
 
 module Repoman
 
   class BaseAsset
+    include BasicApp::AssetAccessors
+    extend BasicApp::AssetAccessors
 
     #
     # --- Asset attributes START here ---
@@ -69,22 +72,12 @@ module Repoman
     # Description (short)
     #
     # @return [String]
-    def description
-      render(attributes[:description])
-    end
-    def description=(value)
-      attributes[:description] = value
-    end
+    create_accessors :description
 
     # Notes (user)
     #
     # @return [String]
-    def notes
-      render(attributes[:notes])
-    end
-    def notes=(value)
-      attributes[:notes] = value
-    end
+    create_accessors :notes
 
     # Classification tags, an array of strings
     #
@@ -142,9 +135,11 @@ module Repoman
       # allow for lazy loading (TODO), don't assign empty attributes
       @attributes = attributes.dup unless attributes.empty?
 
+      # create user_attribute methods
+      create_accessors(@attributes[:user_attributes]) if @attributes && @attributes[:user_attributes]
+
       return unless asset_name_or_folder
 
-      @asset_key = nil
       folder = asset_name_or_folder.to_s
       @name = File.basename(folder)
 
@@ -155,16 +150,6 @@ module Repoman
         logger.debug "initializing new asset with folder: #{folder}"
         configuration.load(folder)
       end
-    end
-
-    # The asset_key, if defined, will be used as key to asset attributes when
-    # loading from YAML, if not defined, the entire YAML file will load.
-    #
-    # Override in decendants.
-    #
-    # @ return [Symbol] or nil
-    def asset_key
-      nil
     end
 
     def configuration
@@ -188,11 +173,24 @@ module Repoman
       binding
     end
 
-    # @return [String/nil] with mustache {{}} replaced or an nil if template is nil
+    # @return [String/nil] with mustache tags {{}}, {{{}}} replaced or nil if template is nil
     def render(template)
       return nil unless template
 
       Mustache.render(template, self)
+    end
+
+    # support for Mustache rendering of ad hoc user defined variables
+    # if the key exists in the hash, use if for a lookup
+    def method_missing(name, *args, &block)
+      return attributes[name.to_sym] if attributes.include?(name.to_sym)
+      return super
+    end
+
+    # method_missing support
+    def respond_to?(name)
+      return true if attributes.include?(name.to_sym)
+      super
     end
 
   end
