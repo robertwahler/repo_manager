@@ -47,12 +47,12 @@ module Repoman
     end
 
     def process
-
       st = 0
       result = 0
       count_unmodified = 0
       need_lf = false
       output = ""
+      unmodified_mode = options[:unmodified] || 'HIDE'
 
       repos.each do |repo|
         # M ? A D I X
@@ -70,7 +70,7 @@ module Repoman
 
           when Status::CLEAN
             count_unmodified += 1
-            case options[:unmodified]
+            case unmodified_mode
               when "HIDE"
                 # do nothing
               when "SHOW"
@@ -79,7 +79,7 @@ module Repoman
                 output += ".".green
                 need_lf = true
               else
-                raise "invalid mode '#{options[:unmodified]}' for '--unmodified' option"
+                raise "invalid mode '#{unmodified_mode}' for '--unmodified' option"
             end
 
           when Status::NOPATH

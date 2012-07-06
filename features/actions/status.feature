@@ -19,6 +19,8 @@ Feature: Listing repo path information
     Given a file named "repoman/repo.conf" with:
       """
       ---
+      options:
+        color   : AUTO
       folders:
         assets  : assets
       """
@@ -103,13 +105,12 @@ Feature: Listing repo path information
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | .gitignore       | M      | tmp/*    |
-    When I run `repo status --unmodified=DOTS`
+    When I run `repo status`
     Then the exit status should be 4
     And the normalized output should contain:
       """
       M       test1
                 modified: .gitignore
-      .
       """
 
   Scenario: One uncommitted change, don't show individual files
