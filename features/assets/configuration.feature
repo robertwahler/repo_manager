@@ -45,7 +45,7 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     Then the output should contain:
@@ -54,7 +54,7 @@ Feature: Asset configuration
       """
 
   Scenario: Assets folder determined by convention, relative to config folder, by convention the folder name is 'assets'
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -65,7 +65,7 @@ Feature: Asset configuration
       ---
       path: user_path
       """
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     Then the output should contain:
@@ -86,7 +86,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | binary          |
       | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     And the output should contain:
@@ -111,7 +111,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | path          | parent                           | binary          |
       | asset1       | set_by_user   | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     And the output should contain:
@@ -133,7 +133,7 @@ Feature: Asset configuration
     And the folder "data/app_assets" with the following asset configurations:
       | name         | parent                           | path            |
       | asset1       | ../../global/app_assets/default  | path_to/bin.exe |
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     And the output should contain:
@@ -142,7 +142,7 @@ Feature: Asset configuration
       """
 
   Scenario: Parent configuration blank
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       folders:
@@ -155,7 +155,7 @@ Feature: Asset configuration
       """
       ---
       """
-    When I run `basic_app list --verbose --type=app_asset`
+    When I run `repo list --verbose --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     And its output should contain:
