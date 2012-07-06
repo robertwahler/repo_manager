@@ -1,16 +1,15 @@
 # Repoman #
 
-Command line interface (CLI) for batch management of multiple, unrelated
-Git repositories.
+Command line interface (CLI) for batch management of multiple Git repositories.
 
 ## Overview ##
 
 Repoman is a wrapper for Git, the distributed version control system.
 Repoman's wrapper functions allow a single git command to be executed
-across multiple, unrelated git repositories.
+across multiple git repositories.
 
 For example, you have two git repositories named 'repo1' and 'repo2' and
-you want to check the status of each repo.
+you want to check the status of both working folders.
 
 ### without repoman
 
@@ -20,7 +19,7 @@ you want to check the status of each repo.
     cd ~/workspace/delphi/repo2
     git status
 
-### using repoman
+### with repoman
 
     repo status
 
@@ -41,13 +40,100 @@ you want to check the status of each repo.
   [GitSlave](http://gitslave.sourceforge.net/)
 
 
+## Getting started with Repoman
+
+### installation
+
+    gem install repoman
+
+### help
+
+    repo --help
+    repo --tasks
+    repo help generate:init
+
+### generate configuration folder structure
+
+    cd ~/workspace
+    repo generate:init .repoman
+
+generate:init output
+
+      init  creating initial config file at '/home/robert/workspace/.repoman/repo.conf'
+    create  .repoman/repo.conf
+      init  creating initial file structure in '/home/robert/workspace/.repoman'
+     exist  .repoman
+    create  .repoman/.gitignore
+    create  .repoman/assets/.gitignore
+    create  .repoman/global/default/asset.conf
+    create  .repoman/tasks/.gitignore
+
+### generate individual repository configurations files
+
+generate multiple config files by searching a folder, one level deep, for git repositories
+
+
+    repo generate:config . --filter=mutagem,basic_*,repoman
+
+generate config output
+
+      collecting  collecting top level folder names
+     configuring  setting discovered asset configuration paths
+       comparing  looking for existing asset names
+       comparing  looking for existing asset paths
+    Discovered assets
+           found  basic_gem                                path => './basic_gem'
+           found  basic_website                            path => './basic_website'
+           found  basic_assets                             path => './basic_assets'
+           found  repoman                                  path => './repoman'
+           found  basic_app                                path => './basic_app'
+           found  mutagem                                  path => './mutagem'
+           found  basic_rails                              path => './basic_rails'
+
+    Found 7 assets, write the configuration files (y/n)?
+
+answer 'y'
+
+    creating  repoman configuration file for basic_gem
+    creating  repoman configuration file for basic_website
+    creating  repoman configuration file for basic_assets
+    creating  repoman configuration file for repoman
+    creating  repoman configuration file for basic_app
+    creating  repoman configuration file for mutagem
+    creating  repoman configuration file for basic_rails
+
+## Example Usage
+
+### Quick status of all the working folders in your workspace
+
+TBD
+
+### Mirroring Win32 code to the workspace of a Linux machine
+
+TBD
+
+### Managing game saves across multiple computers
+
+TBD
+
+
+## Configuration
+
+TBD
+
+## Extending Repoman by adding tasks
+
+TBD
+
+
 ## Bash completion ######################################################
 
 Handy functions for use under Bash.  These work fine on Win32 using
 Git-Bash.
 
 * rcd: repo cd (change directory).  Wrapper for 'cd', allows for simple cd
-  <repo name> to anywhere on the filesystem.
+  <repo name> to the working folder on the filesystem referenced by the 'path'
+  configuration variable.
 * rpushd: repo pushd (push directory).  Wrapper for 'pushd'.
 
 

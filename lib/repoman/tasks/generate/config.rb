@@ -39,7 +39,7 @@ module Repoman
     method_option :filter, :type => :array, :aliases => "-f", :desc => "List of regex folder name filters"
     method_option :refresh, :type => :boolean, :aliases => "-r", :desc => "Refresh existing blank attributes"
 
-    desc "config FOLDER", "generate multiple config files by searching a folder for apps"
+    desc "config FOLDER", "generate multiple config files by searching a folder, one level deep, for git repositories"
     def config(folder)
 
       say_status "collecting",  "collecting top level folder names"
@@ -118,7 +118,7 @@ module Repoman
       # list the new assets found
       say "Discovered assets"
       discovered_assets.each do |asset|
-        say_status :found, "%-40s path date => '%s'" % [asset.name, relative_path(asset.path)] , :green
+        say_status :found, "%-40s path => '%s'" % [asset.name, relative_path(asset.path)] , :green
       end
 
       # prompt the user
