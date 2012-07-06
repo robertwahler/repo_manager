@@ -54,11 +54,19 @@ Feature: Listing repos
       options:
         color       : true
       folders:
-        repos  : data/app_assets
+        assets  : data/assets
+      """
+
+  Scenario: Invalid asset type
+    When I run `basic_app list --type=invalid_asset_type`
+    Then the exit status should be 1
+    And the output should contain:
+      """
+      unknown asset type
       """
 
   Scenario: List all
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -78,7 +86,7 @@ Feature: Listing repos
       """
 
   Scenario: List just name
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -93,7 +101,7 @@ Feature: Listing repos
       """
 
   Scenario: List just name using '--filter' option
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -114,7 +122,7 @@ Feature: Listing repos
       """
 
   Scenario: List just name using '--repos' option
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -127,28 +135,8 @@ Feature: Listing repos
 
       """
 
-  Scenario: List with invalid options in varying positions on the command line
-    When I run `repo list --bad-option1 --repos=asset1 --list=NAME`
-    Then the exit status should be 1
-    And its output should contain:
-      """
-      invalid option: --bad-option1
-      """
-    When I run `repo list arg1 arg2 --bad-option2 --repos=asset1 --list=NAME`
-    Then the exit status should be 1
-    And its output should contain:
-      """
-      invalid option: --bad-option2
-      """
-    When I run `repo --bad-option3 list arg1 arg2 --repos=asset1 --list=NAME`
-    Then the exit status should be 1
-    And its output should contain:
-      """
-      invalid option: --bad-option3
-      """
-
   Scenario: List just name using passing filters as args
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -166,7 +154,7 @@ Feature: Listing repos
       """
 
   Scenario: List the first and only first matching asset with match mode '--match FIRST'
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -200,7 +188,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Multiple matching assets fail hard with asset match mode '--match ONE'
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -213,7 +201,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Regex asset matching of any part of asset name is the default match mode
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -228,7 +216,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: No regex asset matching with asset match mode '--match EXACT'
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -241,12 +229,12 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Matching only on the asset name, not the path
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
       | asset3       |
-    When I run `repo list app_assets --list=NAME`
+    When I run `basic_app list assets --list=NAME --type=app_asset`
     Then the exit status should be 0
     And the output should not contain:
       """
@@ -254,7 +242,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: List to screen using the built in default template
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -335,7 +323,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: List to file using the built in default template
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -416,7 +404,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: No not overwrite existing output unless prompted 'Y/N' or given the '--force' option
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -437,7 +425,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Overwrite automatically for existing output using '--force'
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -490,7 +478,7 @@ Scenario: List with invalid options in varying positions on the command line
 
 
   Scenario: Use built in ERB template instead of the default Slim template
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |
@@ -534,7 +522,7 @@ Scenario: List with invalid options in varying positions on the command line
       """
 
   Scenario: Unsupported template file extension
-    Given the folder "data/app_assets" with the following asset configurations:
+    Given the folder "data/assets" with the following asset configurations:
       | name         |
       | asset1       |
       | asset2       |

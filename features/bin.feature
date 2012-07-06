@@ -4,8 +4,8 @@ Feature: Options via a command line interface (CLI)
   The application should accept options on the command line.  These options
   should override hard coded defaults
 
- Background: Default empty configuration file
-    Given an empty file named "repo.conf"
+ Background: Empty configuration file so that we don't read global config locations
+   Given an empty file named "basic_app.conf"
 
   Scenario: Version info
     When I run `repo --version`

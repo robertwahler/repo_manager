@@ -26,7 +26,7 @@ module Repoman
       match_count = 0
       logger.debug "generating assets array with filter array: #{filters.join(',')}"
 
-      assets_folder = asset_options[:assets_folder] || "#{type.to_s}s"
+      assets_folder = asset_options[:assets_folder] || "assets"
       pattern = File.join(assets_folder, '*/')
       logger.debug "reading from asset type: '#{type}' from assets_folder:'#{assets_folder}' "
 
