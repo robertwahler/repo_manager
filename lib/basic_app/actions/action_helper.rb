@@ -20,7 +20,17 @@ module BasicApp
 
     # @return[String] the relative path from the CWD
     def relative_path(path)
-      path = Pathname.new(File.expand_path(path, FileUtils.pwd)).relative_path_from(Pathname.new(FileUtils.pwd))
+      return unless path
+
+      path = Pathname.new(File.expand_path(path, FileUtils.pwd))
+      cwd = Pathname.new(FileUtils.pwd)
+
+      if windows?
+        # c:/home D:/path/here will faile with ArgumentError: different prefix
+        return path.to_s if path.to_s.capitalize[0] != cwd.to_s.capitalize[0]
+      end
+
+      path = path.relative_path_from(cwd)
       path = "./#{path}" unless path.absolute? || path.to_s.match(/^\./)
       path.to_s
     end
