@@ -26,50 +26,11 @@ module Repoman
 
   end
 
-  class Add < Thor
-    namespace :add
-    include Thor::Actions
-    include Repoman::ThorHelper
-    include Repoman::GenerateHelper
-    include ::Repoman::ActionHelper
+  module AddHelper
 
-    # adds :quiet, :skip, :pretent, :force
-    add_runtime_options!
+    def process_discovered_assets(discovered_assets=[])
 
-    method_option :filter, :type => :array, :aliases => "-f", :desc => "List of regex folder name filters"
-    method_option :refresh, :type => :boolean, :aliases => "-r", :desc => "Refresh existing blank attributes"
-
-    desc "assets FOLDER", "generate multiple config files by searching a folder, one level deep, for git repositories"
-    def assets(folder)
-
-      say_status "collecting",  "collecting top level folder names"
-      discovered_assets = []
-      filters = options[:filter] || ['.*']
-      # Thor does not allow comma separated array options, fix that here
-      filters = filters.first.to_s.split(',') if filters.length == 1
-      Dir.glob( File.join(folder, '*/')  ).each do |repo_folder|
-        logger.debug "filters: #{filters.inspect}"
-        next unless filters.find {|filter| repo_folder.match(/#{filter}/)}
-        next unless File.exists?(File.join(repo_folder, '.git/'))
-
-        # check existing assets for path match, if found, use existing name instead of the generated name
-        existing = existing_assets.detect do |existing_asset|
-          existing_asset.path && repo_folder && (File.expand_path(existing_asset.path) == File.expand_path(repo_folder))
-        end
-
-        if (existing)
-          name = existing.name
-        else
-          name = ::Repoman::RepoAsset.path_to_name(repo_folder)
-        end
-
-        asset = ::Repoman::RepoAsset.new(name)
-        asset.path = File.expand_path(repo_folder)
-
-        discovered_assets << asset
-      end
-
-      say_status "configuring",  "setting discovered asset configuration paths"
+      say_status "configuring",  "setting discovered asset attributes"
       discovered_assets.each do |discovered_asset|
         folder = File.dirname(asset_name_to_config_file(discovered_asset.name))
         discovered_asset.configuration.folder = folder
@@ -86,7 +47,7 @@ module Repoman
           end
         end
       else
-        say_status "comparing",  "looking for existing asset names"
+        say_status "comparing",  "looking at existing asset names"
         discovered_assets.delete_if do |asset|
           result = false
           if File.exists?(asset.configuration.folder)
@@ -96,7 +57,7 @@ module Repoman
           result
         end
 
-        say_status "comparing",  "looking for existing asset paths"
+        say_status "comparing",  "looking at existing asset paths"
         discovered_assets.delete_if do |asset|
           result = false
           existing_asset = existing_assets.detect do |existing_asset|
@@ -137,6 +98,56 @@ module Repoman
         save_writable_attributes(asset, asset.attributes)
 
       end
+
+    end
+
+  end
+
+  class Add < Thor
+    namespace :add
+    include Thor::Actions
+    include Repoman::ThorHelper
+    include Repoman::GenerateHelper
+    include Repoman::AddHelper
+    include ::Repoman::ActionHelper
+
+    # adds :quiet, :skip, :pretent, :force
+    add_runtime_options!
+
+    method_option :filter, :type => :array, :aliases => "-f", :desc => "List of regex folder name filters"
+    method_option :refresh, :type => :boolean, :aliases => "-r", :desc => "Refresh existing blank attributes"
+
+    desc "assets FOLDER", "generate multiple config files by searching a folder, one level deep, for git repositories"
+    def assets(folder)
+
+      say_status "collecting",  "collecting top level folder names"
+      discovered_assets = []
+      filters = options[:filter] || ['.*']
+      # Thor does not allow comma separated array options, fix that here
+      filters = filters.first.to_s.split(',') if filters.length == 1
+      Dir.glob( File.join(folder, '*/')  ).each do |repo_folder|
+        logger.debug "filters: #{filters.inspect}"
+        next unless filters.find {|filter| repo_folder.match(/#{filter}/)}
+        next unless File.exists?(File.join(repo_folder, '.git/'))
+
+        # check existing assets for path match, if found, use existing name instead of the generated name
+        existing = existing_assets.detect do |existing_asset|
+          existing_asset.path && repo_folder && (File.expand_path(existing_asset.path) == File.expand_path(repo_folder))
+        end
+
+        if (existing)
+          name = existing.name
+        else
+          name = ::Repoman::RepoAsset.path_to_name(repo_folder)
+        end
+
+        asset = ::Repoman::RepoAsset.new(name)
+        asset.path = File.expand_path(repo_folder)
+
+        discovered_assets << asset
+      end
+
+      process_discovered_assets(discovered_assets)
 
     end
 
