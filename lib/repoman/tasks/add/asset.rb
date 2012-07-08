@@ -155,7 +155,7 @@ module Repoman
     def asset(folder)
       discovered_assets = []
       unless File.exists?(File.join(folder, '.git/'))
-        say_status :error, "unable to find '.git' folder in working folder #{folder}", :red
+        say_status :error, "unable to find '.git' folder in working folder '#{folder}'", :red
         exit 1
       end
 
@@ -166,6 +166,10 @@ module Repoman
 
       if (existing)
         name = existing.name
+        if options[:name]
+          say_status :error, "asset already exists under a different name '#{name}'", :red
+          exit 1
+        end
       else
         name = options[:name]
         name ||= ::Repoman::RepoAsset.path_to_name(folder)

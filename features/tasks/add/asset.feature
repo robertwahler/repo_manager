@@ -134,3 +134,21 @@ Feature: Task to generate asset configurations
       """
       path: .*/workspace/repo1_path
       """
+
+  Scenario: Attempting to add an asset that exists under a different name
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        assets : assets
+      """
+    And the folder "assets" with the following asset configurations:
+      | name       | path                  |
+      | repo1_path | workspace/repo1_path  |
+    When I run `repo add:asset workspace/repo1_path --name repo1` interactively
+    When I type "y"
+    Then the exit status should be 1
+    And its output should contain:
+      """
+      asset already exists under a different name
+      """
