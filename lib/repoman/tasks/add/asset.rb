@@ -26,8 +26,8 @@ module Repoman
 
   end
 
-  class Generate < Thor
-    namespace :generate
+  class Add < Thor
+    namespace :add
     include Thor::Actions
     include Repoman::ThorHelper
     include Repoman::GenerateHelper
@@ -39,8 +39,8 @@ module Repoman
     method_option :filter, :type => :array, :aliases => "-f", :desc => "List of regex folder name filters"
     method_option :refresh, :type => :boolean, :aliases => "-r", :desc => "Refresh existing blank attributes"
 
-    desc "config FOLDER", "generate multiple config files by searching a folder, one level deep, for git repositories"
-    def config(folder)
+    desc "assets FOLDER", "generate multiple config files by searching a folder, one level deep, for git repositories"
+    def assets(folder)
 
       say_status "collecting",  "collecting top level folder names"
       discovered_assets = []

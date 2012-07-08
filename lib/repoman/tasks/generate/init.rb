@@ -4,6 +4,7 @@ require 'repoman/views/view_helper'
 module Repoman
   class Generate < Thor
     namespace :generate
+    include Thor::Actions
     include Repoman::ThorHelper
     include ::Repoman::ViewHelper
 
@@ -28,6 +29,14 @@ module Repoman
 
       return 0
     end
+
+    private
+
+    # where to start looking, required by the template method
+    def self.source_root
+      File.dirname(__FILE__)
+    end
+
 
   end
 end

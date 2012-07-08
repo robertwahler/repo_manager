@@ -7,11 +7,15 @@ Feature: Task to generate asset configurations
 
   Help:
 
-      repo help generate:config
+      repo help add:asset
 
-  Usage:
+      repo help add:assets
 
-    repo generate:config FOLDER
+  USAGE :
+
+    repo add:asset WORKING_FOLDER
+
+    repo add:assets TOP_LEVEL_FOLDER
 
   Options:
     -r, [--refresh]               # Refresh existing blank attributes
@@ -25,9 +29,9 @@ Feature: Task to generate asset configurations
 
   Examples
 
-    cond generate:config c:/users/robert/documents/
-    cond generate:config ~/workspace/delphi
-    cond generate:config ~/workspace --filter guard-*,repoman-*
+    cond add:assets c:/users/robert/documents/
+    cond add:assets ~/workspace/delphi
+    cond add:assets ~/workspace --filter guard-*,repoman-*
 
   General Notes:
 
@@ -59,7 +63,7 @@ Feature: Task to generate asset configurations
       folders:
         assets : assets
       """
-    When I run `repo generate:config workspace` interactively
+    When I run `repo add:assets workspace` interactively
     When I type "y"
     Then the exit status should be 0
     And the output should contain:
