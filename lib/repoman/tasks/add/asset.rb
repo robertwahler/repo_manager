@@ -149,6 +149,8 @@ module Repoman
       process_discovered_assets(discovered_assets)
     end
 
+    method_option :name, :type => :string, :aliases => "-n", :desc => "given the asset a specific name"
+
     desc "asset FOLDER", "generate a single repo asset file given a working folder"
     def asset(folder)
       discovered_assets = []
@@ -165,7 +167,8 @@ module Repoman
       if (existing)
         name = existing.name
       else
-        name = ::Repoman::RepoAsset.path_to_name(folder)
+        name = options[:name]
+        name ||= ::Repoman::RepoAsset.path_to_name(folder)
       end
 
       asset = ::Repoman::RepoAsset.new(name)

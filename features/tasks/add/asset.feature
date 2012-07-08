@@ -115,3 +115,22 @@ Feature: Task to generate asset configurations
       """
       unable to find '.git' folder
       """
+
+  Scenario: Point at a single working folder and give it a non-default name
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        assets : assets
+      """
+      When I run `repo add:asset workspace/repo1_path --name=repo1` interactively
+    When I type "y"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      Found 1 asset(s)
+      """
+    And the file "assets/repo1/asset.conf" should match:
+      """
+      path: .*/workspace/repo1_path
+      """
