@@ -5,8 +5,37 @@ module Repoman
 
   # @group CLI actions
   #
-  # Show simplified summary status of repos. The exit code is a bitfield that
-  # collects simplified status codes.
+  # Show simplified summary status of repos. The exit code is a bitfield
+  # that collects simplified status codes. The Repoman status simplifies
+  # Git's porcelain output by combining Git status X and Y and boiling
+  # down status returns to just five types,
+  #
+  #   M ? A D U
+  #
+  # From git 1.7+ documentation
+  #
+  #   X          Y     Meaning
+  #   -------------------------------------------------
+  #             [MD]   not updated
+  #   M        [ MD]   updated in index
+  #   A        [ MD]   added to index
+  #   D        [ MD]   deleted from index
+  #   R        [ MD]   renamed in index
+  #   C        [ MD]   copied in index
+  #   [MARC]           index and work tree matches
+  #   [ MARC]     M    work tree changed since index
+  #   [ MARC]     D    deleted in work tree
+  #   -------------------------------------------------
+  #   D           D    unmerged, both deleted
+  #   A           U    unmerged, added by us
+  #   U           D    unmerged, deleted by them
+  #   U           A    unmerged, added by them
+  #   D           U    unmerged, deleted by us
+  #   A           A    unmerged, both added
+  #   U           U    unmerged, both modified
+  #   -------------------------------------------------
+  #   ?           ?    untracked
+  #   -------------------------------------------------
   #
   # @example Usage: repo status
   #
