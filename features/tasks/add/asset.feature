@@ -68,7 +68,7 @@ Feature: Task to generate asset configurations
     Then the exit status should be 0
     And the output should contain:
       """
-      Found 2 assets
+      Found 2 asset(s)
       """
     And the file "assets/repo1_path/asset.conf" should match:
       """
@@ -77,4 +77,41 @@ Feature: Task to generate asset configurations
     And the file "assets/repo2_path/asset.conf" should match:
       """
       path: .*/workspace/repo2_path
+      """
+
+  Scenario: Point at a single working folder
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        assets : assets
+      """
+    When I run `repo add:asset workspace/repo1_path` interactively
+    When I type "y"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      Found 1 asset(s)
+      """
+    And the file "assets/repo1_path/asset.conf" should match:
+      """
+      path: .*/workspace/repo1_path
+      """
+
+  Scenario: Point at an invalid working folder
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        assets : assets
+      """
+    When I run `repo add:asset workspace/not_a_repo` interactively
+    Then the exit status should be 1
+    And the output should not contain:
+      """
+      Found 1 asset(s)
+      """
+    And the output should contain:
+      """
+      unable to find '.git' folder
       """

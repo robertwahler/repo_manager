@@ -85,7 +85,7 @@ module Repoman
       # prompt the user
       say
       unless options[:force]
-        exit 0 unless (ask("Found #{discovered_assets.size} assets, write the configuration files (y/n)?") == 'y')
+        exit 0 unless (ask("Found #{discovered_assets.size} asset(s), write the configuration file(s) (y/n)?") == 'y')
       end
 
       # write the assets
@@ -119,7 +119,6 @@ module Repoman
 
     desc "assets FOLDER", "generate multiple config files by searching a folder, one level deep, for git repositories"
     def assets(folder)
-
       say_status "collecting",  "collecting top level folder names"
       discovered_assets = []
       filters = options[:filter] || ['.*']
@@ -148,7 +147,32 @@ module Repoman
       end
 
       process_discovered_assets(discovered_assets)
+    end
 
+    desc "asset FOLDER", "generate a single repo asset file given a working folder"
+    def asset(folder)
+      discovered_assets = []
+      unless File.exists?(File.join(folder, '.git/'))
+        say_status :error, "unable to find '.git' folder in working folder #{folder}", :red
+        exit 1
+      end
+
+      # check existing assets for path match, if found, use existing name instead of the generated name
+      existing = existing_assets.detect do |existing_asset|
+        existing_asset.path && folder && (File.expand_path(existing_asset.path) == File.expand_path(folder))
+      end
+
+      if (existing)
+        name = existing.name
+      else
+        name = ::Repoman::RepoAsset.path_to_name(folder)
+      end
+
+      asset = ::Repoman::RepoAsset.new(name)
+      asset.path = File.expand_path(folder)
+
+      discovered_assets << asset
+      process_discovered_assets(discovered_assets)
     end
 
     private
