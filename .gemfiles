@@ -33,7 +33,7 @@ features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
 features/tasks/action/update.feature
-features/tasks/generate/config.feature
+features/tasks/add/asset.feature
 features/tasks/generate/init.feature
 lib/repoman.rb
 lib/repoman/actions.rb
@@ -66,7 +66,7 @@ lib/repoman/logger.rb
 lib/repoman/settings.rb
 lib/repoman/tasks.rb
 lib/repoman/tasks/action/update.rb
-lib/repoman/tasks/generate/config.rb
+lib/repoman/tasks/add/asset.rb
 lib/repoman/tasks/generate/init.rb
 lib/repoman/tasks/generate/templates/config/repo.conf.tt
 lib/repoman/tasks/generate/templates/init/.gitignore
