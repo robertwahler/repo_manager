@@ -57,6 +57,7 @@ module Repoman
                    File.join(@working_dir, ".repo.conf"),
                    File.join(@working_dir, "repoman", "repo.conf"),
                    File.join(@working_dir, ".repoman", "repo.conf"),
+                   File.join(@working_dir, "config", "repo.conf"),
                    File.expand_path(File.join("~", ".repo.conf")),
                    File.expand_path(File.join("~", "repo.conf")),
                    File.expand_path(File.join("~", "repoman", "repo.conf")),
