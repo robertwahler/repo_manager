@@ -137,7 +137,7 @@ module Repoman
         if (existing)
           name = existing.name
         else
-          name = ::Repoman::RepoAsset.path_to_name(repo_folder)
+          name = File.basename(repo_folder)
         end
 
         asset = ::Repoman::RepoAsset.new(name)
@@ -172,7 +172,7 @@ module Repoman
         end
       else
         name = options[:name]
-        name ||= ::Repoman::RepoAsset.path_to_name(folder)
+        name ||= File.basename(folder)
       end
 
       asset = ::Repoman::RepoAsset.new(name)
