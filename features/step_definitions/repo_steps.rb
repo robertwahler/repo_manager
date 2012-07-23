@@ -57,8 +57,6 @@ Given /^(?:a|the) repo in folder "([^"]*)" has a remote named "([^"]*)" in folde
     raise "git config refs failed" unless $?.exitstatus == 0
     `git clone --bare #{repo_path} #{remote_path}`
     raise "git clone failed" unless $?.exitstatus == 0
-#     `git push origin master:refs/heads/master`
-#     raise "git push failed" unless $?.exitstatus == 0
   end
 
 end
