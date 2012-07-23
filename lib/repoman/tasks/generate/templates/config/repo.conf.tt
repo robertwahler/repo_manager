@@ -44,7 +44,7 @@ logging:
         color_scheme: default
     - type          : File
       name          : logfile
-      level         : debug
+      level         : info
       truncate      : true
       filename      : '<%= "#{@path}/repo.log" %>'
       layout:
