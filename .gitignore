@@ -5,3 +5,8 @@
 rerun.txt
 tags
 /tmp/
+
+/example/repo.log
+/example/remote/save*
+/example/saved_games/hearts/.git
+/example/saved_games/mines/saves/.git

@@ -1,8 +1,9 @@
 Using Repoman to Backup and Synchronize PC Game Saves
 =====================================================
 
-Use case:  Backup and synchronization of PC save games folders.  Game
-saves are typically scattered across multiple folders and drives.
+Use case:  Backup and synchronization of PC save games folders to a
+central repository (ie Drop Box folder).  Game saves are typically
+scattered across multiple folders and drives.
 
 This example demonstrates the following features:
 
@@ -71,7 +72,7 @@ mines
 
     mkdir -p mines/saves
 
-    # profile data will not be in the Git repo
+    # profile data will not be stored in the Git repo since it may differ from PC to PC
     echo "# dummy profile data" > mines/my_profile.ini
 
     echo "# dummy save" > mines/saves/save1
@@ -84,3 +85,26 @@ hearts
     echo "# dummy save" > hearts/save1
     echo "# dummy save" > hearts/save2
 
+
+### create remote folder
+
+This folder will act as a remote to hold bare Git repositories. These
+repos will store backups of our game saves, normally, this folder would be
+on a remote server, NAS, or Drop Box like service
+
+    mkdir remote
+    touch remote/.gitignore
+
+
+Create the specialized 'git init' task
+--------------------------------------
+
+
+
+
+Create the specialized Update task
+----------------------------------
+
+
+Testing with user tasks with Cucumber
+--------------------------------------
