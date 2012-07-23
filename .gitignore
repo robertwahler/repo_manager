@@ -7,6 +7,6 @@ tags
 /tmp/
 
 /example/repo.log
-/example/remote/save*
+/example/remote/*
 /example/saved_games/hearts/.git
 /example/saved_games/mines/saves/.git
