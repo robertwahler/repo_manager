@@ -27,23 +27,24 @@ The following commands were used to create this example folder from
 scratch.
 
 
-    mkdir example && cd example
+    mkdir examples/pc_saved_game_backup && cd examples/pc_saved_game_backup
 
-Create config structure with the built-in generate:init task
+Create configuration structure with the built-in 'generate:init' task
 
-    repo generate:init config
+    repo generate:init repoman
 
-Change the generate paths from absolute to relative
+Change the generated paths from absolute to relative to make this example
+portable.
 
-      diff --git a/example/config/repo.conf b/example/config/repo.conf
+      diff --git a/examples/pc_saved_game_backup/repoman/repo.conf b/examples/pc_saved_game_backup/repoman/repo.conf
       index ed80bc6..e28637d 100644
-      --- a/example/config/repo.conf
-      +++ b/example/config/repo.conf
+      --- a/examples/pc_saved_game_backup/repoman/repo.conf
+      +++ b/examples/pc_saved_game_backup/repoman/repo.conf
       @@ -11,7 +11,7 @@ options:
        folders:
 
          # main repo configuration files
-      -  assets  : /home/robert/workspace/repoman/example/config/assets
+      -  assets  : /home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/assets
       +  assets  : assets
 
          #
@@ -52,7 +53,7 @@ Change the generate paths from absolute to relative
          #
          #         c:/dat/condenser/tasks
          #
-      -  tasks        : /home/robert/workspace/repoman/example/config/tasks
+      -  tasks        : /home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/tasks
       +  tasks        : tasks
 
        logging:
@@ -61,7 +62,7 @@ Change the generate paths from absolute to relative
              name          : logfile
              level         : debug
              truncate      : true
-      -      filename      : '/home/robert/workspace/repoman/example/config/repo.log'
+      -      filename      : '/home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/repo.log'
       +      filename      : 'repo.log'
              layout:
                type        : Pattern
@@ -89,7 +90,6 @@ hearts
     echo "# dummy save" > saved_games/hearts/save1
     echo "# dummy save" > saved_games/hearts/save2
 
-
 ### create remote folder
 
 This folder will act as a remote to hold bare Git repositories. These
@@ -103,13 +103,14 @@ on a remote server, NAS, or Drop Box like service
 Create the specialized 'git init' task
 --------------------------------------
 
-User tasks can be added directly to the config/tasks folder.  This one
-is 'config/task/remote.rb'.  It doesn't use any Repoman specific features,
+User tasks can be added directly to the repoman/tasks folder.  This one
+is 'repoman/task/remote.rb'.  It doesn't use any Repoman specific features,
 instead, it calls git directly via Thor's 'run' command. Adding the script
 this way will keep this related functionality with this specific Repoman
 configuration.  Run 'repo -T' to see a full list of built-in tasks as well
 as user defined tasks.
 
+repoman/task/remote.rb
 
     require 'fileutils'
 
@@ -171,13 +172,21 @@ as user defined tasks.
 
 ### add remotes
 
-Normally, you don't need to specify the --path if you are already in the
-work folder and the repoman can find its global config file.  For this
-example, we are using relative paths and will specify the working folder
-on the command line via the '--path' option.
+In one step, we will initialize a new git repository with the working folder's
+content and push to a new bare repository for backup.
+
+> Normally, you don't need to specify the --path if you are already in the
+> work folder and the repoman can find its global config file.  For this
+> example, we are using relative paths and will specify the working folder
+> on the command line via the '--path' option.
 
     repo generate:remote mines --path=saved_games/mines/saves
     repo generate:remote hearts --path=saved_games/hearts
+
+### create the repoman asset configuration files
+
+   repo add:asset saved_games/mines
+   repo add:asset saved_games/hearts
 
 
 Create the specialized Update task
