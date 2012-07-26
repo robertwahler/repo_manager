@@ -8,6 +8,7 @@ module Repoman
   module GenerateHelper
 
     def asset_name_to_config_file(name=nil)
+      raise (ArgumentError, "missing name") unless name
       raise "unable to find configuration key ':folders'" unless configuration[:folders]
       raise "unable to find configuration key ':folders => :assets'" unless configuration[:folders][:assets]
 
@@ -17,11 +18,11 @@ module Repoman
         exit 1
       end
 
-      if name
-        file = File.join(File.expand_path(folder), name, "asset.conf")
+      unless Pathname.new(folder).absolute?
+        base_folder = File.dirname(configuration[:configuration_filename])
       end
 
-      file
+      file = File.join(base_folder, folder, name, "asset.conf")
     end
 
   end

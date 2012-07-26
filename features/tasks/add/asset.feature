@@ -53,7 +53,6 @@ Feature: Task to generate asset configurations
       | filename         | status | content  |
       | .gitignore       | C      |          |
     And a directory named "workspace/not_a_repo"
-    And a directory named "assets"
 
 
   Scenario: Point at a top level folder that contains two repos and on non repo folder
@@ -63,6 +62,7 @@ Feature: Task to generate asset configurations
       folders:
         assets : assets
       """
+    And a directory named "assets"
     When I run `repo add:assets workspace` interactively
     When I type "y"
     Then the exit status should be 0
@@ -86,6 +86,7 @@ Feature: Task to generate asset configurations
       folders:
         assets : assets
       """
+    And a directory named "assets"
     When I run `repo add:asset workspace/repo1_path` interactively
     When I type "y"
     Then the exit status should be 0
@@ -98,6 +99,26 @@ Feature: Task to generate asset configurations
       path: .*/workspace/repo1_path
       """
 
+  Scenario: Point at a single working folder relative to repo.conf
+    Given a file named "repoman/repo.conf" with:
+      """
+      ---
+      folders:
+        assets : assets
+      """
+    And a directory named "repoman/assets"
+    When I run `repo add:asset workspace/repo1_path` interactively
+    When I type "y"
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      Found 1 asset(s)
+      """
+    And the file "repoman/assets/repo1_path/asset.conf" should match:
+      """
+      path: .*/workspace/repo1_path
+      """
+
   Scenario: Point at an invalid working folder
     Given a file named "repo.conf" with:
       """
@@ -105,6 +126,7 @@ Feature: Task to generate asset configurations
       folders:
         assets : assets
       """
+    And a directory named "assets"
     When I run `repo add:asset workspace/not_a_repo` interactively
     Then the exit status should be 1
     And the output should not contain:
@@ -123,7 +145,8 @@ Feature: Task to generate asset configurations
       folders:
         assets : assets
       """
-      When I run `repo add:asset workspace/repo1_path --name=repo1` interactively
+    And a directory named "assets"
+    When I run `repo add:asset workspace/repo1_path --name=repo1` interactively
     When I type "y"
     Then the exit status should be 0
     And the output should contain:
@@ -142,6 +165,7 @@ Feature: Task to generate asset configurations
       folders:
         assets : assets
       """
+    And a directory named "assets"
     And the folder "assets" with the following asset configurations:
       | name       | path                  |
       | repo1_path | workspace/repo1_path  |
