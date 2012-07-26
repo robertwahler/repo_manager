@@ -17,7 +17,6 @@ Feature: Generate init task
       creating initial file structure
       """
     And the following files should exist:
-      | nodefault/.gitignore                       |
       | nodefault/assets/.gitignore                |
       | nodefault/global/default/asset.conf        |
       | nodefault/tasks/.gitignore                 |
