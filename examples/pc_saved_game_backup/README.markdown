@@ -94,10 +94,14 @@ hearts
 
 This folder will act as a remote to hold bare Git repositories. These
 repos will store backups of our game saves, normally, this folder would be
-on a remote server, NAS, or Drop Box like service
+on a remote server, NAS, or Drop Box like service.
 
     mkdir remote
-    touch remote/.gitignore
+
+remote/.gitignore
+
+    *
+    !/.gitignore
 
 
 Create the specialized 'git init' task
@@ -185,8 +189,8 @@ content and push to a new bare repository for backup.
 
 ### create the repoman asset configuration files
 
-   repo add:asset saved_games/mines
-   repo add:asset saved_games/hearts
+    repo add:asset saved_games/mines/saves
+    repo add:asset saved_games/hearts
 
 
 Create the specialized Update task
