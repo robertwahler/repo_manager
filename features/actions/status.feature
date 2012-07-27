@@ -37,23 +37,40 @@ Feature: Listing repo path information
 
 
   Scenario: No uncommitted changes, default output
-    When I run `repo status --verbose`
+    When I run `repo status`
     Then the exit status should be 0
-    And the output should contain:
+    And its output should contain:
       """
       no modified repositories, all working folders are clean
       """
-    And the output should not contain:
+
+  Scenario: No repos configured or no repos match filter
+    When I run `repo status --filter=garbage`
+    Then the exit status should be 0
+    And its output should contain:
       """
-      ..
+      no repositories found
+      """
+    And its output should not contain:
+      """
+      no modified repositories, all working folders are clean
       """
 
   Scenario: No uncommitted changes, using dots to show progress, one dot per file
     When I run `repo status --unmodified=DOTS`
-    Then the output should contain:
+    Then its output should contain:
       """
       ..
       no modified repositories, all working folders are clean
+      """
+    When I run `repo status`
+    Then its output should contain:
+      """
+      no modified repositories, all working folders are clean
+      """
+    And its output should not contain:
+      """
+      ..
       """
 
   Scenario: Uncommittable changes don't show

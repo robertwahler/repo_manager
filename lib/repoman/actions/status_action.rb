@@ -169,8 +169,14 @@ module Repoman
 
       output = "\n" if need_lf
 
-      # summary
-      output += "no modified repositories, all working folders are clean\n" if (count_unmodified == repos.size)
+
+      if (repos.size == 0)
+        # missing configuration or filter didn't match
+        output += "no repositories found\n"
+      elsif (count_unmodified == repos.size)
+        # summary
+        output += "no modified repositories, all working folders are clean\n"
+      end
 
       write_to_output(output)
 
