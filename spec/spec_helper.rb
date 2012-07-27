@@ -1,10 +1,11 @@
 require 'repoman'
 require 'rspec/core'
 require 'aruba/api'
-require 'aruba_helper'
+require 'repoman/test/test_api'
 
 RSpec.configure do |config|
   config.include Aruba::Api
+  config.include Repoman::TestApi
   config.filter_run :focus => true
   config.filter_run_excluding(:posix => true) if Repoman::WINDOWS
   config.filter_run_excluding(:windows => true) unless Repoman::WINDOWS
