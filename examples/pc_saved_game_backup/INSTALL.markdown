@@ -314,9 +314,7 @@ repoman/features/tasks/update.feature
 
 repoman/features/step_definitions/repoman_steps.rb
 
-    require 'repoman/test/aruba_helper'
-
-    require 'repoman/test/cucumber'
+    require 'repoman/test/base_steps'
     require 'repoman/test/asset_steps'
     require 'repoman/test/repo_steps'
 

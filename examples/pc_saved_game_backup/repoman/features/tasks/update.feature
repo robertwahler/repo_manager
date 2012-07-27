@@ -1,5 +1,5 @@
 @announce
-Feature: Automatically commit and update multiple repos
+Feature: Automatically add, commit, and push multiple repos
 
   This task will run:
 
@@ -31,6 +31,7 @@ Feature: Automatically commit and update multiple repos
       ---
       folders:
         assets : repo/asset/configuration/files
+        tasks  : ../../tasks
       """
     And the folder "repo/asset/configuration/files" with the following asset configurations:
       | name    | path         |
