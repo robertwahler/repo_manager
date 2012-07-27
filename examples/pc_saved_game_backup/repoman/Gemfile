@@ -1,0 +1,12 @@
+# this Gemfile is not required for Repoman normal usage, it exists
+# to support testing tasks in the user 'tasks' folder
+source "http://rubygems.org"
+
+gem "repoman"
+
+gem "bundler", ">= 1.0.14"
+gem "rspec", ">= 2.6.0"
+gem "cucumber", "~> 1.0"
+gem "aruba", "= 0.4.5"
+
+gem "win32console", :platforms => [:mingw, :mswin]

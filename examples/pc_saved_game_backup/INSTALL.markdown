@@ -175,16 +175,160 @@ content and push to a new bare repository for backup.
 
 ### create the repoman asset configuration files
 
-    repo add:asset saved_games/mines/saves
-    repo add:asset saved_games/hearts
+    repo add:asset saved_games/mines/saves --name=mines --force
+    repo add:asset saved_games/hearts --force
 
 
 Create the specialized Update task
 ----------------------------------
 
+repoman/task/update.rb
+
+    module Repoman
+      class Action < Thor
+        namespace :action
+        include Thor::Actions
+        include Repoman::ThorHelper
+
+        class_option :force, :type => :boolean, :desc => "Force overwrite and answer 'yes' to any prompts"
+
+        method_option :repos, :type => :string, :desc => "Restrict update to comma delimited list of repo names", :banner => "repo1,repo2"
+        method_option :message, :type => :string, :desc => "Override 'automatic commit' message"
+        method_option 'no-push', :type => :boolean, :default => false, :desc => "Force overwrite of existing config file"
+
+        desc "update", "run repo add -A, repo commit, and repo push on all modified repos"
+        def update
+
+          initial_filter = options[:repos] ? "--repos=#{options[:repos]}" : ""
+          output = run("repo status --short --unmodified=HIDE --no-verbose --no-color #{initial_filter}", :capture => true)
+
+          case $?.exitstatus
+            when 0
+              say 'no changed repos', :green
+            else
+
+              unless output
+                say "failed to successfully run 'repo status'", :red
+                exit $?.exitstatus
+              end
+
+              repos = []
+              output = output.split("\n")
+              while line = output.shift
+                st,repo = line.split("\t")
+                repos << repo
+              end
+              filter = repos.join(',')
+
+              unless options[:force]
+                say "Repo(s) '#{filter}' have changed."
+                unless ask("Add, commit and push them? (y/n)") == 'y'
+                  say "aborting"
+                  exit 0
+                end
+              end
+
+              say "updating #{filter}"
+
+              run "repo add -A --no-verbose --repos #{filter}"
+              exit $?.exitstatus if ($?.exitstatus > 1)
+
+              commit_message = options[:message] || "automatic commit @ #{Time.now}"
+              run "repo commit --message=#{shell_quote(commit_message)} --no-verbose --repos #{filter}"
+              exit $?.exitstatus if ($?.exitstatus > 1)
+
+              unless options['no-push']
+                run "repo push --no-verbose --repos #{filter}"
+                exit $?.exitstatus if ($?.exitstatus > 1)
+              end
+
+              say "update finished", :green
+            end
+
+        end
+      end
+    end
+
 
 Testing with user tasks with Cucumber
 --------------------------------------
+
+Functional testing with Cucumber
+
+### Add a Gemfile for use by Bundler
+
+repoman/Gemfile
+
+    source "http://rubygems.org"
+
+    gem "repoman"
+
+    gem "bundler", ">= 1.0.14"
+    gem "rspec", ">= 2.6.0"
+    gem "cucumber", "~> 1.0"
+    gem "aruba", "= 0.4.5"
+
+    gem "win32console", :platforms => [:mingw, :mswin]
+
+### Install the dependencies
+
+    cd repoman
+    bundle install
+
+### Add Cucumber features and support files
+
+repoman/features/tasks/update.feature
+
+> NOTE: This is an excerpt, see the file for the full listing of functional tests
+
+    @announce
+    Feature: Automatically commit and update multiple repos
+
+      Background: Test repositories and a valid config file
+        Given a repo in folder "test_path_1" with the following:
+          | filename         | status | content  |
+          | .gitignore       | C      |          |
+        And a repo in folder "test_path_2" with the following:
+          | filename         | status | content  |
+          | .gitignore       | C      |          |
+        And a file named "repo.conf" with:
+          """
+          ---
+          folders:
+            assets : repo/asset/configuration/files
+          """
+        And the folder "repo/asset/configuration/files" with the following asset configurations:
+          | name    | path         |
+          | test1   | test_path_1  |
+          | test2   | test_path_2  |
+
+
+      Scenario: No uncommitted changes
+        When I run `repo action:update`
+        Then the output should contain:
+          """
+          no changed repos
+          """
+
+      ...
+
+repoman/features/step_definitions/repoman_steps.rb
+
+    require 'repoman/test/aruba_helper'
+
+    require 'repoman/test/cucumber'
+    require 'repoman/test/asset_steps'
+    require 'repoman/test/repo_steps'
+
+repoman/features/support/env.rb
+
+    require 'repoman'
+    require 'aruba/cucumber'
+    require 'rspec/expectations'
+
+### Run tests
+
+    cucumber
 
 Bash completion
 ---------------

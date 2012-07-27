@@ -19,7 +19,8 @@ Bootstrapping this example folder
 
 In order to try out the example commands below, you will need to bootstrap the
 sample data git repositories and create the configuration files using the
-following commands.  See INSTALL.markdown for a more complete explaination.
+following commands.  See [INSTALL.markdown](INSTALL.markdown) for a more
+complete explanation.
 
     repo generate:remote mines --path=saved_games/mines/saves
     repo generate:remote hearts --path=saved_games/hearts
@@ -51,7 +52,9 @@ or just
 
 ### Running tests on user tasks
 
+    cd repoman
     bundle install
+    cucumber
 
 Backup
 ------
@@ -63,12 +66,23 @@ To backup the saved games, we will need another user task.  This on is called 'a
 Synchronize
 ----------
 
+Synchronizing saved games to another PC can be accomplished using Git's 'pull' command.
+
+
+verify working folders are clean, if they are not, either revert them or commit
+and push
+
+    repo status
+
+pull from remote to all configured repos
+
+    repo pull
+
 Bash completion
 ---------------
 
 Clean
 -----
-
 Resetting this example folder back to its shipping defaults
 
 ### Delete the git repositories
