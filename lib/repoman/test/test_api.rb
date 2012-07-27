@@ -1,5 +1,5 @@
-module Aruba
-  module Api
+module Repoman
+  module TestApi
 
     # @return full path to files in the aruba tmp folder
     def fullpath(filename)
