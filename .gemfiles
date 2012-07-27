@@ -46,12 +46,9 @@ features/assets/user_attributes.feature
 features/bin.feature
 features/logger.feature
 features/settings.feature
-features/step_definitions/.gitignore
-features/step_definitions/aruba_steps.rb
-features/step_definitions/asset_steps.rb
-features/step_definitions/repo_steps.rb
 features/support/aruba.rb
 features/support/env.rb
+features/support/steps.rb
 features/tasks/add/asset.feature
 features/tasks/generate/init.feature
 lib/repoman.rb
@@ -92,6 +89,10 @@ lib/repoman/tasks/generate/templates/init/global/default/asset.conf
 lib/repoman/tasks/generate/templates/init/tasks/.gitignore
 lib/repoman/tasks/task_manager.rb
 lib/repoman/tasks/thor_helper.rb
+lib/repoman/test/asset_steps.rb
+lib/repoman/test/base_steps.rb
+lib/repoman/test/repo_api.rb
+lib/repoman/test/repo_steps.rb
 lib/repoman/test/test_api.rb
 lib/repoman/views.rb
 lib/repoman/views/app_view.rb
