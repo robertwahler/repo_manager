@@ -101,7 +101,12 @@ module Repoman
     end
 
     def help
-      super :comment_starting_with => "Native 'git' command", :located_in_file => __FILE__
+      super(:comment_starting_with => "Native 'git' command", :located_in_file => __FILE__) +
+        "\n" +
+        "\n" +
+        "Git commands are whitelisted.  The following git commands enabled in #{configuration[:configuration_filename]}:\n" +
+        "\n" +
+        configuration.commands.join(',')
     end
 
   end
