@@ -52,6 +52,10 @@ module Repoman
       result = 0
       output = ""
 
+      unless configuration.commands.include?(command)
+        raise "git command '#{command}' is not enabled, see #{configuration[:configuration_filename]}"
+      end
+
       # args should not match a repo name
       if ((!args.empty?) && (!options[:filter]))
         repos.each do |repo|

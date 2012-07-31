@@ -54,6 +54,15 @@ Feature: Running an arbitrary git command
       ---
       folders:
         assets : repo_assets
+      commands:
+      - diff
+      - grep
+      - log
+      - ls-files
+      - show
+      - status
+      - add
+      - commit
       """
     And a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
@@ -259,4 +268,29 @@ Feature: Running an arbitrary git command
     And the output should contain:
       """
        1 files changed, 1 insertions(+), 0 deletions(-)
+      """
+
+  Scenario: Running a git command that is not whitelisted
+    Given a file named "repo.conf" with:
+      """
+      ---
+      folders:
+        assets : repo_assets
+      commands:
+      - diff
+      - grep
+      - log
+      """
+    And a repo in folder "test_path_1" with the following:
+      | filename         | status | content  |
+      | new_stuff.txt    | A      | tmp/*    |
+    When I run `repo commit -m 'automatic commit via repoman' --repos test1`
+    Then the exit status should be 1
+    And the output should not contain:
+      """
+       1 files changed, 1 insertions(+), 0 deletions(-)
+      """
+    And the output should contain:
+      """
+      repo failed: git command 'commit' is not enabled
       """

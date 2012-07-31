@@ -46,7 +46,15 @@ module Repoman
                           :unmodified => 'HIDE',
                           :match => 'ALL',
                           :list => 'ALL'
-                        }
+                        },
+                        :commands => [
+                          'diff',
+                          'grep',
+                          'log',
+                          'ls-files',
+                          'show',
+                          'status'
+                        ]
                       }
 
       # set default config if not given on command line

@@ -8,8 +8,11 @@ module Repoman
 
   AVAILABLE_ACTIONS = %w[help list task path status git]
 
-  # these commands don't need to have the 'git' arg precede them
-  GIT_NATIVE_SUPPORT = %w[add config commit diff fetch log pull push show ls-files]
+  # Commands that don't need to have the 'git' arg precede them.  These are not
+  # necessarily the same as the allowed 'commands' specified in the repo.conf
+  # file.
+  # NOTE: `git help --all` for a full list of git supported commands
+  GIT_NATIVE_SUPPORT = %w[add config commit diff fetch log pull push show ls-files grep]
 
   class App
 
