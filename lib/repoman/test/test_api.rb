@@ -1,6 +1,17 @@
 module Repoman
   module TestApi
 
+    # cross platform `which` command
+    def which(binary)
+      separator = Repoman::WINDOWS ? ';' : ':'
+      paths = ENV['PATH'].split(separator)
+      paths.each do |path|
+        fullpath = File.join(path, binary)
+        return fullpath if File.exists?(fullpath)
+      end
+      return nil
+    end
+
     def in_path(path, &block)
       Dir.chdir(path, &block)
     end
