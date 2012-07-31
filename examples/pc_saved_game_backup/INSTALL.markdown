@@ -326,7 +326,7 @@ repoman/features/support/env.rb
 
 ### Run tests
 
-    cucumber
+    bundle exec cucumber
 
 Bash completion
 ---------------

@@ -8,7 +8,7 @@ module Repoman
   module GenerateHelper
 
     def asset_name_to_config_file(name=nil)
-      raise (ArgumentError, "missing name") unless name
+      raise ArgumentError, "missing name" unless name
       raise "unable to find configuration key ':folders'" unless configuration[:folders]
       raise "unable to find configuration key ':folders => :assets'" unless configuration[:folders][:assets]
 

@@ -54,13 +54,12 @@ or just
 
     cd repoman
     bundle install
-    cucumber
+    bundle exec cucumber
 
 Backup
 ------
 
 To backup the saved games, we will need another user task.  This on is called 'action:update'.
-
 
 
 Synchronize
