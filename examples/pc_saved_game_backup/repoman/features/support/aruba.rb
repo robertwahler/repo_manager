@@ -1,6 +1,5 @@
 require 'aruba/api'
 require 'fileutils'
-require 'repoman/test/test_api'
 
 module Aruba
   module Api

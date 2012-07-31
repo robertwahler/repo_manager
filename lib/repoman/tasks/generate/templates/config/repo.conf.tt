@@ -28,6 +28,15 @@ folders:
   #
   tasks        : <%= "#{@path}/tasks" %>
 
+# git commands must be whitelisted
+commands:
+- diff
+- grep
+- log
+- ls-files
+- show
+- status
+
 logging:
   loggers:
     - name          : root
