@@ -92,9 +92,9 @@ module Repoman
               output += git_output + "\n"
             end
         end
+        write_to_output(output)
+        output = ""
       end
-
-      write_to_output(output)
 
       # numeric return
       result
