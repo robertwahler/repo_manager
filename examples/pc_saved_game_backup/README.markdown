@@ -8,6 +8,7 @@ scattered across multiple folders and drives.
 This example demonstrates the following features:
 
 * Adding Repoman user tasks, see repoman/tasks/
+* Adding destructive git commands to the default whitelisted non-destructive git commands
 * Testing user tasks with Cucumber, see repoman/features/
 * Relative paths (not absolute) in repoman/repo.conf making the folder portable
 * Bash completion for repo names, works on Win32 using Cygwin or MSYS Bash.

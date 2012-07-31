@@ -4,8 +4,6 @@ TODO
 * remove git gem and duplicate needed method.  The use of ENV[] will break on
   win32 and ruby 1.9.3
 * add find action that finds a repo based on all strings in the repo config
-* don't pass through destructive git commands unless they are in the approved
-  list, i.e. prevent 'git reset'.  Use :include, :exclude hashes
 * provide native repo completion via --completion option so the entire ARGV can
   be scanned and passed back to bash.  We have to load ruby anyway, might as
   well provide completion for commands and options too.
