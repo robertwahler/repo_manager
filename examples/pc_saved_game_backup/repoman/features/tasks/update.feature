@@ -32,6 +32,11 @@ Feature: Automatically add, commit, and push multiple repos
       folders:
         assets : repo/asset/configuration/files
         tasks  : ../../tasks
+      commands:
+      - status
+      - add
+      - commit
+      - push
       """
     And the folder "repo/asset/configuration/files" with the following asset configurations:
       | name    | path         |
