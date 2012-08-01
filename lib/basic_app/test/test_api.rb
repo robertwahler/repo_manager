@@ -1,9 +1,9 @@
-module Repoman
+module BasicApp
   module TestApi
 
     # cross platform `which` command
     def which(binary)
-      separator = Repoman::WINDOWS ? ';' : ':'
+      separator = BasicApp::WINDOWS ? ';' : ':'
       paths = ENV['PATH'].split(separator)
       paths.each do |path|
         fullpath = File.join(path, binary)

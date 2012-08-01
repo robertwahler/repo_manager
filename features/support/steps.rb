@@ -1,3 +1,2 @@
-require 'repoman/test/base_steps'
-require 'repoman/test/asset_steps'
-require 'repoman/test/repo_steps'
+require 'basic_app/test/base_steps'
+require 'basic_app/test/asset_steps'
