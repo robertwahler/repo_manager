@@ -81,6 +81,14 @@ pull from remote to all configured repos
 Bash completion
 ---------------
 
+Handy functions for use under Bash.  These work fine on Win32 using
+Git-Bash.
+
+* rcd: repo cd (change directory).  Wrapper for 'cd', allows for simple cd
+  <repo name> to the working folder on the filesystem referenced by the 'path'
+  configuration variable.
+* rpushd: repo pushd (push directory).  Wrapper for 'pushd'.
+
 Clean
 -----
 Resetting this example folder back to its shipping defaults

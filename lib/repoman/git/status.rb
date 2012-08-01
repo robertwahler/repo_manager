@@ -1,8 +1,8 @@
 module Repoman
 
-  # Simplified version of ruby-git's class that uses Git porcelain commands.
+  # Simplified version of ruby-git's class that uses Git's 'status --porcelain' command
   #
-  # Porcelain commands are useful since they handle ignored files and ignore
+  # The --porcelain switch is useful since it handles ignored files and ignores
   # non-commitable changes.  Speed is not a big concern.  There is only one
   # call needed to the Git binary. No plumbing commands are used.
   class Status

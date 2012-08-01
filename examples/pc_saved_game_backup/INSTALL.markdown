@@ -331,7 +331,36 @@ repoman/features/support/env.rb
 Bash completion
 ---------------
 
-### Completion for repo names
+Handy functions for use under Bash.  These work fine on Win32 using
+Git-Bash.
 
 ### CD command for working folders
+
+rpushd: repo pushd (push directory).  Wrapper for 'pushd'.
+
+### Completion for repo names
+
+rcd: repo cd (change directory).  Wrapper for 'cd', allows for simple cd <repo
+name> to the working folder on the filesystem referenced by the 'path'
+configuration variable.
+
+Source these functions in your .bashrc
+
+    function rcd(){ cd "$(repo --match=ONE --no-color path $@)"; }
+    function rpushd(){ pushd "$(repo path --match=ONE --no-color $@)"; }
+    alias rpopd="popd"
+
+    # provide completion for repo names
+    function _repo_names()
+    {
+      local cur opts prev
+      COMPREPLY=()
+      cur="${COMP_WORDS[COMP_CWORD]}"
+      opts=`repo list --list=name --no-color`
+
+      COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+      return 0
+    }
+    complete -F _repo_names rcd rpushd repo
+
 
