@@ -54,18 +54,18 @@ Feature: Asset configuration
       """
 
   Scenario: Specify assets folder explicity using a subfolder for the config file
-    Given a file named "basic_app/basic_app.conf" with:
+    Given a file named "repoman/repo.conf" with:
       """
       ---
       folders:
         assets      : data/app_assets
       """
-    And a file named "basic_app/data/app_assets/asset1/asset.conf" with:
+    And a file named "repoman/data/app_assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
       """
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     Then the output should contain:
@@ -74,7 +74,7 @@ Feature: Asset configuration
       """
 
   Scenario: Assets folder determined by convention, relative to config file, by convention the folder name is 'assets'
-    Given a file named "basic_app.conf" with:
+    Given a file named "repo.conf" with:
       """
       ---
       options:
@@ -94,18 +94,18 @@ Feature: Asset configuration
       """
 
   Scenario: Config file is located in a subfolder
-    Given a file named "basic_app/basic_app.conf" with:
+    Given a file named "repoman/repo.conf" with:
       """
       ---
       options:
         color       : AUTO
       """
-    And a file named "basic_app/assets/asset1/asset.conf" with:
+    And a file named "repoman/assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
       """
-    When I run `basic_app list --type=app_asset`
+    When I run `repo list --type=app_asset`
     Then the exit status should be 0
     And its output should not match /^WARN/
     Then the output should contain:
