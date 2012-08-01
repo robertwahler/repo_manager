@@ -53,8 +53,10 @@ or just
 
 ### Running tests on user tasks
 
+    gem install bundler
+
     cd repoman
-    bundle install
+    bundle
     bundle exec cucumber
 
 Backup

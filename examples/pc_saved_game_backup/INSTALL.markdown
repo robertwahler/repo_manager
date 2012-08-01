@@ -8,53 +8,73 @@ Creating the Repoman Saved Game Backup Configuration
 > more flexible and productive. The MSYS distribution of portable Git
 > includes a lean and stable Bash environment.
 
----------------------------------
+Initial configuration
+---------------------
+
+### install repoman
+
+    gem install repoman
+
+### create configuration
 
 The following commands were used to create this example folder from
 scratch.
 
-    mkdir examples/pc_saved_game_backup && cd examples/pc_saved_game_backup
+    mkdir -p examples/pc_saved_game_backup && cd examples/pc_saved_game_backup
 
 Create configuration structure with the built-in 'generate:init' task
 
+> NOTE
+>
+> We are creating a local configuration.  For a global configuration, you would
+> execute the init command in your home folder
+
     repo generate:init repoman
+
+We are going to keep this under version control
+
+    git init
+    git add .
+    git commit -m "initial commit"
+    echo "/repo.log" > .gitignore
+    echo "/repoman/tmp" >> .gitignore
 
 Change the generated paths from absolute to relative to make this example
 portable.
 
-      diff --git a/examples/pc_saved_game_backup/repoman/repo.conf b/examples/pc_saved_game_backup/repoman/repo.conf
-      index ed80bc6..e28637d 100644
-      --- a/examples/pc_saved_game_backup/repoman/repo.conf
-      +++ b/examples/pc_saved_game_backup/repoman/repo.conf
-      @@ -11,7 +11,7 @@ options:
-       folders:
+    diff --git a/repoman/repo.conf b/repoman/repo.conf
+    index ce4418d..3cc6dbe 100644
+    --- a/repoman/repo.conf
+    +++ b/repoman/repo.conf
+    @@ -11,7 +11,7 @@ options:
+     folders:
 
-         # main repo configuration files
-      -  assets  : /home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/assets
-      +  assets  : assets
+       # main repo configuration files
+    -  assets  : /home/robert/examples/pc_saved_game_backup/repoman/assets
+    +  assets  : assets
 
-         #
-         # repo user tasks, file extentions can be '.rb' or '.thor'
-      @@ -26,7 +26,7 @@ folders:
-         #
-         #         c:/dat/condenser/tasks
-         #
-      -  tasks        : /home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/tasks
-      +  tasks        : tasks
+       #
+       # repo user tasks, file extentions can be '.rb' or '.thor'
+    @@ -26,7 +26,7 @@ folders:
+       #
+       #         c:/dat/condenser/tasks
+       #
+    -  tasks        : /home/robert/examples/pc_saved_game_backup/repoman/tasks
+    +  tasks        : tasks
 
-       logging:
-         loggers:
-      @@ -46,7 +46,7 @@ logging:
-             name          : logfile
-             level         : debug
-             truncate      : true
-      -      filename      : '/home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/repo.log'
-      +      filename      : 'repo.log'
-             layout:
-               type        : Pattern
-               pattern     : '[%d] %l %c : %m\n'
+     # git commands must be whitelisted
+     commands:
+    @@ -55,7 +55,7 @@ logging:
+           name          : logfile
+           level         : info
+           truncate      : true
+    -      filename      : '/home/robert/examples/pc_saved_game_backup/repoman/repo.log'
+    +      filename      : 'repo.log'
+           layout:
+             type        : Pattern
+             pattern     : '[%d] %l %c : %m\n'
 
-### Add sample data
+### add sample data
 
 Add a few example save game folder.  These folders would normally be
 scattered over the file system.
@@ -94,13 +114,13 @@ Create the specialized 'git init' task
 --------------------------------------
 
 User tasks can be added directly to the repoman/tasks folder.  This one
-is 'repoman/task/remote.rb'.  It doesn't use any Repoman specific features,
+is 'repoman/tasks/remote.rb'.  It doesn't use any Repoman specific features,
 instead, it calls git directly via Thor's 'run' command. Adding the script
 this way will keep this related functionality with this specific Repoman
 configuration.  Run 'repo -T' to see a full list of built-in tasks as well
 as user defined tasks.
 
-repoman/task/remote.rb
+repoman/tasks/remote.rb
 
     require 'fileutils'
 
@@ -166,7 +186,7 @@ In one step, we will initialize a new git repository with the working folder's
 content and push to a new bare repository for backup.
 
 > Normally, you don't need to specify the --path if you are already in the
-> work folder and the repoman can find its global config file.  For this
+> working folder and the repoman can find its global config file.  For this
 > example, we are using relative paths and will specify the working folder
 > on the command line via the '--path' option.
 
@@ -182,7 +202,7 @@ content and push to a new bare repository for backup.
 Create the specialized Update task
 ----------------------------------
 
-repoman/task/update.rb
+repoman/tasks/update.rb
 
     module Repoman
       class Action < Thor
@@ -249,6 +269,24 @@ repoman/task/update.rb
       end
     end
 
+### whitelist non-default Git commands
+
+Only a small subset of non-destructive git commands are enabled by default.  We will
+add the commands needed by our user task to the commands whitelist.
+
+Add 'push, add, and commit' to the commands whitelist
+
+    diff --git a/repoman/repo.conf b/repoman/repo.conf
+    index 3cc6dbe..226b8c0 100644
+    --- a/repoman/repo.conf
+    +++ b/repoman/repo.conf
+    @@ -36,6 +36,9 @@ commands:
+     - ls-files
+     - show
+     - status
+    +- push
+    +- add
+    +- commit
 
 Testing with user tasks with Cucumber
 --------------------------------------
@@ -271,6 +309,8 @@ repoman/Gemfile
     gem "win32console", :platforms => [:mingw, :mswin]
 
 ### Install the dependencies
+
+    gem install bundler
 
     cd repoman
     bundle install
@@ -312,7 +352,7 @@ repoman/features/tasks/update.feature
 
       ...
 
-repoman/features/step_definitions/repoman_steps.rb
+repoman/features/support/steps.rb
 
     require 'repoman/test/base_steps'
     require 'repoman/test/asset_steps'
@@ -323,6 +363,24 @@ repoman/features/support/env.rb
     require 'repoman'
     require 'aruba/cucumber'
     require 'rspec/expectations'
+
+repoman/features/support/aruba.rb
+
+    require 'aruba/api'
+    require 'fileutils'
+
+    module Aruba
+      module Api
+
+        # override aruba avoid 'current_ruby' call and make sure
+        # that binary run on Win32 without the binstubs
+        def detect_ruby(cmd)
+          wrapper = which('repo')
+          cmd = cmd.gsub(/^repo/, "ruby -S #{wrapper}") if wrapper
+          cmd
+        end
+      end
+    end
 
 ### Run tests
 
