@@ -1,8 +1,8 @@
 require 'fileutils'
 require 'chronic'
-require 'repoman/test/test_api'
+require 'basic_app/test/test_api'
 
-World(Repoman::TestApi)
+World(BasicApp::TestApi)
 
 # Given PENDING: some reason
 Given /^PENDING/ do
