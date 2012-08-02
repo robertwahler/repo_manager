@@ -54,13 +54,13 @@ Feature: Asset configuration
       """
 
   Scenario: Specify assets folder explicity using a subfolder for the config file
-    Given a file named "repoman/repo.conf" with:
+    Given a file named "repo_manager/repo.conf" with:
       """
       ---
       folders:
         assets      : data/app_assets
       """
-    And a file named "repoman/data/app_assets/asset1/asset.conf" with:
+    And a file named "repo_manager/data/app_assets/asset1/asset.conf" with:
       """
       ---
       path: user_path
@@ -94,13 +94,13 @@ Feature: Asset configuration
       """
 
   Scenario: Config file is located in a subfolder
-    Given a file named "repoman/repo.conf" with:
+    Given a file named "repo_manager/repo.conf" with:
       """
       ---
       options:
         color       : AUTO
       """
-    And a file named "repoman/assets/asset1/asset.conf" with:
+    And a file named "repo_manager/assets/asset1/asset.conf" with:
       """
       ---
       path: user_path

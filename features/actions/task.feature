@@ -22,11 +22,11 @@ Feature: Invoke external tasks, normally Thor tasks.
       options:
         color       : true
       folders:
-        assets           : repoman/assets
-        tasks            : repoman/tasks
+        assets           : repo_manager/assets
+        tasks            : repo_manager/tasks
       """
     And an empty file named "output/.gitignore"
-    And a file named "repoman/tasks/test.rb" with:
+    And a file named "repo_manager/tasks/test.rb" with:
       """
       module RepoManager
         class Test < Thor
@@ -41,7 +41,7 @@ Feature: Invoke external tasks, normally Thor tasks.
         end
       end
       """
-    And a file named "repoman/tasks/test.thor" with:
+    And a file named "repo_manager/tasks/test.thor" with:
       """
       module RepoManager
         class TestB < Thor
@@ -69,7 +69,7 @@ Feature: Invoke external tasks, normally Thor tasks.
       """
     And the output should contain:
       """
-      repo repoman:test_b:hello
+      repo repo_manager:test_b:hello
       """
 
   Scenario: Listings available tasks without the 'task' action
@@ -102,7 +102,7 @@ Feature: Invoke external tasks, normally Thor tasks.
       a test init task
       """
 
-  Scenario: Successful task run without the 'repoman:' namespace
+  Scenario: Successful task run without the 'repo_manager:' namespace
     When I run `repo task test:init my_path`
     Then the exit status should be 0
     Then the output should contain:
@@ -118,8 +118,8 @@ Feature: Invoke external tasks, normally Thor tasks.
       my_path
       """
 
-  Scenario: Successful task run with the 'repoman:' namespace
-    When I run `repo task repoman:test_b:hello my_message`
+  Scenario: Successful task run with the 'repo_manager:' namespace
+    When I run `repo task repo_manager:test_b:hello my_message`
     Then the exit status should be 0
     Then the output should contain:
       """

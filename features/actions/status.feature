@@ -16,7 +16,7 @@ Feature: Listing repo path information
     repo status test2 --unmodified DOTS"
 
   Background: A valid config file
-    Given a file named "repoman/repo.conf" with:
+    Given a file named "repo_manager/repo.conf" with:
       """
       ---
       options:
@@ -24,7 +24,7 @@ Feature: Listing repo path information
       folders:
         assets  : assets
       """
-    And the folder "repoman/assets" with the following asset configurations:
+    And the folder "repo_manager/assets" with the following asset configurations:
       | name    | path         |
       | test1   | test_path_1  |
       | test2   | test_path_2  |
@@ -86,7 +86,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Invalid repo
-    Given the folder "repoman/assets" with the following asset configurations:
+    Given the folder "repo_manager/assets" with the following asset configurations:
       | name    | path         |
       | bad_repo| not_a_repo   |
     And a directory named "not_a_repo"
@@ -103,7 +103,7 @@ Feature: Listing repo path information
       """
 
   Scenario: Missing repo folder
-    Given the folder "repoman/assets" with the following asset configurations:
+    Given the folder "repo_manager/assets" with the following asset configurations:
       | name    | path         |
       | bad_repo| not_a_repo   |
     When I run `repo status --filter=bad_repo --unmodified DOTS --no-verbose`

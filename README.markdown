@@ -13,7 +13,7 @@ across multiple git repositories.
 For example, you have two git repositories named 'repo1' and 'repo2' and
 you want to check the status of both working folders.
 
-### without repoman
+### without repo_manager
 
     cd ~/workspace/delphi/repo1
     git status
@@ -21,7 +21,7 @@ you want to check the status of both working folders.
     cd ~/workspace/delphi/repo2
     git status
 
-### with repoman
+### with repo_manager
 
     repo status
 
@@ -47,7 +47,7 @@ Getting started with RepoManager
 
 ### installation
 
-    gem install repoman
+    gem install repo_manager
 
 ### help
 
@@ -58,25 +58,25 @@ Getting started with RepoManager
 ### generate configuration folder structure
 
     cd ~/workspace
-    repo generate:init .repoman
+    repo generate:init .repo_manager
 
 generate:init output
 
-      init  creating initial config file at '/home/robert/workspace/.repoman/repo.conf'
-    create  .repoman/repo.conf
-      init  creating initial file structure in '/home/robert/workspace/.repoman'
-     exist  .repoman
-    create  .repoman/.gitignore
-    create  .repoman/assets/.gitignore
-    create  .repoman/global/default/asset.conf
-    create  .repoman/tasks/.gitignore
+      init  creating initial config file at '/home/robert/workspace/.repo_manager/repo.conf'
+    create  .repo_manager/repo.conf
+      init  creating initial file structure in '/home/robert/workspace/.repo_manager'
+     exist  .repo_manager
+    create  .repo_manager/.gitignore
+    create  .repo_manager/assets/.gitignore
+    create  .repo_manager/global/default/asset.conf
+    create  .repo_manager/tasks/.gitignore
 
 ### generate individual repository configurations files
 
 generate multiple config files by searching a folder, one level deep, for git repositories
 
 
-    repo generate:config . --filter=mutagem,basic_*,repoman
+    repo generate:config . --filter=mutagem,basic_*,repo_manager
 
 generate config output
 
@@ -88,7 +88,7 @@ generate config output
            found  basic_gem                                path => './basic_gem'
            found  basic_website                            path => './basic_website'
            found  basic_assets                             path => './basic_assets'
-           found  repoman                                  path => './repoman'
+           found  repo_manager                             path => './repo_manager'
            found  basic_app                                path => './basic_app'
            found  mutagem                                  path => './mutagem'
            found  basic_rails                              path => './basic_rails'
@@ -97,13 +97,13 @@ generate config output
 
 answer 'y'
 
-    creating  repoman configuration file for basic_gem
-    creating  repoman configuration file for basic_website
-    creating  repoman configuration file for basic_assets
-    creating  repoman configuration file for repoman
-    creating  repoman configuration file for basic_app
-    creating  repoman configuration file for mutagem
-    creating  repoman configuration file for basic_rails
+    creating  repo_manager configuration file for basic_gem
+    creating  repo_manager configuration file for basic_website
+    creating  repo_manager configuration file for basic_assets
+    creating  repo_manager configuration file for repo_manager
+    creating  repo_manager configuration file for basic_app
+    creating  repo_manager configuration file for mutagem
+    creating  repo_manager configuration file for basic_rails
 
 
 Example Usage - Managing game saves across multiple computers
@@ -149,12 +149,12 @@ Rake tasks
 
 bundle exec rake -T
 
-    rake build         # Build repoman-0.0.1.gem into the pkg directory
+    rake build         # Build repo_manager-0.0.1.gem into the pkg directory
     rake doc:clean     # Remove generated documenation
     rake doc:generate  # Generate YARD Documentation
     rake features      # Run Cucumber features
-    rake install       # Build and install repoman-0.0.1.gem into system gems
-    rake release       # Create tag v0.0.1 and build and push repoman-0.0.1.gem to Rubygems
+    rake install       # Build and install repo_manager-0.0.1.gem into system gems
+    rake release       # Create tag v0.0.1 and build and push repo_manager-0.0.1.gem to Rubygems
     rake spec          # Run specs
     rake test          # Run specs and features
 
@@ -167,8 +167,8 @@ RepoManager was originally cloned from [BasicApp](http://github.com/robertwahler
 all systems
 
     cd ~/workspace
-    git clone https://github.com/robertwahler/repoman
-    cd repoman
+    git clone https://github.com/robertwahler/repo_manager
+    cd repo_manager
 
     gem install bundler
     bundle

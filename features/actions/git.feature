@@ -209,7 +209,7 @@ Feature: Running an arbitrary git command
               test1
       """
 
-  Scenario: Native and repoman status command missing repo folder has different
+  Scenario: Native and repo_manager status command missing repo folder has different
     exit status values
     Given the folder "repo_assets" with the following asset configurations:
       | name       | path          |
@@ -263,7 +263,7 @@ Feature: Running an arbitrary git command
     Given a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | new_stuff.txt    | A      | tmp/*    |
-    When I run `repo commit -m 'automatic commit via repoman' --repos test1`
+    When I run `repo commit -m 'automatic commit via repo_manager' --repos test1`
     Then the exit status should be 0
     And the output should contain:
       """
@@ -284,7 +284,7 @@ Feature: Running an arbitrary git command
     And a repo in folder "test_path_1" with the following:
       | filename         | status | content  |
       | new_stuff.txt    | A      | tmp/*    |
-    When I run `repo commit -m 'automatic commit via repoman' --repos test1`
+    When I run `repo commit -m 'automatic commit via repo_manager' --repos test1`
     Then the exit status should be 1
     And the output should not contain:
       """

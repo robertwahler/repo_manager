@@ -8,8 +8,8 @@
 require 'mustache'
 require 'pathname'
 
-require 'repoman/assets/asset_configuration'
-require 'repoman/assets/asset_accessors'
+require 'repo_manager/assets/asset_configuration'
+require 'repo_manager/assets/asset_accessors'
 
 module RepoManager
 

@@ -7,10 +7,10 @@ typically scattered across multiple folders and drives.
 
 This example demonstrates the following features:
 
-* Adding RepoManager user tasks, see repoman/tasks/
+* Adding RepoManager user tasks, see repo_manager/tasks/
 * Adding destructive git commands to the default whitelisted non-destructive git commands
-* Testing user tasks with Cucumber, see repoman/features/
-* Relative paths (not absolute) in repoman/repo.conf making the folder portable
+* Testing user tasks with Cucumber, see repo_manager/features/
+* Relative paths (not absolute) in repo_manager/repo.conf making the folder portable
 * Bash completion for repo names, works on Win32 using Cygwin or MSYS Bash
 * Bash function to 'cd' into a repo's working folder
 
@@ -54,7 +54,7 @@ or just
 
     gem install bundler
 
-    cd repoman
+    cd repo_manager
     bundle
     bundle exec cucumber
 
@@ -62,7 +62,7 @@ Backup
 ------
 
 To backup the saved games, we will need another user task.  This on is called
-'action:update'.  See [repoman/tasks/update.rb](repoman/tasks/update.rb)
+'action:update'.  See [repo_manager/tasks/update.rb](repo_manager/tasks/update.rb)
 
     repo action:update
 
@@ -104,5 +104,5 @@ Resetting this example folder back to its shipping defaults
 
 ### Remove the asset config files
 
-    rm -rf repoman/assets/mines
-    rm -rf repoman/assets/hearts
+    rm -rf repo_manager/assets/mines
+    rm -rf repo_manager/assets/hearts

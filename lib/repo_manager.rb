@@ -1,14 +1,14 @@
 # require all files here
 require 'rbconfig'
-require 'repoman/core'
-require 'repoman/errors'
-require 'repoman/assets'
-require 'repoman/views'
-require 'repoman/actions'
-require 'repoman/git'
-require 'repoman/app'
-require 'repoman/settings'
-require 'repoman/logger'
+require 'repo_manager/core'
+require 'repo_manager/errors'
+require 'repo_manager/assets'
+require 'repo_manager/views'
+require 'repo_manager/actions'
+require 'repo_manager/git'
+require 'repo_manager/app'
+require 'repo_manager/settings'
+require 'repo_manager/logger'
 
 
 # Master namespace

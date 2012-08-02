@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'repoman/test/repo_api'
+require 'repo_manager/test/repo_api'
 
 World(RepoManager::RepoApi)
 

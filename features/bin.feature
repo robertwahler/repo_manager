@@ -10,7 +10,7 @@ Feature: Options via a command line interface (CLI)
   Scenario: Version info
     When I run `repo --version`
     Then the exit status should be 0
-    And the output should match /repoman, version ([\d]+\.[\d]+\.[\d]+$)/
+    And the output should match /repo_manager, version ([\d]+\.[\d]+\.[\d]+$)/
 
   Scenario: Help
     When I run `repo --help`

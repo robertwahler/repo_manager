@@ -26,7 +26,7 @@ module Git
     def validate
       return if defined? @@validated
       unless meets_required_version?
-        $stderr.puts "[WARNING] The repoman gem requires git #{required_command_version.join('.')} or later for the status command functionality, but only found #{current_command_version.join('.')}. You should probably upgrade."
+        $stderr.puts "[WARNING] The repo_manager gem requires git #{required_command_version.join('.')} or later for the status command functionality, but only found #{current_command_version.join('.')}. You should probably upgrade."
       end
       @@validated = true
     end

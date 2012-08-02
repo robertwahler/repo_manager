@@ -6,7 +6,7 @@
 # See http://github.com/robertwahler
 ####################################################
 
-require 'repoman/assets/asset_manager'
+require 'repo_manager/assets/asset_manager'
 
 module RepoManager
 

@@ -1,3 +1,3 @@
-require 'repoman/tasks/task_manager'
+require 'repo_manager/tasks/task_manager'
 
 RepoManager::TaskManager.new.load_tasks

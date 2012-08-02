@@ -1,6 +1,6 @@
 require 'fileutils'
 require 'chronic'
-require 'repoman/test/test_api'
+require 'repo_manager/test/test_api'
 
 World(RepoManager::TestApi)
 

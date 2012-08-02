@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'repoman'
+require 'repo_manager'
 require 'optparse'
 require 'term/ansicolor'
 require 'fileutils'
@@ -73,7 +73,7 @@ optparser = OptionParser.new do |opts|
   end
 
   opts.on("--version", "Display current version and exit") do
-    puts "repoman, version " + RepoManager.version
+    puts "repo_manager, version " + RepoManager.version
     exit 0
   end
 

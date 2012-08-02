@@ -20,7 +20,7 @@ folders:
   #
   #     linux:
   #
-  #         ~/.repoman/tasks
+  #         ~/.repo_manager/tasks
   #
   #     win32
   #

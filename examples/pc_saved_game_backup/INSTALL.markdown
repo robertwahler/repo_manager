@@ -11,9 +11,9 @@ Creating the RepoManager Saved Game Backup Configuration
 Initial configuration
 ---------------------
 
-### install repoman
+### install repo_manager
 
-    gem install repoman
+    gem install repo_manager
 
 ### create configuration
 
@@ -29,7 +29,7 @@ Create configuration structure with the built-in 'generate:init' task
 > We are creating a local configuration.  For a global configuration, you would
 > execute the init command in your home folder
 
-    repo generate:init repoman
+    repo generate:init repo_manager
 
 We are going to keep this under version control
 
@@ -37,20 +37,20 @@ We are going to keep this under version control
     git add .
     git commit -m "initial commit"
     echo "/repo.log" > .gitignore
-    echo "/repoman/tmp" >> .gitignore
+    echo "/repo_manager/tmp" >> .gitignore
 
 Change the generated paths from absolute to relative to make this example
 portable.
 
-    diff --git a/repoman/repo.conf b/repoman/repo.conf
+    diff --git a/repo_manager/repo.conf b/repo_manager/repo.conf
     index ce4418d..3cc6dbe 100644
-    --- a/repoman/repo.conf
-    +++ b/repoman/repo.conf
+    --- a/repo_manager/repo.conf
+    +++ b/repo_manager/repo.conf
     @@ -11,7 +11,7 @@ options:
      folders:
 
        # main repo configuration files
-    -  assets  : /home/robert/examples/pc_saved_game_backup/repoman/assets
+    -  assets  : /home/robert/examples/pc_saved_game_backup/repo_manager/assets
     +  assets  : assets
 
        #
@@ -59,7 +59,7 @@ portable.
        #
        #         c:/dat/condenser/tasks
        #
-    -  tasks        : /home/robert/examples/pc_saved_game_backup/repoman/tasks
+    -  tasks        : /home/robert/examples/pc_saved_game_backup/repo_manager/tasks
     +  tasks        : tasks
 
      # git commands must be whitelisted
@@ -68,7 +68,7 @@ portable.
            name          : logfile
            level         : info
            truncate      : true
-    -      filename      : '/home/robert/examples/pc_saved_game_backup/repoman/repo.log'
+    -      filename      : '/home/robert/examples/pc_saved_game_backup/repo_manager/repo.log'
     +      filename      : 'repo.log'
            layout:
              type        : Pattern
@@ -113,14 +113,14 @@ remote/.gitignore
 Create the specialized 'git init' task
 --------------------------------------
 
-User tasks can be added directly to the repoman/tasks folder.  This one
-is 'repoman/tasks/remote.rb'.  It doesn't use any RepoManager specific features,
+User tasks can be added directly to the repo_manager/tasks folder.  This one
+is 'repo_manager/tasks/remote.rb'.  It doesn't use any RepoManager specific features,
 instead, it calls git directly via Thor's 'run' command. Adding the script
 this way will keep this related functionality with this specific RepoManager
 configuration.  Run 'repo -T' to see a full list of built-in tasks as well
 as user defined tasks.
 
-repoman/tasks/remote.rb
+repo_manager/tasks/remote.rb
 
     require 'fileutils'
 
@@ -186,14 +186,14 @@ In one step, we will initialize a new git repository with the working folder's
 content and push to a new bare repository for backup.
 
 > Normally, you don't need to specify the --path if you are already in the
-> working folder and the repoman can find its global config file.  For this
+> working folder and the repo_manager can find its global config file.  For this
 > example, we are using relative paths and will specify the working folder
 > on the command line via the '--path' option.
 
     repo generate:remote mines --path=saved_games/mines/saves
     repo generate:remote hearts --path=saved_games/hearts
 
-### create the repoman asset configuration files
+### create the repo_manager asset configuration files
 
     repo add:asset saved_games/mines/saves --name=mines --force
     repo add:asset saved_games/hearts --force
@@ -202,7 +202,7 @@ content and push to a new bare repository for backup.
 Create the specialized Update task
 ----------------------------------
 
-repoman/tasks/update.rb
+repo_manager/tasks/update.rb
 
     module RepoManager
       class Action < Thor
@@ -276,10 +276,10 @@ add the commands needed by our user task to the commands whitelist.
 
 Add 'push, add, and commit' to the commands whitelist
 
-    diff --git a/repoman/repo.conf b/repoman/repo.conf
+    diff --git a/repo_manager/repo.conf b/repo_manager/repo.conf
     index 3cc6dbe..226b8c0 100644
-    --- a/repoman/repo.conf
-    +++ b/repoman/repo.conf
+    --- a/repo_manager/repo.conf
+    +++ b/repo_manager/repo.conf
     @@ -36,6 +36,9 @@ commands:
      - ls-files
      - show
@@ -295,11 +295,11 @@ Functional testing with Cucumber
 
 ### Add a Gemfile for use by Bundler
 
-repoman/Gemfile
+repo_manager/Gemfile
 
     source "http://rubygems.org"
 
-    gem "repoman"
+    gem "repo_manager"
 
     gem "bundler", ">= 1.0.14"
     gem "rspec", ">= 2.6.0"
@@ -312,12 +312,12 @@ repoman/Gemfile
 
     gem install bundler
 
-    cd repoman
+    cd repo_manager
     bundle install
 
 ### Add Cucumber features and support files
 
-repoman/features/tasks/update.feature
+repo_manager/features/tasks/update.feature
 
 > NOTE: This is an excerpt, see the file for the full listing of functional tests
 
@@ -352,19 +352,19 @@ repoman/features/tasks/update.feature
 
       ...
 
-repoman/features/support/steps.rb
+repo_manager/features/support/steps.rb
 
-    require 'repoman/test/base_steps'
-    require 'repoman/test/asset_steps'
-    require 'repoman/test/repo_steps'
+    require 'repo_manager/test/base_steps'
+    require 'repo_manager/test/asset_steps'
+    require 'repo_manager/test/repo_steps'
 
-repoman/features/support/env.rb
+repo_manager/features/support/env.rb
 
-    require 'repoman'
+    require 'repo_manager'
     require 'aruba/cucumber'
     require 'rspec/expectations'
 
-repoman/features/support/aruba.rb
+repo_manager/features/support/aruba.rb
 
     require 'aruba/api'
     require 'fileutils'

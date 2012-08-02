@@ -31,7 +31,7 @@ Feature: Task to generate asset configurations
 
     cond add:assets c:/users/robert/documents/
     cond add:assets ~/workspace/delphi
-    cond add:assets ~/workspace --filter guard-*,repoman-*
+    cond add:assets ~/workspace --filter guard-*,repo_manager-*
 
   General Notes:
 
@@ -39,7 +39,7 @@ Feature: Task to generate asset configurations
     * task will skip existing asset names and existing asset paths unless using the '--refresh' switch
     * add '.condenser' file to application path to have Condenser always skip this application
 
-  Example output (~/repoman/assets/asset.conf):
+  Example output (~/repo_manager/assets/asset.conf):
 
       ---
       path: some/path/my_repo_name
@@ -100,13 +100,13 @@ Feature: Task to generate asset configurations
       """
 
   Scenario: Point at a single working folder relative to repo.conf
-    Given a file named "repoman/repo.conf" with:
+    Given a file named "repo_manager/repo.conf" with:
       """
       ---
       folders:
         assets : assets
       """
-    And a directory named "repoman/assets"
+    And a directory named "repo_manager/assets"
     When I run `repo add:asset workspace/repo1_path` interactively
     When I type "y"
     Then the exit status should be 0
@@ -114,7 +114,7 @@ Feature: Task to generate asset configurations
       """
       Found 1 asset(s)
       """
-    And the file "repoman/assets/repo1_path/asset.conf" should match:
+    And the file "repo_manager/assets/repo1_path/asset.conf" should match:
       """
       path: .*/workspace/repo1_path
       """

@@ -17,7 +17,7 @@ module RepoManager
     # @examples:
     #
     #     find_by_namespace(sweep:screenshots)
-    #     find_by_namespace(repoman:sweep:screenshots)
+    #     find_by_namespace(repo_manager:sweep:screenshots)
     #
     #     returns:
     #
@@ -66,7 +66,7 @@ module RepoManager
       result
     end
 
-    # load all the tasks in this gem plus the user's own repoman task folder
+    # load all the tasks in this gem plus the user's own repo_manager task folder
     #
     # NOTE: doesn't load any default tasks or non-RepoManager tasks
     def load_tasks
@@ -156,7 +156,7 @@ module RepoManager
       end
       list.sort!{ |a,b| a[0] <=> b[0] }
 
-      title = "repoman tasks"
+      title = "repo_manager tasks"
       shell.say shell.set_color(title, :blue, bold=true)
       shell.say "-" * title.size
       shell.print_table(list, :ident => 2, :truncate => true)

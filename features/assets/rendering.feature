@@ -10,7 +10,7 @@ Feature: Asset template rendering
   Scenario: Render templates to STDOUT
     Given a file named "test.erb" with:
       """
-      <% require 'repoman/actions/action_helper' -%>
+      <% require 'repo_manager/actions/action_helper' -%>
       <% extend RepoManager::ActionHelper -%>
 
       <% for item in items do -%>

@@ -1,2 +1,2 @@
-require 'repoman/git/lib'
-require 'repoman/git/status'
+require 'repo_manager/git/lib'
+require 'repo_manager/git/status'

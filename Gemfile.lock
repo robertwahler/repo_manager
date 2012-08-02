@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    repoman (0.7.1)
+    repo_manager (0.7.1)
       chronic (>= 0.6.5)
       git (= 1.2.5)
       logging (>= 1.6.2)
@@ -92,7 +92,7 @@ DEPENDENCIES
   libnotify
   rake (>= 0.8.7)
   redcarpet (>= 1.17.2)
-  repoman!
+  repo_manager!
   rspec (>= 2.6.0)
   win32console
   yard (>= 0.7.4)

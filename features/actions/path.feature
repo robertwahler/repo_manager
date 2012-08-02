@@ -56,13 +56,13 @@ Feature: Listing repo path information
 
 
   Background: A valid config file
-    Given a file named ".repoman/repo.conf" with:
+    Given a file named ".repo_manager/repo.conf" with:
       """
       ---
       folders:
         assets : app_assets
       """
-    And the folder ".repoman/app_assets" with the following asset configurations:
+    And the folder ".repo_manager/app_assets" with the following asset configurations:
       | name       | path          |
       | test1      | test_path_1   |
       | test2      | test_path_2   |

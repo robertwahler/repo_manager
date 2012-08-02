@@ -1,6 +1,6 @@
-require 'repoman'
-require 'repoman/tasks/task_manager'
-require 'repoman/actions/action_helper'
+require 'repo_manager'
+require 'repo_manager/tasks/task_manager'
+require 'repo_manager/actions/action_helper'
 require 'pathname'
 
 module RepoManager
@@ -93,7 +93,7 @@ module RepoManager
       say
       discovered_assets.each do |asset|
 
-        say_status :creating, "repoman configuration file for #{asset.name}", :green
+        say_status :creating, "repo_manager configuration file for #{asset.name}", :green
         logger.debug "writing asset #{asset.name} to #{asset.configuration.folder}"
         asset.attributes.merge!(:parent => "../global/default")
         save_writable_attributes(asset, asset.attributes)

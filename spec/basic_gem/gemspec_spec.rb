@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RepoManager do
 
   def load_gemspec
-    filename = File.expand_path('../../../repoman.gemspec', __FILE__)
+    filename = File.expand_path('../../../repo_manager.gemspec', __FILE__)
     eval(File.read(filename), nil, filename)
   end
 

@@ -1,4 +1,4 @@
-require 'repoman'
+require 'repo_manager'
 require 'aruba/cucumber'
 require 'rspec/expectations'
 

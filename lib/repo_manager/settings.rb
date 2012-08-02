@@ -1,7 +1,7 @@
 require 'yaml'
 require 'erb'
 require 'fileutils'
-require 'repoman/extensions/hash'
+require 'repo_manager/extensions/hash'
 
 module RepoManager
 
@@ -63,13 +63,13 @@ module RepoManager
         config = [
                    File.join(@working_dir, "repo.conf"),
                    File.join(@working_dir, ".repo.conf"),
-                   File.join(@working_dir, "repoman", "repo.conf"),
-                   File.join(@working_dir, ".repoman", "repo.conf"),
+                   File.join(@working_dir, "repo_manager", "repo.conf"),
+                   File.join(@working_dir, ".repo_manager", "repo.conf"),
                    File.join(@working_dir, "config", "repo.conf"),
                    File.expand_path(File.join("~", ".repo.conf")),
                    File.expand_path(File.join("~", "repo.conf")),
-                   File.expand_path(File.join("~", "repoman", "repo.conf")),
-                   File.expand_path(File.join("~", ".repoman", "repo.conf"))
+                   File.expand_path(File.join("~", "repo_manager", "repo.conf")),
+                   File.expand_path(File.join("~", ".repo_manager", "repo.conf"))
                  ].detect { |filename| File.exists?(filename) }
       end
 

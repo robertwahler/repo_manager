@@ -7,22 +7,22 @@ module RepoManager
     #
     # @example manually require and include before use
     #
-    #     require 'repoman/views/view_helper'
+    #     require 'repo_manager/views/view_helper'
     #     include RepoManager::ViewHelper
     #
-    # @example default to repoman root
+    # @example default to repo_manager root
     #
     #     path_to("views/templates/bla.rb")
     #
-    # @example repoman root
+    # @example repo_manager root
     #
-    #     path_to(:repoman, "views/templates/bla.rb")
+    #     path_to(:repo_manager, "views/templates/bla.rb")
     #
     # @example :bootstrap
     #
     #     path_to(:bootstrap, "bootstrap/css/bootstrap.css")
     #
-    # @param [Symbol] (:repoman) which gem folder should be root
+    # @param [Symbol] (:repo_manager) which gem folder should be root
     # @param [String] path to file asset parented in the given folder
     #
     # @return [String] absolute path to asset
@@ -30,7 +30,7 @@ module RepoManager
 
       case
         when args.length == 1
-          base_path = :repoman
+          base_path = :repo_manager
           asset = args
         when args.length == 2
           base_path, asset = *args
@@ -41,7 +41,7 @@ module RepoManager
       end
 
       case base_path
-        when :repoman
+        when :repo_manager
           root = File.expand_path('../../../../', __FILE__)
         else
           raise "unknown base_path"

@@ -12,12 +12,12 @@ Feature: Configuration via YAML
 
       ./repo.conf
       ./.repo.conf
-      ./repoman/repo.conf
-      ./.repoman/repo.conf
+      ./repo_manager/repo.conf
+      ./.repo_manager/repo.conf
       ~/.repo.conf
       ~/repo.conf
-      ~/repoman/repo.conf
-      ~/.repoman/repo.conf
+      ~/repo_manager/repo.conf
+      ~/.repo_manager/repo.conf
 
   All command line options can be read from the config file from the "options:"
   block. The "options" block is optional.
@@ -187,7 +187,7 @@ Feature: Configuration via YAML
       ---
       user_var: user2
       """
-    And a file named "repoman/repo.conf" with:
+    And a file named "repo_manager/repo.conf" with:
       """
       ---
       user_var: user3
@@ -212,7 +212,7 @@ Feature: Configuration via YAML
       ---
       user_var: user2
       """
-    And a file named "repoman/repo.conf" with:
+    And a file named "repo_manager/repo.conf" with:
       """
       ---
       user_var: user3
@@ -227,8 +227,8 @@ Feature: Configuration via YAML
       :user_var=>"user3"
       """
 
-  Scenario: Reading default config file 'repoman/repo.conf
-    Given a file named "repoman/repo.conf" with:
+  Scenario: Reading default config file 'repo_manager/repo.conf
+    Given a file named "repo_manager/repo.conf" with:
       """
       ---
       user_var: user3

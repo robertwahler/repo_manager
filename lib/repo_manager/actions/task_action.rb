@@ -6,8 +6,8 @@ module RepoManager
   #
   # @example Usage: repo task TASK [args]
   #
-  #      repo task repoman:sweep:screenshots /to/some/folder
-  #      repo repoman:sweep:screenshots /to/some/folder
+  #      repo task repo_manager:sweep:screenshots /to/some/folder
+  #      repo repo_manager:sweep:screenshots /to/some/folder
   #
   # @example General task help:
   #
@@ -15,8 +15,8 @@ module RepoManager
   #
   # @example Help for specific task
   #
-  #      repo task help repoman:sweep:screenshots
-  #      repo help repoman:sweep:screenshots
+  #      repo task help repo_manager:sweep:screenshots
+  #      repo help repo_manager:sweep:screenshots
   #
   # @example Display a list of tasks
   #
@@ -43,7 +43,7 @@ module RepoManager
     def process
       # Thor actions can include toxic side effects,
       # keep the namespace clean until needed
-      require 'repoman/tasks/task_manager'
+      require 'repo_manager/tasks/task_manager'
       task_manager = RepoManager::TaskManager.new(configuration)
 
       if options[:tasks]

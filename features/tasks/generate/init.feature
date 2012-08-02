@@ -1,13 +1,13 @@
 @announce
 Feature: Generate init task
 
-  End-user generation of a repoman configuration
+  End-user generation of a repo_manager configuration
 
   Example commands:
 
-      repo task generate:init .repoman
+      repo task generate:init .repo_manager
       repo task generate:init .
-      repo task generate:init repoman --force --verbose
+      repo task generate:init repo_manager --force --verbose
 
   Scenario: Specify path on the command line
     When I run `repo task generate:init nodefault --no-config --verbose`

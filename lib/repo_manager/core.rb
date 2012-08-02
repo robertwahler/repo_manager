@@ -1,2 +1,2 @@
-require 'repoman/core/hash'
-require 'repoman/core/array'
+require 'repo_manager/core/hash'
+require 'repo_manager/core/array'

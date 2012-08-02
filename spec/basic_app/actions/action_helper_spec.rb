@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
-require 'repoman/actions/action_helper'
+require 'repo_manager/actions/action_helper'
 
 class Thing
   include ::RepoManager::ActionHelper
