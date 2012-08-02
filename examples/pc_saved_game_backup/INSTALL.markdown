@@ -420,5 +420,3 @@ Source these functions in your .bashrc
       return 0
     }
     complete -F _repo_names rcd rpushd repo
-
-

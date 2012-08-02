@@ -11,8 +11,8 @@ This example demonstrates the following features:
 * Adding destructive git commands to the default whitelisted non-destructive git commands
 * Testing user tasks with Cucumber, see repoman/features/
 * Relative paths (not absolute) in repoman/repo.conf making the folder portable
-* Bash completion for repo names, works on Win32 using Cygwin or MSYS Bash.
-* Bash function to cd into a repo's working folder
+* Bash completion for repo names, works on Win32 using Cygwin or MSYS Bash
+* Bash function to 'cd' into a repo's working folder
 
 
 Bootstrapping this example folder
@@ -34,7 +34,6 @@ Get information on configured saved game repositories
 -----------------------------------------------------
 
     repo list --short
-
     repo status --unmodified DOTS
 
 
@@ -62,7 +61,11 @@ or just
 Backup
 ------
 
-To backup the saved games, we will need another user task.  This on is called 'action:update'.
+To backup the saved games, we will need another user task.  This on is called
+'action:update'.  See [repoman/tasks/update.rb](repoman/tasks/update.rb)
+
+
+
 
 
 Synchronize
@@ -70,9 +73,7 @@ Synchronize
 
 Synchronizing saved games to another PC can be accomplished using Git's 'pull' command.
 
-
-verify working folders are clean, if they are not, either revert them or commit
-and push
+verify working folders are clean, if they are not, either revert them or commit and push
 
     repo status
 
