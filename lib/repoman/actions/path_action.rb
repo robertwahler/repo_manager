@@ -1,4 +1,4 @@
-module Repoman
+module RepoManager
 
   # @group CLI actions
   #
@@ -12,7 +12,7 @@ module Repoman
   class PathAction < AppAction
 
     def execute
-      Repoman::ListAction.new(args.push('--list=path'), configuration).execute
+      RepoManager::ListAction.new(args.push('--list=path'), configuration).execute
     end
 
     def help

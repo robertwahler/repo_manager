@@ -1,12 +1,12 @@
 require 'optparse'
 require 'repoman/actions/action_helper'
 
-module Repoman
+module RepoManager
 
   # @group CLI actions
   #
   # Show simplified summary status of repos. The exit code is a bitfield
-  # that collects simplified status codes. The Repoman status simplifies
+  # that collects simplified status codes. The RepoManager status simplifies
   # Git's porcelain output by combining Git status X and Y and boiling
   # down status returns to just five types,
   #
@@ -57,7 +57,7 @@ module Repoman
   #
   # @see Status bitfield return values
   class StatusAction < AppAction
-    include Repoman::ActionHelper
+    include RepoManager::ActionHelper
 
     # Add action specific options
     def parse_options

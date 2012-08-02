@@ -11,11 +11,11 @@ require 'pathname'
 require 'repoman/assets/asset_configuration'
 require 'repoman/assets/asset_accessors'
 
-module Repoman
+module RepoManager
 
   class BaseAsset
-    include Repoman::AssetAccessors
-    extend Repoman::AssetAccessors
+    include RepoManager::AssetAccessors
+    extend RepoManager::AssetAccessors
 
     #
     # --- Asset attributes START here ---
@@ -114,7 +114,7 @@ module Repoman
     # @return [BaseAsset] the created BaseAsset or decendent asset
     def self.create(asset_type=:app_asset, asset_name=nil, attributes={})
       classified_name = asset_type.to_s.split('_').collect!{ |w| w.capitalize }.join
-      Object.const_get('Repoman').const_get(classified_name).new(asset_name, attributes)
+      Object.const_get('RepoManager').const_get(classified_name).new(asset_name, attributes)
     end
 
     # takes any path and returns a string suitable for asset name (Ruby identifier)
@@ -153,7 +153,7 @@ module Repoman
     end
 
     def configuration
-      @configuration ||= Repoman::AssetConfiguration.new(self)
+      @configuration ||= RepoManager::AssetConfiguration.new(self)
     end
 
     # attributes is the hash loaded from the asset config file

@@ -5,7 +5,7 @@ require 'optparse'
 require 'term/ansicolor'
 require 'fileutils'
 
-available_actions = Repoman::AVAILABLE_ACTIONS
+available_actions = RepoManager::AVAILABLE_ACTIONS
 
 banner = <<BANNER
 repo: CLI for batch management of multiple Git repositories
@@ -73,7 +73,7 @@ optparser = OptionParser.new do |opts|
   end
 
   opts.on("--version", "Display current version and exit") do
-    puts "repoman, version " + Repoman.version
+    puts "repoman, version " + RepoManager.version
     exit 0
   end
 
@@ -122,7 +122,7 @@ while unknown_arg = ARGV.shift
 end
 
 # settings from config file, if it exists, will not overwrite command line options
-settings = Repoman::Settings.new(FileUtils.pwd, options)
+settings = RepoManager::Settings.new(FileUtils.pwd, options)
 color = settings.options[:color]
 
 # add summary of general options for use by action help commands
@@ -131,7 +131,7 @@ configuration = settings.to_hash
 if STDOUT.isatty || (color == 'ALWAYS')
   Term::ANSIColor::coloring = color
 
-  if color && Repoman::WINDOWS
+  if color && RepoManager::WINDOWS
     unless ENV['ANSICON']
       begin
         require 'Win32/Console/ANSI'
@@ -146,6 +146,6 @@ else
   Term::ANSIColor::coloring = false
 end
 
-app = Repoman::App.new(argv, configuration)
+app = RepoManager::App.new(argv, configuration)
 app.option_parser = optparser
 app.execute

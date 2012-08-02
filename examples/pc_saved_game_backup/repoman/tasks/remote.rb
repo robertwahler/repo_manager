@@ -1,6 +1,6 @@
 require 'fileutils'
 
-module Repoman
+module RepoManager
 
   class Generate < Thor
 

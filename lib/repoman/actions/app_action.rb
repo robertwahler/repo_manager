@@ -5,7 +5,7 @@
 #
 # See http://github.com/robertwahler
 ####################################################
-module Repoman
+module RepoManager
 
   # An abstract superclass for basic action functionality specific to an
   # application implementation.  Put application specific code here.

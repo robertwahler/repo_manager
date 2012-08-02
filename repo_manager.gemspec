@@ -67,7 +67,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.rdoc_options     = [
-                         '--title', 'Repoman Documentation',
+                         '--title', 'RepoManager Documentation',
                          '--main', 'README.markdown',
                          '--line-numbers',
                          '--inline-source'

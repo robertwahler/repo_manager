@@ -1,10 +1,10 @@
-Creating the Repoman Saved Game Backup Configuration
+Creating the RepoManager Saved Game Backup Configuration
 ====================================================
 
 > NOTE for Windows users
 >
 > The given instruction are intended for a Bash shell.  Bash is not
-> required to use Repoman, but it does make using the command prompt much
+> required to use RepoManager, but it does make using the command prompt much
 > more flexible and productive. The MSYS distribution of portable Git
 > includes a lean and stable Bash environment.
 
@@ -114,9 +114,9 @@ Create the specialized 'git init' task
 --------------------------------------
 
 User tasks can be added directly to the repoman/tasks folder.  This one
-is 'repoman/tasks/remote.rb'.  It doesn't use any Repoman specific features,
+is 'repoman/tasks/remote.rb'.  It doesn't use any RepoManager specific features,
 instead, it calls git directly via Thor's 'run' command. Adding the script
-this way will keep this related functionality with this specific Repoman
+this way will keep this related functionality with this specific RepoManager
 configuration.  Run 'repo -T' to see a full list of built-in tasks as well
 as user defined tasks.
 
@@ -124,7 +124,7 @@ repoman/tasks/remote.rb
 
     require 'fileutils'
 
-    module Repoman
+    module RepoManager
 
       class Generate < Thor
 
@@ -204,11 +204,11 @@ Create the specialized Update task
 
 repoman/tasks/update.rb
 
-    module Repoman
+    module RepoManager
       class Action < Thor
         namespace :action
         include Thor::Actions
-        include Repoman::ThorHelper
+        include RepoManager::ThorHelper
 
         class_option :force, :type => :boolean, :desc => "Force overwrite and answer 'yes' to any prompts"
 

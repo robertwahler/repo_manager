@@ -1,4 +1,4 @@
-module Repoman
+module RepoManager
 
   # Simplified version of ruby-git's class that uses Git's 'status --porcelain' command
   #

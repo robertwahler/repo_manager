@@ -2,7 +2,7 @@ require 'pathname'
 require 'rbconfig'
 require 'fileutils'
 
-module Repoman
+module RepoManager
   module ActionHelper
 
     def shell_quote(string)

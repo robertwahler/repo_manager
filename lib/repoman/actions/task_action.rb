@@ -1,4 +1,4 @@
-module Repoman
+module RepoManager
 
   # @group CLI actions
   #
@@ -44,7 +44,7 @@ module Repoman
       # Thor actions can include toxic side effects,
       # keep the namespace clean until needed
       require 'repoman/tasks/task_manager'
-      task_manager = Repoman::TaskManager.new(configuration)
+      task_manager = RepoManager::TaskManager.new(configuration)
 
       if options[:tasks]
         task_manager.list_tasks

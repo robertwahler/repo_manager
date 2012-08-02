@@ -28,7 +28,7 @@ Feature: Invoke external tasks, normally Thor tasks.
     And an empty file named "output/.gitignore"
     And a file named "repoman/tasks/test.rb" with:
       """
-      module Repoman
+      module RepoManager
         class Test < Thor
           namespace :test
 
@@ -43,7 +43,7 @@ Feature: Invoke external tasks, normally Thor tasks.
       """
     And a file named "repoman/tasks/test.thor" with:
       """
-      module Repoman
+      module RepoManager
         class TestB < Thor
 
           desc "hello", "a test hello task"

@@ -1,4 +1,4 @@
-Using Repoman to Backup and Synchronize PC Game Saves
+Using RepoManager to Backup and Synchronize PC Game Saves
 =====================================================
 
 Use case:  Backup and synchronization of PC save games folders to a
@@ -7,7 +7,7 @@ typically scattered across multiple folders and drives.
 
 This example demonstrates the following features:
 
-* Adding Repoman user tasks, see repoman/tasks/
+* Adding RepoManager user tasks, see repoman/tasks/
 * Adding destructive git commands to the default whitelisted non-destructive git commands
 * Testing user tasks with Cucumber, see repoman/features/
 * Relative paths (not absolute) in repoman/repo.conf making the folder portable
@@ -40,7 +40,7 @@ Get information on configured saved game repositories
 User tasks
 ---------
 
-The task 'generate:remote' is a user task, it doesn't ship with Repoman.
+The task 'generate:remote' is a user task, it doesn't ship with RepoManager.
 
 To view all the available tasks
 

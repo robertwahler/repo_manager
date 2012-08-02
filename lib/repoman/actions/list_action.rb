@@ -1,7 +1,7 @@
 require 'optparse'
 require 'repoman/actions/action_helper'
 
-module Repoman
+module RepoManager
 
   # @group CLI actions
   #
@@ -61,7 +61,7 @@ module Repoman
   #
   # @return [Number] 0 if successful
   class ListAction < AppAction
-    include Repoman::ActionHelper
+    include RepoManager::ActionHelper
 
     # Add action specific options
     def parse_options

@@ -1,8 +1,8 @@
-# this Gemfile is not required for Repoman normal usage, it exists
+# this Gemfile is not required for RepoManager normal usage, it exists
 # to support testing tasks in the user 'tasks' folder
 source "http://rubygems.org"
 
-gem "repoman"
+gem "repo_manager"
 
 gem "bundler", ">= 1.0.14"
 gem "rspec", ">= 2.6.0"

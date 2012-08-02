@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 require 'repoman/views/view_helper'
-include Repoman::ViewHelper
+include RepoManager::ViewHelper
 
-describe Repoman::ViewHelper do
+describe RepoManager::ViewHelper do
 
   context ":repoman files" do
     before :each do

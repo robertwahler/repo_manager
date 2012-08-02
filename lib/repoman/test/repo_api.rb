@@ -1,6 +1,6 @@
 require 'git'
 
-module Repoman
+module RepoManager
   module RepoApi
 
     def repo_exists?(folder)

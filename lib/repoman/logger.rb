@@ -1,7 +1,7 @@
 require 'logging'
 include Logging.globally
 
-module Repoman
+module RepoManager
   module Logger
 
     class Manager

@@ -21,9 +21,9 @@ examples/pc_saved_game_backup/remote/.gitignore
 examples/pc_saved_game_backup/repoman/Gemfile
 examples/pc_saved_game_backup/repoman/Gemfile.lock
 examples/pc_saved_game_backup/repoman/assets/.gitignore
-examples/pc_saved_game_backup/repoman/features/step_definitions/repoman_steps.rb
 examples/pc_saved_game_backup/repoman/features/support/aruba.rb
 examples/pc_saved_game_backup/repoman/features/support/env.rb
+examples/pc_saved_game_backup/repoman/features/support/steps.rb
 examples/pc_saved_game_backup/repoman/features/tasks/update.feature
 examples/pc_saved_game_backup/repoman/global/default/asset.conf
 examples/pc_saved_game_backup/repoman/repo.conf

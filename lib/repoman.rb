@@ -12,7 +12,7 @@ require 'repoman/logger'
 
 
 # Master namespace
-module Repoman
+module RepoManager
 
   # Contents of the VERSION file
   #
@@ -27,7 +27,7 @@ module Repoman
   end
 
   # Platform constants
-  unless defined?(Repoman::WINDOWS)
+  unless defined?(RepoManager::WINDOWS)
     WINDOWS = RbConfig::CONFIG['host_os'] =~ /mswin|mingw/i
     CYGWIN = RbConfig::CONFIG['host_os'] =~ /cygwin/i
   end

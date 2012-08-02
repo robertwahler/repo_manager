@@ -2,7 +2,7 @@ require 'fileutils'
 require 'chronic'
 require 'repoman/test/test_api'
 
-World(Repoman::TestApi)
+World(RepoManager::TestApi)
 
 # Given PENDING: some reason
 Given /^PENDING/ do

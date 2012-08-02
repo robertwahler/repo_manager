@@ -3,9 +3,9 @@ require 'rbconfig'
 require 'repoman'
 require 'repoman/actions/action_helper'
 
-module Repoman
+module RepoManager
   module ThorHelper
-    include ::Repoman::ActionHelper
+    include ::RepoManager::ActionHelper
 
     # main repoman configuration setttings file
     def configuration(configuration_file=nil)
@@ -13,7 +13,7 @@ module Repoman
       logger.debug "getting repoman configuration"
       app_options = {}
       app_options[:config] = configuration_file || options[:config]
-      @configuration = ::Repoman::Settings.new(nil, app_options)
+      @configuration = ::RepoManager::Settings.new(nil, app_options)
     end
 
     def configuration=(value={})

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Repoman do
+describe RepoManager do
 
   def load_gemspec
     filename = File.expand_path('../../../repoman.gemspec', __FILE__)
@@ -11,8 +11,8 @@ describe Repoman do
 
     it "should return the gem VERSION" do
       @gemspec = load_gemspec
-      Repoman::version.should_not be_nil
-      @gemspec.version.to_s.should == Repoman::version
+      RepoManager::version.should_not be_nil
+      @gemspec.version.to_s.should == RepoManager::version
     end
 
     describe 'files' do

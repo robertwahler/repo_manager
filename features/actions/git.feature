@@ -2,8 +2,8 @@
 Feature: Running an arbitrary git command
 
   The application should run an arbitrary git command echoing output and
-  collecting status result codes.  Repoman provides alternatives to some of the
-  git commands. For example, Repoman has its own status command that provides
+  collecting status result codes.  RepoManager provides alternatives to some of the
+  git commands. For example, RepoManager has its own status command that provides
   summary information.  To use the native command, you must place the arg 'git'
   in front of the status command.
 
@@ -13,7 +13,7 @@ Feature: Running an arbitrary git command
 
       repo git status -v
 
-   Run Repoman version of the status command
+   Run RepoManager version of the status command
 
       repo status -v
 
@@ -22,7 +22,7 @@ Feature: Running an arbitrary git command
       repo add .
       repo commit -m "automatic add and commit"
 
-   Since there is no Repoman version of the 'ls-files' command, these command
+   Since there is no RepoManager version of the 'ls-files' command, these command
    lines are equivalent:
 
       repo git ls-files --others --ignored -v
@@ -194,7 +194,7 @@ Feature: Running an arbitrary git command
       fatal: Not a git repository
       """
 
-  Scenario: Run Repoman status command on an invalid repo
+  Scenario: Run RepoManager status command on an invalid repo
     Given the folder "repo_assets" with the following asset configurations:
       | name       | path          |
       | test1      | test_path_1   |

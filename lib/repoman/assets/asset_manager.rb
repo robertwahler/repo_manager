@@ -9,7 +9,7 @@
 require 'pathname'
 require 'fileutils'
 
-module Repoman
+module RepoManager
 
   class AssetManager
 
@@ -48,7 +48,7 @@ module Repoman
         if filters.find {|filter| matches?(folder_basename, filter, asset_options)}
           logger.debug "match found for: #{folder_basename}"
           match_count += 1
-          asset = Repoman::AppAsset.create(type, folder, {})
+          asset = RepoManager::AppAsset.create(type, folder, {})
           assets << asset
           break if ((asset_options[:match] == 'FIRST') || (asset_options[:match] == 'EXACT'))
           raise "match mode = ONE, multiple matching assets found filter" if (asset_options[:match] == 'ONE' && match_count > 1)

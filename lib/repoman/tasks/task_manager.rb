@@ -3,7 +3,7 @@ require 'thor/core_ext/file_binary_read'
 require 'thor/util'
 
 # embed Thor engine to allow extendable tasks
-module Repoman
+module RepoManager
   class TaskManager
 
     attr_accessor :configuration
@@ -21,7 +21,7 @@ module Repoman
     #
     #     returns:
     #
-    #         Repoman::Sweep, screenshots
+    #         RepoManager::Sweep, screenshots
     #
     # @return [Class, String] the Thor class and the task
     def find_by_namespace(name)
@@ -68,7 +68,7 @@ module Repoman
 
     # load all the tasks in this gem plus the user's own repoman task folder
     #
-    # NOTE: doesn't load any default tasks or non-Repoman tasks
+    # NOTE: doesn't load any default tasks or non-RepoManager tasks
     def load_tasks
       return if @loaded
 

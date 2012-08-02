@@ -1,7 +1,7 @@
 require 'optparse'
 require 'repoman/actions/action_helper'
 
-module Repoman
+module RepoManager
 
   # @group CLI actions
   #
@@ -18,7 +18,7 @@ module Repoman
   #
   # @return [Numeric] pass through of 'git' result code
   class GitAction < AppAction
-    include Repoman::ActionHelper
+    include RepoManager::ActionHelper
 
     # allow pass through of unknown options
     def parse_options(parser_configuration = {:raise_on_invalid_option => false})

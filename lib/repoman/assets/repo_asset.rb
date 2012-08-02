@@ -1,4 +1,4 @@
-module Repoman
+module RepoManager
 
   # wrapper class for a source code repository configuration
   class RepoAsset < AppAsset
@@ -14,7 +14,7 @@ module Repoman
     end
 
     def status
-      @status ||= Repoman::Status.new(scm)
+      @status ||= RepoManager::Status.new(scm)
     end
 
     # version control system wrapper

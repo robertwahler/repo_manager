@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Repoman do
+describe RepoManager do
 
   describe 'version' do
 
     it "should return a string formatted '#.#.#'" do
-      Repoman::version.should match(/(^[\d]+\.[\d]+\.[\d]+$)/)
+      RepoManager::version.should match(/(^[\d]+\.[\d]+\.[\d]+$)/)
     end
 
   end

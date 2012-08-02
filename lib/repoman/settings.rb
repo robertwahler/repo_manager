@@ -3,7 +3,7 @@ require 'erb'
 require 'fileutils'
 require 'repoman/extensions/hash'
 
-module Repoman
+module RepoManager
 
   # Access setting via symbolized keys or using accessor methods
   #
@@ -19,8 +19,8 @@ module Repoman
   #
   # @return [Hash], for pure hash use 'to_hash' instead
   class Settings < Hash
-    include Repoman::Extensions::MethodReader
-    include Repoman::Extensions::MethodWriter
+    include RepoManager::Extensions::MethodReader
+    include RepoManager::Extensions::MethodWriter
 
     def initialize(working_dir=nil, options={})
       @working_dir = working_dir || FileUtils.pwd

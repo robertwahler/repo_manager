@@ -11,7 +11,7 @@ require 'slim'
 require 'erb'
 require 'chronic'
 
-module Repoman
+module RepoManager
 
   # An abstract superclass for basic view/reporting functionality
   # using templates

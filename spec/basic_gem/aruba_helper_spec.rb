@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Repoman  do
+describe RepoManager  do
 
   before(:each) do
     @filename = 'input.txt'

@@ -4,7 +4,7 @@ class String
   include Term::ANSIColor
 end
 
-module Repoman
+module RepoManager
 
   AVAILABLE_ACTIONS = %w[help list task path status git]
 
@@ -26,7 +26,7 @@ module Repoman
       $stdout.sync = true
 
       config_filename = configuration[:configuration_filename]
-      Repoman::Logger::Manager.new(config_filename, :logging, configuration)
+      RepoManager::Logger::Manager.new(config_filename, :logging, configuration)
 
       logger.debug "configuration: #{@configuration.inspect}"
       logger.debug "argv: #{@argv.inspect}"
@@ -74,7 +74,7 @@ module Repoman
             exit 1
           end
           logger.debug "execute action: #{action} #{args.join(' ')}"
-          klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
+          klass = Object.const_get('RepoManager').const_get("#{action.capitalize}Action")
           app_action = klass.new(args, @configuration)
           app_action.option_parser = self.option_parser
           result = app_action.execute

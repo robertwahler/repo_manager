@@ -3,7 +3,7 @@ require 'repoman/tasks/task_manager'
 require 'repoman/actions/action_helper'
 require 'pathname'
 
-module Repoman
+module RepoManager
 
   module GenerateHelper
 
@@ -107,10 +107,10 @@ module Repoman
   class Add < Thor
     namespace :add
     include Thor::Actions
-    include Repoman::ThorHelper
-    include Repoman::GenerateHelper
-    include Repoman::AddHelper
-    include ::Repoman::ActionHelper
+    include RepoManager::ThorHelper
+    include RepoManager::GenerateHelper
+    include RepoManager::AddHelper
+    include ::RepoManager::ActionHelper
 
     # adds :quiet, :skip, :pretent, :force
     add_runtime_options!
@@ -141,7 +141,7 @@ module Repoman
           name = File.basename(repo_folder)
         end
 
-        asset = ::Repoman::RepoAsset.new(name)
+        asset = ::RepoManager::RepoAsset.new(name)
         asset.path = File.expand_path(repo_folder)
 
         discovered_assets << asset
@@ -176,7 +176,7 @@ module Repoman
         name ||= File.basename(folder)
       end
 
-      asset = ::Repoman::RepoAsset.new(name)
+      asset = ::RepoManager::RepoAsset.new(name)
       asset.path = File.expand_path(folder)
 
       discovered_assets << asset
@@ -206,7 +206,7 @@ module Repoman
       asset_options.merge!(:assets_folder => configuration[:folders][:assets]) if configuration[:folders]
       asset_options.merge!(:base_folder => File.dirname(configuration[:configuration_filename])) if configuration[:configuration_filename]
 
-      @existing_assets = ::Repoman::AssetManager.new.assets(asset_options)
+      @existing_assets = ::RepoManager::AssetManager.new.assets(asset_options)
     end
 
   end

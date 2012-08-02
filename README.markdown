@@ -1,13 +1,13 @@
-Repoman
-=======
+RepoManager
+===========
 
 Command line interface (CLI) for batch management of multiple Git repositories.
 
 Overview
 --------
 
-Repoman is a wrapper for Git, the distributed version control system.
-Repoman's wrapper functions allow a single git command to be executed
+RepoManager is a wrapper for Git, the distributed version control system.
+RepoManager's wrapper functions allow a single git command to be executed
 across multiple git repositories.
 
 For example, you have two git repositories named 'repo1' and 'repo2' and
@@ -42,8 +42,8 @@ you want to check the status of both working folders.
   [GitSlave](http://gitslave.sourceforge.net/)
 
 
-Getting started with Repoman
-----------------------------
+Getting started with RepoManager
+--------------------------------
 
 ### installation
 
@@ -162,7 +162,7 @@ bundle exec rake -T
 Development Environment
 -----------------------
 
-Repoman was originally cloned from [BasicApp](http://github.com/robertwahler/BasicApp).
+RepoManager was originally cloned from [BasicApp](http://github.com/robertwahler/BasicApp).
 
 all systems
 

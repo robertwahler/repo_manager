@@ -1,4 +1,4 @@
-module Repoman
+module RepoManager
 
   class InvalidRepositoryError < StandardError
   end

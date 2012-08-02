@@ -1,9 +1,9 @@
 # @see features/tasks/action.feature
-module Repoman
+module RepoManager
   class Action < Thor
     namespace :action
     include Thor::Actions
-    include Repoman::ThorHelper
+    include RepoManager::ThorHelper
 
     class_option :force, :type => :boolean, :desc => "Force overwrite and answer 'yes' to any prompts"
 

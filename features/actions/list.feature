@@ -257,7 +257,7 @@ Scenario: List with invalid options in varying positions on the command line
           <title>Default View</title>
           <meta charset="utf-8" />
           <meta content="repo" name="keywords" />
-          <meta content="Repoman default template" name="description" />
+          <meta content="RepoManager default template" name="description" />
           <meta content="Robert Wahler" name="author" />
           <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
           <style type="text/css">html, body {
@@ -338,7 +338,7 @@ Scenario: List with invalid options in varying positions on the command line
           <title>Default View</title>
           <meta charset="utf-8" />
           <meta content="repo" name="keywords" />
-          <meta content="Repoman default template" name="description" />
+          <meta content="RepoManager default template" name="description" />
           <meta content="Robert Wahler" name="author" />
           <link href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" rel="stylesheet" />
           <style type="text/css">html, body {

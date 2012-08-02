@@ -3,10 +3,10 @@ require 'fileutils'
 require 'repoman/actions/action_helper'
 
 class Thing
-  include ::Repoman::ActionHelper
+  include ::RepoManager::ActionHelper
 end
 
-describe Repoman::ActionHelper  do
+describe RepoManager::ActionHelper  do
 
   describe 'relative_path', :posix => true do
 

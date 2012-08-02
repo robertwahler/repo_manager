@@ -8,7 +8,7 @@
 
 require 'repoman/assets/asset_manager'
 
-module Repoman
+module RepoManager
 
   # An abstract superclass for basic action functionality
   class BaseAction

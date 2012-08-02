@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'repoman/test/repo_api'
 
-World(Repoman::RepoApi)
+World(RepoManager::RepoApi)
 
 Given /^a repo in folder "([^"]*)"$/ do |folder|
   repo_init(folder)

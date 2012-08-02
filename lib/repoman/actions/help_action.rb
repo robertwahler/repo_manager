@@ -7,7 +7,7 @@
 ####################################################
 require 'optparse'
 
-module Repoman
+module RepoManager
 
   # @group CLI actions
   #
@@ -36,7 +36,7 @@ module Repoman
         exit(0)
       end
 
-      klass = Object.const_get('Repoman').const_get("#{action.capitalize}Action")
+      klass = Object.const_get('RepoManager').const_get("#{action.capitalize}Action")
       app_action = klass.new(['--help'], configuration)
       app_action.option_parser = self.option_parser
       result = app_action.execute

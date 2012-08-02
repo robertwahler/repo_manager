@@ -1,12 +1,12 @@
 require 'fileutils'
 require 'repoman/views/view_helper'
 
-module Repoman
+module RepoManager
   class Generate < Thor
     namespace :generate
     include Thor::Actions
-    include Repoman::ThorHelper
-    include ::Repoman::ViewHelper
+    include RepoManager::ThorHelper
+    include ::RepoManager::ViewHelper
 
     desc "init PATH", "create the initial configuration file and folder structure"
     def init(path)

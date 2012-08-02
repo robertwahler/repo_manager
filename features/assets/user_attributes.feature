@@ -33,7 +33,7 @@ Feature: Create user defined attributes
     And a file named "test.erb" with:
       """
       <% require 'repoman/actions/action_helper' -%>
-      <% extend Repoman::ActionHelper -%>
+      <% extend RepoManager::ActionHelper -%>
 
       <% for item in items do -%>
       <%= item.name %>:

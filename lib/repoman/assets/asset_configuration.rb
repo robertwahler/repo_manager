@@ -3,7 +3,7 @@ require 'erb'
 require 'pathname'
 require 'fileutils'
 
-module Repoman
+module RepoManager
 
   # asset_configuration saves just the user data by subtracting out the
   # global hash and writing just the result
@@ -78,7 +78,7 @@ module Repoman
         end
 
         logger.debug "AssetConfiguration loading parent: #{parent_folder}"
-        parent_configuration = Repoman::AssetConfiguration.new(asset)
+        parent_configuration = RepoManager::AssetConfiguration.new(asset)
 
         begin
           parent_configuration.load(parent_folder)

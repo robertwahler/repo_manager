@@ -1,14 +1,14 @@
-module Repoman
+module RepoManager
 
   module ViewHelper
 
     # path_to returns absolute installed path to various folders packaged with
-    # the Repoman gem
+    # the RepoManager gem
     #
     # @example manually require and include before use
     #
     #     require 'repoman/views/view_helper'
-    #     include Repoman::ViewHelper
+    #     include RepoManager::ViewHelper
     #
     # @example default to repoman root
     #

@@ -45,7 +45,7 @@ namespace :doc do
 
   YARD::Rake::YardocTask.new(:generate) do |yt|
     yt.options = ['--output-dir', doc_destination,
-                  '--title', "Repoman #{doc_version} Documentation",
+                  '--title', "RepoManager #{doc_version} Documentation",
                   '--main', "README.markdown"
                  ]
   end
