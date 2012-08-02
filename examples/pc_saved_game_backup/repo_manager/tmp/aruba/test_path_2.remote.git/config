@@ -1,0 +1,6 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = /home/robert/workspace/repoman/examples/pc_saved_game_backup/repoman/tmp/aruba/test_path_2

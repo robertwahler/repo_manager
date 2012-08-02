@@ -102,7 +102,7 @@ lib/repoman/views/templates/css/basic.css
 lib/repoman/views/templates/default.erb
 lib/repoman/views/templates/default.slim
 lib/repoman/views/view_helper.rb
-repoman.gemspec
+repo_manager.gemspec
 spec/basic_app/actions/action_helper_spec.rb
 spec/basic_app/assets/base_asset_spec.rb
 spec/basic_app/core_spec.rb
