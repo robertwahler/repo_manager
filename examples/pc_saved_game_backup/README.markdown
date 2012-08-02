@@ -2,8 +2,8 @@ Using Repoman to Backup and Synchronize PC Game Saves
 =====================================================
 
 Use case:  Backup and synchronization of PC save games folders to a
-central repository (ie Drop Box folder).  Game saves are typically
-scattered across multiple folders and drives.
+central repository (ie Drop Box folder) using Git.  Game saves are
+typically scattered across multiple folders and drives.
 
 This example demonstrates the following features:
 
@@ -64,9 +64,7 @@ Backup
 To backup the saved games, we will need another user task.  This on is called
 'action:update'.  See [repoman/tasks/update.rb](repoman/tasks/update.rb)
 
-
-
-
+    repo action:update
 
 Synchronize
 ----------

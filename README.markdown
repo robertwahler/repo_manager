@@ -1,8 +1,10 @@
-# Repoman #
+Repoman
+=======
 
 Command line interface (CLI) for batch management of multiple Git repositories.
 
-## Overview ##
+Overview
+--------
 
 Repoman is a wrapper for Git, the distributed version control system.
 Repoman's wrapper functions allow a single git command to be executed
@@ -40,7 +42,8 @@ you want to check the status of both working folders.
   [GitSlave](http://gitslave.sourceforge.net/)
 
 
-## Getting started with Repoman
+Getting started with Repoman
+----------------------------
 
 ### installation
 
@@ -102,31 +105,15 @@ answer 'y'
     creating  repoman configuration file for mutagem
     creating  repoman configuration file for basic_rails
 
-## Example Usage
 
-### Quick status of all the working folders in your workspace
+Example Usage - Managing game saves across multiple computers
+-------------------------------------------------------------
 
-TBD
-
-### Mirroring Win32 code to the workspace of a Linux machine
-
-TBD
-
-### Managing game saves across multiple computers
-
-TBD
+See examples/pc_saved_game_backup/README.markdown
 
 
-## Configuration
-
-TBD
-
-## Extending Repoman by adding tasks
-
-TBD
-
-
-## Bash completion ######################################################
+Bash completion
+----------------
 
 Handy functions for use under Bash.  These work fine on Win32 using
 Git-Bash.
@@ -156,23 +143,9 @@ vim ~/.bashrc
     }
     complete -F _repo_names rcd rpushd repo
 
-## Run-time dependencies ##
 
-The following gems are required
-
-* Term-ansicolor for optional color output <http://github.com/flori/term-ansicolor>
-* Ruby-git for git repository support <http://github.com/schacon/ruby-git>
-
-
-## Development dependencies ##
-
-* Bundler for dependency management <http://github.com/carlhuda/bundler>
-* Rspec for unit testing <http://github.com/dchelimsky/rspec>
-* Cucumber for functional testing <http://github.com/aslakhellesoy/cucumber>
-* YARD for documentation generation <http://github.com/lsegal/yard>
-
-
-## Rake tasks ##
+Rake tasks
+----------
 
 bundle exec rake -T
 
@@ -186,7 +159,8 @@ bundle exec rake -T
     rake test          # Run specs and features
 
 
-## Development Environment ##
+Development Environment
+-----------------------
 
 Repoman was originally cloned from [BasicApp](http://github.com/robertwahler/BasicApp).
 
@@ -196,8 +170,8 @@ all systems
     git clone https://github.com/robertwahler/repoman
     cd repoman
 
-    gem bundle install
-    bundle install
+    gem install bundler
+    bundle
 
 colored output on windows
 
