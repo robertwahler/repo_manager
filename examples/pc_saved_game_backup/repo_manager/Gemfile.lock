@@ -30,7 +30,7 @@ GEM
     mustache (0.99.4)
     rack (1.4.1)
     rdiscount (1.6.8)
-    repoman (0.7.1)
+    repo_manager (0.7.1)
       chronic (>= 0.6.5)
       git (= 1.2.5)
       logging (>= 1.6.2)
@@ -61,6 +61,6 @@ DEPENDENCIES
   aruba (= 0.4.5)
   bundler (>= 1.0.14)
   cucumber (~> 1.0)
-  repoman
+  repo_manager
   rspec (>= 2.6.0)
   win32console
