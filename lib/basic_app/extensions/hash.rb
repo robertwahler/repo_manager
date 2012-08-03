@@ -11,23 +11,23 @@ module BasicApp
     # to access your hash's keys. It will recognize keys
     # either as strings or symbols.
     #
-    # @example
+    # @example Extending the Hash class
     #
-    # class User < Hash
-    #   include BasicApp::Extensions::MethodReader
-    # end
+    #     class User < Hash
+    #       include BasicApp::Extensions::MethodReader
+    #     end
     #
-    # user = User.new
-    # user['first_name'] = 'Michael'
-    # user.first_name # => 'Michael'
+    #     user = User.new
+    #     user['first_name'] = 'Michael'
+    #     user.first_name # => 'Michael'
     #
-    # user[:last_name] = 'Bleigh'
-    # user.last_name # => 'Bleigh'
+    #     user[:last_name] = 'Bleigh'
+    #     user.last_name # => 'Bleigh'
     #
-    # user[:birthday] = nil
-    # user.birthday # => nil
+    #     user[:birthday] = nil
+    #     user.birthday # => nil
     #
-    # user.not_declared # => nil
+    #     user.not_declared # => nil
     #
     module MethodReader
       def respond_to?(name)
