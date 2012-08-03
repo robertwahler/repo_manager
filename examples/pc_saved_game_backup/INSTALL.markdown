@@ -288,10 +288,8 @@ Add 'push, add, and commit' to the commands whitelist
     +- add
     +- commit
 
-Testing with user tasks with Cucumber
+Testing user tasks with Cucumber
 --------------------------------------
-
-Functional testing with Cucumber
 
 ### Add a Gemfile for use by Bundler
 
@@ -313,7 +311,7 @@ repo_manager/Gemfile
     gem install bundler
 
     cd repo_manager
-    bundle install
+    bundle
 
 ### Add Cucumber features and support files
 
