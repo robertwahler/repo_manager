@@ -22,8 +22,9 @@ module RepoManager
     #
     #     path_to(:bootstrap, "bootstrap/css/bootstrap.css")
     #
-    # @param [Symbol] (:repo_manager) which gem folder should be root
-    # @param [String] path to file asset parented in the given folder
+    # @overload path_to(*args)
+    #   @param [Symbol] base_path which gem folder should be root
+    #   @param [String] file_asset path to file asset parented in the given folder
     #
     # @return [String] absolute path to asset
     def path_to(*args)

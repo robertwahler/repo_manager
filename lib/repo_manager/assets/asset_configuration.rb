@@ -42,7 +42,6 @@ module RepoManager
     # 'attrs' and the current  contents of the config file are saved. Parent
     # asset configurations are not saved.
     #
-    # @raises
     def save(attrs=nil)
       raise "a Hash of attributes to save must be specified" unless attrs && attrs.is_a?(Hash)
       raise "folder must be set prior to saving attributes" unless folder

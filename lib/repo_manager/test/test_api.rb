@@ -12,16 +12,19 @@ module RepoManager
       return nil
     end
 
+    # execute a block in a specific working directory (path)
     def in_path(path, &block)
       Dir.chdir(path, &block)
     end
 
+    # expand tabs to spaces
     def expand_tabs(data, indent=8)
       data.gsub(/([^\t\n]*)\t/) {
         $1 + " " * (indent - ($1.size % indent))
       }
     end
 
+    # account for differences in line endings and tabs
     def normalize(str)
       # convert/normalize DOS CRLF endings
       str.gsub!(/\r\n/, "\n") if str.match("\r\n")

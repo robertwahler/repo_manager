@@ -129,7 +129,7 @@ module RepoManager
       basename.gsub(/[_]+/,'_')
     end
 
-    # @param [String/Symbol] asset name or folder, if folder exists, will load YAML config
+    # @param [String/Symbol] asset_name_or_folder (nil) if folder exists, will load YAML config
     # @param [Hash] attributes ({}) initial attributes
     def initialize(asset_name_or_folder=nil, attributes={})
       # allow for lazy loading (TODO), don't assign empty attributes
@@ -173,7 +173,9 @@ module RepoManager
       binding
     end
 
-    # @return [String/nil] with mustache tags {{}}, {{{}}} replaced or nil if template is nil
+    # render a string with mustache tags replaced in the context of this class
+    #
+    # @return [String/nil] with mustache tags replaced or nil if template is nil
     def render(template)
       return nil unless template
 
