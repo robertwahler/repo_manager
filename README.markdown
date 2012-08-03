@@ -27,12 +27,14 @@ you want to check the status of both working folders.
 
 ### suitable for
 
-* Light weight mirroring of data across a network.  That is a job for
-  rsync.  Or is it?  If you develop for multiple platforms across multiple
-  (virtual) machines rsync'ing may not be the best option.  If you already
-  have everything tucked into git repositories, you can use a single
-  'repo pull'  command to mirror all of your repositories to one location
-  for backup or reference.
+* Maintenance and documentation of loosely connected source code repositories.
+* Synchronization/ light weight mirroring of data across a network.  That is a
+  job for rsync.  Or is it?  If you develop for multiple platforms across
+  multiple (virtual) machines rsync'ing may not be the best option.  If you
+  already have everything tucked into git repositories, you can use a single
+  'repo pull'  command to mirror all of your repositories to one location for
+  backup or reference.
+
 
 ### not suitable for
 
@@ -41,6 +43,7 @@ you want to check the status of both working folders.
   [git-subtree](https://github.com/apenwarr/git-subtree), and
   [GitSlave](http://gitslave.sourceforge.net/)
 
+Read more in our introductory [blog article](http://www.gearheadforhire.com/articles/ruby/repo_manager/using-repoman-to-backup-pc-game-saves)
 
 Getting started with RepoManager
 --------------------------------
