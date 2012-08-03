@@ -179,11 +179,14 @@ colored output on windows
 
     gem install win32console
 
+
 Autotesting with Guard
 ----------------------
 
     bundle exec guard
 
-## Copyright ##
+
+Copyright
+---------
 
 Copyright (c) 2012 GearheadForHire, LLC. See [LICENSE](LICENSE) for details.
