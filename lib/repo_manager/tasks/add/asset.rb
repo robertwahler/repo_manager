@@ -22,7 +22,12 @@ module RepoManager
         base_folder = File.dirname(configuration[:configuration_filename])
       end
 
-      file = File.join(base_folder, folder, name, "asset.conf")
+      if base_folder
+        file = File.join(base_folder, folder, name, "asset.conf")
+      else
+        file = File.join(folder, name, "asset.conf")
+      end
+      file
     end
 
   end

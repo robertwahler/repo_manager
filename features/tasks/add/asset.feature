@@ -146,7 +146,7 @@ Feature: Task to generate asset configurations
         assets : assets
       """
     And a directory named "assets"
-    When I run `repo add:asset workspace/repo1_path --name=repo1` interactively
+    When I run `repo add:asset workspace/repo1_path --name=repo1 --verbose` interactively
     When I type "y"
     Then the exit status should be 0
     And the output should contain:
