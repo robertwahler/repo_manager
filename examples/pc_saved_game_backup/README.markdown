@@ -1,5 +1,5 @@
 Using RepoManager to Backup and Synchronize PC Game Saves
-=====================================================
+=========================================================
 
 Use case:  Backup and synchronization of PC save games folders to a
 central repository (ie Drop Box folder) using Git.  Game saves are
@@ -18,10 +18,22 @@ This example demonstrates the following features:
 Bootstrapping this example folder
 --------------------------------
 
+### Gem installation
+
+Install RepoManager, Bundler, and clone the source code repository
+
+    gem install repo_manager
+    gem install bundler
+
+    cd ~/examples
+    git clone https://github.com/robertwahler/repo_manager.git
+
 In order to try out the example commands below, you will need to bootstrap the
-sample data git repositories and create the configuration files using the
+sample data Git repositories and create the configuration files using the
 following commands.  See [INSTALL.markdown](INSTALL.markdown) for a more
 complete explanation.
+
+    cd repo_manager/examples/pc_saved_game_backup
 
     repo generate:remote mines --path=saved_games/mines/saves
     repo generate:remote hearts --path=saved_games/hearts
@@ -36,6 +48,9 @@ Get information on configured saved game repositories
     repo list --short
     repo status --unmodified DOTS
 
+
+    cd ~/examples
+    git clone https://github.com/robertwahler/repo_manager.git
 
 User tasks
 ---------
@@ -63,6 +78,17 @@ Backup
 
 To backup the saved games, we will need another user task.  This on is called
 'action:update'.  See [repo_manager/tasks/update.rb](repo_manager/tasks/update.rb)
+
+    repo action:update
+
+                 run  repo status --short --unmodified=HIDE --no-verbose --no-color  from "."
+        no changed repos
+
+create a new saved game
+
+    echo "# dummy save" > saved_games/mines/saves/save3
+
+now run update again
 
     repo action:update
 
@@ -94,7 +120,7 @@ Clean
 -----
 Resetting this example folder back to its shipping defaults
 
-### Delete the git repositories
+### Delete the Git repositories
 
     rm -rf remote/hearts.git
     rm -rf remote/mines.git

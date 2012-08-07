@@ -50,7 +50,21 @@ Getting started with RepoManager
 
 ### installation
 
+dependencies
+
+    git > 1.7
+    ruby 1.87+
+
+installation via gem
+
     gem install repo_manager
+
+installation via source
+
+    git clone git://github.com/robertwahler/repo_manager.git
+    cd repo_manager
+    bundle
+    bundle exec rake install
 
 ### help
 
