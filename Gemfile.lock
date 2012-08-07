@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    repo_manager (0.7.1)
+    repo_manager (0.7.2)
       chronic (>= 0.6.5)
       git (= 1.2.5)
       logging (>= 1.6.2)
