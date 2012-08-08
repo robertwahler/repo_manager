@@ -48,3 +48,13 @@ Feature: Show help on actions
       """
       invalid help action
       """
+
+  Scenario: Returning a list of actions for CLI completion
+    When I run `basic_app help --actions`
+    Then the exit status should be 0
+    And the output should contain:
+      """
+      help
+      list
+      task
+      """

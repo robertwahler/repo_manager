@@ -18,8 +18,28 @@ module BasicApp
   # @example Usage: basic_app help [action]
   class HelpAction < AppAction
 
+    # Add action specific options
+    def parse_options
+      super do |opts|
+
+        opts.on("--actions", "List available actions") do |a|
+          options[:actions] = a
+        end
+
+      end
+    end
+
     def process
+      parse_options
       action = args.shift
+
+      if options[:actions]
+        AVAILABLE_ACTIONS.each do |act|
+          puts act
+        end
+
+        exit(0) unless action
+      end
 
       unless action
         puts "no action specified"
