@@ -24,7 +24,7 @@ module RepoManager
 
     def initialize(working_dir=nil, options={})
       @working_dir = working_dir || FileUtils.pwd
-      @configuration = configure(options)
+      @configuration = configure(options.deep_clone)
 
       # call super without args
       super *[]

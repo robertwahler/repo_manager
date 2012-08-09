@@ -133,7 +133,7 @@ module RepoManager
     # @param [Hash] attributes ({}) initial attributes
     def initialize(asset_name_or_folder=nil, attributes={})
       # allow for lazy loading (TODO), don't assign empty attributes
-      @attributes = attributes.dup unless attributes.empty?
+      @attributes = attributes.deep_clone unless attributes.empty?
 
       # create user_attribute methods
       create_accessors(@attributes[:user_attributes]) if @attributes && @attributes[:user_attributes]

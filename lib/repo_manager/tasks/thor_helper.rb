@@ -18,7 +18,7 @@ module RepoManager
 
     def configuration=(value={})
       logger.debug "setting repo_manager configuration"
-      @configuration = value.dup
+      @configuration = value.deep_clone
     end
 
     def ruby_binary
