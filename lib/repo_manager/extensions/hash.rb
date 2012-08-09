@@ -52,7 +52,7 @@ module RepoManager
     # Note that MethodWriter also overrides #respond_to such
     # that any #method_name= will respond appropriately as true.
     #
-    # @example
+    # @example Extending the Hash class
     #
     #     class MyHash < Hash
     #       include RepoManager::Extensions::MethodWriter

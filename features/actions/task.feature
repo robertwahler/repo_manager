@@ -80,6 +80,19 @@ Feature: Invoke external tasks, normally Thor tasks.
       repo test:init
       """
 
+  Scenario: Listings available tasks bare for Bash completion
+    When I run `basic_app task --tasks --bare`
+    Then the exit status should be 0
+    And the output should not contain:
+      """
+      basic_app test:init
+      """
+    And the output should match:
+      """
+      test:init
+      basic_app:test_b:hello
+      """
+
   Scenario: Show help for a given task
     When I run `repo task help test:init`
     Then the exit status should be 0

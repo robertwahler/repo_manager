@@ -37,6 +37,11 @@ module RepoManager
         options[:tasks] = t
       end
 
+      opts.on("--bare", "List task names for CLI completion, implies '--tasks'") do |b|
+        options[:bare] = b
+        options[:tasks] = true if b
+      end
+
       end
     end
 
@@ -47,7 +52,11 @@ module RepoManager
       task_manager = RepoManager::TaskManager.new(configuration)
 
       if options[:tasks]
-        task_manager.list_tasks
+        if options[:bare]
+          task_manager.list_bare_tasks
+        else
+          task_manager.list_tasks
+        end
         return 0
       end
 

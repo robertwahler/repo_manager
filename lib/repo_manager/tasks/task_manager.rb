@@ -143,7 +143,7 @@ module RepoManager
       klass.task_help(shell , task)
     end
 
-    # display a list of tasks
+    # display a list of tasks for user display
     def list_tasks
       load_tasks
 
@@ -160,6 +160,19 @@ module RepoManager
       shell.say shell.set_color(title, :blue, bold=true)
       shell.say "-" * title.size
       shell.print_table(list, :ident => 2, :truncate => true)
+    end
+
+    # display a list of tasks for CLI completion
+    def list_bare_tasks
+      load_tasks
+
+      Thor::Base.subclasses.each do |klass|
+        unless klass == Thor
+          klass.tasks.each do |t|
+            puts "#{klass.namespace}:#{t[0]}"
+          end
+        end
+      end
     end
 
   end
