@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe BasicApp::BaseAction  do
+describe RepoManager::BaseAction  do
 
   describe "parse_options" do
 
     #before do
-      #BasicApp::Logger::Manager.new
+      #RepoManager::Logger::Manager.new
       #Logging.appenders.stdout.level = :debug
     #end
 
@@ -21,7 +21,7 @@ describe BasicApp::BaseAction  do
           args = ['--force']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           lambda { action.parse_options }.should_not raise_error
         end
 
@@ -29,7 +29,7 @@ describe BasicApp::BaseAction  do
           args = ['--force']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           action.parse_options.is_a?(OptionParser).should be_true
         end
 
@@ -37,7 +37,7 @@ describe BasicApp::BaseAction  do
           args = ['--force']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           action.parse_options
           action.args.should be_empty
         end
@@ -46,7 +46,7 @@ describe BasicApp::BaseAction  do
           args = ['--force']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           action.parse_options
           action.args.should be_empty
           args.should == ['--force']
@@ -59,7 +59,7 @@ describe BasicApp::BaseAction  do
           args = ['--bad-option']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           lambda { action.parse_options}.should raise_error
         end
 
@@ -74,7 +74,7 @@ describe BasicApp::BaseAction  do
           args = ['--bad-option']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           lambda { action.parse_options(:raise_on_invalid_option => false)}.should_not raise_error
         end
 
@@ -82,7 +82,7 @@ describe BasicApp::BaseAction  do
           args = ['--bad-option']
           configuration = {}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           lambda { action.parse_options(:raise_on_invalid_option => false)}.should_not raise_error
           action.args.should == ['--bad-option']
         end
