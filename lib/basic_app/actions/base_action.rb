@@ -12,6 +12,7 @@ module BasicApp
 
   # An abstract superclass for basic action functionality
   class BaseAction
+
     # main configuration hash
     attr_reader :configuration
 
@@ -33,9 +34,9 @@ module BasicApp
     # bin wrapper option parser object
     attr_accessor :option_parser
 
-    def initialize(args=[], configuration={})
-      @configuration = configuration
-      @options = configuration[:options] || {}
+    def initialize(args=[], config={})
+      @configuration = config.deep_clone
+      @options = @configuration[:options] || {}
       @args = args.dup
       logger.debug "initialize with args: #{@args.inspect}"
     end
@@ -46,7 +47,7 @@ module BasicApp
     def parse_options(parser_configuration = {})
       raise_on_invalid_option = parser_configuration.has_key?(:raise_on_invalid_option) ? parser_configuration[:raise_on_invalid_option] : true
       parse_base_options = parser_configuration.has_key?(:parse_base_options) ? parser_configuration[:parse_base_options] : true
-      logger.debug "base_action parsing args: #{@args.inspect}, raise_on_invalid_option: #{raise_on_invalid_option}, parse_base_options: #{parse_base_options}"
+      logger.debug "parsing args: #{@args.inspect}, raise_on_invalid_option: #{raise_on_invalid_option}, parse_base_options: #{parse_base_options}"
 
       @option_parser ||= OptionParser.new
 
@@ -89,7 +90,7 @@ module BasicApp
       # (first pass doesn't know about action specific options), find all
       # action options that may come after the action/subcommand (options
       # before subcommand have already been processed) and its args
-      logger.debug "(BaseAction) args before reprocessing: #{@args.inspect}"
+      logger.debug "args before reprocessing: #{@args.inspect}"
       begin
         option_parser.order!(@args)
       rescue OptionParser::InvalidOption => e
@@ -103,11 +104,11 @@ module BasicApp
           e.recover(@args)
         end
       end
-      logger.debug "(BaseAction) args before unknown collection: #{@args.inspect}"
+      logger.debug "args before unknown collection: #{@args.inspect}"
 
       unknown_args = []
       while unknown_arg = @args.shift
-        logger.debug "(BaseAction) unknown_arg: #{unknown_arg.inspect}"
+        logger.debug "unknown_arg: #{unknown_arg.inspect}"
         unknown_args << unknown_arg
         begin
           # consume options and stop at an arg
@@ -124,10 +125,12 @@ module BasicApp
           end
         end
       end
-      logger.debug "(BaseAction) args after unknown collection: #{@args.inspect}"
+      logger.debug "args after unknown collection: #{@args.inspect}"
 
       @args = unknown_args.dup
-      logger.debug "(BaseAction) args after reprocessing: #{@args.inspect}"
+      logger.debug "args after reprocessing: #{@args.inspect}"
+      logger.debug "configuration after reprocessing: #{@configuration.inspect}"
+      logger.debug "options after reprocessing: #{@options.inspect}"
 
       option_parser
     end
@@ -156,7 +159,7 @@ module BasicApp
           logger.info "existing file not overwritten.  To overwrite automatically, use the '--force' option."
         end
       else
-        logger.debug "base_action writing to STDOUT"
+        logger.debug "writing to STDOUT"
         print content
       end
       return 0
@@ -213,10 +216,10 @@ module BasicApp
     #
     # @return [String] suitable for displaying on STDOUT or writing to a file
     def render(view_options=configuration)
-      logger.debug "base_action rendering"
+      logger.debug "rendering"
       result = ""
       if template
-        logger.debug "base_action rendering with template : #{template}"
+        logger.debug "rendering with template : #{template}"
         view = AppView.new(items, view_options)
         view.template = template
         result = view.render
