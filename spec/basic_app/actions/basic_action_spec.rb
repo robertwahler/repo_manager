@@ -56,7 +56,7 @@ describe RepoManager::BaseAction  do
           args = ['--force']
           configuration = {:options => {:something => true}}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           action.parse_options
           configuration.should == {:options => {:something => true}}
         end
@@ -65,7 +65,7 @@ describe RepoManager::BaseAction  do
           args = ['--force']
           configuration = {:options => {:something => true}}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           action.parse_options
           action.configuration.should == {:options => {:something => true, :force => true}}
         end
@@ -109,7 +109,7 @@ describe RepoManager::BaseAction  do
           args = ['--force']
           configuration = {:options => {:something => true}}
 
-          action = BasicApp::BaseAction.new(args, configuration)
+          action = RepoManager::BaseAction.new(args, configuration)
           action.parse_options
           configuration.should == {:options => {:something => true}}
         end
