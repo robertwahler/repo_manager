@@ -53,11 +53,14 @@ Feature: Show help on actions
       """
 
   Scenario: Returning a list of actions for CLI completion
-    When I run `basic_app help --actions`
+    When I run `repo help --actions`
     Then the exit status should be 0
     And the output should contain:
       """
       help
       list
       task
+      path
+      status
+      git
       """
