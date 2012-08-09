@@ -184,7 +184,7 @@ module BasicApp
     # asset options separated from assets to make it easier to override assets
     def asset_options
       # include all base action options
-      result = options.dup
+      result = options.deep_clone
 
       # anything left on the command line should be filters as all options have
       # been consumed, for pass through options, filters must be ignored by overwritting them
@@ -228,7 +228,7 @@ module BasicApp
           result += "\n" unless index == 0
           result += item.name.green + ":\n"
           if item.respond_to?(:attributes)
-            attributes = item.attributes.dup
+            attributes = item.attributes.deep_clone
             result += attributes.recursively_stringify_keys!.to_conf.gsub(/\s+$/, '') # strip trailing whitespace from YAML
             result += "\n"
           end

@@ -18,7 +18,7 @@ module BasicApp
   class BaseView
 
     def initialize(items, configuration={})
-      @configuration = configuration
+      @configuration = configuration.deep_clone
       @items = items
       @template = File.expand_path('../templates/default.slim', __FILE__)
     end

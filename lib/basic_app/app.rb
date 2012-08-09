@@ -14,17 +14,17 @@ module BasicApp
     attr_accessor :option_parser
 
     def initialize(argv=[], configuration={})
-      @configuration = configuration
-      @options = configuration[:options] || {}
-      @argv = argv
+      @configuration = configuration.deep_clone
+      @options = @configuration[:options] || {}
+      @argv = argv.dup
       $stdout.sync = true
 
-      config_filename = configuration[:configuration_filename]
-      BasicApp::Logger::Manager.new(config_filename, :logging, configuration)
+      config_filename = @configuration[:configuration_filename]
+      BasicApp::Logger::Manager.new(config_filename, :logging, @configuration)
 
       logger.debug "configuration: #{@configuration.inspect}"
       logger.debug "argv: #{@argv.inspect}"
-      logger.debug "config file: #{configuration[:configuration_filename]}" if configuration[:configuration_filename]
+      logger.debug "config file: #{@configuration[:configuration_filename]}" if @configuration[:configuration_filename]
     end
 
     def execute

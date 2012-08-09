@@ -18,7 +18,7 @@ module BasicApp
 
     def configuration=(value={})
       logger.debug "setting basic_app configuration"
-      @configuration = value.dup
+      @configuration = value.deep_clone
     end
 
     def ruby_binary

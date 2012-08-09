@@ -8,8 +8,8 @@ module BasicApp
 
     attr_accessor :configuration
 
-    def initialize(configuration=nil)
-      @configuration = configuration.dup
+    def initialize(config={})
+      @configuration = config.deep_clone
       options = @configuration[:options]
       self.color = options ? options[:color] : true
     end
@@ -54,7 +54,7 @@ module BasicApp
         config[:shell] ||= shell
         klass.send(:dispatch, task, args, nil, config) do |instance|
           if defined?(instance.configuration)
-            instance.configuration = configuration.dup
+            instance.configuration = configuration.deep_clone
           end
         end
         logger.debug "after invoke"
