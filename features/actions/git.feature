@@ -149,10 +149,13 @@ Feature: Running an arbitrary git command
       """
       test1
       # On branch master
-      nothing to commit (working directory clean)
+      nothing to commit
+      """
+    And the output should contain:
+      """
       test2
       # On branch master
-      nothing to commit (working directory clean)
+      nothing to commit
       """
 
   Scenario: Run 'git status --porcelain' on each repo with no changes shows nothing on stdout
@@ -265,9 +268,9 @@ Feature: Running an arbitrary git command
       | new_stuff.txt    | A      | tmp/*    |
     When I run `repo commit -m 'automatic commit via repo_manager' --repos test1`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should match:
       """
-       1 files changed, 1 insertions(+), 0 deletions(-)
+       1 files? changed, 1 insertion
       """
 
   Scenario: Running a git command that is not whitelisted
