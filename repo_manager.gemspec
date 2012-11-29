@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "bundler", ">= 1.0.14"
   s.add_development_dependency "rspec", ">= 2.6.0"
-  s.add_development_dependency "cucumber", "~> 1.0"
+  s.add_development_dependency "cucumber", ">= 1.0"
   s.add_development_dependency "aruba", "= 0.4.5"
   s.add_development_dependency "rake", ">= 0.8.7"
 
@@ -58,9 +58,9 @@ Gem::Specification.new do |s|
   #
   # https://github.com/guard/listen/issues/44
   #
-  s.add_development_dependency "guard", "= 1.0.3"
-  s.add_development_dependency "guard-rspec", "~> 0.7"
-  s.add_development_dependency "guard-cucumber", "~> 0.8"
+  s.add_development_dependency "guard", ">= 1.0.3"
+  s.add_development_dependency "guard-rspec", ">= 0.7"
+  s.add_development_dependency "guard-cucumber", ">= 0.8"
 
   s.files        = gemfiles.split("\n")
   s.executables  = gemfiles.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
