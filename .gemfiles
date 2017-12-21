@@ -2,7 +2,6 @@
 .gitattributes
 .gitignore
 .rspec
-.yardopts
 Gemfile
 Gemfile.lock
 Guardfile

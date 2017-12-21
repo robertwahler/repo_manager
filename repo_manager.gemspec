@@ -30,25 +30,23 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "repo_manager"
 
-  s.add_dependency 'term-ansicolor', '>= 1.0.4'
+  s.add_dependency 'term-ansicolor', '~> 1.0.4'
   s.add_dependency 'logging', '>= 1.6.2'
-  s.add_dependency 'slim', '>= 1.0.4'
-  s.add_dependency 'mustache', '>= 0.99.4'
+  s.add_dependency 'slim', '~> 1.0.4'
+  s.add_dependency 'mustache', '= 0.99.4'
   s.add_dependency "chronic", ">= 0.6.5"
   s.add_dependency "thor", ">= 0.15.0"
 
   s.add_dependency 'git', '= 1.2.5'
+
+  # lock down tins from term-ansicolor since newer versions require Ruby > 2.0
+  s.add_dependency 'tins', '~> 1.6.0'
 
   s.add_development_dependency "bundler", ">= 1.0.14"
   s.add_development_dependency "rspec", ">= 2.6.0"
   s.add_development_dependency "cucumber", ">= 1.0"
   s.add_development_dependency "aruba", "= 0.4.5"
   s.add_development_dependency "rake", ">= 0.8.7"
-
-  # doc generation
-  s.add_development_dependency "yard", ">= 0.7.4"
-  s.add_development_dependency "yard-cucumber", ">= 2.1.7"
-  s.add_development_dependency "redcarpet", ">= 1.17.2"
 
   # guard, watches files and runs specs and features
   #

@@ -53,7 +53,7 @@ Getting started with RepoManager
 dependencies
 
     git > 1.7
-    ruby 1.87+
+    ruby > 1.87 && ruby < 2.0
 
 installation via gem
 
@@ -168,9 +168,6 @@ bundle exec rake -T
 
     rake build             # Build repo_manager-0.7.1.gem into the pkg directory
     rake cucumber          # Run Cucumber features
-    rake doc:clean         # Remove generated documenation
-    rake doc:generate      # Generate YARD Documentation
-    rake doc:undocumented  # List undocumented objects
     rake gemfiles          # Generate .gemfiles via 'git ls-files'
     rake install           # Build and install repo_manager-0.7.1.gem into system gems
     rake release           # Create tag v0.7.1 and build and push repo_manager-0.7.1.gem to Rubygems

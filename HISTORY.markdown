@@ -7,9 +7,10 @@ Most recent changes are at the top
 Changes
 -------
 
-### 0.7.X - 08/09/2012 ###
+### 0.7.3 - 12/21/2017 ###
 
-* Add 'help --actions' and 'tasks --tasks --bare' to faciliate CLI completion of actions and tasks (BasicApp)
+* Update and remove dependencies with known security issues
+* Add 'help --actions' and 'tasks --tasks --bare' to facilitate CLI completion of actions and tasks (BasicApp)
 
 ### 0.7.2 - 08/07/2012 ###
 
